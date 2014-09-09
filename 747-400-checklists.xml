@@ -1,0 +1,837 @@
+<PropertyList>
+    <checklist>
+        <title>Preliminary Preflight Procedure</title>
+        <item>
+            <name>Parking brake</name>
+            <value>As needed</value>
+        </item>
+    </checklist>
+    <checklist>
+        <title>Preflight Procedure - First Officer</title>
+        <page>
+            <item>
+                <name>STANDBY POWER selector</name>
+                <value>AUTO</value>
+                <condition>
+                    <equals>
+                        <property>/controls/electric/standby-power</property>
+                        <value>1</value>
+                    </equals>
+                </condition>
+            </item>
+            <item>
+                <name>UTILITY power switches</name>
+                <value>ON</value>
+                <condition>
+                    <and>
+                        <property>/controls/electric/utility[0]</property>
+                        <property>/controls/electric/utility[1]</property>
+                    </and>
+                </condition>
+            </item>
+            <item>
+                <name>BATTERY switch</name>
+                <value>ON</value>
+                <condition>
+                    <property>/controls/electric/battery</property>
+                </condition>
+            </item>
+            <item>
+                <name>BUS TIE switches</name>
+                <value>AUTO</value>
+                <condition>
+                    <and>
+                        <property>/controls/electric/bus-tie[0]</property>
+                        <property>/controls/electric/bus-tie[1]</property>
+                        <property>/controls/electric/bus-tie[2]</property>
+                        <property>/controls/electric/bus-tie[3]</property>
+                    </and>
+                </condition>
+            </item>
+            <item>
+                <name>GENERATOR CONTROL switches</name>
+                <value>ON</value>
+                <condition>
+                    <and>
+                        <property>/controls/electric/generator-control[0]</property>
+                        <property>/controls/electric/generator-control[1]</property>
+                        <property>/controls/electric/generator-control[2]</property>
+                        <property>/controls/electric/generator-control[3]</property>
+                    </and>
+                </condition>
+            </item>
+            <item>
+                <name>APU selector (if needed)</name>
+                <value>START, then ON</value>
+                <condition>
+                    <equals>
+                        <property>/controls/electric/apu</property>
+                        <value>1</value>
+                    </equals>
+                </condition>
+            </item>
+            <item>
+                <name>APU GENERATOR 1 switch</name>
+                <value>Push (verify that the ON light is illuminated)</value>
+            </item>
+            <item>
+                <name>APU GENERATOR 2 switch</name>
+                <value>Push (verify that the ON light is illuminated)</value>
+            </item>
+            <item>
+                <name>DEMAND pump selectors</name>
+                <value>OFF</value>
+                <condition>
+                    <not>
+                        <or>
+                            <property>/controls/hydraulic/demand-pump</property>
+                            <property>/controls/hydraulic/demand-pump[1]</property>
+                            <property>/controls/hydraulic/demand-pump[2]</property>
+                            <property>/controls/hydraulic/demand-pump[3]</property>
+                        </or>
+                    </not>
+                </condition>
+            </item>
+            <item>
+                <name>ENGINE pump switches</name>
+                <value>ON</value>
+                <condition>
+                    <and>
+                        <property>/controls/hydraulic/engine-pump</property>
+                        <property>/controls/hydraulic/engine-pump[1]</property>
+                        <property>/controls/hydraulic/engine-pump[2]</property>
+                        <property>/controls/hydraulic/engine-pump[3]</property>
+                    </and>
+                </condition>
+            </item>
+            <!--
+            <item>
+                <name>FUEL TRANSFER MAIN 1 AND 4 switch</name>
+                <value>OFF</value>
+            </item>
+            <item>
+                <name>Engine fire switches</name>
+                <value>In</value>
+            </item>
+            -->
+            <item>
+                <name>START switches</name>
+                <value>In, extinguished</value>
+                <condition>
+                    <and>
+                        <not>
+                            <property>/controls/engines/engine[0]/starter</property>
+                            <property>/controls/engines/engine[1]/starter</property>
+                            <property>/controls/engines/engine[2]/starter</property>
+                            <property>/controls/engines/engine[3]/starter</property>
+                        </not>
+                    </and>
+                </condition>
+            </item>
+            <item>
+                <name>CONTINOUS IGNITION switch</name>
+                <value>Off</value>
+            </item>
+            <item>
+                <name>Fuel jettison NOZZLE valve switches</name>
+                <value>Off</value>
+                <condition>
+                    <not>
+                        <property>/controls/fuel/dump-valve</property>
+                    </not>
+                </condition>
+            </item>
+            <item>
+                <name>All X FEED valve switches</name>
+                <value>On</value>
+                <condition>
+                    <and>
+                        <property>/controls/fuel/tank[1]/x-feed</property>
+                        <property>/controls/fuel/tank[2]/x-feed</property>
+                        <property>/controls/fuel/tank[3]/x-feed</property>
+                        <property>/controls/fuel/tank[4]/x-feed</property>
+                    </and>
+                </condition>
+            </item>
+            <item>
+                <name>All fuel pump switches</name>
+                <value>Off</value>
+                <condition>
+                    <and>
+                        <not>
+                            <property>/controls/fuel/tank[1]/pump-aft</property>
+                            <property>/controls/fuel/tank[1]/pump-fwd</property>
+                            <property>/controls/fuel/tank[2]/pump-aft</property>
+                            <property>/controls/fuel/tank[2]/pump-fwd</property>
+                            <property>/controls/fuel/tank[3]/pump-aft</property>
+                            <property>/controls/fuel/tank[3]/pump-fwd</property>
+                            <property>/controls/fuel/tank[4]/pump-aft</property>
+                            <property>/controls/fuel/tank[4]/pump-fwd</property>
+                            <property>/controls/fuel/tank[7]/pump</property>
+                        </not>
+                    </and>
+                </condition>
+            </item>
+            <item>
+                <name>Windshield WIPER selectors</name>
+                <value>OFF</value>
+                <condition>
+                    <and>
+                        <not>
+                            <property>/controls/electric/wiperl/switch</property>
+                            <property>/controls/electric/wiperr/switch</property>
+                        </not>
+                    </and>
+                </condition>
+            </item>
+            <item>
+                <name>LANDING light switches</name>
+                <value>OFF</value>
+                <condition>
+                    <and>
+                        <not>
+                            <property>/controls/lighting/landing-light-inbdl</property>
+                            <property>/controls/lighting/landing-light-inbdr</property>
+                            <property>/controls/lighting/landing-light-outbdl</property>
+                            <property>/controls/lighting/landing-light-outbdr</property>
+                        </not>
+                    </and>
+                </condition>
+            </item>
+            <!--
+            <item>
+                <name>Cabin Altitude AUTO SELECTOR</name>
+                <value>NORM</value>
+            </item>
+            <item>
+                <name>PASSENGER TEMPERATURE selector</name>
+                <value>AUTO</value>
+            </item>
+            <item>
+                <name>FLIGHT DECK TEMPERATURE selector</name>
+                <value>AUTO</value>
+            </item>
+            -->
+        </page>
+        <page>
+            <!--
+            <item>
+                <name>COMBI TEMPERATURE selector</name>
+                <value>AUTO</value>
+            </item>
+            -->
+            <item>
+                <name>EUQIPMENT COOLING selector</name>
+                <value>NORM</value>
+                <condition>
+                    <property>/controls/pneumatic/equip-cooling</property>
+                </condition>
+            </item>
+            <item>
+                <name>Pack control selectors</name>
+                <value>NORM</value>
+                <condition>
+                    <and>
+                        <property>/controls/pneumatic/pack-control[0]</property>
+                        <property>/controls/pneumatic/pack-control[1]</property>
+                        <property>/controls/pneumatic/pack-control[2]</property>
+                    </and>
+                </condition>
+            </item>
+            <item>
+                <name>LEFT and RIGHT ISOLATION valve switches</name>
+                <value>ON</value>
+                <condition>
+                    <and>
+                        <property>/controls/pneumatic/isolation-valve[0]</property>
+                        <property>/controls/pneumatic/isolation-valve[1]</property>
+                    </and>
+                </condition>
+            </item>
+            <item>
+                <name>APU bleed air switch</name>
+                <value>ON</value>
+                <condition>
+                    <property>/controls/pneumatic/APU-bleed</property>
+                </condition>
+            </item>
+            <item>
+                <name>ENGINE bleed air switches</name>
+                <value>ON</value>
+                <condition>
+                    <and>
+                        <property>/controls/pneumatic/engine-bleed[0]</property>
+                        <property>/controls/pneumatic/engine-bleed[1]</property>
+                        <property>/controls/pneumatic/engine-bleed[2]</property>
+                        <property>/controls/pneumatic/engine-bleed[3]</property>
+                    </and>
+                </condition>
+            </item>
+            <!--
+            <item>
+                <name>NAVIGATION light switch</name>
+                <value>As needed</value>
+            </item>
+            -->
+            <item>
+                <name>FLIGHT DIRECTOR switch</name>
+                <value>ON</value>
+            </item>
+            <item>
+                <name>Clock</name>
+                <value>Set</value>
+            </item>
+            <item>
+                <name>Flight instruments</name>
+                <value>Check</value>
+            </item>
+            <item>
+                <name>Landing gear lever</name>
+                <value>Down</value>
+                <condition>
+                    <property>/controls/gear/gear-down</property>
+                </condition>
+            </item>
+            <item>
+                <name>EICAS displays</name>
+                <value>Check</value>
+            </item>
+            <item>
+                <name>NO SMOKING selector</name>
+                <value>AUTO or ON</value>
+                <condition>
+                    <property>/controls/switches/smoking-sign</property>
+                </condition>
+            </item>
+            <item>
+                <name>SEATBELTS selector</name>
+                <value>OFF</value>
+                <condition>
+                    <not><property>/controls/switches/seatbelt-sign</property></not>
+                </condition>
+            </item>
+            <item>
+                <name>AUTOBRAKES Selector</name>
+                <value>RTO</value>
+                <condition>
+                    <equals>
+                        <property>/autopilot/autobrake/step</property>
+                        <value>-2</value>
+                    </equals>
+                </condition>
+            </item>
+            <item>
+                <name>Seat</name>
+                <value>Adjust</value>
+            </item>
+            <item>
+                <name>Rudder pedals</name>
+                <value>Adjust</value>
+            </item>
+        </page>
+    </checklist>
+    <checklist>
+        <title>Preflight Procedure - Captain</title>
+        <page>
+            <item>
+                <name>FLIGHT DIRECTOR switch</name>
+                <value>ON</value>
+            </item>
+            <item>
+                <name>BANK LIMIT selector</name>
+                <value>AUTO</value>
+            </item>
+            <item>
+                <name>Autopilot DISENGAGE bar</name>
+                <value>Up</value>
+            </item>
+            <item>
+                <name>Clock</name>
+                <value>Set</value>
+            </item>
+            <item>
+                <name>Flight instruments</name>
+                <value>Check</value>
+            </item>
+            <item>
+                <name>Standby instruments</name>
+                <value>Check</value>
+            </item>
+            <item>
+                <name>SPEEDBRAKE lever</name>
+                <value>DN</value>
+                <condition>
+                    <equals>
+                        <property>/autopilot/autospoilers/step</property>
+                        <value>0</value>
+                    </equals>
+                </condition>
+            </item>
+            <item>
+                <name>Reverse thrust levers</name>
+                <value>Down</value>
+                <condition>
+                    <and>
+                        <not>
+                            <property>/controls/engines/engine[0]/reverser</property>
+                            <property>/controls/engines/engine[1]/reverser</property>
+                            <property>/controls/engines/engine[2]/reverser</property>
+                            <property>/controls/engines/engine[3]/reverser</property>
+                        </not>
+                    </and>
+                </condition>
+            </item>
+            <item>
+                <name>Forward thrust levers</name>
+                <value>Closed</value>
+                <condition>
+                    <and>
+                        <equals>
+                            <property>/controls/engines/engine[0]/throttle</property>
+                            <value>0</value>
+                        </equals>
+                        <equals>
+                            <property>/controls/engines/engine[1]/throttle</property>
+                            <value>0</value>
+                        </equals>
+                        <equals>
+                            <property>/controls/engines/engine[2]/throttle</property>
+                            <value>0</value>
+                        </equals>
+                        <equals>
+                            <property>/controls/engines/engine[3]/throttle</property>
+                            <value>0</value>
+                        </equals>
+                    </and>
+                </condition>
+            </item>
+            <item>
+                <name>Flap lever</name>
+                <value>Set</value>
+            </item>
+            <item>
+                <name>PARKING BRAKE</name>
+                <value>Set</value>
+                <condition>
+                    <property>/controls/gear/brake-parking</property>
+                </condition>
+            </item>
+            <item>
+                <name>FUEL CONTROL switches</name>
+                <value>CUTOFF</value>
+                <condition>
+                    <and>
+                        <property>/controls/engines/engine[0]/cutoff</property>
+                        <property>/controls/engines/engine[1]/cutoff</property>
+                        <property>/controls/engines/engine[2]/cutoff</property>
+                        <property>/controls/engines/engine[3]/cutoff</property>
+                    </and>
+                </condition>
+            </item>
+            <item>
+                <name>FUEL CONTROL switch fire warning lights</name>
+                <value>Extinguished</value>
+            </item>
+            <item>
+                <name>Seat</name>
+                <value>Adjust</value>
+            </item>
+            <item>
+                <name>Rudder pedals</name>
+                <value>Adjust</value>
+            </item>
+        </page>
+    </checklist>
+    
+    <checklist>
+        <title>Before Start Procedure</title>
+        <item>
+            <name>Flight deck door</name>
+            <value>Closed and locked</value>
+        </item>
+        <item>
+            <name>Taxi and Takeoff briefings</name>
+            <value>Complete</value>
+        </item>
+        <item>
+            <name>Exterior doors</name>
+            <value>Verify closed</value>
+        </item>
+        <item>
+            <name>SEATBELTS selector</name>
+            <value>AUTO or ON</value>
+            <condition>
+                <property>/controls/switches/seatbelt-sign</property>
+            </condition>
+        </item>
+        <item>
+            <name>Start clearence</name>
+            <value>Obtain</value>
+        </item>
+        <item>
+            <name>All MAIN FUEL PUMP switches</name>
+            <value>On</value>
+            <condition>
+                <and>
+                    <property>/controls/fuel/tank[1]/pump-aft</property>
+                    <property>/controls/fuel/tank[1]/pump-fwd</property>
+                    <property>/controls/fuel/tank[2]/pump-aft</property>
+                    <property>/controls/fuel/tank[2]/pump-fwd</property>
+                    <property>/controls/fuel/tank[3]/pump-aft</property>
+                    <property>/controls/fuel/tank[3]/pump-fwd</property>
+                    <property>/controls/fuel/tank[4]/pump-aft</property>
+                    <property>/controls/fuel/tank[4]/pump-fwd</property>
+                </and>
+            </condition>
+        </item>
+        <item>
+            <name>CENTER FUEL PUMP switches (if not empty)</name>
+            <value>On</value>
+        </item>
+        <item>
+            <name>STAB FUEL PUMP switches (if not empty)</name>
+            <value>On</value>
+            <condition>
+                <property>/controls/fuel/tank[7]/pump</property>
+            </condition>
+        </item>
+        <item>
+            <name>Rudder trim</name>
+            <value>0 units</value>
+            <condition>
+                <equals>
+                    <property>/controls/flight/rudder-trim</property>
+                    <value>0</value>
+                </equals>
+            </condition>
+        </item>
+    </checklist>
+    
+    <checklist>    
+        <title>Engine Start Procedure</title>
+        <item>
+            <name>Engine START switch</name>
+            <value>Pull</value>
+        </item>
+        <item>
+            <name>FUEL CONTROL switch</name>
+            <value>RUN</value>
+        </item>
+    </checklist>
+    
+    <checklist>    
+        <title>Before Taxi Procedure</title>
+        <item>
+            <name>APU selector</name>
+            <value>OFF</value>
+            <condition>
+                <equals>
+                    <property>/controls/electric/apu</property>
+                    <value>0</value>
+                </equals>
+            </condition>
+        </item>
+        <item>
+            <name>Hydraulic demand pump selectors</name>
+            <value>AUTO</value>
+            <condition>
+                <and>
+                    <property>/controls/hydraulic/demand-pump[0]</property>
+                    <property>/controls/hydraulic/demand-pump[1]</property>
+                    <property>/controls/hydraulic/demand-pump[2]</property>
+                    <property>/controls/hydraulic/demand-pump[3]</property>
+                </and>
+            </condition>
+        </item>
+        <item>
+            <name>NACELLE ANTI-ICE switches</name>
+            <value>As needed</value>
+        </item>
+        <item>
+            <name>PACK selectors</name>
+            <value>NORM</value>
+            <condition>
+                <and>
+                    <property>/controls/hydraulic/demand-pump[0]</property>
+                    <property>/controls/hydraulic/demand-pump[1]</property>
+                    <property>/controls/hydraulic/demand-pump[2]</property>
+                    <property>/controls/hydraulic/demand-pump[3]</property>
+                </and>
+            </condition>
+        </item>
+        <item>
+            <name>Ground equipment</name>
+            <value>Clear</value>
+        </item>
+        <item>
+            <name>Flap lever</name>
+            <value>Set takeoff flaps</value>
+        </item>
+        <item>
+            <name>Flight controls</name>
+            <value>Check</value>
+        </item>
+    </checklist>
+    
+    <checklist>    
+        <title>Before Takeoff Procedure</title>
+        <item>
+            <name>Notify cabin crew</name>
+            <value></value>
+        </item>
+    </checklist>
+    
+    <checklist>    
+        <title>Takeoff Procedure</title>
+        <item>
+            <name>STROBE lights switch</name>
+            <value>ON</value>
+            <condition>
+                <property>/controls/lighting/strobe</property>
+            </condition>
+        </item>
+        <item>
+            <name>Brakes</name>
+            <value>Released</value>
+            <condition>
+                <not><property>/controls/gear/brake-parking</property></not>
+            </condition>
+        </item>
+        <item>
+            <name>INBOARD landing lights switches</name>
+            <value>ON</value>
+            <condition>
+                <and>
+                    <property>/controls/lighting/landing-light-inbdl</property>
+                    <property>/controls/lighting/landing-light-inbdr</property>
+                </and>
+            </condition>
+        </item>
+        <item>
+            <name>Thrust levers</name>
+            <value>70% N1</value>
+            <condition>
+                <greater-than>
+                    <property>/controls/engines/engine/throttle</property>
+                    <value>0.5</value>
+                </greater-than>
+            </condition>
+        </item>
+        <item>
+            <name>Rotate at VR</name>
+            <value></value>
+        </item>
+        <item>
+            <name>Landing gear lever</name>
+            <value>UP</value>
+            <condition>
+                <not><property>/controls/gear/gear-down</property></not>
+            </condition>
+        </item>
+    </checklist>
+    
+    <checklist>    
+        <title>Climb and Cruise Procedure</title>
+        <item>
+            <name>Above 10,000ft INBOARD landing lights switches</name>
+            <value>OFF</value>
+            <condition>
+                <and>
+                    <not>
+                        <property>/controls/lighting/landing-light-inbdl</property>
+                        <property>/controls/lighting/landing-light-inbdr</property>
+                    </not>
+                </and>
+            </condition>
+        </item>
+    </checklist>
+    
+    <checklist>    
+        <title>After Landing Procedure</title>
+        <item>
+            <name>Speedbrake lever</name>
+            <value>DN</value>
+            <condition>
+                <equals>
+                    <property>/autopilot/autospoilers/step</property>
+                    <value>0</value>
+                </equals>
+            </condition>
+        </item>
+        <item>
+            <name>APU selector</name>
+            <value>START, then ON</value>
+            <condition>
+                <equals>
+                    <property>/controls/electric/apu</property>
+                    <value>1</value>
+                </equals>
+            </condition>
+        </item>
+        <item>
+            <name>STROBE lights switch</name>
+            <value>OFF</value>
+            <condition>
+                <not>
+                    <property>/controls/lighting/strobe</property>
+                </not>
+            </condition>
+        </item>
+        <item>
+            <name>INBOARD landing lights switches</name>
+            <value>OFF</value>
+            <condition>
+                <and>
+                    <not>
+                        <property>/controls/lighting/landing-light-inbdl</property>
+                        <property>/controls/lighting/landing-light-inbdr</property>
+                    </not>
+                </and>
+            </condition>
+        </item>
+        <item>
+            <name>AUTOBRAKES selector</name>
+            <value>OFF</value>
+            <condition>
+                <equals>
+                    <property>/autopilot/autobrake/step</property>
+                    <value>-1</value>
+                </equals>
+            </condition>
+        </item>
+        <item>
+            <name>Flap lever</name>
+            <value>UP</value>
+            <condition>
+                <equals>
+                    <property>/controls/flight/flaps</property>
+                    <value>0</value>
+                </equals>
+            </condition>
+        </item>
+    </checklist>
+    
+    <checklist>    
+        <title>Shutdown Procedure</title>
+        <item>
+            <name>Parking brake</name>
+            <value>Set</value>
+            <condition>
+                <property>/controls/gear/brake-parking</property>
+            </condition>
+        </item>
+        <item>
+            <name>SEATBELTS selector</name>
+            <value>OFF</value>
+            <condition>
+                <not>
+                    <property>/controls/switches/seatbelt-sign</property>
+                </not>
+            </condition>
+        </item>
+        <item>
+            <name>Hydraulic demand pump 1, 2, and 3 selectors</name>
+            <value>OFF</value>
+            <condition>
+                <and>
+                    <not>
+                        <property>/controls/hydraulic/demand-pump[0]</property>
+                        <property>/controls/hydraulic/demand-pump[1]</property>
+                        <property>/controls/hydraulic/demand-pump[2]</property>
+                    </not>
+                </and>
+            </condition>
+        </item>
+        <item>
+            <name>Hydraulic demand pump 4 selector</name>
+            <value>AUX</value>
+            <condition>
+                <equals>
+                    <property>/controls/hydraulic/demand-pump[3]</property>
+                    <value>2</value>
+                </equals>
+            </condition>
+        </item>
+        <item>
+            <name>FUEL CONTROL switches</name>
+            <value>CUTOFF</value>
+            <condition>
+                <and>
+                    <property>/controls/engines/engine[0]/cutoff</property>
+                    <property>/controls/engines/engine[1]/cutoff</property>
+                    <property>/controls/engines/engine[2]/cutoff</property>
+                    <property>/controls/engines/engine[3]/cutoff</property>
+                </and>
+            </condition>
+        </item>
+        <item>
+            <name>FUEL PUMP switches</name>
+            <value>OFF</value>
+            <condition>
+                <and>
+                    <not>
+                        <property>/controls/fuel/tank[1]/pump-aft</property>
+                        <property>/controls/fuel/tank[1]/pump-fwd</property>
+                        <property>/controls/fuel/tank[2]/pump-aft</property>
+                        <property>/controls/fuel/tank[2]/pump-fwd</property>
+                        <property>/controls/fuel/tank[3]/pump-aft</property>
+                        <property>/controls/fuel/tank[3]/pump-fwd</property>
+                        <property>/controls/fuel/tank[4]/pump-aft</property>
+                        <property>/controls/fuel/tank[4]/pump-fwd</property>
+                        <property>/controls/fuel/tank[7]/pump</property>
+                    </not>
+                </and>
+            </condition>
+        </item>
+        <item>
+            <name>NACELLE and WING ANTI-ICE switches</name>
+            <value>OFF</value>
+        </item>
+        <item>
+            <name>BEACON light switch</name>
+            <value>OFF</value>
+            <condition>
+                <not>
+                    <property>/controls/lighting/beacon</property>
+                </not>
+            </condition>
+        </item>
+        <item>
+            <name>FLIGHT DIRECTOR switches</name>
+            <value>OFF</value>
+        </item>
+        <item>
+            <name>After wheel chocks are in place</name>
+        </item>
+        <item>
+            <name>Parking brake</name>
+            <value>Release</value>
+        </item>
+        <item>
+            <name>Hydraulic demand pump 4 selector</name>
+            <value>OFF</value>
+            <condition>
+                <not>
+                    <property>/controls/hydraulic/demand-pump[3]</property>
+                </not>
+            </condition>
+        </item>
+    </checklist>
+    
+    <checklist>    
+        <title>Secure Procedure</title>
+        <item>
+            <name>Pack control selectors</name>
+            <value>OFF</value>
+            <condition>
+                <and>
+                    <not>
+                        <property>/controls/pneumatic/pack-control[0]</property>
+                        <property>/controls/pneumatic/pack-control[1]</property>
+                        <property>/controls/pneumatic/pack-control[2]</property>
+                    </not>
+                </and>
+            </condition>
+        </item>
+    </checklist>
+</PropertyList>

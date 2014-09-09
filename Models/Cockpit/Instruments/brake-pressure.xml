@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<PropertyList>
+
+	<path>brake-pressure.ac</path>
+
+	<animation>
+		<type>rotate</type>
+		<object-name>needle</object-name>
+		<property>/systems/hydraulic/pressure[3]</property>
+		<factor>0.06</factor>
+		<axis>
+			<x>-1</x>
+		</axis>
+	</animation>
+
+</PropertyList>

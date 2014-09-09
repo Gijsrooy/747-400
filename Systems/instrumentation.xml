@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+
+<!--
+**********************************************************************
+This file selects the instrumentation modules that should be available.
+**********************************************************************
+-->
+
+<PropertyList>
+
+    <adf>
+        <name>adf</name>
+        <number>0</number>
+    </adf>
+
+    <adf>
+        <name>adf</name>
+        <number>1</number>
+    </adf>
+
+    <airspeed-indicator>
+        <name>airspeed-indicator</name>
+        <number>0</number>
+        <total-pressure>/systems/pitot/total-pressure-inhg</total-pressure>
+        <static-pressure>/systems/static/pressure-inhg</static-pressure>
+    </airspeed-indicator>
+
+    <altimeter>
+        <name>altimeter</name>
+        <number>0</number>
+        <static-pressure>/systems/static/pressure-inhg</static-pressure>
+    </altimeter>
+
+    <attitude-indicator>
+        <name>attitude-indicator</name>
+        <number>0</number>
+        <suction>/systems/vacuum/suction-inhg</suction>
+    </attitude-indicator>
+
+    <clock>
+        <name>clock</name>
+        <number>0</number>
+    </clock>
+	
+    <dme>
+        <name>dme</name>
+        <number>0</number>
+    </dme>
+
+    <dme>
+        <name>dme</name>
+        <number>1</number>
+    </dme>
+    
+    <groundradar>
+        <name>groundradar</name>
+        <airport-id-source>instrumentation/groundradar/id</airport-id-source>
+        <range-source>instrumentation/groundradar/range</range-source>
+    </groundradar>
+
+    <heading-indicator>
+        <name>heading-indicator</name>
+        <number>0</number>
+        <suction>/systems/vacuum/suction-inhg</suction>
+    </heading-indicator>
+
+    <heading-indicator-dg>
+        <name>heading-indicator-dg</name>
+        <number>0</number>
+    </heading-indicator-dg>
+
+    <magnetic-compass>
+        <name>magnetic-compass</name>
+        <number>0</number>
+    </magnetic-compass>
+	
+    <marker-beacon>
+        <name>marker-beacon</name>
+        <number>0</number>
+    </marker-beacon>
+    
+    <mk-viii>
+        <name>mk-viii</name>
+        <number>0</number>
+    </mk-viii>
+
+    <nav-radio>
+        <name>nav</name>
+        <number>0</number>
+    </nav-radio>
+
+    <nav-radio>
+        <name>nav</name>
+        <number>1</number>
+    </nav-radio>
+
+    <radar>
+        <name>radar</name>
+        <number>0</number>
+    </radar>
+    
+    <slip-skid-ball>
+        <name>slip-skid-ball</name>
+        <number>0</number>
+    </slip-skid-ball>
+    
+    <tcas>
+        <name>tcas</name>
+        <number>0</number>
+    </tcas>
+    
+    <transponder>
+        <name type="string">transponder</name>
+        <number type="int">0</number>
+        <mode type="int">2</mode>
+        <bus-volts type="double">8.0</bus-volts>
+        <encoder-path type="string">/instrumentation/altimeter</encoder-path>
+        <kt70-compatibility type="bool">0</kt70-compatibility>
+    </transponder>
+
+    <turn-indicator>
+        <name>turn-indicator</name>
+        <number>0</number>
+    </turn-indicator>
+
+</PropertyList>

@@ -1,0 +1,236 @@
+<?xml version="1.0"?>
+ 
+<PropertyList>
+
+<fx>
+
+	<!-- Avionics Hum -->
+	
+	<avhum>
+		<path>Aircraft/747-400/Sounds/FGOS_Avionics.wav</path>
+		<mode>looped</mode>
+		<type>avionics</type>
+	</avhum>
+
+	<!-- Engine #1	-->
+	
+	<engine>
+		<name>engine1</name>
+		<path>Aircraft/747-400/Sounds/FGOS_744Run.wav</path>
+		<mode>looped</mode>
+		<condition>
+			<property>engines/engine/running</property>
+		</condition>
+		<position>
+			<x>-30.0</x>
+			<y>0.0</y>
+			<z>0.0</z>
+		</position>
+		<volume>
+			<property>/engines/engine[1]/n1</property>
+			<factor type="double">0.005</factor>
+			<offset type="double">0.025</offset>
+		</volume>
+		<pitch>
+			<property>/engines/engine[1]/n1</property>
+			<type>log</type>
+			<factor>0.5</factor>
+			<offset>0.65</offset>
+		</pitch>
+	</engine>
+
+	<!-- Engine #2	-->
+	
+	<engine>
+		<name>engine2</name>
+		<path>Aircraft/747-400/Sounds/FGOS_744Run.wav</path>
+		<mode>looped</mode>
+		<condition>
+			<property>engines/engine/running</property>
+		</condition>
+		<position>
+			<x>-30.0</x>
+			<y>0.0</y>
+			<z>0.0</z>
+		</position>
+		<volume>
+			<property>/engines/engine[2]/n1</property>
+			<factor type="double">0.005</factor>
+			<offset type="double">0.025</offset>
+		</volume>
+		<pitch>
+			<property>/engines/engine[2]/n1</property>
+			<type>log</type>
+			<factor>0.5</factor>
+			<offset>0.65</offset>
+		</pitch>
+	</engine>
+
+	<!-- Engine #3	-->
+
+	<engine>
+		<name>engine3</name>
+		<path>Aircraft/747-400/Sounds/FGOS_744Run.wav</path>
+		<mode>looped</mode>
+		<condition>
+			<property>engines/engine/running</property>
+		</condition>
+		<position>
+			<x>-30.0</x>
+			<y>0.0</y>
+			<z>0.0</z>
+		</position>
+		<volume>
+			<property>/engines/engine[3]/n1</property>
+			<factor type="double">0.005</factor>
+			<offset type="double">0.025</offset>
+		</volume>
+		<pitch>
+			<property>/engines/engine[3]/n1</property>
+			<type>log</type>
+			<factor>0.5</factor>
+			<offset>0.65</offset>
+		</pitch>
+	</engine>
+
+	<!-- Engine #4	-->
+	
+	<engine>
+		<name>engine4</name>
+		<path>Aircraft/747-400/Sounds/FGOS_744Run.wav</path>
+		<mode>looped</mode>
+		<condition>
+			<property>engines/engine/running</property>
+		</condition>
+		<position>
+			<x>-30.0</x>
+			<y>0.0</y>
+			<z>0.0</z>
+		</position>
+		<volume>
+			<property>/engines/engine[4]/n1</property>
+			<factor type="double">0.005</factor>
+			<offset type="double">0.025</offset>
+		</volume>
+		<pitch>
+			<property>/engines/engine[4]/n1</property>
+			<type>log</type>
+			<factor>0.5</factor>
+			<offset>0.65</offset>
+		</pitch>
+	</engine>
+	
+	<!-- Flaps -->
+	
+	<flap>
+		<name>flaps</name>
+		<mode>in-transit</mode>
+		<path>Aircraft/747-400/Sounds/FGOS_FlapXtndWClick.wav</path>
+		<property>/surface-positions/flap-pos-norm</property>
+		<volume>
+			<factor>0.15</factor>
+		</volume>
+	</flap>
+
+	<stall>
+		<name>stall</name>
+		<path>Sounds/stall.wav</path>
+		<condition>
+			<property>/sim/alarms/stall-warning</property>
+		</condition>
+		<volume>
+			<property>/velocities/airspeed-kt</property>
+			<min>30.0</min>
+		</volume>
+	</stall>
+
+	<!-- Warnings -->
+	
+	<config-flaps>
+		<name>config-flaps</name>
+		<mode>looped</mode>
+		<path>Aircraft/747-400/Sounds/FGOS_Configuration_Warn.wav</path>
+		<condition>
+			<and>
+				<equals>
+					<property>/gear/gear[0]/wow</property>
+					<value>1</value>
+				</equals>
+				<less-than>
+					<property>/surface-positions/flap-pos-norm</property>
+					<value>0.33</value>
+				</less-than>
+				<greater-than>
+					<property>/controls/engines/engine[1]/throttle</property>
+					<value>0.5</value>
+				</greater-than>
+				<greater-than>
+					<property>/controls/engines/engine[2]/throttle</property>
+					<value>0.5</value>
+				</greater-than>
+			</and>
+		</condition>
+	</config-flaps>
+	
+	<config-park-brk>
+		<name>config-park-brk</name>
+		<mode>looped</mode>
+		<path>Aircraft/747-400/Sounds/FGOS_Configuration_Warn.wav</path>
+		<condition>
+			<and>
+				<equals>
+					<property>/controls/gear/brake-parking</property>
+					<value>1</value>
+				</equals>
+				<greater-than>
+					<property>/controls/engines/engine[1]/throttle</property>
+					<value>0.5</value>
+				</greater-than>
+				<greater-than>
+					<property>/controls/engines/engine[2]/throttle</property>
+					<value>0.5</value>
+				</greater-than>
+			</and>
+		</condition>
+	</config-park-brk>
+	
+	<overspeed>
+		<name>overspeed</name>
+		<mode>looped</mode>
+		<path>Sounds/gear-hrn.wav</path>
+		<condition>
+			<greater-than>
+				<property>/velocities/mach</property>
+				<value>0.9</value>
+			</greater-than>
+		</condition>
+	</overspeed>
+	
+	<!-- Additions -->
+	<switch>
+		<name>seatbelt-sign</name>
+		<mode>once</mode>
+		<path>Aircraft/747-400/Sounds/FastenSeatbelt.wav</path>
+		<condition>
+			<property>controls/switches/seatbelt-sign</property>
+		</condition>
+		<volume>
+			<factor>1</factor>
+		</volume>
+	</switch>
+	
+	<switch>
+		<name>switch</name>
+		<mode>once</mode>
+		<path>Sounds/click.wav</path>
+		<condition>
+			<property>sim/sound/click</property>
+		</condition>
+		<volume>
+			<factor>1</factor>
+		</volume>
+	</switch>
+
+</fx>
+ 
+</PropertyList>

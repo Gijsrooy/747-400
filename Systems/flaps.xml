@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+
+<!-- # FLAPS system for BOEING 747-400 #
+     # by Gijs de Rooy			   # -->
+
+<system name="flaps">
+    
+    <channel name="flaps">
+
+        <switch name="fcs/flap-auto-retract">
+          <default value="fcs/flap-cmd-norm"/>
+            <test  logic="AND" value="0.667">
+                velocities/vc-kts GT 205
+                fcs/flap-pos-norm GT 0.667
+                fcs/flap-pos-norm LT 0.833
+            </test>
+            <test  logic="AND" value="0.833">
+                velocities/vc-kts GT 180
+                fcs/flap-pos-norm GT 0.833
+            </test>
+		<output>fcs/flap-cmd-norm</output>
+       </switch>
+
+    </channel>
+
+</system>

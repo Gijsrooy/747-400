@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+
+<!-- # Various systems for BOEING 747-400 #
+     # by Gijs de Rooy                    # -->
+
+<system name="systems">
+    
+    <channel name="systems">
+
+        <fcs_function>
+            <function name="systems/stick-shaker-alpha-deg">
+                <table>
+                    <independentVar>fcs/flap-pos-deg</independentVar>
+					<tableData>
+                        0.0   12.1
+						1.0   12.4
+                        5.0   17.6
+                       10.0   16.5
+                       20.0   16.2
+                       30.0   16.2
+                    </tableData>
+                    <!-- Don't know where this is coming from, not the NASA docs
+					<tableData>
+                        0.0   11.4
+                        5.0   16.0
+                       10.0   15.5
+                       20.0   15.5
+                       25.0   14.6
+                       30.0   14.6
+                    </tableData>-->
+                </table>
+            </function>
+        </fcs_function>
+        
+        <switch name="systems/stick-shaker">
+            <default value="0"/>
+            <test  logic="AND" value="1">
+                aero/alpha-deg GT systems/stick-shaker-alpha-deg
+            </test>
+            <output>systems/stick-shaker</output>
+        </switch>
+        
+        <fcs_function name="systems/stick-shaker-norm">
+            <function>
+                <sin>
+                    <product>
+                        <sum>
+                            <property>sim-time-sec</property>
+                            <value>0.5</value>
+                        </sum>
+                        <value>60</value>
+                        <property>systems/stick-shaker</property>
+                    </product>
+                </sin>
+            </function>
+        </fcs_function>
+
+    </channel>
+
+</system>

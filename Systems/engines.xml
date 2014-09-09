@@ -1,0 +1,356 @@
+<?xml version="1.0"?>
+
+<!-- # ENGINES system for BOEING 747-400 #
+     # by Gijs de Rooy                   # -->
+
+<system name="propulsion-system">
+
+    <property value="1">ap/thrust-mode/toga</property>
+    <property value="0">ap/thrust-mode/crz</property>
+    
+    <channel name="propulsion">
+        
+        <switch name="Reversed Engine 1">
+            <default value="propulsion/engine[0]/reversed"/>
+            <test  logic="AND" value="1">
+                /controls/engines/engine[0]/reverser == 1
+                /gear/gear[1]/wow == 1
+                /controls/engines/engine[0]/throttle lt 0.1
+            </test>
+            <test  logic="AND" value="0">
+                /controls/engines/engine[0]/reverser == 0
+                /controls/engines/engine[0]/throttle lt 0.1
+            </test>
+            <output>propulsion/engine[0]/reversed</output>
+        </switch>
+        <switch name="Reversed Engine 2">
+            <default value="propulsion/engine[0]/reversed"/>
+            <test  logic="AND" value="1">
+                /controls/engines/engine[1]/reverser == 1
+                /gear/gear[1]/wow == 1
+                /controls/engines/engine[1]/throttle lt 0.1
+            </test>
+            <test  logic="AND" value="0">
+                /controls/engines/engine[1]/reverser == 0
+                /controls/engines/engine[1]/throttle lt 0.1
+            </test>
+            <output>propulsion/engine[1]/reversed</output>
+        </switch>
+        <switch name="Reversed Engine 3">
+            <default value="propulsion/engine[0]/reversed"/>
+            <test  logic="AND" value="1">
+                /controls/engines/engine[2]/reverser == 1
+                /gear/gear[1]/wow == 1
+                /controls/engines/engine[2]/throttle lt 0.1
+            </test>
+            <test  logic="AND" value="0">
+                /controls/engines/engine[2]/reverser == 0
+                /controls/engines/engine[2]/throttle lt 0.1
+            </test>
+            <output>propulsion/engine[2]/reversed</output>
+        </switch>
+        <switch name="Reversed Engine 4">
+            <default value="propulsion/engine[0]/reversed"/>
+            <test  logic="AND" value="1">
+                /controls/engines/engine[3]/reverser == 1
+                /gear/gear[1]/wow == 1
+                /controls/engines/engine[3]/throttle lt 0.1
+            </test>
+            <test  logic="AND" value="0">
+                /controls/engines/engine[3]/reverser == 0
+                /controls/engines/engine[3]/throttle lt 0.1
+            </test>
+            <output>propulsion/engine[3]/reversed</output>
+        </switch>
+        
+		<!--
+        <switch name="Engine 1 Throttle">
+            <default value="/controls/engines/engine[0]/throttle"/>
+            <test  logic="AND" value="0">
+                propulsion/engine[0]/reversed == 1
+            </test>
+            <output>/controls/engines/engine[0]/throttle</output>
+        </switch>
+        <switch name="Engine 2 Throttle">
+            <default value="/controls/engines/engine[1]/throttle"/>
+            <test  logic="AND" value="0">
+                propulsion/engine[1]/reversed == 1
+            </test>
+            <output>/controls/engines/engine[1]/throttle</output>
+        </switch>
+        <switch name="Engine 3 Throttle">
+            <default value="/controls/engines/engine[2]/throttle"/>
+            <test  logic="AND" value="0">
+                propulsion/engine[2]/reversed == 1
+            </test>
+            <output>/controls/engines/engine[2]/throttle</output>
+        </switch>
+        <switch name="Engine 4 Throttle">
+            <default value="/controls/engines/engine[3]/throttle"/>
+            <test  logic="AND" value="0">
+                propulsion/engine[3]/reversed == 1
+            </test>
+            <output>/controls/engines/engine[3]/throttle</output>
+        </switch>-->
+        
+        <!-- throttle controls reverse thrust when in reverse -->
+        <!--<switch name="Engine 1 Reverse Throttle">
+            <default value="fcs/throttle-cmd-norm[0]"/>
+            <test  logic="AND" value="1">
+                propulsion/engine[0]/reversed == 1
+            </test>
+            <output>fcs/throttle-cmd-norm[0]</output>
+            <output>fcs/throttle-pos-norm[0]</output>
+        </switch>
+        <switch name="Engine 2 Reverse Throttle">
+            <default value="fcs/throttle-cmd-norm[1]"/>
+            <test  logic="AND" value="1">
+                propulsion/engine[1]/reversed == 1
+            </test>
+            <output>fcs/throttle-cmd-norm[1]</output>
+            <output>fcs/throttle-pos-norm[1]</output>
+        </switch>
+        <switch name="Engine 3 Reverse Throttle">
+            <default value="fcs/throttle-cmd-norm[2]"/>
+            <test  logic="AND" value="1">
+                propulsion/engine[2]/reversed == 1
+            </test>
+            <output>fcs/throttle-cmd-norm[2]</output>
+            <output>fcs/throttle-pos-norm[2]</output>
+        </switch>
+        <switch name="Engine 4 Reverse Throttle">
+            <default value="fcs/throttle-cmd-norm[3]"/>
+            <test  logic="AND" value="1">
+                propulsion/engine[3]/reversed == 1
+            </test>
+            <output>fcs/throttle-cmd-norm[3]</output>
+            <output>fcs/throttle-pos-norm[3]</output>
+        </switch>-->
+        
+        <!-- reverse force -->
+        
+        <switch name="Engine 1 Reverse">
+            <default value="0"/>
+            <test  logic="AND" value="3.14159265">
+                propulsion/engine[0]/reversed == 1
+            </test>
+            <output>propulsion/engine[0]/reverser-angle-rad</output>
+        </switch>
+        <switch name="Engine 2 Reverse">
+            <default value="0"/>
+            <test  logic="AND" value="3.14159265">
+                propulsion/engine[1]/reversed == 1
+            </test>
+            <output>propulsion/engine[1]/reverser-angle-rad</output>
+        </switch>
+        <switch name="Engine 3 Reverse">
+            <default value="0"/>
+            <test  logic="AND" value="3.14159265">
+                propulsion/engine[2]/reversed == 1
+            </test>
+            <output>propulsion/engine[2]/reverser-angle-rad</output>
+        </switch>
+        <switch name="Engine 4 Reverse">
+            <default value="0"/>
+            <test  logic="AND" value="3.14159265">
+                propulsion/engine[3]/reversed == 1
+            </test>
+            <output>propulsion/engine[3]/reverser-angle-rad</output>
+        </switch>
+        
+        <!-- animations -->
+        
+        <kinematic name="Engine 1 Reverser Pos">
+            <input>propulsion/engine[0]/reversed</input>
+            <traverse>
+                <setting>
+                    <position>0.0</position>
+                    <time>0.0</time>
+                </setting>
+                <setting>
+                    <position>1.0</position>
+                    <time>1.4</time>
+                </setting>
+            </traverse>
+            <output>/engines/engine[0]/reverser-pos-norm</output>
+        </kinematic>
+        <kinematic name="Engine 2 Reverser Pos">
+            <input>propulsion/engine[1]/reversed</input>
+            <traverse>
+                <setting>
+                    <position>0.0</position>
+                    <time>0.0</time>
+                </setting>
+                <setting>
+                    <position>1.0</position>
+                    <time>1.4</time>
+                </setting>
+            </traverse>
+            <output>/engines/engine[1]/reverser-pos-norm</output>
+        </kinematic>
+        <kinematic name="Engine 3 Reverser Pos">
+            <input>propulsion/engine[2]/reversed</input>
+            <traverse>
+                <setting>
+                    <position>0.0</position>
+                    <time>0.0</time>
+                </setting>
+                <setting>
+                    <position>1.0</position>
+                    <time>1.4</time>
+                </setting>
+            </traverse>
+            <output>/engines/engine[2]/reverser-pos-norm</output>
+        </kinematic>
+        <kinematic name="Engine 4 Reverser Pos">
+            <input>propulsion/engine[3]/reversed</input>
+            <traverse>
+                <setting>
+                    <position>0.0</position>
+                    <time>0.0</time>
+                </setting>
+                <setting>
+                    <position>1.0</position>
+                    <time>1.4</time>
+                </setting>
+            </traverse>
+            <output>/engines/engine[3]/reverser-pos-norm</output>
+        </kinematic>
+
+    </channel>
+    
+    <channel name="EEC">
+        <fcs_function>
+            <function name="atmosphere/temperature-degc">
+                <sum>
+                    <product>
+                        <property>atmosphere/T-R</property>
+                        <value>0.55555555555</value>
+                    </product>
+                    <value>-273.15</value>
+                </sum>
+            </function>
+        </fcs_function>
+        
+        <fcs_function>
+            <function name="fmc/refence-thrust/to">
+                <product>
+                    <table>
+                        <independentVar lookup="row">atmosphere/temperature-degc</independentVar>
+                        <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                        <tableData>
+                                 -2000.0       0.0   10000.0
+                           -50      89.6      91.9      98.9
+                             0      99.0     101.6     109.0       
+                            25     103.4     106.0     108.2
+                            54     102.8     103.1     103.8
+                        </tableData>
+                    </table>
+                </product>
+            </function>
+        </fcs_function>
+        <fcs_function>
+            <function name="fmc/refence-thrust/cruise">
+                <product>
+                    <table>
+                        <independentVar lookup="row">atmosphere/temperature-degc</independentVar>
+                        <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                        <tableData>
+                                 22000.0    35000.0    40000.0    45000.0
+                           -60      93.1       94.4       93.7       93.1
+                           -50      93.1       95.5       94.7       95.3
+                           -40      93.1       97.6       98.0       97.4
+                           -30      95.0       99.7      100.0       99.5
+                           -15      97.9      102.7      103.1      102.5
+                             0     100.7      102.4      101.1      100.5
+                             5     101.6      101.4      100.2       99.5
+                            10     102.6      100.5       99.3       99.5
+                            25     101.1      100.5       99.3       99.5
+                        </tableData>
+                    </table>
+                </product>
+            </function>
+        </fcs_function>
+        
+        <switch>
+            <description>Flight idle</description>
+            <default value="25"/>
+            <test value="33">
+                gear/unit[1]/WOW != 0
+            </test>
+            <output>eec/throttle-min-cmd-norm</output>
+        </switch>
+        
+        <switch>
+            <default value="0"/>
+            <test value="fmc/refence-thrust/to">
+                ap/thrust-mode/toga == 1
+            </test>
+            <test value="fmc/refence-thrust/cruise">
+                ap/thrust-mode/crz == 1
+            </test>
+            <output>eec/refence-thrust</output>
+        </switch>
+        
+        <aerosurface_scale name="eec/throttle-max-cmd-norm">
+            <input>eec/refence-thrust</input>
+            <domain>
+                <min>25</min>
+                <max>117.5</max>
+            </domain>
+            <range>
+                <min>0</min>
+                <max>1</max>
+            </range>
+            <zero_centered>0</zero_centered>
+        </aerosurface_scale>
+        
+        <pure_gain>
+            <input> fcs/throttle-cmd-norm[0] </input>
+            <gain> eec/throttle-max-cmd-norm </gain>
+            <clipto>
+              <min> 0</min>
+              <max> 1</max>
+            </clipto>
+            <output>fcs/throttle-pos-norm[0]</output>
+        </pure_gain>
+        <pure_gain>
+            <input> fcs/throttle-cmd-norm[1] </input>
+            <gain> eec/throttle-max-cmd-norm </gain>
+            <clipto>
+              <min> 0</min>]]
+              <max> 1</max>
+            </clipto>
+            <output>fcs/throttle-pos-norm[1]</output>
+        </pure_gain>
+        <pure_gain>
+            <input> fcs/throttle-cmd-norm[2] </input>
+            <gain> eec/throttle-max-cmd-norm </gain>
+            <clipto>
+              <min> 0</min>
+              <max> 1</max>
+            </clipto>
+            <output>fcs/throttle-pos-norm[2]</output>
+        </pure_gain>
+        <pure_gain>
+            <input> fcs/throttle-cmd-norm[3] </input>
+            <gain> eec/throttle-max-cmd-norm </gain>
+            <clipto>
+              <min> 0</min>
+              <max> 1</max>
+            </clipto>
+            <output>fcs/throttle-pos-norm[3]</output>
+        </pure_gain>
+        
+        <switch>
+            <description>Engine trimming range</description>
+            <default value="1.5"/>
+            <test value="2.5">
+                atmosphere/density-altitude gt 19500
+            </test>
+            <output>eec/engine-trimming-range</output>
+        </switch>
+        
+    </channel>
+
+</system>
