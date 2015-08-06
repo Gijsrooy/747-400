@@ -61,8 +61,9 @@
    <cockpit type="int">3</cockpit>
    <model type="int">3</model>
   </rating>
+  <variant-of>747-400</variant-of>
   <version>20111002</version>
-  
+
   <flight-model>null</flight-model>
 
   <sound>
@@ -82,9 +83,9 @@
 
   <model>
    <path>Aircraft/747-400/Models/747-400-fo.xml</path>
-  </model>	
+  </model>
 
-  <hud>   
+  <hud>
    <enable3d n="1">false</enable3d>
   </hud>
 
@@ -144,7 +145,7 @@
 1. Press the continuous ignition switch on the overhead panel.
 2. Pull the start select switch for engine #4.
 3. Set the cutoff switch on the pedestal to RUN.
-4. Now repeat step 2 and 3 for engines #1, #2 and #3. 
+4. Now repeat step 2 and 3 for engines #1, #2 and #3.
 
 ===Takeoff======
 1.  Set flaps to 20, it will take a minute to extend, so you'd better do this during taxi.
@@ -152,11 +153,11 @@
 3. Push the stick slightly forward until atleast 80 kts.
 4. Around 160 kts, slowly pull the stick back.
 5. The plane should takeoff around 180 kts.
-6. Retract gear as soon as the aircraft is climbing with atleast 500 ft per minute. 
+6. Retract gear as soon as the aircraft is climbing with atleast 500 ft per minute.
 
 ===Shutdown=====
 1. Set all cutoff switches to OFF.
-2. Turn continuous ignition OFF. 
+2. Turn continuous ignition OFF.
    </text>
 
   </help>
@@ -177,7 +178,7 @@
 	 </script>
       </binding>
      </item>
-	
+
     </menu>
    </default>
   </menubar>
