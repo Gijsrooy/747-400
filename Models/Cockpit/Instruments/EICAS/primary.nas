@@ -241,7 +241,8 @@ var canvas_primary = {
 		
 		text5655.setText(sprintf("%+03.0f",getprop("environment/temperature-degc")));
 		fuelTotal.setText(sprintf("%03.01f",getprop("fdm/jsbsim/propulsion/total-fuel-lbs")*LB2KG/1000));
-		if (getprop("/fdm/jsbsim/propulsion/jettison-flow-rates") > 0) {
+		var flowRate = getprop("/fdm/jsbsim/propulsion/jettison-flow-rates") or 0;
+		if (flowRate > 0) {
 			fuelToRemain.setText(sprintf("%03.01f",getprop("controls/fuel/fuel-to-remain-lbs")*LB2KG/1000));
 			fuelToRemain.show();
 			fuelToRemainL.show();

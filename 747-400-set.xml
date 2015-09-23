@@ -11,7 +11,7 @@
 		<cockpit type="int">3</cockpit>
 		<model type="int">3</model>
 	</rating>
-	<version>20140716</version>
+	<version>20150923</version>
 	
 	<flight-model>jsb</flight-model>
 	<aero>747-400</aero>
