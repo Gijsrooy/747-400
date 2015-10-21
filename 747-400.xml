@@ -1421,7 +1421,7 @@
                 </setting>
                 <setting>
                     <position>1.0000</position>
-                    <time>25.0000</time>
+                    <time>10.0000</time>
                 </setting>
                 <setting>
                     <position>5.0000</position>
@@ -1429,11 +1429,11 @@
                 </setting>
                 <setting>
                     <position>10.0000</position>
-                    <time>12.0000</time>
+                    <time>4.0000</time>
                 </setting>
                 <setting>
                     <position>20.0000</position>
-                    <time>12.0000</time>
+                    <time>5.0000</time>
                 </setting>
                 <setting>
                     <position>25.0000</position>
