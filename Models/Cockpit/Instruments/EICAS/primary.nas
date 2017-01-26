@@ -90,7 +90,7 @@ var canvas_primary = {
 		} else
 			me["assTemp"].hide();
 		me["tat"].setText(sprintf("%+02.0fc",getprop("environment/temperature-degc")));
-		me["fuelTotal"].setText(sprintf("%03.01f",getprop("fdm/jsbsim/propulsion/total-fuel-lbs")*LB2KG/1000));
+		me["fuelTotal"].setText(sprintf("%03.01f",(getprop("fdm/jsbsim/propulsion/total-fuel-lbs") or 0)*LB2KG/1000));
 		if (getprop("/fdm/jsbsim/propulsion/fuel-dump-rate-pps") or 0 > 0) {
 			me["fuelToRemain"].setText(sprintf("%03.01f",getprop("controls/fuel/fuel-to-remain-lbs")*LB2KG/1000));
 			me["fuelToRemain"].show();
