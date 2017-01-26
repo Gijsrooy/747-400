@@ -198,7 +198,7 @@
           <property>instrumentation/pfd/flaps-0-kt</property>
       </input>
       <reference>
-          <property>velocities/airspeed-kt</property>
+          <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
       </reference>
       <output>instrumentation/pfd/flaps-0-diff</output>
       <min>-2</min>
@@ -213,7 +213,7 @@
           <property>/instrumentation/fmc/vspeeds/Vref1</property>
       </input>
       <reference>
-          <property>velocities/airspeed-kt</property>
+          <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
       </reference>
       <output>instrumentation/pfd/flaps-1-diff</output>
       <min>-2</min>
@@ -228,7 +228,7 @@
           <property>/instrumentation/fmc/vspeeds/Vref5</property>
       </input>
       <reference>
-          <property>velocities/airspeed-kt</property>
+          <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
       </reference>
       <output>instrumentation/pfd/flaps-5-diff</output>
       <min>-2</min>
@@ -243,7 +243,7 @@
           <property>/instrumentation/fmc/vspeeds/Vref10</property>
       </input>
       <reference>
-          <property>velocities/airspeed-kt</property>
+          <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
       </reference>
       <output>instrumentation/pfd/flaps-10-diff</output>
       <min>-2</min>
@@ -258,7 +258,7 @@
           <property>/instrumentation/fmc/vspeeds/Vref20</property>
       </input>
       <reference>
-          <property>velocities/airspeed-kt</property>
+          <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
       </reference>
       <output>instrumentation/pfd/flaps-20-diff</output>
       <min>-2</min>
@@ -273,7 +273,7 @@
           <property>instrumentation/pfd/flaps-25-kt</property>
       </input>
       <reference>
-          <property>velocities/airspeed-kt</property>
+          <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
       </reference>
       <output>instrumentation/pfd/flaps-25-diff</output>
       <min>-2</min>
@@ -288,7 +288,7 @@
           <property>instrumentation/weu/state/stall-speed</property>
       </input>
       <reference>
-          <property>velocities/airspeed-kt</property>
+          <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
       </reference>
       <output>instrumentation/pfd/stallspeed-diff</output>
       <min>-2</min>
@@ -304,7 +304,7 @@
           <property>instrumentation/fmc/vspeeds/Vmax</property>
       </input>
       <reference>
-          <property>velocities/airspeed-kt</property>
+          <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
       </reference>
       <output>instrumentation/pfd/overspeed-diff</output>
       <min>-2</min>
@@ -318,7 +318,7 @@
   <predict-simple>
     <name>speed predictor (smoothed)</name>
     <update-interval-secs type="double">0.1</update-interval-secs>
-    <input>velocities/airspeed-kt</input>
+    <input>instrumentation/airspeed-indicator/indicated-speed-kt</input>
     <output>instrumentation/pfd/speed-lookahead</output>
     <seconds>10.0</seconds>
     <filter-gain>0.05</filter-gain>
@@ -332,16 +332,16 @@
       <property>instrumentation/pfd/speed-lookahead</property>
     </input>
     <reference>
-      <property>velocities/airspeed-kt</property>
-      <offset>90</offset>
+      <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
+      <!--<offset>90</offset>-->
     </reference>
-    <gain>-0.002667</gain>
+    <gain>0.05</gain>
     <output>instrumentation/pfd/speed-trend-up</output>
-    <max>0.24</max>
-    <min>0</min>
+    <max>2</max>
+    <min>-2</min>
   </filter>
 
-  <filter>
+  <!--<filter>
     <name>PFD preprocessor (spd trend down)</name>
     <type>gain</type>
     <update-interval-secs type="double">0.1</update-interval-secs>
@@ -350,14 +350,14 @@
       <min>0</min>
     </input>
     <reference>
-      <property>velocities/airspeed-kt</property>
+      <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
       <offset>-90</offset>
     </reference>
     <gain>-0.002667</gain>
     <output>instrumentation/pfd/speed-trend-down</output>
     <min>-0.24</min>
     <max>0</max>
-  </filter>
+  </filter>-->
   
   <filter>
     <name>PFD preprocessor (spd command)</name>
@@ -368,7 +368,7 @@
       <property>autopilot/settings/target-speed-kt</property>
     </input>
     <reference>
-      <property>velocities/airspeed-kt</property>
+      <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
     </reference>
     <output>instrumentation/pfd/speed-command-diff</output>
     <min>-0.057375</min>
@@ -384,7 +384,7 @@
       <property>instrumentation/fmc/vspeeds/V1</property>
     </input>
     <reference>
-      <property>velocities/airspeed-kt</property>
+      <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
     </reference>
     <output>instrumentation/pfd/v1-diff</output>
     <min>-1</min>
@@ -400,7 +400,7 @@
       <property>instrumentation/fmc/vspeeds/V2</property>
     </input>
     <reference>
-      <property>velocities/airspeed-kt</property>
+      <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
     </reference>
     <output>instrumentation/pfd/v2-diff</output>
     <min>-0.057375</min>
@@ -416,7 +416,7 @@
       <property>instrumentation/fmc/vspeeds/VR</property>
     </input>
     <reference>
-      <property>velocities/airspeed-kt</property>
+      <property>instrumentation/airspeed-indicator/indicated-speed-kt</property>
     </reference>
     <output>instrumentation/pfd/vr-diff</output>
     <min>-1</min>

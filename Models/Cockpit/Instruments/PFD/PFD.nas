@@ -52,7 +52,7 @@ var canvas_PFD = {
 		m["vsiNeedle"].set("clip", "rect(287, 1024, 739, 930)");
 		m["compass"].set("clip", "rect(700, 1024, 990, 0)");
 		m["curAlt3"].set("clip", "rect(463, 1024, 531, 0)");
-		m["curSpdTen"].set("clip", "rect(464, 1024, 559, 0)");
+		m["curSpdTen"].set("clip", "rect(455, 1024, 541, 0)");
 		
 		setlistener("autopilot/locks/passive-mode",            func { m.update_ap_modes() } );
 		setlistener("autopilot/locks/altitude",                func { m.update_ap_modes() } );
@@ -67,9 +67,7 @@ var canvas_PFD = {
 		#var radioAlt = getprop("position/altitude-agl-ft")-27.4;
 		var radioAlt = getprop("instrumentation/radar-altimeter/radar-altitude-ft") or 0;
 		var alt = getprop("instrumentation/altimeter/indicated-altitude-ft");
-		if (alt < 0)
-			alt = 0;
-		var ias = getprop("velocities/airspeed-kt");
+		var ias = getprop("instrumentation/airspeed-indicator/indicated-speed-kt");
 		if (ias < 30)
 			ias = 30;
 		var pitch = getprop("orientation/pitch-deg");
@@ -98,14 +96,26 @@ var canvas_PFD = {
 				me["fdX"].setTranslation(-fdRoll,0);
 			}
 			me["fdX"].show();
-			#fdY.show();
+			#me["fdY"].show();
 		} else {
 			me["fdX"].hide();
 			me["fdY"].hide();
 		}
 		
-		me["cmdSpd"].setTranslation(0,-(apSpd-ias)*6);
-		me["machText"].setText(sprintf("%.3f",getprop("velocities/mach")));
+		# 121 kts = 675 px -> 5.584
+		# 806 ft = 675 px -> 0.837
+		var cmdSpd = apSpd-ias;
+		if (cmdSpd > 60)
+			cmdSpd = 60;
+		elsif(cmdSpd < -60)
+			cmdSpd = -60;
+		me["cmdSpd"].setTranslation(0,-cmdSpd*5.584);
+		var mach = getprop("velocities/mach");
+		if (mach >= 0.40) {
+			me["machText"].setText(sprintf("%.3f",mach));
+			me["machText"].show();
+		} else
+			me["machText"].hide();
 		me["altText1"].setText(sprintf("%2.0f",math.floor(apAlt/1000)));
 		me["altText2"].setText(sprintf("%03.0f",math.mod(apAlt,1000)));
 		me["mcpAltMtr"].setText(sprintf("%5.0f",apAlt*FT2M));
@@ -114,9 +124,10 @@ var canvas_PFD = {
 		#	gpwsAlert.setText(getprop("instrumentation/mk-viii/outputs/warning"));
 		#else
 		#	gpwsAlert.setText("");
-		me["curAlt1"].setText(sprintf("%2.0f",math.floor(alt/1000)));
-		me["curAlt2"].setText(sprintf("%1.0f",math.mod(math.floor(alt/100),10)));
-		me["curAlt3"].setTranslation(0,(math.mod(alt,100)/20)*35);
+		var altAbs = abs(alt);
+		me["curAlt1"].setText(sprintf("%2.0f",math.floor(altAbs/1000)));
+		me["curAlt2"].setText(sprintf("%1.0f",math.mod(math.floor(altAbs/100),10)));
+		me["curAlt3"].setTranslation(0,(math.mod(altAbs,100)/20)*35);
 		me["curAltMtrTxt"].setText(sprintf("%4.0f",alt*FT2M));
 		var curAltDiff = alt-apAlt;
 		if (abs(curAltDiff) > 300 and abs(curAltDiff) < 900) {
@@ -133,11 +144,11 @@ var canvas_PFD = {
 			me["curAltBox"].setColor(1,1,1);
 			me["selAltBox"].hide();
 		}
-		if (curAltDiff > 420)
-			curAltDiff = 420;
-		elsif (curAltDiff < -420)
-			curAltDiff = -420;
-		me["selAltPtr"].setTranslation(0,curAltDiff*0.9);
+		if (curAltDiff > 403)
+			curAltDiff = 403;
+		elsif (curAltDiff < -403)
+			curAltDiff = -403;
+		me["selAltPtr"].setTranslation(0,curAltDiff*0.837);
 
 		me["curSpd"].setText(sprintf("%2.0f",math.floor(ias/10)));
 		me["curSpdTen"].setTranslation(0,math.mod(ias,10)*45);
@@ -155,7 +166,8 @@ var canvas_PFD = {
 			me["markerBeacon"].hide();
 		}
 		
-		if(getprop("instrumentation/nav/signal-quality-norm") or 0 > 0.95) {
+		var sigQ = getprop("instrumentation/nav/signal-quality-norm") or 0;
+		if(sigQ > 0.95) {
 			var deflection = getprop("instrumentation/nav/heading-needle-deflection-norm"); # 1 dot = 1 degree, full needle deflection is 10 deg
 			if (deflection > 0.3)
 				deflection = 0.3;
@@ -214,9 +226,9 @@ var canvas_PFD = {
 			me["gsScale"].hide();
 		}
 		
-		if (alt < 10000)
+		if (alt < 10000 and alt > 0)
 			me["tenThousand"].show();
-		else 
+		else
 			me["tenThousand"].hide();
 		if (vSpd != nil) {
 			var vertSpd = vSpd*60;
@@ -226,8 +238,8 @@ var canvas_PFD = {
 			} else {
 				me["vertSpd"].hide();
 			}
-			if (getprop("instrumentation/pfd/target-vs") != nil)
-				me["vsPointer"].setTranslation(0,-getprop("instrumentation/pfd/target-vs"));
+			var targetVs = getprop("instrumentation/pfd/target-vs") or 0;
+			me["vsPointer"].setTranslation(0,-targetVs);
 		}
 		if (radioAlt < 2500) {
 			if (radioAlt > 500)
@@ -241,20 +253,24 @@ var canvas_PFD = {
 			me["radioAltInd"].hide();
 		}
 		#if (getprop("instrumentation/dme/in-range")) {
-		if(getprop("instrumentation/nav/nav-distance") != nil)
-			me["dmeDist"].setText(sprintf("DME %2.01f",getprop("instrumentation/nav/nav-distance")*0.000539));
-		#	dmeDist.show();
-		#} else {
-		#	dmeDist.hide();
-		#}
-		if (getprop("instrumentation/pfd/speed-trend-up") != nil)
-			me["spdTrend_scale"].setScale(1, (getprop("instrumentation/pfd/speed-lookahead")-ias)/20);
+		var navDist = getprop("instrumentation/nav/nav-distance") or 0;
+		if(navDist > 0) {
+			me["dmeDist"].setText(sprintf("DME %2.01f",navDist*0.000539));
+			me["dmeDist"].show();
+		} else {
+			me["dmeDist"].hide();
+		}
+		var spdTrend = getprop("instrumentation/pfd/speed-trend-up") or 0;
+		#if (abs(spdTrend > 0.2))
+			me["spdTrend_scale"].setScale(1, spdTrend);
+		#else
+		#	me["spdTrend_scale"].setScale(1, 0);
 		
-		me["spdTape"].setTranslation(0,ias*5.639);
-		me["altTape"].setTranslation(0,alt*0.9);
+		me["spdTape"].setTranslation(0,ias*5.584);
+		me["altTape"].setTranslation(0,alt*0.837);
 		
-		if(var vsiDeg = getprop("instrumentation/pfd/vsi-needle-deg") != nil)
-			me["vsiNeedle"].setRotation(vsiDeg*D2R);
+		var vsiDeg = getprop("instrumentation/pfd/vsi-needle-deg") or 0;
+		me["vsiNeedle"].setRotation(vsiDeg*D2R);
 		
 		settimer(func me.update(), 0.04);
 	},
@@ -313,7 +329,7 @@ var canvas_PFD = {
 		if (v1 > 0) {
 			if (wow) {
 				me["v1"].show();
-				me["v1"].setTranslation(0,-getprop("instrumentation/fmc/speeds/v1-kt")*5.63915);
+				me["v1"].setTranslation(0,-v1*5.63915);
 				me["vr"].show();
 				me["vr"].setTranslation(0,-getprop("instrumentation/fmc/speeds/vr-kt")*5.63915);
 			} else {
@@ -371,7 +387,7 @@ var canvas_PFD = {
 		} else
 			me["touchdown"].hide();
 		
-		if(wow) {
+		if(wow or (getprop("instrumentation/airspeed-indicator/indicated-speed-kt") <= 35)) {
 			me["minSpdInd"].hide();
 			me["maxSpdInd"].hide();
 		} else {
@@ -405,6 +421,6 @@ setlistener("sim/signals/fdm-initialized", func() {
 setlistener("sim/signals/reinit", func pfd_display.del());
 
 var showPfd = func() {
-	var dlg = canvas.Window.new([700, 700], "dialog").set("resize", 1);
+	var dlg = canvas.Window.new([600, 600], "dialog").set("resize", 1);
 	dlg.setCanvas(pfd_display);
 }
