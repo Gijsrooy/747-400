@@ -3,6 +3,20 @@
 
 <sim>
 	<description>Boeing 747-400</description>
+	<long-description>The Boeing 747-400 "Queen of the Skies" is a four-engine wide-body airliner. The -400 variant is the best-selling model of the 747 family.
+	</long-description>
+	<tags>
+		<tag>passenger</tag>
+		<tag>boeing</tag>
+		<tag>1980s</tag>
+		<tag>ifr</tag>
+		<tag>retractable-gear</tag>
+		<tag>glass-cockpit</tag>
+		<tag>pressurised</tag>
+		<tag>dual-controls</tag>
+		<tag>jet</tag>
+		<tag>4-engine</tag>
+	</tags>
 	<author>Gijs de Rooy, Ivan Ngeow, Markus Bulik and others</author>
 	<status>early production</status>
 	<rating>
@@ -11,7 +25,7 @@
 		<cockpit type="int">3</cockpit>
 		<model type="int">3</model>
 	</rating>
-	<version>20151110</version>
+	<version>20160128</version>
 	
 	<flight-model>jsb</flight-model>
 	<aero>747-400</aero>
