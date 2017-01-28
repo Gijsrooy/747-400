@@ -418,6 +418,12 @@
   <button>0</button>
   <repeatable>false</repeatable>
   <binding>
+   <condition>
+    <and>
+     <property>/gear/gear/wow</property>
+     <not><property>/sim/current-view/internal</property></not>
+	</and>
+   </condition>
    <command>nasal</command>
    <script>Boeing747.nosecone_door.toggle();</script>
   </binding>
@@ -467,6 +473,12 @@
   <button>0</button>
   <repeatable>false</repeatable>
   <binding>
+   <condition>
+    <and>
+     <property>/gear/gear/wow</property>
+     <not><property>/sim/current-view/internal</property></not>
+	</and>
+   </condition>
    <command>nasal</command>
    <script>Boeing747.cargo1_door.toggle();</script>
   </binding>
