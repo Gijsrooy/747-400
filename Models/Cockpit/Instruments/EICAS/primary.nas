@@ -52,7 +52,7 @@ var canvas_primary = {
 		});
 		timerFlaps.stop();
 		
-		var timerGear = maketimer(10.0, func { gear.hide();gearL.hide();gearBox.hide();gearBoxTrans.hide(); });
+		var timerGear = maketimer(10.0, func { m["gear"].hide();m["gearL"].hide();m["gearBox"].hide();m["gearBoxTrans"].hide(); });
 		setlistener("gear/gear/position-norm", func() {
 			if (getprop("gear/gear/position-norm") == 0) {
 				timerGear.singleShot = 1;
