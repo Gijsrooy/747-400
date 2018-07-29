@@ -334,6 +334,7 @@ left mouse button and counter clockwise using the middle mouse button.
 	</menubar>
 	
 	<multiplay>
+		<fallback-model-index type="int">352</fallback-model-index>
 		<generic>
 			<float n="0" alias="/controls/doors/cargo1/position-norm"/>
 			<float n="1" alias="/controls/flight/flaps"/>
