@@ -230,7 +230,7 @@ left mouse button and counter clockwise using the middle mouse button.
 	<menubar>
 		<default>
 			<menu n="5">
-				<item n="3">
+				<item n="4">
 					<name>fuel-and-payload</name>
 					<binding>
 						<command>nasal</command>
