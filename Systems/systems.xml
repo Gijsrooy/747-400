@@ -7,8 +7,8 @@
     
     <channel name="systems">
 
-        <fcs_function>
-            <function name="systems/stick-shaker-alpha-deg">
+        <fcs_function name="systems/stick-shaker-alpha-deg">
+            <function>
                 <table>
                     <independentVar>fcs/flap-pos-deg</independentVar>
 					<tableData>

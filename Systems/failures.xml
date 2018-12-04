@@ -4,7 +4,6 @@
 	 # by Gijs de Rooy				 # -->
 
 <system name="failures">
-	<property>/accelerations/pilot-gdamped</property>
 	
 	<channel name="gear">
 		
