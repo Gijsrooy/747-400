@@ -180,8 +180,8 @@
 		<title>Boeing 747-400</title>
 
 		<key>
-			<name>Ctrl-b</name>
-			<desc>Toggle speedbrakes</desc>
+			<name>Ctrl+b</name>
+			<desc>Cycle speedbrakes: off, armed, half deployed, fully deployed</desc>
 		</key>
 		<key>
 			<name>Delete</name>
@@ -496,6 +496,18 @@ left mouse button and counter clockwise using the middle mouse button.
 
 <input>
 	<keyboard>
+                <key n="2">
+                        <name>Ctrl+b</name>
+                        <desc>Cycle speedbrakes: off, armed, half deployed, fully deployed</desc>
+                        <binding>
+                               <command>property-cycle</command>
+                               <property>autopilot/autospoilers/step</property>
+                               <value type="int">0</value>
+                               <value type="int">1</value>
+                               <value type="int">2</value>
+                               <value type="int">3</value>
+                        </binding>
+                </key>
 		<key n="119">
 			<name>w</name>
 			<desc>Walk forward toward view</desc>
