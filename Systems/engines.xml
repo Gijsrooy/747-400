@@ -220,8 +220,8 @@
     </channel>
     
     <channel name="EEC">
-        <fcs_function name="Atmospheric Temperature Degrees Celcius">
-            <function name="atmosphere/temperature-degc">
+        <fcs_function name="atmosphere/temperature-degc">
+            <function>
                 <sum>
                     <product>
                         <property>atmosphere/T-R</property>
@@ -232,8 +232,8 @@
             </function>
         </fcs_function>
         
-        <fcs_function name="Reference Takeoff Thrust">
-            <function name="fmc/refence-thrust/to">
+        <fcs_function name="fmc/refence-thrust/to">
+            <function>
                 <table>
                     <independentVar lookup="row">atmosphere/temperature-degc</independentVar>
                     <independentVar lookup="column">atmosphere/density-altitude</independentVar>
@@ -247,8 +247,8 @@
                 </table>
             </function>
         </fcs_function>
-        <fcs_function name="Reference Cruise Thrust">
-            <function name="fmc/refence-thrust/cruise">
+        <fcs_function name="fmc/refence-thrust/cruise">
+            <function>
                 <table>
                     <independentVar lookup="row">atmosphere/temperature-degc</independentVar>
                     <independentVar lookup="column">atmosphere/density-altitude</independentVar>

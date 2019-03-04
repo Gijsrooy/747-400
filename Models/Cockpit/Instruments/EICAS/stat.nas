@@ -24,16 +24,16 @@ var canvas_stat = {
 	},
 	update: func()
 	{
-		me["aileronPosLeftOut"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/left-outboard-aileron-pos-norm"));
-		me["aileronPosLeftIn"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/left-inboard-aileron-pos-norm"));
-		me["aileronPosRightOut"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/right-outboard-aileron-pos-norm"));
-		me["aileronPosRightIn"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/right-inboard-aileron-pos-norm"));
+		me["aileronPosLeftOut"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/aileron[0]/pos-norm"));
+		me["aileronPosLeftIn"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/aileron[1]/pos-norm"));
+		me["aileronPosRightIn"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/aileron[2]/pos-norm"));
+		me["aileronPosRightOut"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/aileron[3]/pos-norm"));
 		me["rudPosLow"].setTranslation(-140*getprop("fdm/jsbsim/fcs/rudder-pos-norm"),0);
 		me["rudPosUpp"].setTranslation(-140*getprop("fdm/jsbsim/fcs/rudder-pos-norm"),0);
-		me["elevPosLeft"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/outboard-elevator-pos-norm"));
-		me["elevPosRight"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/outboard-elevator-pos-norm"));
-		me["splPosLeft"].setTranslation(0,-127*getprop("fdm/jsbsim/fcs/spoiler-pos-rad[0]"));
-		me["splPosRight"].setTranslation(0,-127*getprop("fdm/jsbsim/fcs/spoiler-pos-rad[11]"));
+		me["elevPosLeft"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/elevator[0]/pos-norm"));
+		me["elevPosRight"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/elevator[0]/pos-norm"));
+		me["splPosLeft"].setTranslation(0,-127*getprop("fdm/jsbsim/fcs/spoiler[0]/pos-rad"));
+		me["splPosRight"].setTranslation(0,-127*getprop("fdm/jsbsim/fcs/spoiler[11]/pos-rad"));
 		me["apun1"].setText(sprintf("%3.01f",getprop("engines/engine[4]/n1")));
 		me["apun2"].setText(sprintf("%2.01f",getprop("engines/engine[4]/n2")));
 		me["apuegt"].setText(sprintf("%3.0f",(getprop("engines/engine[4]/egt-degf")-32)/1.8));

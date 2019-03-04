@@ -25,30 +25,30 @@
 			<test  logic="AND" value="1">
 				/systems/hydraulic/pressure[1] LT 1000
 			</test>
-			<output>fcs/spoiler-2-actuator/malfunction/fail_stuck</output>
-			<output>fcs/spoiler-3-actuator/malfunction/fail_stuck</output>
-			<output>fcs/spoiler-10-actuator/malfunction/fail_stuck</output>
-			<output>fcs/spoiler-11-actuator/malfunction/fail_stuck</output>
+			<output>fcs/spoiler[1]/actuator/malfunction/fail_stuck</output>
+			<output>fcs/spoiler[2]/actuator/malfunction/fail_stuck</output>
+			<output>fcs/spoiler[9]/actuator/malfunction/fail_stuck</output>
+			<output>fcs/spoiler[10]/actuator/malfunction/fail_stuck</output>
 		</switch>
 		<switch name="failures/hydraulics[2]">
 			<default value="0"/>
 			<test  logic="AND" value="1">
 				/systems/hydraulic/pressure[2] LT 1000
 			</test>
-			<output>fcs/spoiler-1-actuator/malfunction/fail_stuck</output>
-			<output>fcs/spoiler-4-actuator/malfunction/fail_stuck</output>
-			<output>fcs/spoiler-9-actuator/malfunction/fail_stuck</output>
-			<output>fcs/spoiler-12-actuator/malfunction/fail_stuck</output>
+			<output>fcs/spoiler[0]/actuator/malfunction/fail_stuck</output>
+			<output>fcs/spoiler[3]/actuator/malfunction/fail_stuck</output>
+			<output>fcs/spoiler[8]/actuator/malfunction/fail_stuck</output>
+			<output>fcs/spoiler[11]/actuator/malfunction/fail_stuck</output>
 		</switch>
 		<switch name="failures/hydraulics[3]">
 			<default value="0"/>
 			<test  logic="AND" value="1">
 				/systems/hydraulic/pressure[3] LT 1000
 			</test>
-			<output>fcs/spoiler-5-actuator/malfunction/fail_stuck</output>
-			<output>fcs/spoiler-6-actuator/malfunction/fail_stuck</output>
-			<output>fcs/spoiler-7-actuator/malfunction/fail_stuck</output>
-			<output>fcs/spoiler-8-actuator/malfunction/fail_stuck</output>
+			<output>fcs/spoiler[4]/actuator/malfunction/fail_stuck</output>
+			<output>fcs/spoiler[5]/actuator/malfunction/fail_stuck</output>
+			<output>fcs/spoiler[6]/actuator/malfunction/fail_stuck</output>
+			<output>fcs/spoiler[7]/actuator/malfunction/fail_stuck</output>
 		</switch>
 		<switch name="failures/hydraulics[4]">
 			<default value="0"/>
@@ -56,7 +56,7 @@
 				/systems/hydraulic/pressure[0] LT 1000
 				/systems/hydraulic/pressure[1] LT 1000
 			</test>
-			<output>fcs/left-outboard-aileron-actuator/malfunction/fail_stuck</output>
+			<output>fcs/aileron[0]/actuator/malfunction/fail_stuck</output>
 		</switch>
 		<switch name="failures/hydraulics[5]">
 			<default value="0"/>
@@ -64,7 +64,7 @@
 				/systems/hydraulic/pressure[0] LT 1000
 				/systems/hydraulic/pressure[2] LT 1000
 			</test>
-			<output>fcs/left-inboard-aileron-actuator/malfunction/fail_stuck</output>
+			<output>fcs/aileron[1]/actuator/malfunction/fail_stuck</output>
 		</switch>
 		<switch name="failures/hydraulics[6]">
 			<default value="0"/>
@@ -72,7 +72,7 @@
 				/systems/hydraulic/pressure[1] LT 1000
 				/systems/hydraulic/pressure[3] LT 1000
 			</test>
-			<output>fcs/right-inboard-aileron-actuator/malfunction/fail_stuck</output>
+			<output>fcs/aileron[2]/actuator/malfunction/fail_stuck</output>
 		</switch>
 		<switch name="failures/hydraulics[7]">
 			<default value="0"/>
@@ -80,7 +80,7 @@
 				/systems/hydraulic/pressure[2] LT 1000
 				/systems/hydraulic/pressure[3] LT 1000
 			</test>
-			<output>fcs/right-outboard-aileron-actuator/malfunction/fail_stuck</output>
+			<output>fcs/aileron[3]/malfunction/fail_stuck</output>
 		</switch>
 		<switch name="failures/hydraulics[8]">
 			<default value="0"/>
@@ -98,7 +98,7 @@
 				/systems/hydraulic/pressure[1] LT 1000
 				/systems/hydraulic/pressure[2] LT 1000
 			</test>
-			<output>fcs/stabilizer-actuator/malfunction/fail_stuck</output>
+			<output>fcs/stabilizer/actuator/malfunction/fail_stuck</output>
 		</switch>
 		
 		<!-- Control surface deflection rates -->

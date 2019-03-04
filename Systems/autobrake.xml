@@ -245,17 +245,14 @@
                 </equals></not>
             </condition> 
             <expression>
-                <!-- values taken from http://static.pprune.org/archive/index.php/t-337486.html;
-                unverified, except that MAX is definitely 11FPS, and the intermediate values
-                looks plausible on that basis 
-                -->
+                <!-- values verified with AMM -->
                 <table>
                     <property>/autopilot/autobrake/step</property> 
                     <entry><ind>0</ind><dep>0</dep></entry>
                     <entry><ind>1</ind><dep>4</dep></entry>
                     <entry><ind>2</ind><dep>5</dep></entry>
                     <entry><ind>3</ind><dep>6</dep></entry>
-                    <entry><ind>4</ind><dep>7</dep></entry>
+                    <entry><ind>4</ind><dep>7.5</dep></entry>
                 </table>
             </expression>
         </input>

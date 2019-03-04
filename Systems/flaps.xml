@@ -9,7 +9,7 @@
 
         <!-- still slightly simplified, ignore (small) difference between inboard and outboard -->
         
-        <fcs_function name="fcs/flap-cmd-deg">
+        <fcs_function name="fcs/flaps/cmd-deg">
             <function>
                 <product>
                     <property>fcs/flap-cmd-norm</property>
@@ -18,54 +18,52 @@
             </function>
         </fcs_function>
         
-        <switch name="Flap Cmd  Norm to Degree">
-            <default value="fcs/flap-cmd-detent-deg"/>
+        <switch name="fcs/flaps/cmd-detent-deg">
+            <default value="fcs/flaps/cmd-detent-deg"/>
             <test logic="AND" value="0">
-                fcs/flap-cmd-deg GT -0.15
-                fcs/flap-cmd-deg LT  0.16
+                fcs/flaps/cmd-deg GT -0.15
+                fcs/flaps/cmd-deg LT  0.16
             </test>
             <test logic="AND" value="1">
-                fcs/flap-cmd-deg GT  0.60
-                fcs/flap-cmd-deg LT  1.40
+                fcs/flaps/cmd-deg GT  0.60
+                fcs/flaps/cmd-deg LT  1.40
             </test>
             <test logic="AND" value="5">
-                fcs/flap-cmd-deg GT  4.84
-                fcs/flap-cmd-deg LT  6.42
+                fcs/flaps/cmd-deg GT  4.84
+                fcs/flaps/cmd-deg LT  6.42
             </test>
             <test logic="AND" value="10">
-                fcs/flap-cmd-deg GT  8.76
-                fcs/flap-cmd-deg LT 11.69
+                fcs/flaps/cmd-deg GT  8.76
+                fcs/flaps/cmd-deg LT 11.69
             </test>
             <test logic="AND" value="20">
-                fcs/flap-cmd-deg GT 18.24
-                fcs/flap-cmd-deg LT 21.99
+                fcs/flaps/cmd-deg GT 18.24
+                fcs/flaps/cmd-deg LT 21.99
             </test>
             <test logic="AND" value="25">
-                fcs/flap-cmd-deg GT 22.98
-                fcs/flap-cmd-deg LT 26.31
+                fcs/flaps/cmd-deg GT 22.98
+                fcs/flaps/cmd-deg LT 26.31
             </test>
             <test logic="AND" value="30">
-                fcs/flap-cmd-deg GT 28.69
-                fcs/flap-cmd-deg LT 31.32
+                fcs/flaps/cmd-deg GT 28.69
+                fcs/flaps/cmd-deg LT 31.32
             </test>
-            <output>fcs/flap-cmd-detent-deg</output>
-       </switch>
+        </switch>
        
-        <switch name="fcs/flap-auto-retract">
-            <default value="fcs/flap-cmd-detent-deg"/>
+        <switch name="fcs/flaps/int-cmd-deg">
+            <default value="fcs/flaps/cmd-detent-deg"/>
             <test logic="AND" value="20">
                 velocities/vc-kts GT 203
                 <test logic="OR">
-                    fcs/flap-cmd-detent-deg == 25
-                    fcs/flap-cmd-detent-deg == 30
+                    fcs/flaps/cmd-detent-deg == 25
+                    fcs/flaps/cmd-detent-deg == 30
                 </test>
             </test>
             <test logic="AND" value="25">
                 velocities/vc-kts GT 170
                 velocities/vc-kts LT 203
-                fcs/flap-cmd-detent-deg == 30
+                fcs/flaps/cmd-detent-deg == 30
             </test>
-            <output>fcs/flap-int-cmd-deg</output>
         </switch>
 
     </channel>

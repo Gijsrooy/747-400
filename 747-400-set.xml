@@ -25,7 +25,7 @@
 		<cockpit type="int">3</cockpit>
 		<model type="int">3</model>
 	</rating>
-	<version>20181204</version>
+	<version>20190304</version>
 	
 	<flight-model>jsb</flight-model>
 	<aero>747-400</aero>
@@ -424,7 +424,7 @@ left mouse button and counter clockwise using the middle mouse button.
 
 	<flight>
 		<autospeedbrakes-armed type="string">true</autospeedbrakes-armed>
-		<elevator-trim>0.3</elevator-trim>
+		<elevator-trim>0.3</elevator-trim> <!-- 0.6 = neutral (0 deg) -->
 		<yaw-damper type="bool">1</yaw-damper>
 	</flight>
 
