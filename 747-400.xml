@@ -1757,7 +1757,7 @@
             </traverse>
         </kinematic>
         
-        <aerosurface_scale name="fcs/flap-pos-norm">
+        <aerosurface_scale name="Flap Control Normalizer">
             <input>fcs/flaps/pos-deg</input>
             <domain>
                 <min>0</min>
@@ -1767,6 +1767,7 @@
                 <min>0</min>
                 <max>1</max>
             </range>
+            <output>fcs/flap-pos-norm</output>
         </aerosurface_scale>
         
         <kinematic name="gear/unit[0]/pos">
