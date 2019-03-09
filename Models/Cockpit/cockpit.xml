@@ -352,9 +352,10 @@
 <animation>
 	<type>textranslate</type>
 	<object-name>stab.trim.ind</object-name>
-	<property>controls/flight/elevator-trim</property>
-	<factor>0.095</factor>
-	<step>0.01</step>
+	<property>/fdm/jsbsim/fcs/stabilizer/int-pos-deg</property>
+	<bias>5.0</bias> <!-- adjust offset -->
+	<factor>0.01074</factor>
+	<step>0.005</step>
 	<axis>
 		<y>-1</y>
 	</axis>
@@ -801,6 +802,7 @@
 	<type>knob</type>
 	<object-name>speedbrake</object-name>
 	<drag-direction>vertical</drag-direction>
+	<drag-scale-px>25</drag-scale-px>
 	<property>/autopilot/autospoilers/step</property>
 	<action>
 		<binding>

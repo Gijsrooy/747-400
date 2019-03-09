@@ -207,7 +207,7 @@ var canvas_primary = {
 			} else {
 				me["eng"~n~"n1cmdLine"].show();
 				me["eng"~n~"n1cmdLine"].setTranslation(0,-173.2*throttle[n]*engn1max[n]-46.8);
-				me["eng"~n~"n1ref"].setText(sprintf("%3.01f",92.5*throttle[n]*engn1max[n]+25));
+				me["eng"~n~"n1ref"].setText(sprintf("%3.01f",92.5*throttle[n]*engn1max[n]+25.0));
 				me["eng"~n~"n1ref"].setColor(0,1.0,0);
 			}
 			me["eng"~n~"n1"].setText(sprintf("%3.01f",n1[n]));

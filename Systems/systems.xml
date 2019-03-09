@@ -54,6 +54,19 @@
                 </sin>
             </function>
         </fcs_function>
+		
+		<!-- switch to disable beta effect on ground -->
+		<switch name="aero/beta-switch">
+            <description>Aircraft on ground</description>
+            <default value="1"/>
+            <test value="0" logic="OR">
+                gear/unit[0]/WOW ne 0
+                gear/unit[1]/WOW ne 0
+                gear/unit[2]/WOW ne 0
+                gear/unit[3]/WOW ne 0
+                gear/unit[4]/WOW ne 0
+            </test>
+        </switch>
 
     </channel>
 

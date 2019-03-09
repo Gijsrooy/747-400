@@ -363,7 +363,7 @@
 	<object-name>elevator_right</object-name>
 	<object-name>elevator_left</object-name>
 	<object-name>hstab</object-name>
-	<property>fdm/jsbsim/fcs/stabilizer-pos-rad</property>
+	<property>fdm/jsbsim/fcs/stabilizer/pos-rad</property>
 	<factor>57.3</factor>
 	<axis>
 		<x1-m>32.926</x1-m>
@@ -379,7 +379,7 @@
 <animation>
 	<type>rotate</type>
 	<object-name>elevator_right</object-name>
-	<property>fdm/jsbsim/fcs/outboard-elevator-pos-rad</property>
+	<property>fdm/jsbsim/fcs/elevator[0]/pos-rad</property>
 	<factor>57.3</factor>
 	<axis>
 		<x1-m>34.90</x1-m>
@@ -395,7 +395,7 @@
 <animation>
 	<type>rotate</type>
 	<object-name>elevator_left</object-name>
-	<property>fdm/jsbsim/fcs/outboard-elevator-pos-rad</property>
+	<property>fdm/jsbsim/fcs/elevator[0]/pos-rad</property>
 	<factor>-57.3</factor>
 	<axis>
 		<x1-m>34.90</x1-m>

@@ -143,6 +143,25 @@
 			<min>30.0</min>
 		</volume>
 	</stall>
+	
+	<shaker>
+		<name>shaker</name>
+		<mode>looped</mode>
+		<path>Sounds/shaker.wav</path>
+		<condition>
+			<and>
+				<property>/fdm/jsbsim/systems/stick-shaker-norm</property>
+				<greater-than>
+					<property>/velocities/airspeed-kt</property>
+					<value>10</value> <!-- avoid spurious ground activation -->
+				</greater-than>
+			</and>
+		</condition>
+		<volume>
+			<property>/velocities/airspeed-kt</property>
+			<min>30.0</min>
+		</volume>
+	</shaker>
 
 	<!-- Warnings -->
 	

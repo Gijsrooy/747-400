@@ -133,7 +133,7 @@ var warning_messages = func {
 		if(speed > getprop("instrumentation/fmc/vspeeds/Vmax"))
 			append(msgs_warning,">OVERSPEED");
 	}
-	if (abs((1-getprop("/controls/flight/elevator-trim"))*7.75-getprop("/fdm/jsbsim/aero/stab-trim-units")) > 1 and wow)
+	if (((getprop("/fdm/jsbsim/fcs/stabilizer/int-pos-deg") - (getprop("/fdm/jsbsim/aero/stab-trim-units") - 4) > 1) or (getprop("/fdm/jsbsim/fcs/stabilizer/int-pos-deg") - (getprop("/fdm/jsbsim/aero/stab-trim-units") - 4) < -1)) and wow)
 		append(msgs_warning,">CONFIG STAB");
 }
 

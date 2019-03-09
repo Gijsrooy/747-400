@@ -7,7 +7,7 @@
     <fileheader>
         <author>Gijs de Rooy</author>
         <filecreationdate>2008</filecreationdate>
-        <version>20190304</version>
+        <version>20190309</version>
         <description>Boeing 747-400 with GE CF6-80C2B1F engines</description>
 
         <license>
@@ -123,13 +123,16 @@
 
     <mass_balance>
         <documentation>
-            inertia from http://www.wseas.us/e-library/conferences/2007istanbul/papers/557-095.pdf
+          - operational empty weight = 394088 lb
+          - empty CG at 23 % MAC (no payload)
+            
+            inertia for empty weight from NASA
         </documentation>
-        <ixx unit="SLUG*FT2"> 1.82e+07 </ixx>
-        <iyy unit="SLUG*FT2"> 3.31e+07 </iyy>
-        <izz unit="SLUG*FT2"> 4.97e+07 </izz>
+        <ixx unit="SLUG*FT2"> 1.23e+07 </ixx>
+        <iyy unit="SLUG*FT2"> 2.43e+07 </iyy>
+        <izz unit="SLUG*FT2"> 3.52e+07 </izz>
         <ixy unit="SLUG*FT2"> 0 </ixy>
-        <ixz unit="SLUG*FT2">-4.05e+05 </ixz> <!-- not sure why this would be non zero -->
+        <ixz unit="SLUG*FT2"> 0.74e+06 </ixz>
         <iyz unit="SLUG*FT2"> 0 </iyz>
         <emptywt unit="KG"> 180990  </emptywt> <!-- 3 pilots, 17 cabin crew, includes water, blankets etc. -->
         <location name="CG" unit="IN">
@@ -661,7 +664,8 @@
 
     <flight_control name="747-400">
     <property>fcs/LE-flap-cmd-norm</property>
-
+    <property>fcs/stabilizer/pos-deg</property>
+    
     <channel name="Pitch">
     
         <!-- elevator -->
@@ -730,6 +734,7 @@
                 </sum>
             </function>
         </fcs_function>
+        
         <fcs_function name="fcs/inboard-elevator-float-blowdown-min">
             <function>
                 <toradians>
@@ -748,6 +753,7 @@
                 </toradians>
             </function>
         </fcs_function>
+        
         <fcs_function name="fcs/inboard-elevator-float-blowdown-max">
             <function>
                 <toradians>
@@ -764,6 +770,7 @@
                 </toradians>
             </function>
         </fcs_function>
+        
         <switch name="fcs/elevator[1]/int-pos-rad">
             <default value="fcs/elevator[1]/int-pos-rad"/>
             <test logic="AND" value="fcs/inboard-elevator-float-pos-rad">
@@ -771,7 +778,8 @@
                 /systems/hydraulic/pressure[3] LT 1000
             </test>
         </switch>
-        <switch name="fcs/elevator-rate">
+        
+        <switch name="fcs/elevator-rate-down">
             <default value="0.646" /> <!-- 37 deg/s -->
             <test logic="AND" value="0.524"> <!-- 30 deg/s -->
                 /systems/hydraulic/pressure[0] GT 1000
@@ -782,15 +790,30 @@
                 /systems/hydraulic/pressure[3] GT 1000
             </test>
         </switch>
+        
+        <switch name="fcs/elevator-rate-up">
+            <default value="0.646" /> <!-- 37 deg/s -->
+            <test logic="AND" value="0.4538"> <!-- 26 deg/s -->
+                /systems/hydraulic/pressure[0] GT 1000
+                /systems/hydraulic/pressure[3] LT 1000
+            </test>
+            <test logic="AND" value="0.4538"> <!-- 26 deg/s -->
+                /systems/hydraulic/pressure[0] LT 1000
+                /systems/hydraulic/pressure[3] GT 1000
+            </test>
+        </switch>
+        
         <actuator name="fcs/elevator[1]/actuator">
             <input>fcs/elevator[1]/int-pos-rad</input>
-            <rate_limit> fcs/elevator-rate </rate_limit>
+            <rate_limit sense="decr"> fcs/elevator-rate-down </rate_limit> <!-- I assume this is right? when I move elevator down, it is going from -1 to 1. When I move elevator up it is going back to -1? -->
+            <rate_limit sense="incr"> fcs/elevator-rate-up </rate_limit>
             <clipto>
                 <min>fcs/inboard-elevator-float-blowdown-min</min>
                 <max>fcs/inboard-elevator-float-blowdown-max</max>
             </clipto>
             <output>fcs/elevator[1]/pos-rad</output>
         </actuator>
+    
         <aerosurface_scale name="fcs/elevator[1]/pos-norm">
             <input>fcs/elevator[1]/pos-rad</input>
             <domain>
@@ -803,6 +826,7 @@
                 <max>1</max>
             </range>
         </aerosurface_scale>
+        
         <fcs_function name="fcs/outboard-elevator-float-pos-rad">
             <function>
                 <sum>
@@ -835,6 +859,7 @@
                 </sum>
             </function>
         </fcs_function>
+        
         <switch name="fcs/elevator[0]/int-pos-rad">
             <default value="fcs/elevator[0]/int-pos-rad"/>
             <test logic="AND" value="fcs/outboard-elevator-float-pos-rad">
@@ -842,11 +867,14 @@
                 /systems/hydraulic/pressure[3] LT 1000
             </test>
         </switch>
+        
         <actuator name="fcs/elevator[0]/actuator">
             <input>fcs/elevator[0]/int-pos-rad</input>
-            <rate_limit> fcs/elevator-rate </rate_limit>
+            <rate_limit sense="decr"> fcs/elevator-rate-down </rate_limit> <!-- I assume this is right? when I move elevator down, it is going from -1 to 1. When I move elevator up it is going back to -1? -->
+            <rate_limit sense="incr"> fcs/elevator-rate-up </rate_limit>
             <output>fcs/elevator[0]/pos-rad</output>
         </actuator>
+        
         <aerosurface_scale name="fcs/elevator[0]/pos-norm">
             <input>fcs/elevator[0]/pos-rad</input>
             <domain>
@@ -864,14 +892,15 @@
             <input>fcs/pitch-trim-cmd-norm</input>
             <domain>
                 <min>-1</min>
-                <max>1</max>
+                <max>0.25</max>
             </domain>
             <zero_centered>false</zero_centered>
             <range>
-                <min>-0.2094</min> <!-- -12 deg -->
-                <max> 0.0524</max> <!-- +03 deg -->
+                <min>-0.20944</min> <!-- -12 deg -->
+                <max> 0.05236</max> <!-- +03 deg -->
             </range>
         </aerosurface_scale>
+        
         <fcs_function name="fcs/stabilizer/rate">
             <function>
                 <toradians>
@@ -887,16 +916,25 @@
                 </toradians>
             </function>
         </fcs_function>
+        
         <actuator name="fcs/stabilizer/actuator">
             <input>fcs/stabilizer/int-pos-rad</input>
             <rate_limit> fcs/stabilizer/rate </rate_limit>
             <output>fcs/stabilizer/pos-rad</output>
         </actuator>
+        
         <fcs_function name="fcs/stabilizer/pos-deg">
             <function>
                 <todegrees><property>fcs/stabilizer/pos-rad</property></todegrees>
             </function>
         </fcs_function>
+        
+        <fcs_function name="fcs/stabilizer/int-pos-deg">
+            <function>
+                <todegrees><property>fcs/stabilizer/int-pos-rad</property></todegrees>
+            </function>
+        </fcs_function>
+        
         <aerosurface_scale name="fcs/stabilizer/trim-units">
             <input>fcs/stabilizer/pos-deg</input>
             <domain>
@@ -909,6 +947,7 @@
                 <max>0</max>
             </range>
         </aerosurface_scale>
+        
         <!--<aerosurface_scale name="Stabilizer Control Normalizer">
             <input>fcs/stabilizer/pos-rad</input>
             <domain>
@@ -924,6 +963,7 @@
         </aerosurface_scale>-->
 
      </channel>
+     
      <channel name="Roll">
 
         <!-- ailerons -->
@@ -971,17 +1011,19 @@
                 <max> 0.26</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/aileron[0]/actuator">
             <input>fcs/aileron[0]/int-pos-rad</input>
             <rate_limit sense="incr"> systems/hydraulic/left-outboard-aileron/range-limit-down </rate_limit>
             <rate_limit sense="decr"> systems/hydraulic/left-outboard-aileron/range-limit-up </rate_limit>
             <output>fcs/aileron[0]/pos-rad</output>
         </actuator>
+        
         <aerosurface_scale name="fcs/aileron[0]/pos-norm">
             <input>fcs/aileron[0]/pos-rad</input>
             <domain>
-                <min>-0.44</min>
-                <max> 0.26</max>
+                <min>-0.4363</min>
+                <max> 0.2618</max>
             </domain>
             <range>
                 <min>-1</min>
@@ -992,21 +1034,23 @@
         <aerosurface_scale name="fcs/aileron[3]/int-pos-rad">
             <input>fcs/outboard-aileron-cmd-norm</input>
             <range>
-                <min>-0.44</min>
-                <max> 0.26</max>
+                <min>-0.4363</min>
+                <max> 0.2618</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/aileron[3]/actuator">
             <input>fcs/aileron[3]/int-pos-rad</input>
             <rate_limit sense="incr"> systems/hydraulic/right-outboard-aileron/range-limit-down </rate_limit>
             <rate_limit sense="decr"> systems/hydraulic/right-outboard-aileron/range-limit-up </rate_limit>
             <output>fcs/aileron[3]/pos-rad</output>
         </actuator>
+        
         <aerosurface_scale name="fcs/aileron[3]/pos-norm">
             <input>fcs/aileron[3]/pos-rad</input>
             <domain>
-                <min>-0.44</min>
-                <max> 0.26</max>
+                <min>-0.4363</min>
+                <max> 0.2618</max>
             </domain>
             <range>
                 <min>-1</min>
@@ -1017,21 +1061,23 @@
         <aerosurface_scale name="fcs/aileron[1]/int-pos-rad">
             <input>-fcs/roll-trim-sum</input>
             <range>
-                <min>-0.35</min>
-                <max> 0.35</max>
+                <min>-0.3491</min>
+                <max> 0.3491</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/aileron[1]/actuator">
             <input>fcs/aileron[1]/int-pos-rad</input>
             <rate_limit sense="incr"> systems/hydraulic/left-inboard-aileron/range-limit-down </rate_limit>
             <rate_limit sense="decr"> systems/hydraulic/left-inboard-aileron/range-limit-up </rate_limit>
             <output>fcs/aileron[1]/pos-rad</output>
         </actuator>
+        
         <aerosurface_scale name="fcs/aileron[1]/pos-norm">
             <input>fcs/aileron[1]/pos-rad</input>
             <domain>
-                <min>-0.35</min>
-                <max> 0.35</max>
+                <min>-0.3491</min>
+                <max> 0.3491</max>
             </domain>
             <range>
                 <min>-1</min>
@@ -1042,21 +1088,23 @@
         <aerosurface_scale name="fcs/aileron[2]/int-pos-rad">
             <input>fcs/roll-trim-sum</input>
             <range>
-                <min>-0.35</min>
-                <max> 0.35</max>
+                <min>-0.3491</min>
+                <max> 0.3491</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/aileron[2]/actuator">
             <input>fcs/aileron[2]/int-pos-rad</input>
             <rate_limit sense="incr"> systems/hydraulic/right-inboard-aileron/range-limit-down </rate_limit>
             <rate_limit sense="decr"> systems/hydraulic/right-inboard-aileron/range-limit-up </rate_limit>
             <output>fcs/aileron[2]/pos-rad</output>
         </actuator>
+        
         <aerosurface_scale name="fcs/aileron[2]/pos-norm">
             <input>fcs/aileron[2]/pos-rad</input>
             <domain>
-                <min>-0.35</min>
-                <max> 0.35</max>
+                <min>-0.3491</min>
+                <max> 0.3491</max>
             </domain>
             <range>
                 <min>-1</min>
@@ -1083,24 +1131,50 @@
             </function>
         </fcs_function>
         
+        <fcs_function name="fcs/aileron[0]/pos-deg">
+            <function>
+                <todegrees><property>fcs/aileron[0]/pos-rad</property></todegrees>
+            </function>
+        </fcs_function>
+        
+        <fcs_function name="fcs/aileron[1]/pos-deg">
+            <function>
+                <todegrees><property>fcs/aileron[1]/pos-rad</property></todegrees>
+            </function>
+        </fcs_function>
+        
+        <fcs_function name="fcs/aileron[2]/pos-deg">
+            <function>
+                <todegrees><property>fcs/aileron[2]/pos-rad</property></todegrees>
+            </function>
+        </fcs_function>
+        
+        <fcs_function name="fcs/aileron[3]/pos-deg">
+            <function>
+                <todegrees><property>fcs/aileron[3]/pos-rad</property></todegrees>
+            </function>
+        </fcs_function>
+        
         <!-- Spoilers -->
         
         <switch name="fcs/spoiler[0]/cmd-norm">
             <default value="0"/>
-            <test  logic="AND" value="-fcs/roll-trim-sum">
+            <test  logic="AND" value="fcs/spoiler-mixing/spoiler1">
                 /controls/flight/speedbrakes == 0
             </test>
             <test  logic="AND" value="1">
                 /controls/flight/speedbrakes == 2
             </test>
         </switch>
+        
         <aerosurface_scale name="fcs/spoiler[0]/pos-int-rad">
             <input>fcs/spoiler[0]/cmd-norm</input>
             <range>
                 <min> 0</min>
-                <max> 0.785</max>
+                <max> 0.7854</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/spoiler[0]/actuator">
             <input>fcs/spoiler[0]/pos-int-rad</input>
             <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
@@ -1109,20 +1183,22 @@
         
         <switch name="fcs/spoiler[1]/cmd-norm">
             <default value="0"/>
-            <test  logic="AND" value="-fcs/roll-trim-sum">
+            <test  logic="AND" value="fcs/spoiler-mixing/spoiler2">
                 /controls/flight/speedbrakes == 0
             </test>
             <test  logic="AND" value="1">
                 /controls/flight/speedbrakes == 2
             </test>
         </switch>
+        
         <aerosurface_scale name="fcs/spoiler[1]/pos-int-rad">
             <input>fcs/spoiler[1]/cmd-norm</input>
             <range>
                 <min> 0</min>
-                <max> 0.785</max>
+                <max> 0.7854</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/spoiler[1]/actuator">
             <input>fcs/spoiler[1]/pos-int-rad</input>
             <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
@@ -1131,7 +1207,7 @@
         
         <switch name="fcs/spoiler[2]/cmd-norm">
             <default value="0"/>
-            <test  logic="AND" value="-fcs/roll-trim-sum">
+            <test  logic="AND" value="fcs/spoiler-mixing/spoiler3">
                 /controls/flight/speedbrakes == 0
             </test>
             <test  logic="OR" value="1">
@@ -1140,13 +1216,15 @@
             </test>
             <output>fcs/spoiler[2]/cmd-norm</output>
         </switch>
+        
         <aerosurface_scale name="fcs/spoiler[2]/pos-int-rad">
             <input>fcs/spoiler[2]/cmd-norm</input>
             <range>
                 <min> 0</min>
-                <max> 0.785</max>
+                <max> 0.7854</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/spoiler[2]/actuator">
             <input>fcs/spoiler[2]/pos-int-rad</input>
             <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
@@ -1155,7 +1233,7 @@
         
         <switch name="fcs/spoiler[3]/cmd-norm">
             <default value="0"/>
-            <test  logic="AND" value="-fcs/roll-trim-sum">
+            <test  logic="AND" value="fcs/spoiler-mixing/spoiler4">
                 /controls/flight/speedbrakes == 0
             </test>
             <test  logic="OR" value="1">
@@ -1163,13 +1241,15 @@
                 /controls/flight/speedbrakes == 2
             </test>
         </switch>
+        
         <aerosurface_scale name="fcs/spoiler[3]/pos-int-rad">
             <input>fcs/spoiler[3]/cmd-norm</input>
             <range>
                 <min> 0</min>
-                <max> 0.785</max>
+                <max> 0.7854</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/spoiler[3]/actuator">
             <input>fcs/spoiler[3]/pos-int-rad</input>
             <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
@@ -1178,20 +1258,23 @@
         
         <switch name="fcs/spoiler[4]/cmd-norm">
             <default value="0"/>
-            <test  logic="AND" value="0.5">
-                /controls/flight/speedbrakes == 1
+            <test  logic="AND" value="fcs/spoiler-mixing/spoiler5">
+                /controls/flight/speedbrakes == 0
             </test>
-            <test  logic="AND" value="1">
+            <test  logic="OR" value="1">
+                /controls/flight/speedbrakes == 1
                 /controls/flight/speedbrakes == 2
             </test>
         </switch>
+        
         <aerosurface_scale name="fcs/spoiler[4]/pos-int-rad">
             <input>fcs/spoiler[4]/cmd-norm</input>
             <range>
                 <min> 0</min>
-                <max> 0.349</max>
+                <max> 0.3491</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/spoiler[4]/actuator">
             <input>fcs/spoiler[4]/pos-int-rad</input>
             <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
@@ -1207,13 +1290,15 @@
                 /controls/flight/speedbrakes == 2
             </test>
         </switch>
+        
         <aerosurface_scale name="fcs/spoiler[5]/pos-int-rad">
             <input>fcs/spoiler[5]/cmd-norm</input>
             <range>
                 <min> 0</min>
-                <max> 0.349</max>
+                <max> 0.3491</max>
             </range>
         </aerosurface_scale>
+
         <actuator name="fcs/spoiler[5]/actuator">
             <input>fcs/spoiler[5]/pos-int-rad</input>
             <rate_limit> 0.436 </rate_limit> <!-- 25 deg/sec -->
@@ -1229,13 +1314,15 @@
                 /controls/flight/speedbrakes == 2
             </test>
         </switch>
+        
         <aerosurface_scale name="fcs/spoiler[6]/pos-int-rad">
             <input>fcs/spoiler[6]/cmd-norm</input>
             <range>
                 <min> 0</min>
-                <max> 0.349</max>
+                <max> 0.3491</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/spoiler[6]/actuator">
             <input>fcs/spoiler[6]/pos-int-rad</input>
             <rate_limit> 0.436 </rate_limit> <!-- 25 deg/sec -->
@@ -1244,20 +1331,23 @@
         
         <switch name="fcs/spoiler[7]/cmd-norm">
             <default value="0"/>
-            <test  logic="AND" value="0.5">
-                /controls/flight/speedbrakes == 1
+            <test  logic="AND" value="fcs/spoiler-mixing/spoiler8">
+                /controls/flight/speedbrakes == 0
             </test>
-            <test  logic="AND" value="1">
+            <test  logic="OR" value="1">
+                /controls/flight/speedbrakes == 1
                 /controls/flight/speedbrakes == 2
             </test>
         </switch>
+        
         <aerosurface_scale name="fcs/spoiler[7]/pos-int-rad">
             <input>fcs/spoiler[7]/cmd-norm</input>
             <range>
                 <min> 0</min>
-                <max> 0.349</max>
+                <max> 0.3491</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/spoiler[7]/actuator">
             <input>fcs/spoiler[7]/pos-int-rad</input>
             <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
@@ -1266,7 +1356,7 @@
         
         <switch name="fcs/spoiler[8]/cmd-norm">
             <default value="0"/>
-            <test  logic="AND" value="fcs/roll-trim-sum">
+            <test  logic="AND" value="fcs/spoiler-mixing/spoiler9">
                 /controls/flight/speedbrakes == 0
             </test>
             <test  logic="OR" value="1">
@@ -1274,13 +1364,15 @@
                 /controls/flight/speedbrakes == 2
             </test>
         </switch>
+        
         <aerosurface_scale name="fcs/spoiler[8]/pos-int-rad">
             <input>fcs/spoiler[8]/cmd-norm</input>
             <range>
                 <min> 0</min>
-                <max> 0.785</max>
+                <max> 0.7854</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/spoiler[8]/actuator">
             <input>fcs/spoiler[8]/pos-int-rad</input>
             <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
@@ -1289,7 +1381,7 @@
         
         <switch name="fcs/spoiler[9]/cmd-norm">
             <default value="0"/>
-            <test  logic="AND" value="fcs/roll-trim-sum">
+            <test  logic="AND" value="fcs/spoiler-mixing/spoiler10">
                 /controls/flight/speedbrakes == 0
             </test>
             <test  logic="OR" value="1">
@@ -1297,13 +1389,15 @@
                 /controls/flight/speedbrakes == 2
             </test>
         </switch>
+        
         <aerosurface_scale name="fcs/spoiler[9]/pos-int-rad">
             <input>fcs/spoiler[9]/cmd-norm</input>
             <range>
                 <min> 0</min>
-                <max> 0.785</max>
+                <max> 0.7854</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/spoiler[9]/actuator">
             <input>fcs/spoiler[9]/pos-int-rad</input>
             <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
@@ -1312,20 +1406,22 @@
         
         <switch name="fcs/spoiler[10]/cmd-norm">
             <default value="0"/>
-            <test  logic="AND" value="fcs/roll-trim-sum">
+            <test  logic="AND" value="fcs/spoiler-mixing/spoiler11">
                 /controls/flight/speedbrakes == 0
             </test>
             <test  logic="AND" value="1">
                 /controls/flight/speedbrakes == 2
             </test>
         </switch>
+        
         <aerosurface_scale name="fcs/spoiler[10]/pos-int-rad">
             <input>fcs/spoiler[10]/cmd-norm</input>
             <range>
                 <min> 0</min>
-                <max> 0.785</max>
+                <max> 0.7854</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/spoiler[10]/actuator">
             <input>fcs/spoiler[10]/pos-int-rad</input>
             <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
@@ -1334,20 +1430,22 @@
         
         <switch name="fcs/spoiler[11]/cmd-norm">
             <default value="0"/>
-            <test  logic="AND" value="fcs/roll-trim-sum">
+            <test  logic="AND" value="fcs/spoiler-mixing/spoiler12">
                 /controls/flight/speedbrakes == 0
             </test>
             <test  logic="AND" value="1">
                 /controls/flight/speedbrakes == 2
             </test>
         </switch>
+        
         <aerosurface_scale name="fcs/spoiler[11]/pos-int-rad">
             <input>fcs/spoiler[11]/cmd-norm</input>
             <range>
                 <min> 0</min>
-                <max> 0.785</max>
+                <max> 0.7854</max>
             </range>
         </aerosurface_scale>
+        
         <actuator name="fcs/spoiler[11]/actuator">
             <input>fcs/spoiler[11]/pos-int-rad</input>
             <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
@@ -1355,6 +1453,158 @@
         </actuator>
 
      </channel>
+    
+     <channel name="Spoilers Mixing">
+        <!-- after 10 deg deflection (0 = 0 and 88 = 1) -->
+        <switch name="fcs/spoiler-mixing/enabled">
+            <default value="0"/>
+            <test logic="OR" value="1">
+                fcs/roll-trim-sum GT 0.1136
+                fcs/roll-trim-sum LT -0.1136
+            </test>
+        </switch>
+        
+        <fcs_function name="fcs/spoiler-mixing/spoiler1">
+            <function>
+                <table>
+                  <independentVar lookup="row">velocities/vc-kts</independentVar>
+                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
+                  <tableData>
+                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
+                    0      1.0    0.5     0.0   0.0   0.0   0.0   0.0
+                    150    1.0    0.1     0.0   0.0   0.0   0.0   0.0
+                  </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        
+        <fcs_function name="fcs/spoiler-mixing/spoiler2">
+            <function>
+                <table>
+                  <independentVar lookup="row">velocities/vc-kts</independentVar>
+                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
+                  <tableData>
+                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
+                    0      1.0    0.5     0.0   0.0   0.0   0.0   0.0
+                    150    1.0    0.1     0.0   0.0   0.0   0.0   0.0
+                  </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        
+        <fcs_function name="fcs/spoiler-mixing/spoiler3">
+            <function>
+                <table>
+                  <independentVar lookup="row">velocities/vc-kts</independentVar>
+                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
+                  <tableData>
+                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
+                    0      1.0    0.5     0.0   0.0   0.0   0.0   0.0
+                    150    1.0    0.4     0.0   0.0   0.0   0.0   0.0
+                  </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        
+        <fcs_function name="fcs/spoiler-mixing/spoiler4">
+            <function>
+                <table>
+                  <independentVar lookup="row">velocities/vc-kts</independentVar>
+                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
+                  <tableData>
+                          -1.000 -0.500  -0.114 0.000 0.114 1.000
+                    0      1.0    0.5     0.0   0.0   0.0   0.0
+                    150    1.0    0.4     0.0   0.0   0.0   0.0
+                  </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        
+        <fcs_function name="fcs/spoiler-mixing/spoiler5">
+            <function>
+                <table>
+                  <independentVar lookup="row">velocities/vc-kts</independentVar>
+                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
+                  <tableData>
+                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
+                    0      1.0    0.5     0.0   0.0   0.0   0.0   0.0
+                    150    1.0    0.2     0.0   0.0   0.0   0.0   0.0
+                  </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        
+        <fcs_function name="fcs/spoiler-mixing/spoiler8">
+            <function>
+                <table>
+                  <independentVar lookup="row">velocities/vc-kts</independentVar>
+                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
+                  <tableData>
+                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
+                    0      0.0    0.0     0.0   0.0   0.0   0.5   1.0
+                    150    0.0    0.0     0.0   0.0   0.0   0.2   1.0
+                  </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        
+        <fcs_function name="fcs/spoiler-mixing/spoiler9">
+            <function>
+                <table>
+                  <independentVar lookup="row">velocities/vc-kts</independentVar>
+                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
+                  <tableData>
+                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
+                    0      0.0    0.0     0.0   0.0   0.0   0.5   1.0
+                    150    0.0    0.0     0.0   0.0   0.0   0.4   1.0
+                  </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        
+        <fcs_function name="fcs/spoiler-mixing/spoiler10">
+            <function>
+                <table>
+                  <independentVar lookup="row">velocities/vc-kts</independentVar>
+                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
+                  <tableData>
+                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
+                    0      0.0    0.0     0.0   0.0   0.0   0.5   1.0
+                    150    0.0    0.0     0.0   0.0   0.0   0.4   1.0
+                  </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        
+        <fcs_function name="fcs/spoiler-mixing/spoiler11">
+            <function>
+                <table>
+                  <independentVar lookup="row">velocities/vc-kts</independentVar>
+                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
+                  <tableData>
+                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
+                    0      0.0    0.0     0.0   0.0   0.0   0.5   1.0
+                    150    0.0    0.0     0.0   0.0   0.0   0.1   1.0
+                  </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        
+        <fcs_function name="fcs/spoiler-mixing/spoiler12">
+            <function>
+                <table>
+                  <independentVar lookup="row">velocities/vc-kts</independentVar>
+                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
+                  <tableData>
+                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
+                    0      0.0    0.0     0.0   0.0   0.0   0.5   1.0
+                    150    0.0    0.0     0.0   0.0   0.0   0.1   1.0
+                  </tableData>
+                </table>
+            </function>
+        </fcs_function>
+     </channel>
+     
      <channel name="Yaw">
 
         <aerosurface_scale name="Rudder Trim Control">
@@ -1425,25 +1675,42 @@
                 <max>1.0000</max>
             </clipto>
         </summer>
-
+        
         <aerosurface_scale name="Rudder Control">
             <input>fcs/rudder-sum</input>
             <range>
-                <min>-0.52</min> <!-- 30 deg (on -400, 25 deg on older models) -->
-                <max>0.52</max>
+                <min>-0.5498</min> <!-- 31.5 deg (on -400, 25 deg on older models) -->
+                <max>0.5498</max>
             </range>
             <output>fcs/rudder-pos-int-rad</output>
         </aerosurface_scale>
+        
+        <fcs_function name="fcs/rudder-limiter"> <!-- linearly limit rudder to 31.5 deg below 150 kt and to 5 deg above 450 kt -->
+            <function>
+                <table>
+                  <independentVar lookup="row">fcs/rudder-pos-int-rad</independentVar>
+                  <independentVar lookup="column">velocities/vc-kts</independentVar>
+                  <tableData>
+                            150.0000 450.0000
+                    -0.5498  -0.5498   0.0873
+                     0.0000   0.0000   0.0000
+                     0.5498   0.5498  -0.0873
+                  </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        
         <actuator name="Rudder Actuator">
-            <input>fcs/rudder-pos-int-rad</input>
-            <rate_limit> 0.873 </rate_limit> <!-- 50 deg/sec -->
+            <input>fcs/rudder-limiter</input>
+            <rate_limit> 0.8727 </rate_limit> <!-- 50 deg/sec -->
             <output>fcs/rudder-pos-rad</output>
         </actuator>
+        
         <aerosurface_scale name="Rudder Control Normalizer">
             <input>fcs/rudder-pos-rad</input>
             <domain>
-                <min>-0.52</min>
-                <max>0.52</max>
+                <min>-0.5498</min>
+                <max>0.5498</max>
             </domain>
             <range>
                 <min>-1</min>
@@ -1465,30 +1732,31 @@
                 </setting>
                 <setting>
                     <position>1</position>
-                    <time>10</time>
+                    <time>6</time>
                 </setting>
                 <setting>
                     <position>5</position>
-                    <time>25</time>
+                    <time>18</time>
                 </setting>
                 <setting>
                     <position>10</position>
-                    <time>40</time>
+                    <time>4</time>
                 </setting>
                 <setting>
                     <position>20</position>
-                    <time>5</time>
+                    <time>6</time>
                 </setting>
                 <setting>
                     <position>25</position>
-                    <time>12</time>
+                    <time>4</time>
                 </setting>
                 <setting>
                     <position>30</position>
-                    <time>12</time>
+                    <time>5</time>
                 </setting>
             </traverse>
         </kinematic>
+        
         <aerosurface_scale name="fcs/flap-pos-norm">
             <input>fcs/flaps/pos-deg</input>
             <domain>
@@ -1499,7 +1767,6 @@
                 <min>0</min>
                 <max>1</max>
             </range>
-            <output>fcs/flap-pos-norm</output>
         </aerosurface_scale>
         
         <kinematic name="gear/unit[0]/pos">
@@ -1675,7 +1942,7 @@
                 </setting>
                 <setting>
                     <position>0.6670</position>
-                    <time>7.0000</time>
+                    <time>6.0000</time>
                 </setting>
                 <setting>
                     <position>1.0000</position>
@@ -1706,7 +1973,6 @@
              <output>fcs/right-brake-cmd-norm</output>
         </fcs_function>
     </channel>
-     
     </flight_control>
     
     <aerodynamics>
@@ -1732,6 +1998,7 @@
                 <value>0.45359237</value>
             </product>
         </function>
+        
         <function name="aero/alpha-wing-deg">
             <todegrees><property>aero/alpha-wing-rad</property></todegrees>
         </function>
@@ -2178,14 +2445,274 @@
             </table>
         </function>
 
+        <!-- SIDE -->
+        <function name="aero/coefficient/CYb">
+            <description>Side_force_due_to_beta_total</description>
+            <product>
+                <property>aero/beta-deg</property>
+                <property>aero/coefficient/dCyb</property>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/dCyb">
+            <description>Side_force_due_to_beta_total</description>
+            <product>
+                <product>
+                    <property>aero/coefficient/dCybsideslip</property>
+                    <property>aero/coefficient/dCybaeroelastic</property>
+                </product>
+                <property>aero/coefficient/FCybGE</property>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/dCybsideslip">
+            <description>Side_force_due_to_beta</description>
+            <table> <!-- graph 7.0-5 -->
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                <tableData>
+                        -0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+               -0.0873  -0.0170 -0.0170 -0.0170  -0.0170  -0.0185  -0.0175  -0.0187
+                0.0000  -0.0160 -0.0160 -0.0160  -0.0160  -0.0175  -0.0172  -0.0180
+                0.0873  -0.0160 -0.0160 -0.0160  -0.0160  -0.0175  -0.0175  -0.0185
+                0.1745  -0.0150 -0.0150 -0.0150  -0.0150  -0.0170  -0.0180  -0.0190
+                0.2618  -0.0155 -0.0155 -0.0155  -0.0155  -0.0167  -0.0185  -0.0200
+                0.3491  -0.0150 -0.0150 -0.0150  -0.0150  -0.0170  -0.0180  -0.0182
+                0.4363  -0.0150 -0.0150 -0.0150  -0.0150  -0.0170  -0.0173  -0.0175
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/dCybaeroelastic">
+            <description>Side_force_due_to_beta_aeroelastic</description>
+            <table> <!-- graph 7.0-5 -->
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                <tableData>
+                          0   10000  20000  30000  40000
+                0.0     1.0    1.0    1.0    1.0    1.0
+                0.1     0.99   1.0    1.0    1.0    1.0
+                0.2     0.98   0.99   1.0    1.0    1.0
+                0.3     0.96   0.98   0.99   1.0    0.99
+                0.4     0.94   0.97   0.98   0.99   0.99
+                0.5     0.93   0.96   0.97   0.99   1.0
+                0.6     0.92   0.95   0.96   0.98   1.0
+                0.7     0.87   0.92   0.95   0.97   0.98
+                0.8     0.82   0.85   0.88   0.92   0.94
+                0.9     0.82   0.84   0.87   0.91   0.93
+                0.95    0.82   0.79   0.83   0.87   0.88
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/FyB">
+            <description>Side_force_due_to_beta_GE_factor</description>
+            <table> <!-- graph 7.0-6 -->
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                <tableData>
+                         0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+                0.0000   0.170   0.170   0.170    0.170    0.070   -0.070   -0.130
+                0.0349   0.150   0.150   0.150    0.150    0.050   -0.100   -0.160
+                0.0698   0.130   0.130   0.130    0.130    0.010   -0.140   -0.210
+                0.1047   0.100   0.100   0.100    0.100   -0.020   -0.170   -0.240
+                0.1396   0.70    0.70    0.70     0.70    -0.050   -0.210   -0.280
+                0.1745   0.30    0.30    0.30     0.30    -0.080   -0.240   -0.320
+                0.2094   0.00    0.00    0.00     0.00    -0.120   -0.260   -0.340
+                0.2443  -0.40   -0.40   -0.40    -0.40    -0.150   -0.250   -0.330
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/FCybGE">
+            <description>Side_force_due_to_beta_GE</description>
+            <sum>
+                <value>1</value>
+                <product>
+                    <property>aero/function/Kge</property>
+                    <property>aero/coefficient/FyB</property>
+                </product>
+            </sum>
+        </function>
+        
+        <function name="aero/coefficient/Cyp">
+            <description>Side_force_due_to_roll_rate</description>
+            <product>
+                <property>aero/bi2vel</property>
+                <property>velocities/p-aero-rad_sec</property>
+                <table> <!-- graph 7.0-7 -->
+                    <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                    <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                    <tableData>
+                             0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+                   -0.0873  -0.380  -0.380  -0.370   -0.270   -0.230   -0.190   -0.110
+                    0.0000  -0.170  -0.170  -0.160   -0.060   -0.000    0.080    0.220
+                    0.0873   0.060   0.060   0.070    0.090    0.160    0.410    0.570
+                    0.1745   0.320   0.320   0.330    0.420    0.550    0.710    0.880
+                    0.2618   0.550   0.550   0.630    0.720    0.820    0.950    1.150
+                    0.3491   0.740   0.740   0.880    0.950    1.050    1.150    1.350
+                    0.4363   0.780   0.780   0.980    1.050    1.100    1.150    1.150
+                    </tableData>
+                </table>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/Cyr">
+            <description>Side_force_due_to_yaw_rate</description>
+            <product>
+                <property>aero/bi2vel</property>
+                <property>velocities/r-aero-rad_sec</property>
+                <product>
+                    <table> <!-- graph 7.0-8 -->
+                        <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                        <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                        <tableData>
+                                 0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+                       -0.0873   0.310   0.310   0.310    0.290    0.270    0.350    0.340
+                        0.0000   0.320   0.320   0.320    0.300    0.270    0.310    0.250
+                        0.0873   0.310   0.310   0.310    0.290    0.250    0.160    0.050
+                        0.1745   0.260   0.260   0.250    0.200    0.120    0.010   -0.140
+                        0.2618   0.130   0.130   0.080    0.040    0.040   -0.190   -0.310
+                        0.3491   0.030   0.030  -0.070   -0.120   -0.200   -0.310   -0.420
+                        0.4363  -0.020  -0.020  -0.150   -0.180   -0.250   -0.350   -0.440
+                        </tableData>
+                    </table>
+                    <property>aero/coefficient/dCyraeroelastic</property>
+                </product>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/dCyraeroelastic">
+            <description>Side_force_due_to_yaw_rate_aeroelastic</description>
+            <table> <!-- graph 7.0-9 -->
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                <tableData>
+                          0   10000  20000  40000
+                0.0     1.0     1.0    1.0    1.0
+                0.1     1.0     0.99   1.0    1.0
+                0.2     0.98    0.99   0.99   0.99
+                0.3     0.92    0.95   0.97   0.97
+                0.4     0.86    0.92   0.94   0.95
+                0.5     0.81    0.87   0.90   0.93
+                0.6     0.75    0.83   0.87   0.90
+                0.7     0.70    0.78   0.84   0.90
+                0.8     0.64    0.75   0.83   0.94
+                0.9     0.64    0.68   0.77   0.96
+                0.95    0.64    0.62   0.70   0.80
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/CyRu">
+            <description>side_force_due_to_upper_rudder_alpha</description>
+            <table> <!-- graph 7.0-13 -->
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <tableData>
+               -0.0873   0.0465
+                0.0000   0.0445
+                0.0873   0.0430
+                0.1745   0.0420
+                0.2618   0.0410
+                0.3491   0.0385
+                0.4363   0.0340
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/CyRl">
+            <description>side_force_due_to_lower_rudder_alpha</description>
+            <table> <!-- graph 7.0-13 -->
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <tableData>
+               -0.0873   0.0340
+                0.0000   0.0340
+                0.0873   0.0340
+                0.1745   0.0340
+                0.2618   0.0340
+                0.3491   0.0340
+                0.4363   0.0320
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/CyRuaeroelastic">
+            <description>Side_force_due_to_rudder_upper_aeroelastic</description>
+            <table> <!-- graph 7.0-14 -->
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                <tableData>
+                          0   10000  20000  30000  40000
+                0.0     1.0     1.0    1.0    1.0    1.0
+                0.1     0.98    0.99   1.0    1.0    1.0
+                0.2     0.92    0.94   0.96   0.98   0.99
+                0.3     0.83    0.87   0.90   0.93   0.95
+                0.4     0.70    0.75   0.80   0.85   0.88
+                0.5     0.55    0.64   0.70   0.75   0.78
+                0.6     0.40    0.50   0.58   0.65   0.70
+                0.7     0.25    0.35   0.45   0.55   0.63
+                0.8     0.06    0.24   0.35   0.48   0.55
+                0.9     0.06    0.10   0.20   0.30   0.40
+                0.95    0.06    0.02   0.05   0.07   0.09
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/CyRlaeroelastic">
+            <description>Side_force_due_to_rudder_lower_aeroelastic</description>
+            <table> <!-- graph 7.0-15 -->
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                <tableData>
+                          0   10000  20000  30000  40000
+                0.0     1.0     1.0    1.0    1.0    1.0
+                0.1     1.0     1.0    1.0    1.0    1.0
+                0.2     0.98    0.99   1.0    1.0    1.0
+                0.3     0.94    0.96   0.98   0.99   1.0
+                0.4     0.88    0.91   0.94   0.96   0.99
+                0.5     0.79    0.85   0.89   0.93   0.96
+                0.6     0.69    0.77   0.83   0.86   0.90
+                0.7     0.55    0.65   0.71   0.75   0.80
+                0.8     0.35    0.45   0.51   0.57   0.63
+                0.9     0.35    0.15   0.16   0.18   0.20
+                0.95    0.35    0.05   0.06   0.08   0.10
+                </tableData>
+            </table>
+        </function>
+    
+        <function name="aero/coefficient/CYrudder">
+            <description>Side_force_due_to_rudder</description>
+            <sum>
+                <product>
+                    <property>-aero/function/kRu</property>
+                    <property>aero/coefficient/CyRu</property>
+                    <property>aero/coefficient/CyRuaeroelastic</property>
+                </product>
+                <product>
+                    <property>-aero/function/kRl</property>
+                    <property>aero/coefficient/CyRl</property>
+                    <property>aero/coefficient/CyRlaeroelastic</property>
+                </product>
+            </sum>
+        </function>
+            
+        <function name="aero/coefficient/CY">
+            <description>Side_force_due_to_beta</description>
+            <sum>
+                <property>aero/coefficient/CYb</property>
+                <property>aero/coefficient/Cyp</property>
+                <property>aero/coefficient/Cyr</property>
+                <property>aero/coefficient/CYrudder</property>
+            </sum>
+        </function>
+        
         <axis name="SIDE">
-            <function name="aero/coefficient/CYb">
-                <description>Side_force_due_to_beta</description>
+            <function name="my_side">
+                <description>Side_force</description>
                 <product>
                     <property>aero/qbar-psf</property>
                     <property>metrics/Sw-sqft</property>
-                    <property>aero/beta-rad</property>
-                    <value>-1.0000</value>
+                    <property>aero/coefficient/CY</property>
                 </product>
             </function>
         </axis>
@@ -2562,7 +3089,7 @@
         <function name="aero/coefficient/dCD_stabilizer">
             <description>Change in basic drag coefficient due to change in stabilizer angle</description>
             <product>
-                <property>fcs/stabilizer-pos-rad</property>
+                <property>fcs/stabilizer/pos-rad</property>
                 <value>57.2957795786</value> <!-- convert to 1/rad -->
                 <table>
                     <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
@@ -2851,25 +3378,198 @@
         <function name="aero/coefficient/Clb">
             <description>Roll_moment_due_to_beta</description> <!-- angle of sideslip -->
             <product>
-                <property>aero/beta-rad</property>
-                <value>-0.1000</value>
+                <property>aero/beta-deg</property>
+                <product>
+                    <product>
+                        <property>aero/coefficient/Clbalpha</property>
+                        <property>aero/coefficient/dClbsideslip</property>
+                        <property>aero/coefficient/dClbaeroelastic</property>
+                    </product>
+                    <property>aero/coefficient/FClbGE</property>
+                </product>
             </product>
         </function>
+        
+        <function name="aero/coefficient/Clbalpha">
+            <description>Roll_moment_due_to_beta_alpha</description>
+            <table> <!-- graph 5.0-7 -->
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                <tableData>
+                         0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+               -0.0873  -0.0024 -0.0019 -0.0019  -0.0020  -0.0022  -0.0021  -0.0028
+                0.0000  -0.0026 -0.0022 -0.0023  -0.0024  -0.0025  -0.0034  -0.0039
+                0.0873  -0.0030 -0.0028 -0.0029  -0.0032  -0.0034  -0.0041  -0.0044
+                0.1745  -0.0034 -0.0032 -0.0034  -0.0036  -0.0041  -0.0045  -0.0048
+                0.2618  -0.0020 -0.0034 -0.0036  -0.0039  -0.0046  -0.0050  -0.0055
+                0.3491  -0.0013 -0.0027 -0.0047  -0.0052  -0.0058  -0.0062  -0.0056
+                0.4363  -0.0020 -0.0036 -0.0042  -0.0043  -0.0044  -0.0046  -0.0046
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/dClbsideslip">
+            <description>Roll_moment_due_to_beta_sideslip</description> <!-- angle of sideslip -->
+            <table> <!-- graph 5.0-9 -->
+                <independentVar lookup="row">aero/beta-rad</independentVar>
+                <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                <tableData>
+                         0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+               -0.2618    0.480   0.480   0.700    0.740    0.740    0.800    0.800
+               -0.1745    0.700   0.700   0.900    0.925    0.925    0.975    0.975
+               -0.0873    0.980   0.980   1.000    1.000    1.000    1.000    1.000
+                0.0000    1.000   1.000   1.000    1.000    1.000    1.000    1.000
+                0.0873    0.980   0.980   1.000    1.000    1.000    1.000    1.000
+                0.1745    0.700   0.700   0.900    0.925    0.925    0.975    0.975
+                0.2618    0.480   0.480   0.700    0.740    0.740    0.800    0.800
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/dClbaeroelastic">
+            <description>Roll_moment_due_to_beta_aeroelastic</description> <!-- angle of sideslip -->
+            <table> <!-- graph 5.0-10 -->
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                <tableData>
+                          0   10000  20000  30000  40000
+                0.0     1.0     1.0    1.0    1.0    1.0
+                0.1     1.0     1.0    1.0    1.0    1.0
+                0.2     1.0     1.0    1.0    1.0    1.0
+                0.3     0.99    1.0    1.0    1.0    1.0
+                0.4     0.98    1.0    1.0    1.0    1.0
+                0.5     0.97    0.99   1.0    1.0    1.0
+                0.6     0.95    0.98   0.99   1.0    1.0
+                0.7     0.93    0.95   0.97   0.99   1.0
+                0.8     0.90    0.92   0.94   0.97   0.98
+                0.9     0.90    0.90   0.93   0.96   0.97
+                0.95    0.90    0.30   0.50   0.60   0.70  
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/FClbGE">
+            <description>Roll_moment_due_to_beta_groundeffect_function</description>
+            <sum>
+                <value>1</value>
+                <product>
+                    <property>aero/coefficient/Fbeta</property>
+                    <property>aero/function/Kge</property>
+                </product>
+            </sum>
+        </function>
+        
+        <function name="aero/coefficient/Fbeta">
+            <description>Roll_moment_due_to_beta_groundeffect</description>
+            <table> <!-- graph 5.0-11 -->
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                <tableData>
+                         0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+                0.0000   0.3400  0.3400  0.3400   0.5000   0.5000   0.3700   0.2500
+                0.0350   0.3400  0.3400  0.3400   0.4200   0.4200   0.2200   0.1750
+                0.0698   0.3200  0.3200  0.3200   0.3600   0.3600   0.1500   0.0900
+                0.1047   0.3000  0.3000  0.3000   0.2900   0.2900   0.1300   0.0700
+                0.1396   0.2800  0.2800  0.2800   0.2600   0.2600   0.1200   0.0600
+                0.1745   0.2500  0.2500  0.2500   0.2000   0.2000   0.1100   0.0600
+                0.2094   0.2200  0.2200  0.2200   0.1800   0.1800   0.1300   0.0850
+                0.2443   0.1990  0.1990  0.1990   0.1750   0.1750   0.1500   0.0975
+                </tableData>
+            </table>
+        </function>
+        
         <function name="aero/coefficient/Clp">
             <description>Roll_moment_due_to_roll_rate</description>
             <product>
                 <property>aero/bi2vel</property>
                 <property>velocities/p-aero-rad_sec</property>
-                <value>-0.4000</value>
+                <product>
+                    <table> <!-- graph 5.0-12 -->
+                        <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                        <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                        <tableData>
+                                 0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+                       -0.0873   -0.400  -0.420  -0.435   -0.470   -0.495   -0.520   -0.530
+                        0.0000   -0.400  -0.420  -0.435   -0.470   -0.495   -0.510   -0.520
+                        0.0873   -0.390  -0.415  -0.440   -0.480   -0.495   -0.520   -0.530
+                        0.1745   -0.370  -0.410  -0.450   -0.475   -0.495   -0.525   -0.532
+                        0.2618   -0.300  -0.350  -0.415   -0.460   -0.475   -0.490   -0.500
+                        0.3491   -0.180  -0.235  -0.295   -0.330   -0.350   -0.375   -0.390
+                        0.4363   -0.095  -0.130  -0.160   -0.180   -0.215   -0.235   -0.272
+                        </tableData>
+                    </table>
+                    <property>aero/coefficient/dClpaeroelastic</property>
+                </product>
             </product>
         </function>
+        
+        <function name="aero/coefficient/dClpaeroelastic">
+            <description>Roll_moment_due_to_roll_rate_aeroelastic</description>
+            <table> <!-- graph 5.0-13 -->
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                <tableData>
+                          0   10000  20000  30000  40000
+                0.0     1.0     1.0    1.0    1.0    1.0
+                0.1     0.99    0.99   0.99   1.0    1.0
+                0.2     0.94    0.96   0.98   0.99   1.0
+                0.3     0.88    0.91   0.92   0.95   0.97
+                0.4     0.83    0.85   0.87   0.92   0.94
+                0.5     0.79    0.83   0.85   0.90   0.91
+                0.6     0.75    0.80   0.83   0.86   0.87
+                0.7     0.73    0.78   0.81   0.82   0.85
+                0.8     0.73    0.78   0.80   0.82   0.85
+                0.9     0.73    0.70   0.72   0.74   0.75
+                0.95    0.73    0.60   0.65   0.68   0.70  
+                </tableData>
+            </table>
+        </function>
+        
         <function name="aero/coefficient/Clr">
             <description>Roll_moment_due_to_yaw_rate</description>
             <product>
                 <property>aero/bi2vel</property>
                 <property>velocities/r-aero-rad_sec</property>
-                <value>0.1500</value>
+                <product>
+                    <table> <!-- 5.0-14 -->
+                        <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                        <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                        <tableData>
+                                 0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+                       -0.0873   -0.150  -0.150  -0.008   -0.008   -0.035   -0.035    0.028
+                        0.0000    0.048   0.048   0.042    0.042    0.015    0.015    0.082
+                        0.0873    0.147   0.147   0.100    0.100    0.078    0.078    0.138
+                        0.1745    0.237   0.237   0.160    0.160    0.130    0.130    0.195
+                        0.2618    0.290   0.290   0.205    0.205    0.180    0.180    0.245
+                        0.3491    0.312   0.312   0.235    0.235    0.202    0.202    0.274
+                        0.4363    0.260   0.260   0.203    0.203    0.166    0.166    0.235
+                        </tableData>
+                    </table>
+                    <property>aero/coefficient/dClraeroelastic</property>
+                </product>
             </product>
+        </function>
+        
+        <function name="aero/coefficient/dClraeroelastic">
+            <description>Roll_moment_due_to_yaw_rate_aeroelastic</description>
+            <table> <!-- graph 5.0-15 -->
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                <tableData>
+                          0   10000  20000  25000   30000  40000
+                0.0     1.0     1.0    1.0    1.0     1.0    1.0
+                0.1     1.0     1.0    1.0    1.0     1.0    1.0
+                0.2    0.98    0.99    1.0   1.01     1.01   1.02
+                0.3    0.92    0.96   0.99   1.02     1.03   1.04
+                0.4    0.86    0.90   0.96   1.03     1.06   1.07
+                0.5    0.78    0.86   0.98   1.01     1.07   1.10
+                0.6    0.72    0.84    1.0   1.04     1.10   1.14
+                0.7    0.70    0.85   1.04   1.14     1.20   1.26
+                0.8    0.70    0.90   1.16   1.33     1.57   1.70
+                0.9    0.70    0.40   0.50   0.70      1.0   1.50
+                0.95   0.70    0.10   0.15   0.20     0.38   0.72
+                </tableData>
+            </table>
         </function>
         
         <!-- for panels 8 or 12 (individual) - reverse sign for 1 and 5 -->
@@ -2887,6 +3587,7 @@
                 </tableData>
             </table>
         </function>
+        
         <!-- for panels 9, 10 and 11 - reverse sign for 2, 3 and 4 -->
         <function name="aero/coefficient/dClsp2">
             <description>Roll_moment_due_to_spoiler_deflection</description>
@@ -2905,24 +3606,7 @@
                 <value>0.33</value> <!-- values in table are for the complete group of 3 panels -->
             </product>
         </function>
-        <function name="aero/function/KlGE">
-            <description>Spoiler_ground_effect_factor</description>
-            <sum>
-                <value>1</value>
-                <product>
-                    <property>aero/function/Kge</property>
-                    <table>
-                        <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
-                        <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
-                        <tableData>
-                                 0.0000  30.0000
-                        0.0000   0.1800  -0.0400
-                        0.2440   0.0100  -0.3500
-                        </tableData>
-                    </table>
-                </product>
-            </sum>
-        </function>
+        
         <function name="aero/coefficient/dClsp[0]">
             <description>Rolling_moment_coefficient_due_to_spoiler_1_deflection</description>
             <product>
@@ -2930,9 +3614,11 @@
                 <property>aero/coefficient/dClsp1</property>
                 <property>fcs/spoiler[0]/pos-rad</property>
                 <value>1.2734</value>
-                <property>aero/function/KlGE</property>
+                <property>aero/coefficient/ClspM</property>
+                <property>aero/coefficient/FClspGE</property>
             </product>
         </function>
+        
         <function name="aero/coefficient/dClsp[1]">
             <description>Rolling_moment_coefficient_due_to_spoiler_2_deflection</description>
             <product>
@@ -2940,9 +3626,11 @@
                 <property>aero/coefficient/dClsp2</property>
                 <property>fcs/spoiler[1]/pos-rad</property>
                 <value>1.2734</value>
-                <property>aero/function/KlGE</property>
+                <property>aero/coefficient/ClspM</property>
+                <property>aero/coefficient/FClspGE</property>
             </product>
         </function>
+        
         <function name="aero/coefficient/dClsp[2]">
             <description>Rolling_moment_coefficient_due_to_spoiler_3_deflection</description>
             <product>
@@ -2950,9 +3638,11 @@
                 <property>aero/coefficient/dClsp2</property>
                 <property>fcs/spoiler[2]/pos-rad</property>
                 <value>1.2734</value>
-                <property>aero/function/KlGE</property>
+                <property>aero/coefficient/ClspM</property>
+                <property>aero/coefficient/FClspGE</property>
             </product>
         </function>
+        
         <function name="aero/coefficient/dClsp[3]">
             <description>Rolling_moment_coefficient_due_to_spoiler_4_deflection</description>
             <product>
@@ -2960,9 +3650,11 @@
                 <property>aero/coefficient/dClsp2</property>
                 <property>fcs/spoiler[3]/pos-rad</property>
                 <value>1.2734</value>
-                <property>aero/function/KlGE</property>
+                <property>aero/coefficient/ClspM</property>
+                <property>aero/coefficient/FClspGE</property>
             </product>
         </function>
+        
         <function name="aero/coefficient/dClsp[4]">
             <description>Rolling_moment_coefficient_due_to_spoiler_5_deflection</description>
             <product>
@@ -2970,54 +3662,88 @@
                 <property>aero/coefficient/dClsp1</property>
                 <property>fcs/spoiler[4]/pos-rad</property>
                 <value>1.2734</value>
-                <property>aero/function/KlGE</property>
+                <property>aero/coefficient/ClspM</property>
+                <property>aero/coefficient/FClspGE</property>
             </product>
         </function>
+        
         <function name="aero/coefficient/dClsp[7]">
             <description>Rolling_moment_coefficient_due_to_spoiler_8_deflection</description>
             <product>
                 <property>aero/coefficient/dClsp1</property>
                 <property>fcs/spoiler[7]/pos-rad</property>
                 <value>1.2734</value>
-                <property>aero/function/KlGE</property>
+                <property>aero/coefficient/ClspM</property>
+                <property>aero/coefficient/FClspGE</property>
             </product>
         </function>
+        
         <function name="aero/coefficient/dClsp[8]">
             <description>Rolling_moment_coefficient_due_to_spoiler_9_deflection</description>
             <product>
                 <property>aero/coefficient/dClsp2</property>
                 <property>fcs/spoiler[8]/pos-rad</property>
                 <value>1.2734</value>
-                <property>aero/function/KlGE</property>
+                <property>aero/coefficient/ClspM</property>
+                <property>aero/coefficient/FClspGE</property>
             </product>
         </function>
+        
         <function name="aero/coefficient/dClsp[9]">
             <description>Rolling_moment_coefficient_due_to_spoiler_10_deflection</description>
             <product>
                 <property>aero/coefficient/dClsp2</property>
                 <property>fcs/spoiler[9]/pos-rad</property>
                 <value>1.2734</value>
-                <property>aero/function/KlGE</property>
+                <property>aero/coefficient/ClspM</property>
+                <property>aero/coefficient/FClspGE</property>
             </product>
         </function>
+        
         <function name="aero/coefficient/dClsp[10]">
             <description>Rolling_moment_coefficient_due_to_spoiler_11_deflection</description>
             <product>
                 <property>aero/coefficient/dClsp2</property>
                 <property>fcs/spoiler[10]/pos-rad</property>
                 <value>1.2734</value>
-                <property>aero/function/KlGE</property>
+                <property>aero/coefficient/ClspM</property>
+                <property>aero/coefficient/FClspGE</property>
             </product>
         </function>
+        
         <function name="aero/coefficient/dClsp[11]">
             <description>Rolling_moment_coefficient_due_to_spoiler_12_deflection</description>
             <product>
                 <property>aero/coefficient/dClsp1</property>
                 <property>fcs/spoiler[11]/pos-rad</property>
                 <value>1.2734</value>
-                <property>aero/function/KlGE</property>
+                <property>aero/coefficient/ClspM</property>
+                <property>aero/coefficient/FClspGE</property>
             </product>
         </function>
+        
+        <function name="aero/coefficient/ClspM">
+            <description>Rolling_moment_coefficient_due_to_mach_spoilers</description>
+            <table> <!-- graph 5.0-18 -->
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">aero/alpha-wing-deg</independentVar>
+                <tableData>
+                          0     2      4      6     8  
+                0.0       1.0   1.0    1.0    1.0   1.0
+                0.1       1.0   1.0    1.0    1.0   1.0
+                0.2       1.0   1.0    1.0    1.0   1.0
+                0.3       1.0   1.0    1.0    1.0   1.0
+                0.4       1.02  1.02   1.02   1.02  1.02   
+                0.5       1.04  1.04   1.04   1.04  1.04   
+                0.6       1.09  1.09   1.09   1.09  1.09
+                0.7       1.17  1.17   1.17   1.17  1.17
+                0.8       1.29  1.29   1.29   1.29  1.29
+                0.9       1.60  1.60   1.54   0.90  0.10
+                0.95      1.70  1.20   0.80   0.38  0.20
+                </tableData>
+            </table>
+        </function>
+        
         <function name="aero/coefficient/dClspoilers">
             <description>Rolling_moment_coefficient_due_to_spoiler_deflection</description>
             <sum>
@@ -3034,23 +3760,113 @@
             </sum>
         </function>
         
+        <function name="aero/coefficient/FClspGE">
+            <description>Roll_moment_due_to_spoilers_groundeffect_function</description>
+            <sum>
+                <value>1</value>
+                <product>
+                    <property>aero/coefficient/FspoilersGE</property>
+                    <property>aero/function/Kge</property>
+                </product>
+            </sum>
+        </function>
+        
+        <function name="aero/coefficient/FspoilersGE">
+            <description>Roll_moment_due_to_spoilers_groundeffect</description>
+            <table> <!-- graph 5.0-29 -->
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                <tableData>
+                         0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+                0.0000   0.18    0.18    0.16     0.14      0.06    0.00    -0.04
+                0.0350   0.16    0.16    0.14     0.12      0.05   -0.03    -0.07
+                0.0698   0.14    0.14    0.12     0.09      0.04   -0.05    -0.11
+                0.1047   0.12    0.12    0.09     0.07      0.02   -0.08    -0.15
+                0.1396   0.10    0.10    0.07     0.04     -0.02   -0.11    -0.18
+                0.1745   0.07    0.07    0.05     0.01     -0.06   -0.15    -0.25
+                0.2094   0.04    0.04    0.00    -0.04     -0.10   -0.20    -0.29
+                0.2443   0.00    0.00   -0.04    -0.08     -0.17   -0.27    -0.35
+                </tableData>
+            </table>
+        </function>
+        
         <function name="aero/coefficient/dClinboardailerons">
             <description>Roll_moment_due_to_inboard_ailerons</description>
             <product>
-                <sum>
-                    <product>
-                        <property>fcs/aileron[1]/pos-rad</property>
-                        <value>-2.865</value> <!-- 1/20 deg -->
-                    </product>
-                    <product>
-                        <property>fcs/aileron[2]/pos-rad</property>
-                        <value> 2.865</value> <!-- 1/20 deg -->
-                    </product>
-                </sum>
-                <value>0.004</value> <!-- estimation of effect of inboard ailerons, see page 5.0-23 -->
-                <!-- TODO: graphs 5.0-24 and 5.0-25 -->
-                <property>aero/function/FlGE</property>
+                <value>2</value>
+				<property>aero/function/KdAI</property>
+                <property>aero/coefficient/Clinboardeffect</property>
+                <property>aero/coefficient/dClinboardaeroelastic</property>
+                <property>aero/coefficient/dClGE</property>
             </product>
+            <!-- TODO: 5.0-25 -->
+        </function>
+        
+        <function name="aero/coefficient/dClGE">
+            <description>Ground_effect_effect_on_roll</description>
+            <sum>
+                <value>1</value>
+                <product>
+                    <property>aero/function/FlGE</property>
+                    <property>aero/function/Kge</property>
+                </product>
+            </sum>
+        </function>
+        
+        <function name="aero/function/KdAI">
+            <description>Inboard_aileron_effectiveness_factor</description>
+            <table> <!-- graph 5.0-22 -->
+                <independentVar lookup="row">fcs/aileron[1]/pos-deg</independentVar>
+                <tableData>
+                -20 -1.00
+                -15 -0.80
+                -10 -0.60
+                 -5 -0.26
+                  0  0.00
+                  5  0.26
+                 10  0.60
+                 15  0.80
+                 20  1.00
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/Clinboardeffect">
+            <description>Rolling moment coefficient effect of inboard aileron</description>
+            <table> <!-- graph 5.0-23 -->
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                <tableData>
+                             0.0000  1.0000   5.0000  10.0000 20.0000  25.0000  30.0000
+                   -0.0873   0.0039  0.0039   0.0036   0.0036  0.0035   0.0038   0.0038
+                    0.0000   0.0042  0.0042   0.0038   0.0038  0.0037   0.0038   0.0038
+                    0.0873   0.0041  0.0041   0.0037   0.0037  0.0036   0.0038   0.0038
+                    0.1745   0.0036  0.0036   0.0034   0.0034  0.0034   0.0037   0.0037
+                    0.2618   0.0020  0.0020   0.0027   0.0027  0.0031   0.0035   0.0035
+                    0.3491   0.0002  0.0002   0.0012   0.0012  0.0027   0.0021   0.0021
+                    0.4363  -0.0009 -0.0009  -0.0002  -0.0002  0.0002   0.0004   0.0004
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/dClinboardaeroelastic">
+            <description>Rolling_moment_coefficient_due_to_mach_inboard</description>
+            <table>
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <tableData>  
+                0.0       1.0 
+                0.1       1.0 
+                0.2       1.0 
+                0.3       1.0 
+                0.4       1.0
+                0.5       1.0
+                0.6       1.0
+                0.7       1.01
+                0.8       1.05
+                0.9       1.15
+                0.95      0.90
+                </tableData>
+            </table>
         </function>
         
         <function name="aero/coefficient/dCloutboardailerons">
@@ -3099,7 +3915,7 @@
                         </tableData>
                     </table>
                 </sum>
-                <property>aero/function/FlGE</property>
+                <property>aero/coefficient/dClGE</property>
             </product>
         </function>
         
@@ -3128,6 +3944,7 @@
                 </tableData>
             </table>
         </function>
+        
         <function name="aero/function/kRu">
             <description>Upper_rudder_effectiveness_factor</description>
             <product>
@@ -3135,6 +3952,7 @@
                 <value>2.294</value>
             </product>
         </function>
+        
         <function name="aero/function/kRl">
             <description>Lower_rudder_effectiveness_factor</description>
             <product>
@@ -3142,6 +3960,7 @@
                 <value>2.294</value>
             </product>
         </function>
+        
         <function name="aero/coefficient/dClRu_aeroelastic">
             <description>Upper_rudder_aeroelastic_effect</description>
             <table>
@@ -3154,6 +3973,7 @@
                 </tableData>
             </table>
         </function>
+        
         <function name="aero/coefficient/dClRl_aeroelastic">
             <description>Lower_rudder_aeroelastic_effect</description>
             <table>
@@ -3298,7 +4118,7 @@
                         0.00   -22.6     -22.6     -22.6
                         0.60   -17.7     -20.3     -22.6
                         0.90   -13.5     -19.5     -25.1
-                    </tableData> <!-- SHOULD THESE BE NEGATIVE?? -->
+                    </tableData>
                 </table>
             </product>
         </function>
@@ -3338,7 +4158,7 @@
         <function name="aero/coefficient/dCm_stabilizer">
             <description>Change_in_basic_pitching_moment_due_to_change_in_stabilizer_angle</description>
             <product>
-                <property>fcs/stabilizer-pos-rad</property>
+                <property>fcs/stabilizer/pos-rad</property>
                 <value>57.2957795786</value> <!-- convert to 1/rad -->
                 <table>
                     <independentVar lookup="row">atmosphere/density-altitude</independentVar>
@@ -3408,47 +4228,573 @@
         </axis>
 
         <!-- YAW -->
+        <function name="aero/coefficient/Cn_beta">
+            <description>Yaw_moment_due_to_beta_coefficient</description>
+            <product>
+                <property>aero/beta-switch</property>
+                <property>aero/beta-deg</property>
+                <sum>
+                    <product>
+                        <property>aero/coefficient/Cnb_alpha</property>
+                        <property>aero/coefficient/Cnb_aeroelastic</property>
+                        <property>aero/coefficient/Cnb_GE</property>
+                    </product>
+                    <product>
+                        <property>aero/coefficient/dCyb</property>
+                        <difference>
+                            <property>aero/CoG-mac-pct</property>
+                            <value>25</value>
+                        </difference>
+                        <quotient>
+                            <property>metrics/cbarw-ft</property>
+                            <property>metrics/bw-ft</property>
+                        </quotient>
+                    </product>
+                </sum>
+            </product>
+        </function>
         
+        <function name="aero/coefficient/Cnb_alpha">
+            <description>Yaw_moment_due_to_beta_alpha</description>
+            <table> <!-- graph 6.0-6 -->
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                <tableData>
+                         0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+               -0.0873   0.0033  0.0033  0.0034   0.0035   0.0025   0.0026   0.0028
+                0.0000   0.0032  0.0032  0.0033   0.0034   0.0026   0.0027   0.0029
+                0.0873   0.0030  0.0030  0.0031   0.0032   0.0027   0.0028   0.0029
+                0.1745   0.0026  0.0026  0.0028   0.0030   0.0030   0.0032   0.0034
+                0.2618   0.0025  0.0025  0.0028   0.0030   0.0032   0.0036   0.0038
+                0.3491   0.0025  0.0025  0.0029   0.0032   0.0035   0.0038   0.0042
+                0.4363   0.0022  0.0022  0.0033   0.0037   0.0040   0.0042   0.0045
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/Cnb_aeroelastic">
+            <description>Yaw_moment_due_to_beta_aeroelastic</description>
+            <table> <!-- graph 6.0-6 -->
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                <tableData>
+                          0   10000  20000  30000  40000
+                0.0     1.0     1.0    1.0    1.0    1.0
+                0.1     0.98    0.98   0.99   1.0    1.0
+                0.2     0.95    0.96   0.97   0.98   0.98
+                0.3     0.90    0.93   0.95   0.96   0.97
+                0.4     0.85    0.90   0.94   0.96   0.98
+                0.5     0.83    0.88   0.94   0.97   1.02   
+                0.6     0.80    0.88   0.95   1.00   1.04
+                0.7     0.78    0.89   0.97   1.04   1.10
+                0.8     0.77    0.90   1.00   1.10   1.18
+                0.9     0.77    0.89   1.00   1.10   1.20   
+                0.95    0.77    0.76   0.90   1.02   1.12
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/Cnb_GE">
+            <description>Yaw_moment_due_to_beta_ground_effect</description>
+            <sum>
+                <value>1</value>
+                <product>
+                    <property>aero/function/Kge</property>
+                    <property>aero/coefficient/Fnbeta</property>
+                </product>
+            </sum>
+        </function>
+        
+        <function name="aero/coefficient/Fnbeta">
+            <description>Yaw_moment_due_to_beta_ground_effect_function</description>
+            <table> <!-- graph 6.0-7 -->
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                <tableData>
+                         0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+                0.0000   0.2200  0.2200  0.2200   0.1600  -0.0400  -0.2300  -0.3100
+                0.0350   0.1500  0.1500  0.1500   0.1000  -0.1000  -0.3000  -0.3800
+                0.0698   0.0500  0.0500  0.0500   0.0000  -0.1700  -0.3600  -0.4500
+                0.1047  -0.0400 -0.0400 -0.0400  -0.1000  -0.2700  -0.4300  -0.5000
+                0.1396  -0.1000 -0.1000 -0.1000  -0.1650  -0.3500  -0.5000  -0.6000
+                0.1745  -0.1600 -0.1600 -0.1600  -0.2200  -0.4000  -0.5600  -0.6800
+                0.2094  -0.2500 -0.2500 -0.2500  -0.3200  -0.4600  -0.5800  -0.6700
+                0.2443  -0.3500 -0.3500 -0.3500  -0.4400  -0.5200  -0.5800  -0.6000
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/Cnb_rate">
+            <description>Yaw_moment_due_to_beta_rate</description>
+            <product>
+                <property>aero/bi2vel</property>
+                <property>aero/betadot-rad_sec</property>
+                <product>
+                    <table> <!-- graph 6.0-8 -->
+                        <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                        <tableData>
+                       -0.0873    -0.031
+                        0.0000    -0.028
+                        0.0873    -0.025
+                        0.1745    -0.0225
+                        0.2618    -0.019
+                        0.3491    -0.017
+                        0.4363    -0.014
+                        </tableData>
+                    </table>
+                    <property>aero/coefficient/Cnb_rate_aeroelastic</property>
+                </product>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/Cnb_rate_aeroelastic">
+            <description>Yaw_moment_due_to_beta_rate_aeroelastic</description>
+            <table> <!-- graph 6.0-8 -->
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                <tableData>
+                          0   10000  20000  30000  40000
+                0.0     1.0     1.0    1.0    1.0    1.0
+                0.1     1.0     1.0    1.0    1.0    1.0
+                0.2     1.0     1.0    1.0    1.0    1.0
+                0.3     1.0     1.0    1.0    1.01   1.01
+                0.4     1.0     1.01   1.05   1.10   1.15
+                0.5     1.02    1.10   1.20   1.24   1.26   
+                0.6     1.24    1.25   1.35   1.40   1.60
+                0.7     1.45    1.60   1.75   1.85   2.00
+                0.8     1.75    2.00   2.20   2.30   2.50
+                0.9     1.75    2.00   2.10   2.30   2.50   
+                0.95    1.75    2.10   2.30   2.45   2.75
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/Cnp">
+            <description>Yaw_moment_due_to_roll_rate</description>
+            <product>
+                <property>aero/bi2vel</property>
+                <property>velocities/p-aero-rad_sec</property>
+                <table> <!-- graph 6.0-9 -->
+                    <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                    <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                    <tableData>
+                             0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+                   -0.0873   0.096   0.090   0.070    0.056    0.030    0.024    0.022
+                    0.0000   0.030   0.026   0.010   -0.006   -0.027   -0.038   -0.042
+                    0.0873  -0.032  -0.040  -0.050   -0.063   -0.084   -0.100   -0.118
+                    0.1745  -0.070  -0.094  -0.110   -0.124   -0.158   -0.184   -0.210
+                    0.2618   0.040  -0.030  -0.168   -0.196   -0.230   -0.250   -0.260
+                    0.3491   0.040   0.024  -0.162   -0.194   -0.200   -0.180   -0.090
+                    0.4363   0.040   0.024  -0.090   -0.124   -0.070   -0.044   -0.026
+                    </tableData>
+                </table>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/Cnr"> <!-- 6.0-10 -->
+            <description>Yaw_moment_due_to_yaw_rate</description>
+            <product>
+                <property>aero/bi2vel</property>
+                <property>velocities/r-aero-rad_sec</property>
+                <product>
+                    <property>aero/coefficient/Cnr_CG</property>
+                    <table>
+                        <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                        <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                        <tableData>
+                                 0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+                       -0.0873  -0.225  -0.225  -0.190   -0.210   -0.250   -0.255   -0.275
+                        0.0000  -0.225  -0.225  -0.195   -0.215   -0.260   -0.275   -0.290
+                        0.0873  -0.225  -0.225  -0.200   -0.225   -0.290   -0.300   -0.320
+                        0.1745  -0.230  -0.230  -0.225   -0.250   -0.325   -0.340   -0.360
+                        0.2618  -0.250  -0.245  -0.250   -0.285   -0.360   -0.375   -0.400
+                        0.3491  -0.265  -0.265  -0.285   -0.325   -0.400   -0.425   -0.440
+                        0.4363  -0.300  -0.300  -0.325   -0.370   -0.450   -0.465   -0.490
+                        </tableData>
+                    </table>
+                    <property>aero/coefficient/Cnr_aeroelastic</property>
+                </product>
+            </product>
+        </function>
+        
+        <!-- for panels 8 or 12 (individual) - reverse sign for 1 and 5 -->
+        <function name="aero/coefficient/dCnsp1">
+            <description>Yawing_moment_due_to_spoiler_deflection</description>
+            <table>
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                <tableData>
+                         0.0000  30.0000
+               -0.0870   0.0011   0.0015
+                0.0000   0.0098   0.0017
+                0.1750   0.0076   0.0018
+                0.4360  -0.0002   0.0080
+                </tableData>
+            </table>
+        </function>
+        
+        <!-- for panels 9, 10 and 11 - reverse sign for 2, 3 and 4 -->
+        <function name="aero/coefficient/dCnsp2">
+            <description>Yawing_moment_due_to_spoiler_deflection</description>
+            <product>
+                <table>
+                    <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                             0.0000  30.0000
+                   -0.0870   0.0070   0.0175
+                    0.0000   0.0115   0.0240
+                    0.1750   0.0121   0.0325
+                    0.4360   0.0005   0.0221
+                    </tableData>
+                </table>
+                <value>0.33</value> <!-- values in table are for the complete group of 3 panels -->
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/dCnsp[0]">
+            <description>Yawing_moment_coefficient_due_to_spoiler_1_deflection</description>
+            <product>
+                <value>-1</value>
+                <property>aero/coefficient/dClsp1</property>
+                <property>fcs/spoiler[0]/pos-rad</property>
+                <value>1.2734</value>
+                <property>aero/coefficient/CnspM</property>
+                <property>aero/coefficient/FCnspGE</property>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/dCnsp[1]">
+            <description>Yawing_moment_coefficient_due_to_spoiler_2_deflection</description>
+            <product>
+                <value>-1</value>
+                <property>aero/coefficient/dClsp2</property>
+                <property>fcs/spoiler[1]/pos-rad</property>
+                <value>1.2734</value>
+                <property>aero/coefficient/CnspM</property>
+                <property>aero/coefficient/FCnspGE</property>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/dCnsp[2]">
+            <description>Yawing_moment_coefficient_due_to_spoiler_3_deflection</description>
+            <product>
+                <value>-1</value>
+                <property>aero/coefficient/dClsp2</property>
+                <property>fcs/spoiler[2]/pos-rad</property>
+                <value>1.2734</value>
+                <property>aero/coefficient/CnspM</property>
+                <property>aero/coefficient/FCnspGE</property>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/dCnsp[3]">
+            <description>Yawing_moment_coefficient_due_to_spoiler_4_deflection</description>
+            <product>
+                <value>-1</value>
+                <property>aero/coefficient/dClsp2</property>
+                <property>fcs/spoiler[3]/pos-rad</property>
+                <value>1.2734</value>
+                <property>aero/coefficient/CnspM</property>
+                <property>aero/coefficient/FCnspGE</property>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/dCnsp[4]">
+            <description>Yawing_moment_coefficient_due_to_spoiler_5_deflection</description>
+            <product>
+                <value>-1</value>
+                <property>aero/coefficient/dClsp1</property>
+                <property>fcs/spoiler[4]/pos-rad</property>
+                <value>1.2734</value>
+                <property>aero/coefficient/CnspM</property>
+                <property>aero/coefficient/FCnspGE</property>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/dCnsp[7]">
+            <description>Yawing_moment_coefficient_due_to_spoiler_8_deflection</description>
+            <product>
+                <property>aero/coefficient/dClsp1</property>
+                <property>fcs/spoiler[7]/pos-rad</property>
+                <value>1.2734</value>
+                <property>aero/coefficient/CnspM</property>
+                <property>aero/coefficient/FCnspGE</property>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/dCnsp[8]">
+            <description>Yawing_moment_coefficient_due_to_spoiler_9_deflection</description>
+            <product>
+                <property>aero/coefficient/dClsp2</property>
+                <property>fcs/spoiler[8]/pos-rad</property>
+                <value>1.2734</value>
+                <property>aero/coefficient/CnspM</property>
+                <property>aero/coefficient/FCnspGE</property>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/dCnsp[9]">
+            <description>Yawing_moment_coefficient_due_to_spoiler_10_deflection</description>
+            <product>
+                <property>aero/coefficient/dClsp2</property>
+                <property>fcs/spoiler[9]/pos-rad</property>
+                <value>1.2734</value>
+                <property>aero/coefficient/CnspM</property>
+                <property>aero/coefficient/FCnspGE</property>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/dCnsp[10]">
+            <description>Yawing_moment_coefficient_due_to_spoiler_11_deflection</description>
+            <product>
+                <property>aero/coefficient/dClsp2</property>
+                <property>fcs/spoiler[10]/pos-rad</property>
+                <value>1.2734</value>
+                <property>aero/coefficient/CnspM</property>
+                <property>aero/coefficient/FCnspGE</property>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/dCnsp[11]">
+            <description>Yawing_moment_coefficient_due_to_spoiler_12_deflection</description>
+            <product>
+                <property>aero/coefficient/dClsp1</property>
+                <property>fcs/spoiler[11]/pos-rad</property>
+                <value>1.2734</value>
+                <property>aero/coefficient/CnspM</property>
+                <property>aero/coefficient/FCnspGE</property>
+            </product>
+        </function>
+        
+        <function name="aero/coefficient/CnspM"> <!-- 5.0-13 -->
+            <description>Rolling_moment_coefficient_due_to_mach_spoilers</description>
+            <table>
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">aero/alpha-wing-deg</independentVar>
+                <tableData>
+                          0     2      4      6     8  
+                0.0       1.0   1.0    1.0    1.0   1.0
+                0.1       1.0   1.0    1.0    1.0   1.0
+                0.2       1.0   1.0    1.0    1.0   1.0
+                0.3       1.0   1.0    1.0    1.0   1.0
+                0.4       1.0   1.0    1.0    1.0   1.0 
+                0.5       1.0   1.0    1.0    1.0   0.98
+                0.6       1.0   1.0    1.0    1.0   0.95
+                0.7       1.03  1.03   1.02   1.01  0.88
+                0.8       1.17  1.24   1.16   1.10  0.70
+                0.9       1.40  1.20   1.00   0.45  0.20
+                0.95      1.00  0.38   0.40   0.08 -0.12
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/FCnspGE">
+            <description>Yawing_moment_due_to_spoilers_groundeffect_function</description>
+            <sum>
+                <value>1</value>
+                <product>
+                    <property>aero/coefficient/FCnspoilersGE</property>
+                    <property>aero/function/Kge</property>
+                </product>
+            </sum>
+        </function>
+        
+        <function name="aero/coefficient/FCnspoilersGE"> <!-- 6.0-14 -->
+            <description>Yawing_moment_due_to_spoilers_groundeffect</description>
+            <table>
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <independentVar lookup="column">fcs/flap-pos-deg</independentVar>
+                <tableData>
+                         0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
+                0.0000  -0.090  -0.090   -0.040  -0.040    0.050    0.120    0.150
+                0.0350  -0.170  -0.170   -0.140  -0.140   -0.010    0.070    0.100
+                0.0698  -0.290  -0.290   -0.250  -0.250   -0.100   -0.020    0.050
+                0.1047  -0.420  -0.420   -0.350  -0.350   -0.220   -0.140   -0.070
+                0.1396  -0.550  -0.550   -0.500  -0.500   -0.350   -0.250   -0.200
+                0.1745  -0.700  -0.700   -0.650  -0.650   -0.500   -0.420   -0.350
+                0.2094  -0.850  -0.850   -0.800  -0.800   -0.680   -0.600   -0.550
+                0.2443  -0.990  -0.990   -0.940  -0.940   -0.820   -0.750   -0.720
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/Cn_spoilers">
+            <description>Yaw_moment_due_to_spoilers_sum</description>
+            <sum>
+                <property>aero/coefficient/dCnsp[0]</property>
+                <property>aero/coefficient/dCnsp[1]</property>
+                <property>aero/coefficient/dCnsp[2]</property>
+                <property>aero/coefficient/dCnsp[3]</property>
+                <property>aero/coefficient/dCnsp[4]</property>
+                <property>aero/coefficient/dCnsp[7]</property>
+                <property>aero/coefficient/dCnsp[8]</property>
+                <property>aero/coefficient/dCnsp[9]</property>
+                <property>aero/coefficient/dCnsp[10]</property>
+                <property>aero/coefficient/dCnsp[11]</property>
+            </sum>
+        </function>
+        
+        <function name="aero/coefficient/Cnr_CG"> <!-- 6.0-10 -->
+            <description>Yaw_moment_due_to_yaw_rate_center_gravity</description>
+            <table>
+                <independentVar lookup="row">aero/CoG-mac-pct</independentVar>
+                <tableData>
+                11   1.06
+                15   1.04
+                20   1.02
+                25   1.00
+                30   0.98
+                33   0.97
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/Cnr_aeroelastic">
+            <description>Yaw_moment_due_to_yaw_rate_aeroelastic</description>
+            <table> <!-- graph 6.0-10 -->
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                <tableData>
+                          0   10000  20000  25000  30000  40000
+                0.0     1.0     1.0    1.0    1.0    1.0    1.0
+                0.1     0.99    1.0    1.0    1.0    1.0    1.0
+                0.2     0.98    0.99   1.0    1.0    1.01   1.01
+                0.3     0.95    0.99   1.0    1.0    1.02   1.03
+                0.4     0.93    0.97   1.0    1.01   1.03   1.05
+                0.5     0.90    0.95   0.99   1.02   1.04   1.09
+                0.6     0.86    0.93   0.99   1.03   1.06   1.13
+                0.7     0.83    0.90   0.99   1.05   1.08   1.19
+                0.8     0.80    0.86   0.95   1.06   1.10   1.23
+                0.9     0.80    0.83   0.87   0.93   1.07   1.25
+                0.95    0.80    0.82   0.84   0.86   0.98   1.18
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/Cndr">
+            <description>Yaw_moment_due_to_rudder</description>
+            <sum>
+                <product>
+                    <property>aero/function/kRu</property>
+                    <property>aero/coefficient/CnRu</property>
+                    <property>aero/coefficient/CnRuaeroelastic</property>
+                </product>
+                <product>
+                    <property>aero/function/kRl</property>
+                    <property>aero/coefficient/CnRl</property>
+                    <property>aero/coefficient/CnRlaeroelastic</property>
+                </product>
+                <product>
+                    <property>aero/coefficient/CYrudder</property>
+                    <difference>
+                        <property>aero/CoG-mac-pct</property>
+                        <value>25</value>
+                    </difference>
+                    <quotient>
+                        <property>metrics/cbarw-ft</property>
+                        <property>metrics/bw-ft</property>
+                    </quotient>
+                </product>
+            </sum>
+        </function>
+        
+        <function name="aero/coefficient/CnRu">
+            <description>Yaw_moment_due_to_upper_rudder_alpha</description>
+            <table> <!-- graph 6.0-19 -->
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <tableData>
+               -0.0873  -0.028
+                0.0000  -0.027  
+                0.0873  -0.027
+                0.1745  -0.026
+                0.2618  -0.025
+                0.3491  -0.023
+                0.4363  -0.016
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/CnRl">
+            <description>Yaw_moment_due_to_lower_rudder_alpha</description>
+            <table> <!-- graph 6.0-19 -->
+                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <tableData>
+               -0.0873  -0.022
+                0.0000  -0.021  
+                0.0873  -0.020
+                0.1745  -0.019
+                0.2618  -0.017
+                0.3491  -0.015
+                0.4363  -0.008
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/CnRuaeroelastic">
+            <description>Yaw_moment_due_to_rudder_upper_aeroelastic</description>
+            <table> <!-- graph 6.0-20 -->
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                <tableData>
+                          0   10000  20000  30000  40000
+                0.0     1.0     1.0    1.0    1.0    1.0
+                0.1     1.0     1.0    1.0    1.0    1.0
+                0.2     0.97    0.99   1.0    1.0    1.0
+                0.3     0.88    0.94   0.97   0.98   0.99
+                0.4     0.77    0.87   0.93   0.95   0.97
+                0.5     0.65    0.78   0.85   0.90   0.94
+                0.6     0.54    0.70   0.80   0.84   0.94
+                0.7     0.44    0.65   0.79   0.90   0.98
+                0.8     0.28    0.63   0.80   0.97   1.10
+                0.9     0.28    0.30   0.30   0.76   0.90
+                0.95    0.28    0.18   0.42   0.55   0.65
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/CnRlaeroelastic">
+            <description>Yaw_moment_due_to_rudder_lower_aeroelastic</description>
+            <table> <!-- graph 6.0-21 -->
+                <independentVar lookup="row">velocities/mach</independentVar>
+                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                <tableData>
+                          0   10000  20000  30000  40000
+                0.0     1.0     1.0    1.0    1.0    1.0
+                0.1     1.0     1.0    1.0    1.0    1.0
+                0.2     0.98    0.99   1.0    1.0    1.0
+                0.3     0.95    0.97   0.99   0.99   1.0
+                0.4     0.90    0.96   0.98   0.99   1.0
+                0.5     0.87    0.94   0.97   0.99   1.01
+                0.6     0.82    0.90   0.96   0.99   1.03
+                0.7     0.74    0.85   0.94   0.98   1.04
+                0.8     0.58    0.75   0.87   0.95   1.00
+                0.9     0.58    0.25   0.45   0.52   0.53
+                0.95    0.58    0.22   0.26   0.27   0.28
+                </tableData>
+            </table>
+        </function>
+        
+        <function name="aero/coefficient/Cn_total">
+            <description>Total_yawing_moment_coefficient</description>
+            <sum>
+                <property>aero/coefficient/Cn_beta</property>
+                <property>aero/coefficient/Cnb_rate</property>
+                <property>aero/coefficient/Cnp</property>
+                <property>aero/coefficient/Cnr</property>
+                <property>aero/coefficient/Cndr</property>
+                <property>aero/coefficient/Cn_spoilers</property>
+            </sum>
+        </function>
+            
         <axis name="YAW">
-            <function name="aero/coefficient/Cnb">
-                <description>Yaw_moment_due_to_beta</description>
+            <function name="my_yaw">
+                <description>Yaw_moment</description>
                 <product>
                     <property>aero/qbar-psf</property>
                     <property>metrics/Sw-sqft</property>
                     <property>metrics/bw-ft</property>
-                    <property>aero/beta-rad</property>
-                    <value>0.1200</value>
-                </product>
-            </function>
-            <function name="aero/coefficient/Cnr">
-                <description>Yaw_moment_due_to_yaw_rate</description>
-                <product>
-                    <property>aero/qbar-psf</property>
-                    <property>metrics/Sw-sqft</property>
-                    <property>metrics/bw-ft</property>
-                    <property>aero/bi2vel</property>
-                    <property>velocities/r-aero-rad_sec</property>
-                    <value>-0.1500</value>
-                </product>
-            </function>
-            <function name="aero/coefficient/Cndr">
-                <description>Yaw_moment_due_to_rudder</description>
-                <product>
-                    <property>aero/qbar-psf</property>
-                    <property>metrics/Sw-sqft</property>
-                    <property>metrics/bw-ft</property>
-                    <property>fcs/rudder-pos-rad</property>
-                    <value>-0.1000</value>
-                </product>
-            </function>
-            <function name="aero/coefficient/Cnda">
-                <description>Adverse_yaw</description>
-                <product>
-                    <property>aero/qbar-psf</property>
-                    <property>metrics/Sw-sqft</property>
-                    <property>metrics/bw-ft</property>
-                    <property>fcs/aileron-pos-rad</property>
-                    <value>0.0000</value>
+                    <property>aero/coefficient/Cn_total</property>
                 </product>
             </function>
         </axis>
