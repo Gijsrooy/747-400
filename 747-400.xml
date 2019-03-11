@@ -112,12 +112,12 @@
         <location name="EYEPOINT" unit="IN">
             <x> 218 </x>
             <y> -21 </y>
-            <z> 80  </z>
+            <z>  80 </z>
         </location>
-        <location name="VRP" unit="M">
-            <x> 0 </x>
-            <y> 0 </y>
-            <z> 0 </z>
+        <location name="VRP" unit="IN">
+            <x> 1263 </x>
+            <y>    0 </y>
+            <z>    0 </z>
         </location>
     </metrics>
 
@@ -241,8 +241,8 @@
 
         <contact type="BOGEY" name="NOSE">
             <location unit="IN">
-                <x> -865.79 </x>
-                <y>    0.00 </y>
+                <x>  395.0  </x>
+                <y>    0.0  </y>
                 <z> -221.46 </z>
             </location>
             <static_friction> 0.5 </static_friction>
@@ -256,8 +256,8 @@
         </contact>
         <contact type="BOGEY" name="LEFT_WING">
             <location unit="IN">
-                <x>  1342.5 </x>
-                <y>  -216.6 </y>
+                <x> 1342.5  </x>
+                <y> -216.6  </y>
                 <z> -203.27 </z>
             </location>
             <static_friction> 0.5 </static_friction>
@@ -271,8 +271,8 @@
         </contact>
         <contact type="BOGEY" name="LEFT_BODY">
             <location unit="IN">
-                <x>  1463.5 </x>
-                <y>   -75.6 </y>
+                <x> 1463.5  </x>
+                <y>  -75.6  </y>
                 <z> -203.27 </z>
             </location>
             <static_friction> 0.5 </static_friction>
@@ -286,8 +286,8 @@
         </contact>
         <contact type="BOGEY" name="RIGHT_BODY">
             <location unit="IN">
-                <x>  1463.5 </x>
-                <y>    75.6 </y>
+                <x> 1463.5  </x>
+                <y>   75.6  </y>
                 <z> -203.27 </z>
             </location>
             <static_friction> 0.5 </static_friction>
@@ -301,8 +301,8 @@
         </contact>
         <contact type="BOGEY" name="RIGHT_WING">
             <location unit="IN">
-                <x>  1342.5 </x>
-                <y>   216.6 </y>
+                <x> 1342.5  </x>
+                <y>  216.6  </y>
                 <z> -203.27 </z>
             </location>
             <static_friction> 0.8 </static_friction>
@@ -317,9 +317,9 @@
 
         <contact type="BOGEY" name="NOSE_GROUND">
             <location unit="IN">
-                <x> -865 </x>
-                <y> 0 </y>
-                <z> -100 </z>
+                <x> 340.0 </x>
+                <y>   0.0 </y>
+                <z> -90.0 </z>
             </location>
             <static_friction> 0.8 </static_friction>
             <dynamic_friction> 20 </dynamic_friction>
@@ -332,9 +332,9 @@
         </contact>
         <contact type="BOGEY" name="LEFT_GROUND">
             <location unit="IN">
-                <x> -865 </x>
-                <y> -70 </y>
-                <z> -100 </z>
+                <x> 1420.0 </x>
+                <y>  -78.0 </y>
+                <z> -110.0 </z>
             </location>
             <static_friction> 0.8 </static_friction>
             <dynamic_friction> 20 </dynamic_friction>
@@ -347,9 +347,9 @@
         </contact>
         <contact type="BOGEY" name="RIGHT_GROUND">
             <location unit="IN">
-                <x> -865 </x>
-                <y> 70 </y>
-                <z> -100 </z>
+                <x> 1420.0 </x>
+                <y>   78.0 </y>
+                <z> -110.0 </z>
             </location>
             <static_friction> 0.8 </static_friction>
             <dynamic_friction> 20 </dynamic_friction>
@@ -361,12 +361,11 @@
             <retractable>0</retractable>
         </contact>
 
-
         <contact type="STRUCTURE" name="NOSE_TIP">
-            <location unit="FT">
-                <x> -97.5 </x>
-                <y> 0 </y>
-                <z> 1 </z>
+            <location unit="IN">
+                <x> 90.0  </x>
+                <y>  0.0  </y>
+                <z> 16.66 </z>
             </location>
             <static_friction> 0.8 </static_friction>
             <dynamic_friction> 0.5 </dynamic_friction>
@@ -377,11 +376,11 @@
             <brake_group> NONE </brake_group>
             <retractable>0</retractable>
         </contact>
-        <contact type="STRUCTURE" name="LEFT_TIP">
-            <location unit="FT">
-                <x> 65 </x>
-                <y> -105 </y>
-                <z> 4 </z>
+        <contact type="STRUCTURE" name="LEFT_WING_TIP">
+            <location unit="IN">
+                <x>  2000.0 </x>
+                <y> -1247.0 </y>
+                <z>    55.0 </z>
             </location>
             <static_friction> 0.8 </static_friction>
             <dynamic_friction> 0.5 </dynamic_friction>
@@ -392,11 +391,11 @@
             <brake_group> NONE </brake_group>
             <retractable>0</retractable>
         </contact>
-        <contact type="STRUCTURE" name="RIGHT_TIP">
-            <location unit="FT">
-                <x> 65 </x>
-                <y> 105 </y>
-                <z> 4 </z>
+        <contact type="STRUCTURE" name="RIGHT_WING_TIP">
+            <location unit="IN">
+                <x> 2000.0 </x>
+                <y> 1247.0 </y>
+                <z>   55.0 </z>
             </location>
             <static_friction> 0.8 </static_friction>
             <dynamic_friction> 0.5 </dynamic_friction>
@@ -408,10 +407,10 @@
             <retractable>0</retractable>
         </contact>
         <contact type="STRUCTURE" name="TAIL_TIP">
-            <location unit="FT">
-                <x> 127 </x>
-                <y> 0 </y>
-                <z> 7.5 </z>
+            <location unit="IN">
+                <x> 2792.0 </x>
+                <y>    0.0 </y>
+                <z>  128.0 </z>
             </location>
             <static_friction> 0.8 </static_friction>
             <dynamic_friction> 0.5 </dynamic_friction>
@@ -422,135 +421,137 @@
             <brake_group> NONE </brake_group>
             <retractable>0</retractable>
         </contact>
+        
     </ground_reactions>
+    
     <propulsion>
 
         <engine file="GE_CF6-80C2B1F">
             <location unit="IN">
-                <x>   50 </x>
+                <x> 1400 </x>
                 <y> -834 </y>
                 <z> -100 </z>
             </location>
             <orient unit="DEG">
-                <roll> 0.0 </roll>
+                <roll>  0.0 </roll>
                 <pitch> 0.0 </pitch>
-                <yaw> 0 </yaw>
+                <yaw>   0.0 </yaw>
             </orient>
             <feed>1</feed>
             <thruster file="direct">
                 <location unit="IN">
-                    <x>   50 </x>
+                    <x> 1400 </x>
                     <y> -834 </y>
                     <z> -100 </z>
                 </location>
                 <orient unit="DEG">
-                    <roll> 0.0 </roll>
+                    <roll>  0.0 </roll>
                     <pitch> 0.0 </pitch>
-                    <yaw> 0.0 </yaw>
+                    <yaw>   0.0 </yaw>
                 </orient>
             </thruster>
         </engine>
 
         <engine file="GE_CF6-80C2B1F">
             <location unit="IN">
-                <x> -250 </x>
+                <x>  900 </x>
                 <y> -470 </y>
                 <z> -100 </z>
             </location>
             <orient unit="DEG">
-                <roll> 0.0 </roll>
+                <roll>  0.0 </roll>
                 <pitch> 0.0 </pitch>
-                <yaw> 0 </yaw>
+                <yaw>   0.0 </yaw>
             </orient>
             <feed>2</feed>
             <thruster file="direct">
                 <location unit="IN">
-                    <x> -250 </x>
+                    <x>  900 </x>
                     <y> -470 </y>
                     <z> -100 </z>
                 </location>
                 <orient unit="DEG">
-                    <roll> 0.0 </roll>
+                    <roll>  0.0 </roll>
                     <pitch> 0.0 </pitch>
-                    <yaw> 0.0 </yaw>
+                    <yaw>   0.0 </yaw>
                 </orient>
             </thruster>
         </engine>
 
         <engine file="GE_CF6-80C2B1F">
             <location unit="IN">
-                <x> -250 </x>
+                <x>  900 </x>
                 <y>  470 </y>
                 <z> -100 </z>
             </location>
             <orient unit="DEG">
-                <roll> 0.0 </roll>
+                <roll>  0.0 </roll>
                 <pitch> 0.0 </pitch>
-                <yaw> 0 </yaw>
+                <yaw>   0.0 </yaw>
             </orient>
             <feed>3</feed>
             <thruster file="direct">
                 <location unit="IN">
-                    <x> -250 </x>
+                    <x>  900 </x>
                     <y>  470 </y>
                     <z> -100 </z>
                 </location>
                 <orient unit="DEG">
-                    <roll> 0.0 </roll>
+                    <roll>  0.0 </roll>
                     <pitch> 0.0 </pitch>
-                    <yaw> 0.0 </yaw>
+                    <yaw>   0.0 </yaw>
                 </orient>
             </thruster>
         </engine>
 
         <engine file="GE_CF6-80C2B1F">
             <location unit="IN">
-                <x>   50 </x>
+                <x> 1400 </x>
                 <y>  834 </y>
                 <z> -100 </z>
             </location>
             <orient unit="DEG">
-                <roll> 0.0 </roll>
+                <roll>  0.0 </roll>
                 <pitch> 0.0 </pitch>
-                <yaw> 0 </yaw>
+                <yaw>   0.0 </yaw>
             </orient>
             <feed>4</feed>
             <thruster file="direct">
                 <location unit="IN">
-                    <x>   50 </x>
+                    <x> 1400 </x>
                     <y>  834 </y>
                     <z> -100 </z>
                 </location>
                 <orient unit="DEG">
-                    <roll> 0.0 </roll>
+                    <roll>  0.0 </roll>
                     <pitch> 0.0 </pitch>
-                    <yaw> 0.0 </yaw>
+                    <yaw>   0.0 </yaw>
                 </orient>
             </thruster>
         </engine>
         
         <engine file="APU_PW901">
             <location unit="IN">
-                <x> 100 </x>
-                <y> 0 </y>
-                <z> 10 </z>
+                <x> 2700 </x>
+                <y>    0 </y>
+                <z>  120 </z>
             </location>
             <orient unit="DEG">
-                <roll> 0.0 </roll>
-                <pitch> 0 </pitch>
-                <yaw> 0 </yaw>
+                <roll>  0.0 </roll>
+                <pitch> 0.0 </pitch>
+                <yaw>   0.0 </yaw>
             </orient>
             <feed>2</feed>
             <thruster file="direct">
                 <location unit="IN">
-                    <x> 0 </x>
-                    <y> 0 </y>
-                    <z> 10 </z>
+                    <x> 2700 </x>
+                    <y>    0 </y>
+                    <z>  120 </z>
                 </location>
                 <orient unit="DEG">
-                    <roll> 0.0 </roll>
+                    <roll>  0.0 </roll>
                     <pitch> 0.0 </pitch>
-                    <yaw> 0.0 </yaw>
+                    <yaw>   0.0 </yaw>
                 </orient>
             </thruster>
         </engine>
@@ -4820,9 +4821,9 @@
 
         <force name="pushback" frame="BODY">
             <location unit="IN">
-                <x> -1050 </x>
-                <y>     0 </y>
-                <z>  -100 </z>
+                <x>  300 </x>
+                <y>    0 </y>
+                <z> -170 </z>
             </location>
             <direction>
                 <x>1</x>
