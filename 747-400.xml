@@ -2518,10 +2518,10 @@
                 0.0349   0.150   0.150   0.150    0.150    0.050   -0.100   -0.160
                 0.0698   0.130   0.130   0.130    0.130    0.010   -0.140   -0.210
                 0.1047   0.100   0.100   0.100    0.100   -0.020   -0.170   -0.240
-                0.1396   0.70    0.70    0.70     0.70    -0.050   -0.210   -0.280
-                0.1745   0.30    0.30    0.30     0.30    -0.080   -0.240   -0.320
-                0.2094   0.00    0.00    0.00     0.00    -0.120   -0.260   -0.340
-                0.2443  -0.40   -0.40   -0.40    -0.40    -0.150   -0.250   -0.330
+                0.1396   0.070   0.070   0.070    0.070   -0.050   -0.210   -0.280
+                0.1745   0.030   0.030   0.030    0.030   -0.080   -0.240   -0.320
+                0.2094   0.000   0.000   0.000    0.000   -0.120   -0.260   -0.340
+                0.2443  -0.040  -0.040  -0.040   -0.040   -0.150   -0.250   -0.330
                 </tableData>
             </table>
         </function>
@@ -2549,7 +2549,7 @@
                              0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
                    -0.0873  -0.380  -0.380  -0.370   -0.270   -0.230   -0.190   -0.110
                     0.0000  -0.170  -0.170  -0.160   -0.060   -0.000    0.080    0.220
-                    0.0873   0.060   0.060   0.070    0.090    0.160    0.410    0.570
+                    0.0873   0.060   0.060   0.070    0.175    0.260    0.410    0.570
                     0.1745   0.320   0.320   0.330    0.420    0.550    0.710    0.880
                     0.2618   0.550   0.550   0.630    0.720    0.820    0.950    1.150
                     0.3491   0.740   0.740   0.880    0.950    1.050    1.150    1.350
@@ -2574,7 +2574,7 @@
                         0.0000   0.320   0.320   0.320    0.300    0.270    0.310    0.250
                         0.0873   0.310   0.310   0.310    0.290    0.250    0.160    0.050
                         0.1745   0.260   0.260   0.250    0.200    0.120    0.010   -0.140
-                        0.2618   0.130   0.130   0.080    0.040    0.040   -0.190   -0.310
+                        0.2618   0.130   0.130   0.080    0.040   -0.060   -0.190   -0.310
                         0.3491   0.030   0.030  -0.070   -0.120   -0.200   -0.310   -0.420
                         0.4363  -0.020  -0.020  -0.150   -0.180   -0.250   -0.350   -0.440
                         </tableData>
@@ -3577,15 +3577,15 @@
         <!-- for panels 8 or 12 (individual) - reverse sign for 1 and 5 -->
         <function name="aero/coefficient/dClsp1">
             <description>Roll_moment_due_to_spoiler_deflection</description>
-            <table>
+            <table> <!-- graph 5.0-17 -->
                 <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
                 <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                 <tableData>
                          0.0000  30.0000
-               -0.0870   0.0070   0.0175
-                0.0000   0.0115   0.0240
-                0.1750   0.0121   0.0325
-                0.4360   0.0005   0.0221
+               -0.0870   0.0040   0.0065
+                0.0000   0.0040   0.0070
+                0.1750   0.0040   0.0080
+                0.4360  -0.0005   0.0050
                 </tableData>
             </table>
         </function>
@@ -3594,7 +3594,7 @@
         <function name="aero/coefficient/dClsp2">
             <description>Roll_moment_due_to_spoiler_deflection</description>
             <product>
-                <table>
+                <table> <!-- graph 5.0-17 -->
                     <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
                     <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                     <tableData>
@@ -4422,15 +4422,15 @@
         <!-- for panels 8 or 12 (individual) - reverse sign for 1 and 5 -->
         <function name="aero/coefficient/dCnsp1">
             <description>Yawing_moment_due_to_spoiler_deflection</description>
-            <table>
+            <table> <!-- graph 6.0-12 -->
                 <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
                 <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                 <tableData>
-                         0.0000  30.0000
-               -0.0870   0.0011   0.0015
-                0.0000   0.0098   0.0017
-                0.1750   0.0076   0.0018
-                0.4360  -0.0002   0.0080
+                         0.00000  30.00000
+               -0.0870   0.00110   0.00145
+                0.0000   0.00098   0.00170
+                0.1750   0.00070   0.00180
+                0.4360  -0.00002   0.00085
                 </tableData>
             </table>
         </function>
@@ -4439,15 +4439,15 @@
         <function name="aero/coefficient/dCnsp2">
             <description>Yawing_moment_due_to_spoiler_deflection</description>
             <product>
-                <table>
+                <table> <!-- graph 6.0-12 -->
                     <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
                     <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                     <tableData>
-                             0.0000  30.0000
-                   -0.0870   0.0070   0.0175
-                    0.0000   0.0115   0.0240
-                    0.1750   0.0121   0.0325
-                    0.4360   0.0005   0.0221
+                             0.00000  30.00000
+                   -0.0870   0.00205   0.00285
+                    0.0000   0.00225   0.00300
+                    0.1750   0.00080   0.00215
+                    0.4360  -0.00030   0.00040
                     </tableData>
                 </table>
                 <value>0.33</value> <!-- values in table are for the complete group of 3 panels -->
@@ -4458,9 +4458,9 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_1_deflection</description>
             <product>
                 <value>-1</value>
-                <property>aero/coefficient/dClsp1</property>
+                <property>aero/coefficient/dCnsp1</property>
                 <property>fcs/spoiler[0]/pos-rad</property>
-                <value>1.2734</value>
+                <value>1.2734</value> <!-- 45 deg = 1, simplified graph 6.0-11 for now -->
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -4470,7 +4470,7 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_2_deflection</description>
             <product>
                 <value>-1</value>
-                <property>aero/coefficient/dClsp2</property>
+                <property>aero/coefficient/dCnsp2</property>
                 <property>fcs/spoiler[1]/pos-rad</property>
                 <value>1.2734</value>
                 <property>aero/coefficient/CnspM</property>
@@ -4482,7 +4482,7 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_3_deflection</description>
             <product>
                 <value>-1</value>
-                <property>aero/coefficient/dClsp2</property>
+                <property>aero/coefficient/dCnsp2</property>
                 <property>fcs/spoiler[2]/pos-rad</property>
                 <value>1.2734</value>
                 <property>aero/coefficient/CnspM</property>
@@ -4494,7 +4494,7 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_4_deflection</description>
             <product>
                 <value>-1</value>
-                <property>aero/coefficient/dClsp2</property>
+                <property>aero/coefficient/dCnsp2</property>
                 <property>fcs/spoiler[3]/pos-rad</property>
                 <value>1.2734</value>
                 <property>aero/coefficient/CnspM</property>
@@ -4506,7 +4506,7 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_5_deflection</description>
             <product>
                 <value>-1</value>
-                <property>aero/coefficient/dClsp1</property>
+                <property>aero/coefficient/dCnsp1</property>
                 <property>fcs/spoiler[4]/pos-rad</property>
                 <value>1.2734</value>
                 <property>aero/coefficient/CnspM</property>
@@ -4517,7 +4517,7 @@
         <function name="aero/coefficient/dCnsp[7]">
             <description>Yawing_moment_coefficient_due_to_spoiler_8_deflection</description>
             <product>
-                <property>aero/coefficient/dClsp1</property>
+                <property>aero/coefficient/dCnsp1</property>
                 <property>fcs/spoiler[7]/pos-rad</property>
                 <value>1.2734</value>
                 <property>aero/coefficient/CnspM</property>
@@ -4528,7 +4528,7 @@
         <function name="aero/coefficient/dCnsp[8]">
             <description>Yawing_moment_coefficient_due_to_spoiler_9_deflection</description>
             <product>
-                <property>aero/coefficient/dClsp2</property>
+                <property>aero/coefficient/dCnsp2</property>
                 <property>fcs/spoiler[8]/pos-rad</property>
                 <value>1.2734</value>
                 <property>aero/coefficient/CnspM</property>
@@ -4539,7 +4539,7 @@
         <function name="aero/coefficient/dCnsp[9]">
             <description>Yawing_moment_coefficient_due_to_spoiler_10_deflection</description>
             <product>
-                <property>aero/coefficient/dClsp2</property>
+                <property>aero/coefficient/dCnsp2</property>
                 <property>fcs/spoiler[9]/pos-rad</property>
                 <value>1.2734</value>
                 <property>aero/coefficient/CnspM</property>
@@ -4550,7 +4550,7 @@
         <function name="aero/coefficient/dCnsp[10]">
             <description>Yawing_moment_coefficient_due_to_spoiler_11_deflection</description>
             <product>
-                <property>aero/coefficient/dClsp2</property>
+                <property>aero/coefficient/dCnsp2</property>
                 <property>fcs/spoiler[10]/pos-rad</property>
                 <value>1.2734</value>
                 <property>aero/coefficient/CnspM</property>
@@ -4561,7 +4561,7 @@
         <function name="aero/coefficient/dCnsp[11]">
             <description>Yawing_moment_coefficient_due_to_spoiler_12_deflection</description>
             <product>
-                <property>aero/coefficient/dClsp1</property>
+                <property>aero/coefficient/dCnsp1</property>
                 <property>fcs/spoiler[11]/pos-rad</property>
                 <value>1.2734</value>
                 <property>aero/coefficient/CnspM</property>
