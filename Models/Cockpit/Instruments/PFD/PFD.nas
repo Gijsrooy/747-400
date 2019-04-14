@@ -64,8 +64,8 @@ var canvas_PFD = {
 	},
 	update: func()
 	{
-		#var radioAlt = getprop("position/altitude-agl-ft")-27.4;
-		var radioAlt = getprop("instrumentation/radar-altimeter/radar-altitude-ft") or 0;
+		var radioAlt = getprop("position/altitude-agl-ft")-24;
+		#var radioAlt = getprop("instrumentation/radar-altimeter/radar-altitude-ft") or 0;
 		var alt = getprop("instrumentation/altimeter/indicated-altitude-ft");
 		var ias = getprop("instrumentation/airspeed-indicator/indicated-speed-kt");
 		if (ias < 30)
@@ -252,19 +252,11 @@ var canvas_PFD = {
 		} else {
 			me["radioAltInd"].hide();
 		}
-		#if (getprop("instrumentation/dme/in-range")) {
-		var navDist = getprop("instrumentation/nav/nav-distance") or 0;
-		if(navDist > 0) {
-			me["dmeDist"].setText(sprintf("DME %2.01f",navDist*0.000539));
-			me["dmeDist"].show();
-		} else {
-			me["dmeDist"].hide();
-		}
 		var spdTrend = getprop("instrumentation/pfd/speed-trend-up") or 0;
-		#if (abs(spdTrend > 0.2))
+		if (abs(spdTrend > 0.1))
 			me["spdTrend_scale"].setScale(1, spdTrend);
-		#else
-		#	me["spdTrend_scale"].setScale(1, 0);
+		else
+			me["spdTrend_scale"].setScale(1, 0);
 		
 		me["spdTape"].setTranslation(0,ias*5.584);
 		me["altTape"].setTranslation(0,alt*0.837);
@@ -272,7 +264,7 @@ var canvas_PFD = {
 		var vsiDeg = getprop("instrumentation/pfd/vsi-needle-deg") or 0;
 		me["vsiNeedle"].setRotation(vsiDeg*D2R);
 		
-		settimer(func me.update(), 0.04);
+		settimer(func me.update(), 0.03);
 	},
 	update_ap_modes: func()
 	{
@@ -399,6 +391,15 @@ var canvas_PFD = {
 		me["dhText"].setText(sprintf("DH%3.0f",dh));
 		me["selHdgText"].setText(sprintf("%3.0f",getprop("autopilot/settings/true-heading-deg")));
 		me["speedText"].setText(sprintf("%3.0f",apSpd));
+        
+		#if (getprop("instrumentation/dme/in-range")) {
+		var navDist = getprop("instrumentation/nav/nav-distance") or 0;
+		if(navDist > 0) {
+			me["dmeDist"].setText(sprintf("DME %2.01f",navDist*0.000539));
+			me["dmeDist"].show();
+		} else {
+			me["dmeDist"].hide();
+		}
 		
 		settimer(func me.update_slow(), 0.5);
 	},
