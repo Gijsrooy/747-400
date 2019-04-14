@@ -7,7 +7,7 @@
     <fileheader>
         <author>Gijs de Rooy</author>
         <filecreationdate>2008</filecreationdate>
-        <version>20190309</version>
+        <version>20190414</version>
         <description>Boeing 747-400 with GE CF6-80C2B1F engines</description>
 
         <license>
@@ -1924,34 +1924,50 @@
           <output>fcs/steer-pos-deg[3]</output>
         </fcs_function>
         
-        <switch name="Leading Edge Flaps">
+        <switch name="Group A Leading Edge Flaps">
             <default value="0"/>
-            <test logic="AND" value="0.6670">
-                fcs/flap-cmd-norm == 0.033
+            <test logic="AND" value="1.0">
+                fcs/flaps/int-cmd-deg GE 1
             </test>
-            <test logic="AND" value="1.0000">
-                fcs/flap-cmd-norm GT 0.166
+            <output>fcs/flaps-leading-edge/A/cmd-norm</output>
+        </switch>
+        
+        <switch name="Group B Leading Edge Flaps">
+            <default value="0"/>
+            <test logic="AND" value="1.0">
+                fcs/flaps/int-cmd-deg GE 5
             </test>
-            <output>fcs/LE-flap-cmd-norm</output>
+            <output>fcs/flaps-leading-edge/B/cmd-norm</output>
         </switch>
 
-        <kinematic name="Leading Edge Flaps Control">
-            <input>fcs/LE-flap-cmd-norm</input>
+        <kinematic name="Group A Leading Edge Flaps Control">
+            <input>fcs/flaps-leading-edge/A/cmd-norm</input>
             <traverse>
                 <setting>
                     <position>0.0</position>
-                    <time>0.0000</time>
+                    <time>0.0</time>
                 </setting>
                 <setting>
-                    <position>0.6670</position>
-                    <time>6.0000</time>
-                </setting>
-                <setting>
-                    <position>1.0000</position>
-                    <time>3.0000</time>
+                    <position>1.0</position>
+                    <time>3.0</time>
                 </setting>
             </traverse>
-            <output>fcs/LE-flap-pos-norm</output>
+            <output>fcs/flaps-leading-edge/A/pos-norm</output>
+        </kinematic>
+
+        <kinematic name="Group B Leading Edge Flaps Control">
+            <input>fcs/flaps-leading-edge/B/cmd-norm</input>
+            <traverse>
+                <setting>
+                    <position>0.0</position>
+                    <time>0.0</time>
+                </setting>
+                <setting>
+                    <position>1.0</position>
+                    <time>3.0</time>
+                </setting>
+            </traverse>
+            <output>fcs/flaps-leading-edge/B/pos-norm</output>
         </kinematic>
 
      </channel>
@@ -1981,18 +1997,18 @@
     
         <!-- aero RP must coincide with center of gravity, since
              pitching moment is already corrected for CG position -->
-        <!--<aero_ref_pt_shift_x>
+        <aero_ref_pt_shift_x>
             <function name="aero/function/aero-rp">
             <description>Shift_of_center_of_pressure</description>
                 <product>
                     <sum>
-                        <value>-86.6141732</value>
+                        <value>-1340</value> <!-- initial value of ARP -->
                         <property>inertia/cg-x-in</property>
                     </sum>
                     <value>0.00302590171</value>
                 </product>
             </function>
-        </aero_ref_pt_shift_x>-->
+        </aero_ref_pt_shift_x>
     
         <function name="inertia/weight-kg">
             <product>
@@ -2005,7 +2021,7 @@
             <todegrees><property>aero/alpha-wing-rad</property></todegrees>
         </function>
         
-        <!-- FACTORS and COSNTANTS for re-use in multiple functions -->
+        <!-- FACTORS and CONSTANTS for re-use in multiple functions -->
         <function name="aero/function/FD">
         <description>Ground effect lateral control factor</description>
             <table>
@@ -2772,7 +2788,7 @@
                 </product>
             </sum>
         </function>
-        <!-- not sure if these should be negative -->
+        
         <function name="aero/coefficient/dCLae">
             <description>Change_in_basic_lift_coefficient_due_to_aeroelasticity_at_low_speed</description>
             <sum>
@@ -2791,8 +2807,8 @@
                         <tableData>
                                      0.000    1.000    5.000   10.000   20.000   25.000   30.000
                             0.000    0.000    0.000    0.000    0.000    0.000    0.000    0.000
-                          100.000    0.002    0.006    0.006    0.012    0.026    0.040    0.044
-                          250.000    0.015    0.028    0.028    0.058    0.120    0.204    0.228
+                          100.000   -0.002   -0.006   -0.006   -0.012   -0.026   -0.040   -0.044
+                          250.000   -0.015   -0.028   -0.028   -0.058   -0.120   -0.204   -0.228
                         </tableData>
                     </table>
                 </product>
@@ -2811,16 +2827,16 @@
                         <tableData>
                                      0.000  10000.000  40000.000
                             0.0      0.000      0.000      0.000
-                            0.5      0.023      0.019      0.006
-                            0.8      0.049      0.043      0.022
-                            0.85     0.050      0.050      0.026
-                            0.90     0.050      0.055      0.030
+                            0.5     -0.023     -0.019     -0.006
+                            0.8     -0.049     -0.043     -0.022
+                            0.85    -0.050     -0.050     -0.026
+                            0.90    -0.050     -0.055     -0.030
                         </tableData>
                     </table>
                 </product>
             </sum>
         </function>
-        <!-- not sure if these should be negative -->
+        
         <function name="aero/coefficient/dCLalphaae">
             <description>Change_in_basic_lift_coefficient_due_to_aeroelastic_effect_on_the_rigid_airplane_basic_lift_coefficient_curve_slope</description>
             <sum>
@@ -2839,7 +2855,7 @@
                         <tableData>
                                       0.0000    1.0000    5.0000   10.0000   20.0000   25.0000   30.0000
                             0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000    0.0000
-                          250.0000    0.0100    0.0122    0.0130    0.0134    0.0146    0.0130    0.0118
+                          250.0000   -0.0100   -0.0122   -0.0130   -0.0134   -0.0146   -0.0130   -0.0118
                         </tableData>
                     </table>
                     <property>aero/alpha-deg</property>
@@ -2859,25 +2875,27 @@
                         <tableData>
                                      0.000  40000.000
                             0.0      0.000      0.000
-                            0.8      0.035      0.012
-                            0.90     0.035      0.016
+                            0.8     -0.035     -0.012
+                            0.90    -0.035     -0.016
                         </tableData>
                     </table>
+                    <property>aero/alpha-deg</property>
                 </product>
             </sum>
         </function>
-        <function name="aero/coefficient/dCLrateaoa">
+        
+        <function name="aero/coefficient/dCLalphadot">
             <description>Change_in_basic_lift_coefficient_due_to_rate_of_change_angle_of_attack</description>
             <product>
-                <table>
+                <table> <!-- graph 2.0-13 --> <!-- not 100% sure that this should be negative -->
                     <independentVar>velocities/mach</independentVar>
                     <tableData>
-                        0.00   0.67
-                        0.30   0.67
-                        0.70   0.64
-                        0.90   0.55
-                        0.95   0.60
-                        0.97   0.62
+                        0.00  -6.7
+                        0.30  -6.7
+                        0.70  -6.4
+                        0.90  -5.5
+                        0.95  -6.0
+                        0.97  -6.2
                     </tableData>
                 </table>
                 <property>aero/ci2vel</property>
@@ -2885,7 +2903,7 @@
             </product>
         </function>
         
-        <function name="aero/coefficient/dCLratealpha">
+        <function name="aero/coefficient/dCLqdot">
             <description>Change_in_basic_lift_coefficient_due_to_pitch_rate</description>
             <product>
                 <!-- center of gravity factor -->
@@ -2896,14 +2914,14 @@
                         40.00   0.81
                     </tableData>
                 </table>
-                <table>
+                <table> <!-- graph 2.0-14 -->
                     <independentVar lookup="row">velocities/mach</independentVar>
                     <independentVar lookup="column">atmosphere/density-altitude</independentVar>
                     <tableData>
-                                   0.00   20000.00   40000.00
-                        0.00       0.68       0.68       0.68
-                        0.70       0.37       0.51       0.58
-                        0.94       0.23       0.44       0.61
+                                 0.00 20000.00 40000.00
+                        0.00     6.80     6.80     6.80
+                        0.70     3.70     5.10     5.80
+                        0.94     2.30     4.40     6.10
                     </tableData>
                 </table>
                 <property>aero/ci2vel</property>
@@ -2942,40 +2960,21 @@
 
         <function name="aero/coefficient/dCLsp">
             <description>Change_in_basic_lift_coefficient_due_to_spoilers</description>
-            <product>
-                <property>fcs/spoiler-pos-norm</property>
+            <product> <!-- TODO: graphs 2.0-20 till 2.0-26 -->
+                <property>fcs/spoiler-pos-norm</property> <!-- not used anymore -->
                 <value>-1.0000</value>
-            </product>
-        </function>
-        
-        <documentation>
-            Not sure if these are negative values?
-        </documentation>
-        <function name="aero/coefficient/dCLflap">
-            <description>Delta_lift_due_to_flaps</description>
-            <product>
-                <property>aero/function/Kge</property>
-                  <table>
-                      <independentVar lookup="row">velocities/vc-kts</independentVar>
-                      <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
-                      <tableData>
-                                   0.0000   1.0000   5.0000  10.0000  20.0000  25.0000  30.0000
-                          0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000   0.0000
-                        250.0000   0.0000   0.0240   0.0240   0.0580   0.1210   0.2040   0.2260
-                      </tableData>
-                  </table>
             </product>
         </function>
 
         <function name="aero/coefficient/dCLge">
             <description>Delta_Lift_due_to_groundeffect</description>
-            <table>
-                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+            <table> <!-- graph 2.0-32 -->
+                <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
                 <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                 <tableData>
-                               0.0000   1.0000   5.0000  10.0000  20.0000  25.0000  30.0000
-                      0.0000  -0.0750  -0.0600  -0.0450   0.0400   0.0800   0.2400   0.0000
-                      0.2480   0.1750   0.1950   0.2000   0.3000   0.1850   0.0750  -0.0400
+                               0.000   1.000   5.000  10.000  20.000  25.000  30.000
+                       0.000  -0.075  -0.060  -0.045   0.040   0.080   0.240   0.000
+                      14.500   0.175   0.195   0.200   0.300   0.185   0.075  -0.040
                 </tableData>
             </table>
         </function>
@@ -2994,30 +2993,43 @@
         <function name="aero/coefficient/CLde_inboard">
             <description>Lift_due_to_inboard_elevator_deflection</description>
             <product>
-                <abs><property>fcs/elevator[1]/pos-rad</property></abs>
+                <todegrees><property>fcs/elevator[1]/pos-rad</property></todegrees>
                 <property>aero/function/k_stab</property>
-                <value>0.1862</value>
+                <value>0.00325</value> <!-- graph 2.0-18 -->
             </product>
         </function>
+        
         <function name="aero/coefficient/CLde_outboard">
             <description>Lift_due_to_outboard_elevator_deflection</description>
             <product>
-                <abs><property>fcs/elevator[0]/pos-rad</property></abs>
+                <todegrees><property>fcs/elevator[0]/pos-rad</property></todegrees>
                 <property>aero/function/k_stab</property>
-                <value>0.2177</value>
+                <value>0.0038</value> <!-- graph 2.0-19 -->
             </product>
         </function>
+        
         <function name="aero/coefficient/dCLgear">
             <description>Delta_lift_due_to_landing_gear</description>
             <product>
                 <property>aero/function/Kgear</property>
-                <table>
-                    <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <table> <!-- graph 2.0-29 -->
+                    <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
                     <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                     <tableData>
-                               0.0000   1.0000  25.0000  30.0000
-                     -0.0870   0.0470   0.0470   0.0050   0.0050
-                      0.4360   0.0020   0.0020   0.0280   0.0280
+                             0.000  1.000 10.000 20.000 25.000 30.000
+                     -5.000  0.047  0.047  0.037  0.042 -0.005 -0.005
+                      5.000  0.036  0.036  0.021  0.018 -0.030 -0.030
+                     25.000  0.002  0.002 -0.006 -0.011 -0.028 -0.028
+                    </tableData>
+                </table>
+                <table> <!-- graph 2.0-30 -->
+                    <independentVar>velocities/mach</independentVar>
+                    <tableData>
+                        0.0   1.0
+                        0.3   1.0
+                        0.6   1.9
+                        0.7   2.4
+                        0.8   3.5
                     </tableData>
                 </table>
             </product>
@@ -3034,8 +3046,8 @@
                 <property>aero/coefficient/CLalpha</property>
                 <property>aero/coefficient/dCLae</property>
                 <property>aero/coefficient/dCLalphaae</property>
-                <property>aero/coefficient/dCLrateaoa</property>
-                <property>aero/coefficient/dCLratealpha</property>
+                <property>aero/coefficient/dCLalphadot</property>
+                <property>aero/coefficient/dCLqdot</property>
                 <property>aero/coefficient/dCLnz</property>
             </sum>
         </function>
@@ -3045,7 +3057,6 @@
                 <property>aero/coefficient/CL_star</property>
                 <property>aero/coefficient/CLde_inboard</property>
                 <property>aero/coefficient/CLde_outboard</property>
-                <property>aero/coefficient/dCLflap</property>
                 <property>aero/coefficient/dCLge</property>
                 <property>aero/coefficient/dCLgear</property>
                 <property>aero/coefficient/dCLsb</property>
@@ -4052,15 +4063,15 @@
         </function>
         <function name="aero/coefficient/dCm_aeroelasticity">
             <description>Change_in_basic_pitching_moment_due_to_aeroelasticity</description>
-            <table>
+            <table> <!-- graph 4.0-11 -->
                 <independentVar lookup="row">velocities/ve-kts</independentVar>
                 <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                 <tableData>
                             0.000   1.000   5.000  10.000  20.000  25.000  30.000
                     0.000   0.000   0.000   0.000   0.000   0.000   0.000   0.000
-                   50.000   0.002   0.002   0.002   0.002   0.002   0.002   0.002
-                  100.000   0.004   0.004   0.005   0.003   0.001   0.000   0.000
-                  250.000   0.006   0.007   0.009   0.002   0.014   0.026   0.026
+                   50.000  -0.002  -0.002  -0.002  -0.002  -0.002  -0.002  -0.002
+                  100.000  -0.004  -0.004  -0.005  -0.003  -0.001   0.000   0.000
+                  250.000  -0.006  -0.007  -0.009  -0.002   0.014   0.026   0.026
                 </tableData>
             </table>
         </function>
@@ -4068,7 +4079,7 @@
         <function name="aero/coefficient/dCm_alphaae">
             <description>Change_in_basic_pitching_moment_coefficient_due_to_aeroelastic_effect_on_the_rigid_airplane_basic_pitching_moment_coefficient_curve_slope</description>
             <product>
-                <table>
+                <table> <!-- graph 4.0-13 -->
                     <independentVar lookup="row">velocities/ve-kts</independentVar>
                     <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                     <tableData>
@@ -4081,17 +4092,18 @@
                 <property>aero/alpha-deg</property>
             </product>
         </function>
+        
         <function name="aero/coefficient/dCmrateaoa">
             <description>Change_in_basic_pitching_coefficient_due_to_rate_of_change_angle_of_attack</description>
             <product>
-                <table>
+                <table> <!-- graph 4.0-15 -->
                     <independentVar>aero/CoG-mac-pct</independentVar>
                     <tableData>
                         10.00   1.18
                         40.00   0.82
                     </tableData>
                 </table>
-                <table>
+                <table> <!-- graph 4.0-15 -->
                     <independentVar lookup="row">velocities/mach</independentVar>
                     <independentVar lookup="column">atmosphere/density-altitude</independentVar>
                     <tableData>
@@ -4104,15 +4116,15 @@
                 </table>
                 <property>aero/alphadot-rad_sec</property>
                 <property>aero/ci2vel</property>
-                <property>velocities/q-aero-rad_sec</property>
             </product>
         </function>
+        
         <function name="aero/coefficient/Cmq">
             <description>Change_in_basic_pitching_coefficient_due_to_pitch_rate</description>
             <product>
                 <property>aero/ci2vel</property>
                 <property>velocities/q-aero-rad_sec</property>
-                <table>
+                <table> <!-- graph 4.0-16 -->
                     <independentVar lookup="row">velocities/mach</independentVar>
                     <independentVar lookup="column">atmosphere/density-altitude</independentVar>
                     <tableData>
@@ -4125,11 +4137,27 @@
             </product>
         </function>
         
+        <function name="aero/coefficient/dCmdnz">
+            <description>Change_in_basic_pitching_moment_oefficient_due_to_aeroelastic_inertia_relief_caused_by_normal_load_factor</description>
+            <product>
+                <table> <!-- graph 4.0-17 -->
+                    <independentVar lookup="row">velocities/ve-kts</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                                1.0000 30.0000
+                        0.0000 -0.0275 -0.0282
+                      100.0000 -0.0266 -0.0262
+                      250.0000 -0.0240 -0.0246
+                    </tableData>
+                </table>
+                <property>accelerations/Nz</property> <!-- or forces/load-factor ?? -->
+            </product>
+        </function>
+        
         <function name="aero/coefficient/Cmde_inboard">
             <description>Pitch_moment_due_to_inboard_elevator</description>
             <product>
-                <property>fcs/elevator[1]/pos-rad</property>
-                <value>57.2957795786</value> <!-- convert to 1/rad -->
+                <todegrees><property>fcs/elevator[1]/pos-rad</property></todegrees>
                 <table>
                     <independentVar lookup="row">atmosphere/density-altitude</independentVar>
                     <independentVar lookup="column">velocities/mach</independentVar>
@@ -4141,11 +4169,11 @@
                 </table>
             </product>
         </function>
+        
         <function name="aero/coefficient/Cmde_outboard">
             <description>Pitch_moment_due_to_outboard_elevator</description>
             <product>
-                <property>fcs/elevator[0]/pos-rad</property>
-                <value>57.2957795786</value> <!-- convert to 1/rad -->
+                <todegrees><property>fcs/elevator[0]/pos-rad</property></todegrees>
                 <table>
                     <independentVar lookup="row">atmosphere/density-altitude</independentVar>
                     <independentVar lookup="column">velocities/mach</independentVar>
@@ -4157,11 +4185,11 @@
                 </table>
             </product>
         </function>
+        
         <function name="aero/coefficient/dCm_stabilizer">
             <description>Change_in_basic_pitching_moment_due_to_change_in_stabilizer_angle</description>
             <product>
-                <property>fcs/stabilizer/pos-rad</property>
-                <value>57.2957795786</value> <!-- convert to 1/rad -->
+                <todegrees><property>fcs/stabilizer/pos-rad</property></todegrees>
                 <table>
                     <independentVar lookup="row">atmosphere/density-altitude</independentVar>
                     <independentVar lookup="column">velocities/mach</independentVar>
@@ -4208,6 +4236,7 @@
                 </product>
                 <property>aero/coefficient/dCmrateaoa</property>
                 <property>aero/coefficient/Cmq</property>
+                <property>aero/coefficient/dCmdnz</property>
                 <property>aero/coefficient/dCm_stabilizer</property>
                 <property>aero/coefficient/Cmde_inboard</property>
                 <property>aero/coefficient/Cmde_outboard</property>
@@ -4569,9 +4598,9 @@
             </product>
         </function>
         
-        <function name="aero/coefficient/CnspM"> <!-- 5.0-13 -->
+        <function name="aero/coefficient/CnspM">
             <description>Rolling_moment_coefficient_due_to_mach_spoilers</description>
-            <table>
+            <table> <!-- graph 5.0-13 -->
                 <independentVar lookup="row">velocities/mach</independentVar>
                 <independentVar lookup="column">aero/alpha-wing-deg</independentVar>
                 <tableData>

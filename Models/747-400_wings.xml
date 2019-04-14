@@ -837,7 +837,7 @@
 <animation>
  <type>rotate</type>
  <object-name>LEinbL.1</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -865,7 +865,7 @@
 <animation>
  <type>rotate</type>
  <object-name>LEinbL.2</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -893,7 +893,7 @@
 <animation>
  <type>rotate</type>
  <object-name>LEinbL.3</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -924,7 +924,7 @@
 <animation>
  <type>rotate</type>
  <object-name>LEinbR.1</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -952,7 +952,7 @@
 <animation>
  <type>rotate</type>
  <object-name>LEinbR.2</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -980,7 +980,7 @@
 <animation>
  <type>rotate</type>
  <object-name>LEinbR.3</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -1011,7 +1011,7 @@
  <type>rotate</type>
  <object-name>flap_left_h.1</object-name>
  <object-name>flap_left_h.2</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind> 0.0</ind>
@@ -1041,7 +1041,7 @@
  <object-name>flap_left_inner.1</object-name>
  <object-name>flap_left_inner.2</object-name>
  <object-name>flap_left_inner.3</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -1071,7 +1071,7 @@
  <type>translate</type>
  <object-name>flap_left_inner.1</object-name>
  <object-name>flap_left_inner.2</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -1101,7 +1101,7 @@
  <type>rotate</type>
  <object-name>flap_left_inner.1</object-name>
  <object-name>flap_left_inner.2</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>  0.0</ind>
@@ -1129,7 +1129,7 @@
 <animation>
  <type>translate</type>
  <object-name>flap_left_inner.1</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind> 0.0</ind>
@@ -1157,7 +1157,7 @@
  <type>rotate</type>
  <object-name>flap_right_h.1</object-name>
  <object-name>flap_right_h.2</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind> 0.0</ind>
@@ -1187,7 +1187,7 @@
  <object-name>flap_right_inner.1</object-name>
  <object-name>flap_right_inner.2</object-name>
  <object-name>flap_right_inner.3</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -1217,7 +1217,7 @@
  <type>translate</type>
  <object-name>flap_right_inner.1</object-name>
  <object-name>flap_right_inner.2</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -1247,7 +1247,7 @@
  <type>rotate</type>
  <object-name>flap_right_inner.1</object-name>
  <object-name>flap_right_inner.2</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind> 0.0</ind>
@@ -1275,7 +1275,7 @@
 <animation>
  <type>translate</type>
  <object-name>flap_right_inner.1</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind> 0.0</ind>
@@ -1303,7 +1303,7 @@
  <type>rotate</type>
  <object-name>flap_left_h.3</object-name>
  <object-name>flap_left_h.4</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind> 0.0</ind>
@@ -1333,7 +1333,7 @@
  <object-name>flap_left_outer.1</object-name>
  <object-name>flap_left_outer.2</object-name>
  <object-name>flap_left_outer.3</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -1363,7 +1363,7 @@
  <type>translate</type>
  <object-name>flap_left_outer.1</object-name>
  <object-name>flap_left_outer.2</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -1393,7 +1393,7 @@
  <type>rotate</type>
  <object-name>flap_left_outer.1</object-name>
  <object-name>flap_left_outer.2</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind> 0.0</ind>
@@ -1421,7 +1421,7 @@
 <animation>
  <type>translate</type>
  <object-name>flap_left_outer.1</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind> 0.0</ind>
@@ -1449,7 +1449,7 @@
  <type>rotate</type>
  <object-name>flap_right_h.3</object-name>
  <object-name>flap_right_h.4</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind> 0.0</ind>
@@ -1479,7 +1479,7 @@
  <object-name>flap_right_outer.1</object-name>
  <object-name>flap_right_outer.2</object-name>
  <object-name>flap_right_outer.3</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -1509,7 +1509,7 @@
  <type>translate</type>
  <object-name>flap_right_outer.1</object-name>
  <object-name>flap_right_outer.2</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind>0.0</ind>
@@ -1539,7 +1539,7 @@
  <type>rotate</type>
  <object-name>flap_right_outer.1</object-name>
  <object-name>flap_right_outer.2</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind> 0.0</ind>
@@ -1567,7 +1567,7 @@
 <animation>
  <type>translate</type>
  <object-name>flap_right_outer.1</object-name>
- <property>surface-positions/flap-pos-norm</property>
+ <property>fdm/jsbsim/fcs/flap-pos-norm</property>
  <interpolation>
   <entry>
    <ind> 0.0</ind>

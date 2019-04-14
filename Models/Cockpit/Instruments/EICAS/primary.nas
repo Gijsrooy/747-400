@@ -42,8 +42,8 @@ var canvas_primary = {
 		m["flapsBar"].createTransform().setTranslation(c[0], c[1]);
 
 		var timerFlaps = maketimer(10.0, func { m["flapsText"].hide();m["flapsLine"].hide();m["flapsL"].hide();m["flapsBar"].hide();m["flapsBox"].hide(); });
-		setlistener("surface-positions/flap-pos-norm", func() {
-			if (getprop("surface-positions/flap-pos-norm") == 0) {
+		setlistener("/fdm/jsbsim/fcs/flap-pos-norm", func() {
+			if (getprop("/fdm/jsbsim/fcs/flap-pos-norm") == 0) {
 				timerFlaps.singleShot = 1;
 				timerFlaps.start(); # start the timer (with 1 second inverval)
 			} else {
@@ -81,8 +81,8 @@ var canvas_primary = {
 			me["thrustRefMode"].setText(thrustRefModeText[thrustMode]);
 		else
 			me["thrustRefMode"].setText("");
-		var flaps = getprop("controls/flight/flaps");
-		var flapPos = getprop("surface-positions/flap-pos-norm");
+		var flaps = getprop("fdm/jsbsim/fcs/flaps/cmd-detent-deg");
+		var flapPos = getprop("fdm/jsbsim/fcs/flaps/pos-deg");
 		
 		if ((var asstat = getprop("instrumentation/fmc/inputs/assumed-temp-deg-c") or -999) > -90) {
 			me["assTemp"].setText(sprintf("%+02.0fc",asstat));
@@ -111,10 +111,10 @@ var canvas_primary = {
 		}
 		
 		if (flapPos != 0 or flaps != 0) {
-			me["flapsText"].setText(sprintf("%2.0f",flaps*30));
-			me["flapsLine"].setTranslation(0,157*flaps);
-			me["flapsText"].setTranslation(0,157*flaps);
-			me["flapsBar_scale"].setScale(1, flapPos);
+			me["flapsText"].setText(sprintf("%2.0f",flaps));
+			me["flapsLine"].setTranslation(0,5.233*flaps);
+			me["flapsText"].setTranslation(0,5.233*flaps);
+			me["flapsBar_scale"].setScale(1, flapPos/30);
 			me["flapsText"].show();
 			me["flapsLine"].show();
 			me["flapsL"].show();

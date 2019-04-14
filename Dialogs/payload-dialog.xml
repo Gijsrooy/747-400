@@ -4,7 +4,7 @@
 	<name>payload</name>
 	<layout>vbox</layout>
 	<draggable>true</draggable>
-	<resizable>true</resizable>
+	<resizable>false</resizable>
 
 	<group>
 		<layout>hbox</layout>
@@ -55,7 +55,7 @@
 					<col>1</col>
 					<min>0</min>
 					<max>173460</max>
-					<step>10.0</step>
+					<step>100.0</step>
 					<live>true</live>
 					<property>/consumables/fuel-weight-to-load-kg</property>
 					<binding>
@@ -70,8 +70,8 @@
 				<text>
 					<row>0</row>
 					<col>2</col>
-					<label>12345678</label>
-					<format>%.0f kg</format>
+					<label>123456 kg</label>
+					<format>%6.0f kg</format>
 					<live>true</live>
 					<property>/consumables/fuel-weight-to-load-kg</property>
 				</text>
@@ -137,7 +137,7 @@
 					<col>1</col>
 					<min>0</min>
 					<max>114972</max>
-					<step>1.0</step>
+					<step>100.0</step>
 					<live>true</live>
 					<property>/consumables/fuel/tank[0]/level-lbs</property>
 					<binding>
@@ -148,8 +148,8 @@
 				<text>
 					<row>0</row>
 					<col>2</col>
-					<label>12345678</label>
-					<format>%.0f</format>
+					<label>12345 kg</label>
+					<format>%5.0f kg</format>
 					<live>true</live>
 					<property>/fdm/jsbsim/propulsion/tank[0]/contents-kg</property>
 				</text>
@@ -167,7 +167,7 @@
 					<col>1</col>
 					<min>0</min>
 					<max>29694.4</max>
-					<step>1.0</step>
+					<step>100.0</step>
 					<live>true</live>
 					<property>/consumables/fuel/tank[1]/level-lbs</property>
 					<binding>
@@ -178,8 +178,8 @@
 				<text>
 					<row>1</row>
 					<col>2</col>
-					<label>12345678</label>
-					<format>%.0f</format>
+					<label>12345 kg</label>
+					<format>%5.0f kg</format>
 					<live>true</live>
 					<property>/fdm/jsbsim/propulsion/tank[1]/contents-kg</property>
 				</text>
@@ -197,7 +197,7 @@
 					<col>1</col>
 					<min>0</min>
 					<max>84058.0</max>
-					<step>1.0</step>
+					<step>100.0</step>
 					<live>true</live>
 					<property>/consumables/fuel/tank[2]/level-lbs</property>
 					<binding>
@@ -208,8 +208,8 @@
 				<text>
 					<row>2</row>
 					<col>2</col>
-					<label>12345678</label>
-					<format>%.0f</format>
+					<label>12345 kg</label>
+					<format>%5.0f kg</format>
 					<live>true</live>
 					<property>/fdm/jsbsim/propulsion/tank[2]/contents-kg</property>
 				</text>
@@ -227,7 +227,7 @@
 					<col>1</col>
 					<min>0</min>
 					<max>84058.0</max>
-					<step>1.0</step>
+					<step>100.0</step>
 					<live>true</live>
 					<property>/consumables/fuel/tank[3]/level-lbs</property>
 					<binding>
@@ -238,8 +238,8 @@
 				<text>
 					<row>3</row>
 					<col>2</col>
-					<label>12345678</label>
-					<format>%.0f</format>
+					<label>12345 kg</label>
+					<format>%5.0f kg</format>
 					<live>true</live>
 					<property>/fdm/jsbsim/propulsion/tank[3]/contents-kg</property>
 				</text>
@@ -257,7 +257,7 @@
 					<col>1</col>
 					<min>0</min>
 					<max>29694.4</max>
-					<step>1.0</step>
+					<step>100.0</step>
 					<live>true</live>
 					<property>/consumables/fuel/tank[4]/level-lbs</property>
 					<binding>
@@ -268,8 +268,8 @@
 				<text>
 					<row>4</row>
 					<col>2</col>
-					<label>12345678</label>
-					<format>%.0f</format>
+					<label>12345 kg</label>
+					<format>%5.0f kg</format>
 					<live>true</live>
 					<property>/fdm/jsbsim/propulsion/tank[4]/contents-kg</property>
 				</text>
@@ -287,7 +287,7 @@
 					<col>1</col>
 					<min>0</min>
 					<max>8857.4</max>
-					<step>1.0</step>
+					<step>100.0</step>
 					<live>true</live>
 					<property>/consumables/fuel/tank[5]/level-lbs</property>
 					<binding>
@@ -298,8 +298,8 @@
 				<text>
 					<row>5</row>
 					<col>2</col>
-					<label>12345678</label>
-					<format>%.0f</format>
+					<label>12345 kg</label>
+					<format>%5.0f kg</format>
 					<live>true</live>
 					<property>/fdm/jsbsim/propulsion/tank[5]/contents-kg</property>
 				</text>
@@ -317,7 +317,7 @@
 					<col>1</col>
 					<min>0</min>
 					<max>8857.4</max>
-					<step>1.0</step>
+					<step>100.0</step>
 					<live>true</live>
 					<property>/consumables/fuel/tank[6]/level-lbs</property>
 					<binding>
@@ -328,8 +328,8 @@
 				<text>
 					<row>6</row>
 					<col>2</col>
-					<label>12345678</label>
-					<format>%.0f</format>
+					<label>12345 kg</label>
+					<format>%5.0f kg</format>
 					<live>true</live>
 					<property>/fdm/jsbsim/propulsion/tank[6]/contents-kg</property>
 				</text>
@@ -347,7 +347,7 @@
 					<col>1</col>
 					<min>0</min>
 					<max>22110.0</max>
-					<step>1.0</step>
+					<step>100.0</step>
 					<live>true</live>
 					<property>/consumables/fuel/tank[7]/level-lbs</property>
 					<binding>
@@ -358,8 +358,8 @@
 				<text>
 					<row>7</row>
 					<col>2</col>
-					<label>12345678</label>
-					<format>%.0f</format>
+					<label>12345 kg</label>
+					<format>%5.0f kg</format>
 					<live>true</live>
 					<property>/fdm/jsbsim/propulsion/tank[7]/contents-kg</property>
 				</text>
@@ -705,19 +705,6 @@
 			<group>
 				<layout>table</layout>
 				<text>
-					<row>1</row>
-					<col>0</col>
-					<label>Gross weight</label>
-				</text>
-				<text>
-					<row>1</row>
-					<col>1</col>
-					<label>12345678</label>
-					<format>%.0f kg</format>
-					<live>true</live>
-					<property>/fdm/jsbsim/inertia/weight-kg</property>
-				</text>
-				<text>
 					<row>0</row>
 					<col>0</col>
 					<label>Zero fuel weight</label>
@@ -734,6 +721,32 @@
 					<row>0</row>
 					<col>2</col>
 					<label>(max: 246075 kg)</label>
+				</text>
+				<text>
+					<row>1</row>
+					<col>0</col>
+					<label>Gross weight</label>
+				</text>
+				<text>
+					<row>1</row>
+					<col>1</col>
+					<label>12345678</label>
+					<format>%.0f kg</format>
+					<live>true</live>
+					<property>/fdm/jsbsim/inertia/weight-kg</property>
+				</text>
+				<text>
+					<row>2</row>
+					<col>0</col>
+					<label>Center of gravity</label>
+				</text>
+				<text>
+					<row>2</row>
+					<col>1</col>
+					<label>99.9 MAC</label>
+					<format>%02.01f MAC</format>
+					<live>true</live>
+					<property>/fdm/jsbsim/aero/CoG-mac-pct</property>
 				</text>
 			</group>
 		</group>
