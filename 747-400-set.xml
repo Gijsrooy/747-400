@@ -20,12 +20,12 @@
 	<author>Gijs de Rooy, Jonathan Redpath, Ivan Ngeow, Markus Bulik and others</author>
 	<status>early production</status>
 	<rating>
-		<FDM type="int">3</FDM>
+		<FDM type="int">4</FDM>
 		<systems type="int">3</systems>
 		<cockpit type="int">3</cockpit>
 		<model type="int">3</model>
 	</rating>
-	<version>20190414</version>
+	<version>20190425</version>
 	
 	<flight-model>jsb</flight-model>
 	<aero>747-400</aero>

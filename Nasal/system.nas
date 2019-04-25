@@ -267,6 +267,7 @@ var fillFuel = func() {
 	} else {
 		setprop("consumables/fuel/tank[0]/level-lbs",0);
 	}
+	setprop("consumables/fuel/tank[7]/level-lbs",0);
 }
 
 ## Save fuel state ##
