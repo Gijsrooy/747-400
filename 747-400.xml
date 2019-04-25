@@ -3006,30 +3006,60 @@
         <function name="aero/coefficient/dCLnz">
             <description>Change_in_basic_lift_coefficient_due_to_aeroelastic_inertia_relief_caused_by_normal_load_factor</description>
             <product>
-                <table> <!-- graph 2.0-16 -->
-                    <independentVar lookup="row">velocities/mach</independentVar>
-                    <independentVar lookup="column">atmosphere/density-altitude</independentVar> <!-- data beyond m0.82 at sea level extrapolated -->
-                    <tableData>
-                                   0.00   10000.00   20000.00   30000.00    40000.00
-                        0.00      0.258      0.258      0.258      0.258       0.258
-                        0.10      0.250      0.254      0.256      0.256       0.258
-                        0.20      0.242      0.248      0.253      0.256       0.258
-                        0.30      0.230      0.237      0.248      0.256       0.258
-                        0.40      0.218      0.230      0.242      0.250       0.258
-                        0.50      0.205      0.220      0.235      0.248       0.259
-                        0.60      0.189      0.210      0.228      0.244       0.259
-                        0.70      0.172      0.198      0.222      0.243       0.262
-                        0.80      0.160      0.192      0.223      0.251       0.277
-                        0.82      0.158      0.192      0.224      0.256       0.284
-                        0.90      0.155      0.174      0.210      0.241       0.273
-                        0.95      0.140      0.150      0.182      0.215       0.248
-                        0.97      0.110      0.144      0.176      0.213       0.250      
-                    </tableData>
-                </table>
+                <sum>
+                    <product>
+                        <table>
+                            <independentVar>fcs/flaps/pos-deg</independentVar>
+                            <tableData>
+                                 0  0
+                                 1  1
+                                30  1
+                            </tableData>
+                        </table>
+                        <table> <!-- graph 2.0-15 -->
+                            <independentVar lookup="row">velocities/ve-kts</independentVar>
+                            <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                            <tableData>
+                                          1.0000  5.0000 20.0000 25.0000 30.0000
+                                  0.0000  0.0328  0.0346  0.0346  0.0374  0.0351
+                                250.0000  0.0258  0.0269  0.0269  0.0295  0.0278
+                            </tableData>
+                        </table>
+                    </product>
+                    <product>
+                        <table>
+                            <independentVar>fcs/flaps/pos-deg</independentVar>
+                            <tableData>
+                                 0  1
+                                 1  0
+                                30  0
+                            </tableData>
+                        </table>
+                        <table> <!-- graph 2.0-16 -->
+                            <independentVar lookup="row">velocities/mach</independentVar>
+                            <independentVar lookup="column">atmosphere/density-altitude</independentVar> <!-- data beyond m0.82 at sea level extrapolated -->
+                            <tableData>
+                                         0.0000 10000.0000 20000.0000 30000.0000 40000.0000
+                                0.00     0.0258     0.0258     0.0258     0.0258     0.0258
+                                0.10     0.0250     0.0254     0.0256     0.0256     0.0258
+                                0.20     0.0242     0.0248     0.0253     0.0256     0.0258
+                                0.30     0.0230     0.0237     0.0248     0.0256     0.0258
+                                0.40     0.0218     0.0230     0.0242     0.0250     0.0258
+                                0.50     0.0205     0.0220     0.0235     0.0248     0.0259
+                                0.60     0.0189     0.0210     0.0228     0.0244     0.0259
+                                0.70     0.0172     0.0198     0.0222     0.0243     0.0262
+                                0.80     0.0160     0.0192     0.0223     0.0251     0.0277
+                                0.82     0.0158     0.0192     0.0224     0.0256     0.0284
+                                0.90     0.0155     0.0174     0.0210     0.0241     0.0273
+                                0.95     0.0140     0.0150     0.0182     0.0215     0.0248
+                                0.97     0.0110     0.0144     0.0176     0.0213     0.0250      
+                            </tableData>
+                        </table>
+                    </product>
+                </sum>
                 <property>forces/load-factor</property>
             </product>
         </function>
-
 
         <function name="aero/dCLsp45[0]">
             <table> <!-- graph 2.0-21 top (simplified) -->
