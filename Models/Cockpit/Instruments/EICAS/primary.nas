@@ -81,8 +81,8 @@ var canvas_primary = {
 			me["thrustRefMode"].setText(thrustRefModeText[thrustMode]);
 		else
 			me["thrustRefMode"].setText("");
-		var flaps = getprop("fdm/jsbsim/fcs/flaps/cmd-detent-deg");
-		var flapPos = getprop("fdm/jsbsim/fcs/flaps/pos-deg");
+		var flaps = getprop("fdm/jsbsim/fcs/flaps/cmd-detent-deg") or 0;
+		var flapPos = getprop("fdm/jsbsim/fcs/flaps/pos-deg") or 0;
 		
 		if ((var asstat = getprop("instrumentation/fmc/inputs/assumed-temp-deg-c") or -999) > -90) {
 			me["assTemp"].setText(sprintf("%+02.0fc",asstat));
@@ -193,7 +193,7 @@ var canvas_primary = {
 		var egt = [0,getprop("engines/engine[0]/egt-degf"),getprop("engines/engine[1]/egt-degf"),getprop("engines/engine[2]/egt-degf"),getprop("engines/engine[3]/egt-degf")];
 		var n1 = [0,getprop("engines/engine[0]/n1"),getprop("engines/engine[1]/n1"),getprop("engines/engine[2]/n1"),getprop("engines/engine[3]/n1")];
 		var throttle = [0,getprop("controls/engines/engine[0]/throttle"),getprop("controls/engines/engine[1]/throttle"),getprop("controls/engines/engine[2]/throttle"),getprop("controls/engines/engine[3]/throttle")];
-		var engn1max = [0,getprop("/fdm/jsbsim/eec/throttle-max-cmd-norm[0]"),getprop("/fdm/jsbsim/eec/throttle-max-cmd-norm[0]"),getprop("/fdm/jsbsim/eec/throttle-max-cmd-norm[0]"),getprop("/fdm/jsbsim/eec/throttle-max-cmd-norm[0]")];
+		var engn1max = [0,getprop("/fdm/jsbsim/eec/throttle-max-cmd-norm[0]") or 0,getprop("/fdm/jsbsim/eec/throttle-max-cmd-norm[0]") or 0,getprop("/fdm/jsbsim/eec/throttle-max-cmd-norm[0]") or 0,getprop("/fdm/jsbsim/eec/throttle-max-cmd-norm[0]") or 0];
 		
 		for(var n = 1; n<=4; n+=1){
 			var revPos = getprop("engines/engine["~n~"]/reverser-pos-norm") or 0;
