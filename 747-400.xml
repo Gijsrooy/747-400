@@ -7,7 +7,7 @@
     <fileheader>
         <author>Gijs de Rooy</author>
         <filecreationdate>2008</filecreationdate>
-        <version>20190723</version>
+        <version>20191101</version>
         <description>Boeing 747-400 with GE CF6-80C2B1F engines</description>
 
         <license>
@@ -666,6 +666,8 @@
     <flight_control name="747-400">
     <property>fcs/LE-flap-cmd-norm</property>
     <property>fcs/stabilizer/pos-deg</property>
+    <property>fcs/speed-brake-handle-pos-deg</property>
+    <property>fcs/wheel-pos-deg</property>
     
     <channel name="Pitch">
     
@@ -978,6 +980,19 @@
             </clipto>
         </summer>
         
+        <aerosurface_scale name="fcs/wheel-pos-deg">
+            <input>fcs/aileron-cmd-norm</input>
+            <domain>
+                <min>-1</min>
+                <max> 1</max>
+            </domain>
+            <range>
+                <min>-89</min>
+                <max> 89</max>
+            </range>
+        </aerosurface_scale>
+        
+        <!-- Should be both flap and speed dependant, according to AMM 27-11-00 -->
         <switch name="fcs/outboard-ailerons-unlocked">
             <default value="fcs/outboard-ailerons-unlocked"/>
             <test logic="AND" value="0">
@@ -1113,25 +1128,6 @@
             </range>
         </aerosurface_scale>
         
-        <!-- Not in use?? -->
-        <fcs_function name="fcs/aileron-pos-rad">
-            <function>
-                <description>Average_aileron_pos_rad</description>
-                <avg>
-                    <product>
-                        <property>fcs/aileron[0]/pos-rad</property>
-                        <value>-1</value>
-                    </product>
-                    <product>
-                        <property>fcs/aileron[1]/pos-rad</property>
-                        <value>-1</value>
-                    </product>
-                    <property>fcs/aileron[2]/pos-rad</property>
-                    <property>fcs/aileron[3]/pos-rad</property>
-                </avg>
-            </function>
-        </fcs_function>
-        
         <fcs_function name="fcs/aileron[0]/pos-deg">
             <function>
                 <todegrees><property>fcs/aileron[0]/pos-rad</property></todegrees>
@@ -1158,524 +1154,232 @@
         
         <!-- Spoilers -->
         
-        <switch name="fcs/spoiler[0]/cmd-norm">
-            <default value="0"/>
-            <test  logic="AND" value="fcs/spoiler-mixing/spoiler1">
-                /controls/flight/speedbrakes == 0
-            </test>
-            <test  logic="AND" value="1">
-                /controls/flight/speedbrakes == 2
-            </test>
-        </switch>
-        
-        <aerosurface_scale name="fcs/spoiler[0]/pos-int-rad">
-            <input>fcs/spoiler[0]/cmd-norm</input>
-            <range>
-                <min> 0</min>
-                <max> 0.7854</max>
-            </range>
-        </aerosurface_scale>
+        <!-- 
+          Step = Lever Deg = Setting
+           0   =     0     = DN
+           1   =     6     = ARM
+                    21.5   = Intermediate (NASA)
+           2   =    37     = FLIGHT DETENT
+           3   =    77     = UP
+        -->
+		<fcs_function name="fcs/speed-brake-handle-pos-deg">
+            <function>
+		        <table> <!-- graph 19.0-10 -->
+		            <independentVar>/autopilot/autospoilers/step</independentVar>
+		            <tableData>
+		                 0.0  0.0
+		                 1.0  6.0
+		                 2.0 37.0
+		                 3.0 77.0
+		            </tableData>
+		        </table>
+			</function>
+		</fcs_function>
+
+        <!-- spoilers 1 and 2 -->
+		<fcs_function name="fcs/spoiler[0]/cmd-deg">
+            <function>
+		        <table> <!-- graph 19.0-10 -->
+		            <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
+		            <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
+		            <tableData>
+		                     -80.0  -10.0  0.0  10.0  80.0
+		                 0.0  45.0   0.0   0.0   0.0   0.0
+		                 6.0  45.0   0.0   0.0   0.0   0.0  
+		                21.5  45.0   0.0   0.0   0.0   0.0
+		                37.0  45.0   0.0   0.0   0.0   0.0
+		                77.0  45.0  45.0  45.0  45.0   0.0
+		            </tableData>
+		        </table>
+			</function>
+			<output>fcs/spoiler[1]/cmd-deg</output>
+		</fcs_function>
         
         <actuator name="fcs/spoiler[0]/actuator">
-            <input>fcs/spoiler[0]/pos-int-rad</input>
-            <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
-            <output>fcs/spoiler[0]/pos-rad</output>
+            <input>fcs/spoiler[0]/cmd-deg</input>
+            <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
+            <output>fcs/spoiler[0]/pos-deg</output>
         </actuator>
-        
-        <switch name="fcs/spoiler[1]/cmd-norm">
-            <default value="0"/>
-            <test  logic="AND" value="fcs/spoiler-mixing/spoiler2">
-                /controls/flight/speedbrakes == 0
-            </test>
-            <test  logic="AND" value="1">
-                /controls/flight/speedbrakes == 2
-            </test>
-        </switch>
-        
-        <aerosurface_scale name="fcs/spoiler[1]/pos-int-rad">
-            <input>fcs/spoiler[1]/cmd-norm</input>
-            <range>
-                <min> 0</min>
-                <max> 0.7854</max>
-            </range>
-        </aerosurface_scale>
         
         <actuator name="fcs/spoiler[1]/actuator">
-            <input>fcs/spoiler[1]/pos-int-rad</input>
-            <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
-            <output>fcs/spoiler[1]/pos-rad</output>
+            <input>fcs/spoiler[1]/cmd-deg</input>
+            <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
+            <output>fcs/spoiler[1]/pos-deg</output>
         </actuator>
         
-        <switch name="fcs/spoiler[2]/cmd-norm">
-            <default value="0"/>
-            <test  logic="AND" value="fcs/spoiler-mixing/spoiler3">
-                /controls/flight/speedbrakes == 0
-            </test>
-            <test  logic="OR" value="1">
-                /controls/flight/speedbrakes == 1
-                /controls/flight/speedbrakes == 2
-            </test>
-            <output>fcs/spoiler[2]/cmd-norm</output>
-        </switch>
         
-        <aerosurface_scale name="fcs/spoiler[2]/pos-int-rad">
-            <input>fcs/spoiler[2]/cmd-norm</input>
-            <range>
-                <min> 0</min>
-                <max> 0.7854</max>
-            </range>
-        </aerosurface_scale>
-        
-        <actuator name="fcs/spoiler[2]/actuator">
-            <input>fcs/spoiler[2]/pos-int-rad</input>
-            <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
-            <output>fcs/spoiler[2]/pos-rad</output>
+        <!-- spoilers 3 and 4 -->
+		<fcs_function name="fcs/spoiler[2]/cmd-deg">
+            <function>
+		        <table> <!-- graph 19.0-10 -->
+		            <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
+		            <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
+		            <tableData>
+		                     -80.0 -38.0 -10.0   0.0  10.0  80.0
+		                 0.0  45.0   0.0   0.0   0.0   0.0   0.0
+		                 6.0  45.0   0.0   0.0   0.0   0.0   0.0
+		                21.5  45.0  45.0  25.0  22.5  20.0   0.0
+		                37.0  45.0  45.0  45.0  45.0  45.0   0.0
+		                77.0  45.0  45.0  45.0  45.0  45.0   0.0
+		            </tableData>
+		        </table>
+			</function>
+			<output>fcs/spoiler[3]/cmd-deg</output>
+		</fcs_function>
+
+		<actuator name="fcs/spoiler[2]/actuator">
+            <input>fcs/spoiler[2]/cmd-deg</input>
+            <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
+            <output>fcs/spoiler[2]/pos-deg</output>
         </actuator>
-        
-        <switch name="fcs/spoiler[3]/cmd-norm">
-            <default value="0"/>
-            <test  logic="AND" value="fcs/spoiler-mixing/spoiler4">
-                /controls/flight/speedbrakes == 0
-            </test>
-            <test  logic="OR" value="1">
-                /controls/flight/speedbrakes == 1
-                /controls/flight/speedbrakes == 2
-            </test>
-        </switch>
-        
-        <aerosurface_scale name="fcs/spoiler[3]/pos-int-rad">
-            <input>fcs/spoiler[3]/cmd-norm</input>
-            <range>
-                <min> 0</min>
-                <max> 0.7854</max>
-            </range>
-        </aerosurface_scale>
         
         <actuator name="fcs/spoiler[3]/actuator">
-            <input>fcs/spoiler[3]/pos-int-rad</input>
-            <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
-            <output>fcs/spoiler[3]/pos-rad</output>
+            <input>fcs/spoiler[3]/cmd-deg</input>
+            <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
+            <output>fcs/spoiler[3]/pos-deg</output>
         </actuator>
         
-        <switch name="fcs/spoiler[4]/cmd-norm">
-            <default value="0"/>
-            <test  logic="AND" value="fcs/spoiler-mixing/spoiler5">
-                /controls/flight/speedbrakes == 0
-            </test>
-            <test  logic="OR" value="1">
-                /controls/flight/speedbrakes == 1
-                /controls/flight/speedbrakes == 2
-            </test>
-        </switch>
         
-        <aerosurface_scale name="fcs/spoiler[4]/pos-int-rad">
-            <input>fcs/spoiler[4]/cmd-norm</input>
-            <range>
-                <min> 0</min>
-                <max> 0.3491</max>
-            </range>
-        </aerosurface_scale>
-        
-        <actuator name="fcs/spoiler[4]/actuator">
-            <input>fcs/spoiler[4]/pos-int-rad</input>
-            <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
-            <output>fcs/spoiler[4]/pos-rad</output>
+        <!-- spoiler 5 -->
+		<fcs_function name="fcs/spoiler[4]/cmd-deg">
+            <function>
+		        <table> <!-- graph 19.0-10 -->
+		            <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
+		            <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
+		            <tableData>
+		                     -80.0 -42.0 -10.0   0.0  10.0  40.0  80.0
+		                 0.0  20.0  20.0   0.0   0.0   0.0   0.0   0.0
+		                 6.0  20.0  20.0   0.0   0.0   0.0   0.0   0.0
+		                21.5  20.0  20.0  20.0  20.0  20.0   0.0   0.0
+		                37.0  20.0  20.0  20.0  20.0  20.0  20.0   0.0
+		                77.0  20.0  20.0  20.0  20.0  20.0  20.0   0.0
+		            </tableData>
+		        </table>
+			</function>
+		</fcs_function>
+
+		<actuator name="fcs/spoiler[4]/actuator">
+            <input>fcs/spoiler[4]/cmd-deg</input>
+            <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
+            <output>fcs/spoiler[4]/pos-deg</output>
         </actuator>
-        
-        <switch name="fcs/spoiler[5]/cmd-norm">
-            <default value="0"/>
-            <test  logic="AND" value="0.5">
-                /controls/flight/speedbrakes == 1
-            </test>
-            <test  logic="AND" value="1">
-                /controls/flight/speedbrakes == 2
-            </test>
-        </switch>
-        
-        <aerosurface_scale name="fcs/spoiler[5]/pos-int-rad">
-            <input>fcs/spoiler[5]/cmd-norm</input>
-            <range>
-                <min> 0</min>
-                <max> 0.3491</max>
-            </range>
-        </aerosurface_scale>
+
+        <!-- spoilers 6 and 7 -->
+		<fcs_function name="fcs/spoiler[5]/cmd-deg">
+            <function>
+		        <table> <!-- graph 19.0-10 -->
+		            <independentVar>fcs/speed-brake-handle-pos-deg</independentVar>
+		            <tableData>
+		                 0.0   0.0
+		                 6.0   0.0
+		                21.5   0.0
+		                37.0  20.0
+		                77.0  20.0
+		            </tableData>
+		        </table>
+			</function>
+            <output>fcs/spoiler[6]/cmd-deg</output>
+		</fcs_function>
 
         <actuator name="fcs/spoiler[5]/actuator">
-            <input>fcs/spoiler[5]/pos-int-rad</input>
-            <rate_limit> 0.436 </rate_limit> <!-- 25 deg/sec -->
-            <output>fcs/spoiler[5]/pos-rad</output>
+            <input>fcs/spoiler[5]/cmd-deg</input>
+            <rate_limit> 25 </rate_limit> <!-- 25 deg/sec -->
+            <output>fcs/spoiler[5]/pos-deg</output>
         </actuator>
-        
-        <switch name="fcs/spoiler[6]/cmd-norm">
-            <default value="0"/>
-            <test  logic="AND" value="0.5">
-                /controls/flight/speedbrakes == 1
-            </test>
-            <test  logic="AND" value="1">
-                /controls/flight/speedbrakes == 2
-            </test>
-        </switch>
-        
-        <aerosurface_scale name="fcs/spoiler[6]/pos-int-rad">
-            <input>fcs/spoiler[6]/cmd-norm</input>
-            <range>
-                <min> 0</min>
-                <max> 0.3491</max>
-            </range>
-        </aerosurface_scale>
         
         <actuator name="fcs/spoiler[6]/actuator">
-            <input>fcs/spoiler[6]/pos-int-rad</input>
-            <rate_limit> 0.436 </rate_limit> <!-- 25 deg/sec -->
-            <output>fcs/spoiler[6]/pos-rad</output>
+            <input>fcs/spoiler[6]/cmd-deg</input>
+            <rate_limit> 25 </rate_limit> <!-- 25 deg/sec -->
+            <output>fcs/spoiler[6]/pos-deg</output>
         </actuator>
         
-        <switch name="fcs/spoiler[7]/cmd-norm">
-            <default value="0"/>
-            <test  logic="AND" value="fcs/spoiler-mixing/spoiler8">
-                /controls/flight/speedbrakes == 0
-            </test>
-            <test  logic="OR" value="1">
-                /controls/flight/speedbrakes == 1
-                /controls/flight/speedbrakes == 2
-            </test>
-        </switch>
         
-        <aerosurface_scale name="fcs/spoiler[7]/pos-int-rad">
-            <input>fcs/spoiler[7]/cmd-norm</input>
-            <range>
-                <min> 0</min>
-                <max> 0.3491</max>
-            </range>
-        </aerosurface_scale>
-        
-        <actuator name="fcs/spoiler[7]/actuator">
-            <input>fcs/spoiler[7]/pos-int-rad</input>
-            <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
-            <output>fcs/spoiler[7]/pos-rad</output>
+        <!-- spoiler 8 -->
+		<fcs_function name="fcs/spoiler[7]/cmd-deg">
+            <function>
+		        <table> <!-- graph 19.0-10 -->
+		            <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
+		            <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
+		            <tableData>
+		                     -80.0 -40.0 -10.0   0.0  10.0  42.0  80.0
+		                 0.0   0.0   0.0   0.0   0.0   0.0  20.0  20.0
+		                 6.0   0.0   0.0   0.0   0.0   0.0  20.0  20.0
+		                21.5   0.0   0.0  20.0  20.0  20.0  20.0  20.0
+		                37.0   0.0  20.0  20.0  20.0  20.0  20.0  20.0
+		                77.0   0.0  20.0  20.0  20.0  20.0  20.0  20.0
+		            </tableData>
+		        </table>
+			</function>
+		</fcs_function>
+
+		<actuator name="fcs/spoiler[7]/actuator">
+            <input>fcs/spoiler[7]/cmd-deg</input>
+            <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
+            <output>fcs/spoiler[7]/pos-deg</output>
         </actuator>
         
-        <switch name="fcs/spoiler[8]/cmd-norm">
-            <default value="0"/>
-            <test  logic="AND" value="fcs/spoiler-mixing/spoiler9">
-                /controls/flight/speedbrakes == 0
-            </test>
-            <test  logic="OR" value="1">
-                /controls/flight/speedbrakes == 1
-                /controls/flight/speedbrakes == 2
-            </test>
-        </switch>
-        
-        <aerosurface_scale name="fcs/spoiler[8]/pos-int-rad">
-            <input>fcs/spoiler[8]/cmd-norm</input>
-            <range>
-                <min> 0</min>
-                <max> 0.7854</max>
-            </range>
-        </aerosurface_scale>
-        
-        <actuator name="fcs/spoiler[8]/actuator">
-            <input>fcs/spoiler[8]/pos-int-rad</input>
-            <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
-            <output>fcs/spoiler[8]/pos-rad</output>
+        <!-- spoilers 9 and 10 -->
+		<fcs_function name="fcs/spoiler[8]/cmd-deg">
+            <function>
+		        <table> <!-- graph 19.0-10 -->
+		            <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
+		            <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
+		            <tableData>
+		                     -80.0 -10.0   0.0  10.0  38.0  80.0
+		                 0.0   0.0   0.0   0.0   0.0   0.0  45.0
+		                 6.0   0.0   0.0   0.0   0.0   0.0  45.0
+		                21.5   0.0  20.0  22.5  25.0  45.0  45.0
+		                37.0   0.0  45.0  45.0  45.0  45.0  45.0
+		                77.0   0.0  45.0  45.0  45.0  45.0  45.0
+		            </tableData>
+		        </table>
+			</function>
+			<output>fcs/spoiler[9]/cmd-deg</output>
+		</fcs_function>
+
+		<actuator name="fcs/spoiler[8]/actuator">
+            <input>fcs/spoiler[8]/cmd-deg</input>
+            <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
+            <output>fcs/spoiler[8]/pos-deg</output>
         </actuator>
-        
-        <switch name="fcs/spoiler[9]/cmd-norm">
-            <default value="0"/>
-            <test  logic="AND" value="fcs/spoiler-mixing/spoiler10">
-                /controls/flight/speedbrakes == 0
-            </test>
-            <test  logic="OR" value="1">
-                /controls/flight/speedbrakes == 1
-                /controls/flight/speedbrakes == 2
-            </test>
-        </switch>
-        
-        <aerosurface_scale name="fcs/spoiler[9]/pos-int-rad">
-            <input>fcs/spoiler[9]/cmd-norm</input>
-            <range>
-                <min> 0</min>
-                <max> 0.7854</max>
-            </range>
-        </aerosurface_scale>
         
         <actuator name="fcs/spoiler[9]/actuator">
-            <input>fcs/spoiler[9]/pos-int-rad</input>
-            <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
-            <output>fcs/spoiler[9]/pos-rad</output>
+            <input>fcs/spoiler[9]/cmd-deg</input>
+            <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
+            <output>fcs/spoiler[9]/pos-deg</output>
         </actuator>
         
-        <switch name="fcs/spoiler[10]/cmd-norm">
-            <default value="0"/>
-            <test  logic="AND" value="fcs/spoiler-mixing/spoiler11">
-                /controls/flight/speedbrakes == 0
-            </test>
-            <test  logic="AND" value="1">
-                /controls/flight/speedbrakes == 2
-            </test>
-        </switch>
-        
-        <aerosurface_scale name="fcs/spoiler[10]/pos-int-rad">
-            <input>fcs/spoiler[10]/cmd-norm</input>
-            <range>
-                <min> 0</min>
-                <max> 0.7854</max>
-            </range>
-        </aerosurface_scale>
-        
-        <actuator name="fcs/spoiler[10]/actuator">
-            <input>fcs/spoiler[10]/pos-int-rad</input>
-            <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
-            <output>fcs/spoiler[10]/pos-rad</output>
+        <!-- spoilers 11 and 12 -->
+		<fcs_function name="fcs/spoiler[10]/cmd-deg">
+            <function>
+		        <table> <!-- graph 19.0-10 -->
+		            <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
+		            <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
+		            <tableData>
+		                     -80.0 -10.0   0.0  10.0  80.0
+		                 0.0   0.0   0.0   0.0   0.0  45.0
+		                 6.0   0.0   0.0   0.0   0.0  45.0  
+		                21.5   0.0   0.0   0.0   0.0  45.0
+		                37.0   0.0   0.0   0.0   0.0  45.0
+		                77.0   0.0  45.0  45.0  45.0  45.0
+		            </tableData>
+		        </table>
+			</function>
+			<output>fcs/spoiler[11]/cmd-deg</output>
+		</fcs_function>
+
+		<actuator name="fcs/spoiler[10]/actuator">
+            <input>fcs/spoiler[10]/cmd-deg</input>
+            <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
+            <output>fcs/spoiler[10]/pos-deg</output>
         </actuator>
-        
-        <switch name="fcs/spoiler[11]/cmd-norm">
-            <default value="0"/>
-            <test  logic="AND" value="fcs/spoiler-mixing/spoiler12">
-                /controls/flight/speedbrakes == 0
-            </test>
-            <test  logic="AND" value="1">
-                /controls/flight/speedbrakes == 2
-            </test>
-        </switch>
-        
-        <aerosurface_scale name="fcs/spoiler[11]/pos-int-rad">
-            <input>fcs/spoiler[11]/cmd-norm</input>
-            <range>
-                <min> 0</min>
-                <max> 0.7854</max>
-            </range>
-        </aerosurface_scale>
         
         <actuator name="fcs/spoiler[11]/actuator">
-            <input>fcs/spoiler[11]/pos-int-rad</input>
-            <rate_limit> 1.309 </rate_limit> <!-- 75 deg/sec -->
-            <output>fcs/spoiler[11]/pos-rad</output>
+            <input>fcs/spoiler[11]/cmd-deg</input>
+            <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
+            <output>fcs/spoiler[11]/pos-deg</output>
         </actuator>
         
-        <fcs_function name="fcs/spoiler[0]/pos-deg">
-            <function>
-                <todegrees><property>fcs/spoiler[0]/pos-rad</property></todegrees>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler[1]/pos-deg">
-            <function>
-                <todegrees><property>fcs/spoiler[1]/pos-rad</property></todegrees>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler[2]/pos-deg">
-            <function>
-                <todegrees><property>fcs/spoiler[2]/pos-rad</property></todegrees>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler[3]/pos-deg">
-            <function>
-                <todegrees><property>fcs/spoiler[3]/pos-rad</property></todegrees>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler[4]/pos-deg">
-            <function>
-                <todegrees><property>fcs/spoiler[4]/pos-rad</property></todegrees>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler[5]/pos-deg">
-            <function>
-                <todegrees><property>fcs/spoiler[5]/pos-rad</property></todegrees>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler[6]/pos-deg">
-            <function>
-                <todegrees><property>fcs/spoiler[6]/pos-rad</property></todegrees>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler[7]/pos-deg">
-            <function>
-                <todegrees><property>fcs/spoiler[7]/pos-rad</property></todegrees>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler[8]/pos-deg">
-            <function>
-                <todegrees><property>fcs/spoiler[8]/pos-rad</property></todegrees>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler[9]/pos-deg">
-            <function>
-                <todegrees><property>fcs/spoiler[9]/pos-rad</property></todegrees>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler[10]/pos-deg">
-            <function>
-                <todegrees><property>fcs/spoiler[10]/pos-rad</property></todegrees>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler[11]/pos-deg">
-            <function>
-                <todegrees><property>fcs/spoiler[11]/pos-rad</property></todegrees>
-            </function>
-        </fcs_function>
-
-     </channel>
-    
-     <channel name="Spoilers Mixing">
-        <!-- after 10 deg deflection (0 = 0 and 88 = 1) -->
-        <switch name="fcs/spoiler-mixing/enabled">
-            <default value="0"/>
-            <test logic="OR" value="1">
-                fcs/roll-trim-sum GT 0.1136
-                fcs/roll-trim-sum LT -0.1136
-            </test>
-        </switch>
-        
-        <fcs_function name="fcs/spoiler-mixing/spoiler1">
-            <function>
-                <table>
-                  <independentVar lookup="row">velocities/vc-kts</independentVar>
-                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
-                  <tableData>
-                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
-                    0      1.0    0.5     0.0   0.0   0.0   0.0   0.0
-                    150    1.0    0.1     0.0   0.0   0.0   0.0   0.0
-                  </tableData>
-                </table>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler-mixing/spoiler2">
-            <function>
-                <table>
-                  <independentVar lookup="row">velocities/vc-kts</independentVar>
-                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
-                  <tableData>
-                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
-                    0      1.0    0.5     0.0   0.0   0.0   0.0   0.0
-                    150    1.0    0.1     0.0   0.0   0.0   0.0   0.0
-                  </tableData>
-                </table>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler-mixing/spoiler3">
-            <function>
-                <table>
-                  <independentVar lookup="row">velocities/vc-kts</independentVar>
-                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
-                  <tableData>
-                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
-                    0      1.0    0.5     0.0   0.0   0.0   0.0   0.0
-                    150    1.0    0.4     0.0   0.0   0.0   0.0   0.0
-                  </tableData>
-                </table>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler-mixing/spoiler4">
-            <function>
-                <table>
-                  <independentVar lookup="row">velocities/vc-kts</independentVar>
-                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
-                  <tableData>
-                          -1.000 -0.500  -0.114 0.000 0.114 1.000
-                    0      1.0    0.5     0.0   0.0   0.0   0.0
-                    150    1.0    0.4     0.0   0.0   0.0   0.0
-                  </tableData>
-                </table>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler-mixing/spoiler5">
-            <function>
-                <table>
-                  <independentVar lookup="row">velocities/vc-kts</independentVar>
-                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
-                  <tableData>
-                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
-                    0      1.0    0.5     0.0   0.0   0.0   0.0   0.0
-                    150    1.0    0.2     0.0   0.0   0.0   0.0   0.0
-                  </tableData>
-                </table>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler-mixing/spoiler8">
-            <function>
-                <table>
-                  <independentVar lookup="row">velocities/vc-kts</independentVar>
-                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
-                  <tableData>
-                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
-                    0      0.0    0.0     0.0   0.0   0.0   0.5   1.0
-                    150    0.0    0.0     0.0   0.0   0.0   0.2   1.0
-                  </tableData>
-                </table>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler-mixing/spoiler9">
-            <function>
-                <table>
-                  <independentVar lookup="row">velocities/vc-kts</independentVar>
-                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
-                  <tableData>
-                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
-                    0      0.0    0.0     0.0   0.0   0.0   0.5   1.0
-                    150    0.0    0.0     0.0   0.0   0.0   0.4   1.0
-                  </tableData>
-                </table>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler-mixing/spoiler10">
-            <function>
-                <table>
-                  <independentVar lookup="row">velocities/vc-kts</independentVar>
-                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
-                  <tableData>
-                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
-                    0      0.0    0.0     0.0   0.0   0.0   0.5   1.0
-                    150    0.0    0.0     0.0   0.0   0.0   0.4   1.0
-                  </tableData>
-                </table>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler-mixing/spoiler11">
-            <function>
-                <table>
-                  <independentVar lookup="row">velocities/vc-kts</independentVar>
-                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
-                  <tableData>
-                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
-                    0      0.0    0.0     0.0   0.0   0.0   0.5   1.0
-                    150    0.0    0.0     0.0   0.0   0.0   0.1   1.0
-                  </tableData>
-                </table>
-            </function>
-        </fcs_function>
-        
-        <fcs_function name="fcs/spoiler-mixing/spoiler12">
-            <function>
-                <table>
-                  <independentVar lookup="row">velocities/vc-kts</independentVar>
-                  <independentVar lookup="column">fcs/roll-trim-sum</independentVar>
-                  <tableData>
-                          -1.000 -0.500  -0.114 0.000 0.114 0.500 1.000
-                    0      0.0    0.0     0.0   0.0   0.0   0.5   1.0
-                    150    0.0    0.0     0.0   0.0   0.0   0.1   1.0
-                  </tableData>
-                </table>
-            </function>
-        </fcs_function>
      </channel>
      
      <channel name="Yaw">
@@ -2331,6 +2035,74 @@
                 <value>0.00163294928</value>
             </product>
         </function>
+        
+        <function name="inertia/pointmass-weight-kg">
+            <product>
+                <property>inertia/pointmass-weight-lbs</property>
+                <value>0.45359237</value>
+            </product>
+        </function>
+        <function name="inertia/pointmass-weight-kg[1]">
+            <product>
+                <property>inertia/pointmass-weight-lbs[1]</property>
+                <value>0.45359237</value>
+            </product>
+        </function>
+        <function name="inertia/pointmass-weight-kg[2]">
+            <product>
+                <property>inertia/pointmass-weight-lbs[2]</property>
+                <value>0.45359237</value>
+            </product>
+        </function>
+        <function name="inertia/pointmass-weight-kg[3]">
+            <product>
+                <property>inertia/pointmass-weight-lbs[3]</property>
+                <value>0.45359237</value>
+            </product>
+        </function>
+        <function name="inertia/pointmass-weight-kg[4]">
+            <product>
+                <property>inertia/pointmass-weight-lbs[4]</property>
+                <value>0.45359237</value>
+            </product>
+        </function>
+        <function name="inertia/pointmass-weight-kg[5]">
+            <product>
+                <property>inertia/pointmass-weight-lbs[5]</property>
+                <value>0.45359237</value>
+            </product>
+        </function>
+        <function name="inertia/pointmass-weight-kg[6]">
+            <product>
+                <property>inertia/pointmass-weight-lbs[6]</property>
+                <value>0.45359237</value>
+            </product>
+        </function>
+        <function name="inertia/pointmass-weight-kg[7]">
+            <product>
+                <property>inertia/pointmass-weight-lbs[7]</property>
+                <value>0.45359237</value>
+            </product>
+        </function>
+        <function name="inertia/pointmass-weight-kg[8]">
+            <product>
+                <property>inertia/pointmass-weight-lbs[8]</property>
+                <value>0.45359237</value>
+            </product>
+        </function>
+        <function name="inertia/pointmass-weight-kg[9]">
+            <product>
+                <property>inertia/pointmass-weight-lbs[9]</property>
+                <value>0.45359237</value>
+            </product>
+        </function>
+        <function name="inertia/pointmass-weight-kg[10]">
+            <product>
+                <property>inertia/pointmass-weight-lbs[10]</property>
+                <value>0.45359237</value>
+            </product>
+        </function>
+        
         <function name="propulsion/tank[0]/contents-kg">
             <product>
                 <property>propulsion/tank[0]/contents-lbs</property>
@@ -3625,16 +3397,16 @@
                 </sum>
                 <quotient> <!-- normalize to 2 * 20 deg = 1 -->
                     <sum>
-                        <property>fcs/spoiler[5]/pos-rad</property>
-                        <property>fcs/spoiler[6]/pos-rad</property>
+                        <property>fcs/spoiler[5]/pos-deg</property>
+                        <property>fcs/spoiler[6]/pos-deg</property>
                     </sum>
-                    <value>0.698</value>
+                    <value>40</value>
                 </quotient>
             </product>
         </function>
         
         <function name="aero/coefficient/dCDspoilers">
-            <description>Change in drag coefficient due to spoilter or speedbrake deflection</description>
+            <description>Change in drag coefficient due to spoiler or speedbrake deflection</description>
             <sum>
                 <product>
                     <property>aero/coefficient/dCDsp</property>
@@ -3651,22 +3423,20 @@
                     <property>aero/function/FD</property>
                     <property>aero/function/Kge</property>
                     <value>0.00185</value> <!-- 1/(45n), where n = 12 -->
-                    <todegrees>
-                        <sum>
-                            <property>fcs/spoiler[0]/pos-rad</property>
-                            <property>fcs/spoiler[1]/pos-rad</property>
-                            <property>fcs/spoiler[2]/pos-rad</property>
-                            <property>fcs/spoiler[3]/pos-rad</property>
-                            <property>fcs/spoiler[4]/pos-rad</property>
-                            <property>fcs/spoiler[5]/pos-rad</property>
-                            <property>fcs/spoiler[6]/pos-rad</property>
-                            <property>fcs/spoiler[7]/pos-rad</property>
-                            <property>fcs/spoiler[8]/pos-rad</property>
-                            <property>fcs/spoiler[9]/pos-rad</property>
-                            <property>fcs/spoiler[10]/pos-rad</property>
-                            <property>fcs/spoiler[11]/pos-rad</property>
-                        </sum>
-                    </todegrees>
+                    <sum>
+                        <property>fcs/spoiler[0]/pos-deg</property>
+                        <property>fcs/spoiler[1]/pos-deg</property>
+                        <property>fcs/spoiler[2]/pos-deg</property>
+                        <property>fcs/spoiler[3]/pos-deg</property>
+                        <property>fcs/spoiler[4]/pos-deg</property>
+                        <property>fcs/spoiler[5]/pos-deg</property>
+                        <property>fcs/spoiler[6]/pos-deg</property>
+                        <property>fcs/spoiler[7]/pos-deg</property>
+                        <property>fcs/spoiler[8]/pos-deg</property>
+                        <property>fcs/spoiler[9]/pos-deg</property>
+                        <property>fcs/spoiler[10]/pos-deg</property>
+                        <property>fcs/spoiler[11]/pos-deg</property>
+                    </sum>
                 </product>
             </sum>
         </function>
@@ -4062,8 +3832,8 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dClsp1</property>
-                <property>fcs/spoiler[0]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[0]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/ClspM</property>
                 <property>aero/coefficient/FClspGE</property>
             </product>
@@ -4074,8 +3844,8 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dClsp2</property>
-                <property>fcs/spoiler[1]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[1]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/ClspM</property>
                 <property>aero/coefficient/FClspGE</property>
             </product>
@@ -4086,8 +3856,8 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dClsp2</property>
-                <property>fcs/spoiler[2]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[2]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/ClspM</property>
                 <property>aero/coefficient/FClspGE</property>
             </product>
@@ -4098,8 +3868,8 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dClsp2</property>
-                <property>fcs/spoiler[3]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[3]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/ClspM</property>
                 <property>aero/coefficient/FClspGE</property>
             </product>
@@ -4110,8 +3880,8 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dClsp1</property>
-                <property>fcs/spoiler[4]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[4]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/ClspM</property>
                 <property>aero/coefficient/FClspGE</property>
             </product>
@@ -4121,8 +3891,8 @@
             <description>Rolling_moment_coefficient_due_to_spoiler_8_deflection</description>
             <product>
                 <property>aero/coefficient/dClsp1</property>
-                <property>fcs/spoiler[7]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[7]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/ClspM</property>
                 <property>aero/coefficient/FClspGE</property>
             </product>
@@ -4132,8 +3902,8 @@
             <description>Rolling_moment_coefficient_due_to_spoiler_9_deflection</description>
             <product>
                 <property>aero/coefficient/dClsp2</property>
-                <property>fcs/spoiler[8]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[8]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/ClspM</property>
                 <property>aero/coefficient/FClspGE</property>
             </product>
@@ -4143,8 +3913,8 @@
             <description>Rolling_moment_coefficient_due_to_spoiler_10_deflection</description>
             <product>
                 <property>aero/coefficient/dClsp2</property>
-                <property>fcs/spoiler[9]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[9]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/ClspM</property>
                 <property>aero/coefficient/FClspGE</property>
             </product>
@@ -4154,8 +3924,8 @@
             <description>Rolling_moment_coefficient_due_to_spoiler_11_deflection</description>
             <product>
                 <property>aero/coefficient/dClsp2</property>
-                <property>fcs/spoiler[10]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[10]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/ClspM</property>
                 <property>aero/coefficient/FClspGE</property>
             </product>
@@ -4165,8 +3935,8 @@
             <description>Rolling_moment_coefficient_due_to_spoiler_12_deflection</description>
             <product>
                 <property>aero/coefficient/dClsp1</property>
-                <property>fcs/spoiler[11]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[11]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/ClspM</property>
                 <property>aero/coefficient/FClspGE</property>
             </product>
@@ -4322,7 +4092,7 @@
             <description>Roll_moment_due_to_outboard_ailerons</description>
             <product>
                 <sum>
-                    <!-- graph 5.0-26 is incorporated through the breakpoints --> 
+                    <!-- graph 5.0-26 is incorporated through the breakpoints -->
                     <table> <!-- graph 5.0-27 -->
                         <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
                         <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
@@ -4497,6 +4267,7 @@
                 </tableData>
             </table>
         </function>
+
         <function name="aero/coefficient/dCm_aeroelasticity">
             <description>Change_in_basic_pitching_moment_due_to_aeroelasticity</description>
             <sum>
@@ -4707,13 +4478,15 @@
             <description>Pitch_moment_due_to_inboard_elevator</description>
             <product>
                 <todegrees><property>fcs/elevator[1]/pos-rad</property></todegrees>
-                <table>
+                <property>aero/function/k_stab</property>
+                <table> <!-- graph 4.0-21 -->
                     <independentVar lookup="row">atmosphere/density-altitude</independentVar>
                     <independentVar lookup="column">velocities/mach</independentVar>
                     <tableData>
-                                 0.0000    0.8000    0.9700
-                            0   -0.0129   -0.0066   -0.0066
-                        40000   -0.0129   -0.0136   -0.0089
+                                    0.0000  0.5000  0.8000  0.9700
+                            0.0000 -0.0129 -0.0088 -0.0066 -0.0066
+                        10000.0000 -0.0129 -0.0109 -0.0093 -0.0060
+                        40000.0000 -0.0129 -0.0140 -0.0136 -0.0089
                     </tableData>
                 </table>
             </product>
@@ -4723,13 +4496,15 @@
             <description>Pitch_moment_due_to_outboard_elevator</description>
             <product>
                 <todegrees><property>fcs/elevator[0]/pos-rad</property></todegrees>
-                <table>
+                <property>aero/function/k_stab</property>
+                <table> <!-- graph 4.0-22 -->
                     <independentVar lookup="row">atmosphere/density-altitude</independentVar>
                     <independentVar lookup="column">velocities/mach</independentVar>
                     <tableData>
-                                 0.0000    0.8000    0.9700
-                            0   -0.0150   -0.0024    0.0000
-                        40000   -0.0150   -0.0116   -0.0062
+                                    0.0000  0.5000  0.8000  0.9700
+                            0.0000 -0.0150 -0.0076 -0.0024 -0.0020
+                        10000.0000 -0.0150 -0.0101 -0.0048  0.0009
+                        40000.0000 -0.0150 -0.0152 -0.0116 -0.0062
                     </tableData>
                 </table>
             </product>
@@ -5037,29 +4812,54 @@
             </product>
         </function>
         
-        <function name="aero/coefficient/Cnr"> <!-- 6.0-10 -->
-            <description>Yaw_moment_due_to_yaw_rate</description>
+        <function name="aero/coefficient/Cnr">
+            <description>Yawing_moment_coefficient_due_to_yaw_rate</description>
             <product>
-                <property>aero/bi2vel</property>
+                <table> <!-- graph 6.0-10 -->
+	                <independentVar>aero/CoG-mac-pct</independentVar>
+	                <tableData>
+	                11   1.06
+	                15   1.04
+	                20   1.02
+	                25   1.00
+	                30   0.98
+	                33   0.97
+	                </tableData>
+	            </table>
+                <table> <!-- graph 6.0-10 -->
+                    <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                           0.000  1.000  5.000 10.000 20.000 25.000 30.000
+                   -5.000 -0.225 -0.225 -0.190 -0.210 -0.250 -0.255 -0.275
+                    0.000 -0.225 -0.225 -0.195 -0.215 -0.260 -0.275 -0.290
+                    5.000 -0.225 -0.225 -0.200 -0.225 -0.290 -0.300 -0.320
+                   10.000 -0.230 -0.230 -0.225 -0.250 -0.325 -0.340 -0.360
+                   15.000 -0.250 -0.245 -0.250 -0.285 -0.360 -0.375 -0.400
+                   20.000 -0.265 -0.265 -0.285 -0.325 -0.400 -0.420 -0.440
+                   25.000 -0.300 -0.300 -0.325 -0.370 -0.450 -0.465 -0.490
+                    </tableData>
+                </table>
+	            <table> <!-- graph 6.0-10 -->
+	                <independentVar lookup="row">velocities/mach</independentVar>
+	                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+	                <tableData>
+	                         0.00 10000.00 20000.00 25000.00 30000.00 40000.00
+	                0.00     1.00     1.00     1.00     1.00     1.00     1.00
+	                0.10     0.99     1.00     1.00     1.00     1.00     1.00
+	                0.20     0.98     0.99     1.00     1.00     1.01     1.01
+	                0.30     0.95     0.99     1.00     1.00     1.02     1.03
+	                0.40     0.93     0.97     1.00     1.01     1.03     1.05
+	                0.50     0.90     0.95     0.99     1.02     1.04     1.09
+	                0.60     0.86     0.93     0.99     1.03     1.06     1.13
+	                0.70     0.83     0.90     0.99     1.05     1.08     1.19
+	                0.80     0.80     0.86     0.95     1.06     1.10     1.23
+	                0.90     0.80     0.83     0.87     0.93     1.07     1.25
+	                0.95     0.80     0.82     0.84     0.86     0.98     1.18
+	                </tableData>
+	            </table>
                 <property>velocities/r-aero-rad_sec</property>
-                <product>
-                    <property>aero/coefficient/Cnr_CG</property>
-                    <table>
-                        <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
-                        <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
-                        <tableData>
-                                 0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
-                       -0.0873  -0.225  -0.225  -0.190   -0.210   -0.250   -0.255   -0.275
-                        0.0000  -0.225  -0.225  -0.195   -0.215   -0.260   -0.275   -0.290
-                        0.0873  -0.225  -0.225  -0.200   -0.225   -0.290   -0.300   -0.320
-                        0.1745  -0.230  -0.230  -0.225   -0.250   -0.325   -0.340   -0.360
-                        0.2618  -0.250  -0.245  -0.250   -0.285   -0.360   -0.375   -0.400
-                        0.3491  -0.265  -0.265  -0.285   -0.325   -0.400   -0.425   -0.440
-                        0.4363  -0.300  -0.300  -0.325   -0.370   -0.450   -0.465   -0.490
-                        </tableData>
-                    </table>
-                    <property>aero/coefficient/Cnr_aeroelastic</property>
-                </product>
+                <property>aero/bi2vel</property>
             </product>
         </function>
         
@@ -5067,14 +4867,15 @@
         <function name="aero/coefficient/dCnsp1">
             <description>Yawing_moment_due_to_spoiler_deflection</description>
             <table> <!-- graph 6.0-12 -->
-                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
                 <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                 <tableData>
-                         0.00000  30.00000
-               -0.0870   0.00110   0.00145
-                0.0000   0.00098   0.00170
-                0.1750   0.00070   0.00180
-                0.4360  -0.00002   0.00085
+					          0.00000  1.00000  5.00000 10.00000 20.00000 25.00000 30.00000
+					-5.00000  0.00110  0.00110  0.00115  0.00130  0.00150  0.00145  0.00145
+					 0.00000  0.00095  0.00095  0.00100  0.00123  0.00145  0.00160  0.00170
+					10.00000  0.00070  0.00070  0.00075  0.00095  0.00120  0.00165  0.00180
+					20.00000  0.00002  0.00002  0.00015  0.00032  0.00055  0.00135  0.00155
+					25.00000 -0.00020 -0.00020 -0.00015 -0.00015 -0.00015  0.00075  0.00085
                 </tableData>
             </table>
         </function>
@@ -5084,14 +4885,17 @@
             <description>Yawing_moment_due_to_spoiler_deflection</description>
             <product>
                 <table> <!-- graph 6.0-12 -->
-                    <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                    <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
                     <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                     <tableData>
-                             0.00000  30.00000
-                   -0.0870   0.00205   0.00285
-                    0.0000   0.00225   0.00300
-                    0.1750   0.00080   0.00215
-                    0.4360  -0.00030   0.00040
+					          0.00000  1.00000  5.00000 10.00000 20.00000 25.00000 30.00000
+					-5.00000  0.00205  0.00205  0.00215  0.00235  0.00255  0.00285  0.00285
+					 0.00000  0.00225  0.00225  0.00232  0.00252  0.00275  0.00300  0.00300
+					 5.00000  0.00180  0.00180  0.00200  0.00225  0.00250  0.00270  0.00270
+					10.00000  0.00080  0.00080  0.00135  0.00165  0.00195  0.00215  0.00215
+					15.00000 -0.00030 -0.00030  0.00070  0.00097  0.00130  0.00160  0.00160
+					20.00000 -0.00065 -0.00065 -0.00020 -0.00013 -0.00005  0.00025  0.00025
+					25.00000 -0.00030 -0.00030 -0.00010 -0.00005  0.00000  0.00040  0.00040
                     </tableData>
                 </table>
                 <value>0.33</value> <!-- values in table are for the complete group of 3 panels -->
@@ -5103,8 +4907,8 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dCnsp1</property>
-                <property>fcs/spoiler[0]/pos-rad</property>
-                <value>1.2734</value> <!-- 45 deg = 1, simplified graph 6.0-11 for now -->
+                <property>fcs/spoiler[0]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg, simplified graph 6.0-11 for now -->
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -5115,8 +4919,8 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dCnsp2</property>
-                <property>fcs/spoiler[1]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[1]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -5127,8 +4931,8 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dCnsp2</property>
-                <property>fcs/spoiler[2]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[2]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -5139,8 +4943,8 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dCnsp2</property>
-                <property>fcs/spoiler[3]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[3]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -5151,8 +4955,8 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dCnsp1</property>
-                <property>fcs/spoiler[4]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[4]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -5162,8 +4966,8 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_8_deflection</description>
             <product>
                 <property>aero/coefficient/dCnsp1</property>
-                <property>fcs/spoiler[7]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[7]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -5173,8 +4977,8 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_9_deflection</description>
             <product>
                 <property>aero/coefficient/dCnsp2</property>
-                <property>fcs/spoiler[8]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[8]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -5184,8 +4988,8 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_10_deflection</description>
             <product>
                 <property>aero/coefficient/dCnsp2</property>
-                <property>fcs/spoiler[9]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[9]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -5195,8 +4999,8 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_11_deflection</description>
             <product>
                 <property>aero/coefficient/dCnsp2</property>
-                <property>fcs/spoiler[10]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[10]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -5206,8 +5010,8 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_12_deflection</description>
             <product>
                 <property>aero/coefficient/dCnsp1</property>
-                <property>fcs/spoiler[11]/pos-rad</property>
-                <value>1.2734</value>
+                <property>fcs/spoiler[11]/pos-deg</property>
+                <value>0.0222</value> <!-- per 45 deg -->
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -5246,9 +5050,9 @@
             </sum>
         </function>
         
-        <function name="aero/coefficient/FCnspoilersGE"> <!-- 6.0-14 -->
+        <function name="aero/coefficient/FCnspoilersGE">
             <description>Yawing_moment_due_to_spoilers_groundeffect</description>
-            <table>
+            <table> <!-- graph 6.0-14 -->
                 <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
                 <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                 <tableData>
@@ -5279,43 +5083,6 @@
                 <property>aero/coefficient/dCnsp[10]</property>
                 <property>aero/coefficient/dCnsp[11]</property>
             </sum>
-        </function>
-        
-        <function name="aero/coefficient/Cnr_CG"> <!-- 6.0-10 -->
-            <description>Yaw_moment_due_to_yaw_rate_center_gravity</description>
-            <table>
-                <independentVar lookup="row">aero/CoG-mac-pct</independentVar>
-                <tableData>
-                11   1.06
-                15   1.04
-                20   1.02
-                25   1.00
-                30   0.98
-                33   0.97
-                </tableData>
-            </table>
-        </function>
-        
-        <function name="aero/coefficient/Cnr_aeroelastic">
-            <description>Yaw_moment_due_to_yaw_rate_aeroelastic</description>
-            <table> <!-- graph 6.0-10 -->
-                <independentVar lookup="row">velocities/mach</independentVar>
-                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
-                <tableData>
-                          0   10000  20000  25000  30000  40000
-                0.0     1.0     1.0    1.0    1.0    1.0    1.0
-                0.1     0.99    1.0    1.0    1.0    1.0    1.0
-                0.2     0.98    0.99   1.0    1.0    1.01   1.01
-                0.3     0.95    0.99   1.0    1.0    1.02   1.03
-                0.4     0.93    0.97   1.0    1.01   1.03   1.05
-                0.5     0.90    0.95   0.99   1.02   1.04   1.09
-                0.6     0.86    0.93   0.99   1.03   1.06   1.13
-                0.7     0.83    0.90   0.99   1.05   1.08   1.19
-                0.8     0.80    0.86   0.95   1.06   1.10   1.23
-                0.9     0.80    0.83   0.87   0.93   1.07   1.25
-                0.95    0.80    0.82   0.84   0.86   0.98   1.18
-                </tableData>
-            </table>
         </function>
         
         <function name="aero/coefficient/Cndr">

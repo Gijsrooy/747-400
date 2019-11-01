@@ -581,8 +581,8 @@
 <animation>
  <type>rotate</type>
  <object-name>speedbrake_right.1</object-name>
- <property>fdm/jsbsim/fcs/spoiler[6]/pos-rad</property>
- <factor>-57.3</factor>
+ <property>fdm/jsbsim/fcs/spoiler[6]/pos-deg</property>
+ <factor>-1</factor>
  <axis>   
   <x1-m> 4.91</x1-m>
   <y1-m> 7.11</y1-m>
@@ -596,8 +596,8 @@
 <animation>
  <type>rotate</type>
  <object-name>speedbrake_right.2</object-name>
- <property>fdm/jsbsim/fcs/spoiler[7]/pos-rad</property>
- <factor>-57.3</factor>
+ <property>fdm/jsbsim/fcs/spoiler[7]/pos-deg</property>
+ <factor>-1</factor>
  <axis>   
   <x1-m> 4.91</x1-m>
   <y1-m> 7.11</y1-m>
@@ -613,8 +613,8 @@
 <animation>
  <type>rotate</type>
  <object-name>speedbrake_right.3</object-name>
- <property>fdm/jsbsim/fcs/spoiler[8]/pos-rad</property>
- <factor>-57.3</factor>
+ <property>fdm/jsbsim/fcs/spoiler[8]/pos-deg</property>
+ <factor>-1</factor>
  <axis>   
   <x1-m>  8.02</x1-m>
   <y1-m> 14.38</y1-m>
@@ -628,8 +628,8 @@
 <animation>
  <type>rotate</type>
  <object-name>speedbrake_right.4</object-name>
- <property>fdm/jsbsim/fcs/spoiler[9]/pos-rad</property>
- <factor>-57.3</factor>
+ <property>fdm/jsbsim/fcs/spoiler[9]/pos-deg</property>
+ <factor>-1</factor>
  <axis>   
   <x1-m>  8.02</x1-m>
   <y1-m> 14.38</y1-m>
@@ -643,8 +643,8 @@
 <animation>
  <type>rotate</type>
  <object-name>speedbrake_right.5</object-name>
- <property>fdm/jsbsim/fcs/spoiler[10]/pos-rad</property>
- <factor>-57.3</factor>
+ <property>fdm/jsbsim/fcs/spoiler[10]/pos-deg</property>
+ <factor>-1</factor>
  <axis>   
   <x1-m>  8.02</x1-m>
   <y1-m> 14.38</y1-m>
@@ -657,8 +657,8 @@
 <animation>
  <type>rotate</type>
  <object-name>speedbrake_right.6</object-name>
- <property>fdm/jsbsim/fcs/spoiler[11]/pos-rad</property>
- <factor>-57.3</factor>
+ <property>fdm/jsbsim/fcs/spoiler[11]/pos-deg</property>
+ <factor>-1</factor>
  <axis>   
   <x1-m>  8.02</x1-m>
   <y1-m> 14.38</y1-m>
@@ -674,8 +674,7 @@
 <animation>
  <type>rotate</type>
  <object-name>speedbrake_left.1</object-name>
- <property>fdm/jsbsim/fcs/spoiler[5]/pos-rad</property>
- <factor>57.3</factor>
+ <property>fdm/jsbsim/fcs/spoiler[5]/pos-deg</property>
  <axis>   
   <x1-m>  4.91</x1-m>
   <y1-m> -7.11</y1-m>
@@ -689,8 +688,7 @@
 <animation>
  <type>rotate</type>
  <object-name>speedbrake_left.2</object-name>
- <property>fdm/jsbsim/fcs/spoiler[4]/pos-rad</property>
- <factor>57.3</factor>
+ <property>fdm/jsbsim/fcs/spoiler[4]/pos-deg</property>
  <axis>   
   <x1-m>  4.91</x1-m>
   <y1-m> -7.11</y1-m>
@@ -706,8 +704,7 @@
 <animation>
  <type>rotate</type>
  <object-name>speedbrake_left.3</object-name>
- <property>fdm/jsbsim/fcs/spoiler[3]/pos-rad</property>
- <factor>57.3</factor>
+ <property>fdm/jsbsim/fcs/spoiler[3]/pos-deg</property>
  <axis>   
   <x1-m>  8.02</x1-m>
   <y1-m>-14.38</y1-m>
@@ -721,8 +718,7 @@
 <animation>
  <type>rotate</type>
  <object-name>speedbrake_left.4</object-name>
- <property>fdm/jsbsim/fcs/spoiler[2]/pos-rad</property>
- <factor>57.3</factor>
+ <property>fdm/jsbsim/fcs/spoiler[2]/pos-deg</property>
  <axis>   
   <x1-m>  8.02</x1-m>
   <y1-m>-14.38</y1-m>
@@ -736,8 +732,7 @@
 <animation>
  <type>rotate</type>
  <object-name>speedbrake_left.5</object-name>
- <property>fdm/jsbsim/fcs/spoiler[1]/pos-rad</property>
- <factor>57.3</factor>
+ <property>fdm/jsbsim/fcs/spoiler[1]/pos-deg</property>
  <axis>   
   <x1-m>  8.02</x1-m>
   <y1-m>-14.38</y1-m>
@@ -751,8 +746,7 @@
 <animation>
  <type>rotate</type>
  <object-name>speedbrake_left.6</object-name>
- <property>fdm/jsbsim/fcs/spoiler[0]/pos-rad</property>
- <factor>57.3</factor>
+ <property>fdm/jsbsim/fcs/spoiler[0]/pos-deg</property>
  <axis>   
   <x1-m>  8.02</x1-m>
   <y1-m>-14.38</y1-m>
