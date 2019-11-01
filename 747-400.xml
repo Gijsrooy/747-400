@@ -4659,7 +4659,7 @@
                             <property>aero/CoG-mac-pct</property>
                             <value>25</value>
                         </difference>
-                        <value>0.01</value> <!-- convert to percentage -->
+                        <value>0.01</value> <!-- convert from percentage -->
                         <quotient>
                             <property>metrics/cbarw-ft</property>
                             <property>metrics/bw-ft</property>
@@ -5093,6 +5093,7 @@
                         <property>aero/CoG-mac-pct</property>
                         <value>25</value>
                     </difference>
+                    <value>0.01</value> <!-- convert from percentage -->
                     <quotient>
                         <property>metrics/cbarw-ft</property>
                         <property>metrics/bw-ft</property>
