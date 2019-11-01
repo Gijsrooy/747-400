@@ -1469,9 +1469,9 @@
                   <independentVar lookup="column">velocities/vc-kts</independentVar>
                   <tableData>
                             150.0000 450.0000
-                    -0.5498  -0.5498   0.0873
+                    -0.5498  -0.5498  -0.0873
                      0.0000   0.0000   0.0000
-                     0.5498   0.5498  -0.0873
+                     0.5498   0.5498   0.0873
                   </tableData>
                 </table>
             </function>
@@ -2318,12 +2318,13 @@
         </function>
         
         <function name="aero/coefficient/dCyb">
-            <description>Side_force_due_to_beta_total</description>
+            <description>Side_force_due_to_beta_total</description> <!-- used for yawing moment coefficient -->
             <product>
                 <product>
                     <property>aero/coefficient/dCybsideslip</property>
                     <property>aero/coefficient/dCybaeroelastic</property>
                 </product>
+                <!-- TODO: add landing gear component -->
                 <property>aero/coefficient/FCybGE</property>
             </product>
         </function>
@@ -2340,7 +2341,7 @@
                 0.0873  -0.0160 -0.0160 -0.0160  -0.0160  -0.0175  -0.0175  -0.0185
                 0.1745  -0.0150 -0.0150 -0.0150  -0.0150  -0.0170  -0.0180  -0.0190
                 0.2618  -0.0155 -0.0155 -0.0155  -0.0155  -0.0167  -0.0185  -0.0200
-                0.3491  -0.0150 -0.0150 -0.0150  -0.0150  -0.0170  -0.0180  -0.0182
+                0.3491  -0.0150 -0.0150 -0.0150  -0.0150  -0.0170  -0.0180  -0.0190
                 0.4363  -0.0150 -0.0150 -0.0150  -0.0150  -0.0170  -0.0173  -0.0175
                 </tableData>
             </table>
@@ -2417,14 +2418,13 @@
                     0.4363   0.780   0.780   0.980    1.050    1.100    1.150    1.150
                     </tableData>
                 </table>
+                <!-- TODO: add flaps UP table -->
             </product>
         </function>
         
         <function name="aero/coefficient/Cyr">
             <description>Side_force_due_to_yaw_rate</description>
             <product>
-                <property>aero/bi2vel</property>
-                <property>velocities/r-aero-rad_sec</property>
                 <product>
                     <table> <!-- graph 7.0-8 -->
                         <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
@@ -2440,31 +2440,28 @@
                         0.4363  -0.020  -0.020  -0.150   -0.180   -0.250   -0.350   -0.440
                         </tableData>
                     </table>
-                    <property>aero/coefficient/dCyraeroelastic</property>
+                    <table> <!-- graph 7.0-9 -->
+                        <independentVar lookup="row">velocities/mach</independentVar>
+                        <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                        <tableData>
+                                  0   10000  20000  40000
+                        0.0     1.0     1.0    1.0    1.0
+                        0.1     1.0     0.99   1.0    1.0
+                        0.2     0.98    0.99   0.99   0.99
+                        0.3     0.92    0.95   0.97   0.97
+                        0.4     0.86    0.92   0.94   0.95
+                        0.5     0.81    0.87   0.90   0.93
+                        0.6     0.75    0.83   0.87   0.90
+                        0.7     0.70    0.78   0.84   0.90
+                        0.8     0.64    0.75   0.83   0.94
+                        0.9     0.64    0.68   0.77   0.96
+                        0.95    0.64    0.62   0.70   0.80
+                        </tableData>
+                    </table>
                 </product>
+                <property>velocities/r-aero-rad_sec</property>
+                <property>aero/bi2vel</property>
             </product>
-        </function>
-        
-        <function name="aero/coefficient/dCyraeroelastic">
-            <description>Side_force_due_to_yaw_rate_aeroelastic</description>
-            <table> <!-- graph 7.0-9 -->
-                <independentVar lookup="row">velocities/mach</independentVar>
-                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
-                <tableData>
-                          0   10000  20000  40000
-                0.0     1.0     1.0    1.0    1.0
-                0.1     1.0     0.99   1.0    1.0
-                0.2     0.98    0.99   0.99   0.99
-                0.3     0.92    0.95   0.97   0.97
-                0.4     0.86    0.92   0.94   0.95
-                0.5     0.81    0.87   0.90   0.93
-                0.6     0.75    0.83   0.87   0.90
-                0.7     0.70    0.78   0.84   0.90
-                0.8     0.64    0.75   0.83   0.94
-                0.9     0.64    0.68   0.77   0.96
-                0.95    0.64    0.62   0.70   0.80
-                </tableData>
-            </table>
         </function>
         
         <function name="aero/coefficient/CyRu">
@@ -3256,7 +3253,7 @@
                 <property>aero/coefficient/dCLnz</property>
             </sum>
         </function>
-        <function name="aero/coefficient/CL">
+        <function name="aero/coefficient/CL_total">
             <description>Total lift coefficient</description>
             <sum>
                 <property>aero/coefficient/CL_star</property>
@@ -3279,7 +3276,7 @@
                 <product>
                     <property>aero/qbar-psf</property>
                     <property>metrics/Sw-sqft</property>
-                    <property>aero/coefficient/CL</property>
+                    <property>aero/coefficient/CL_total</property>
                     <property>fcs/failures-wings-lift</property>
                 </product>
             </function>            
@@ -3701,8 +3698,6 @@
         <function name="aero/coefficient/Clp">
             <description>Roll_moment_due_to_roll_rate</description>
             <product>
-                <property>aero/bi2vel</property>
-                <property>velocities/p-aero-rad_sec</property>
                 <product>
                     <table> <!-- graph 5.0-12 -->
                         <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
@@ -3718,31 +3713,28 @@
                         0.4363   -0.095  -0.130  -0.160   -0.180   -0.215   -0.235   -0.272
                         </tableData>
                     </table>
-                    <property>aero/coefficient/dClpaeroelastic</property>
+                    <table> <!-- graph 5.0-13 -->
+                        <independentVar lookup="row">velocities/mach</independentVar>
+                        <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                        <tableData>
+                                  0   10000  20000  30000  40000
+                        0.0     1.0     1.0    1.0    1.0    1.0
+                        0.1     0.99    0.99   0.99   1.0    1.0
+                        0.2     0.94    0.96   0.98   0.99   1.0
+                        0.3     0.88    0.91   0.92   0.95   0.97
+                        0.4     0.83    0.85   0.87   0.92   0.94
+                        0.5     0.79    0.83   0.85   0.90   0.91
+                        0.6     0.75    0.80   0.83   0.86   0.87
+                        0.7     0.73    0.78   0.81   0.82   0.85
+                        0.8     0.73    0.78   0.80   0.82   0.85
+                        0.9     0.73    0.70   0.72   0.74   0.75
+                        0.95    0.73    0.60   0.65   0.68   0.70  
+                        </tableData>
+                    </table>
                 </product>
+                <property>velocities/p-aero-rad_sec</property>
+                <property>aero/bi2vel</property>
             </product>
-        </function>
-        
-        <function name="aero/coefficient/dClpaeroelastic">
-            <description>Roll_moment_due_to_roll_rate_aeroelastic</description>
-            <table> <!-- graph 5.0-13 -->
-                <independentVar lookup="row">velocities/mach</independentVar>
-                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
-                <tableData>
-                          0   10000  20000  30000  40000
-                0.0     1.0     1.0    1.0    1.0    1.0
-                0.1     0.99    0.99   0.99   1.0    1.0
-                0.2     0.94    0.96   0.98   0.99   1.0
-                0.3     0.88    0.91   0.92   0.95   0.97
-                0.4     0.83    0.85   0.87   0.92   0.94
-                0.5     0.79    0.83   0.85   0.90   0.91
-                0.6     0.75    0.80   0.83   0.86   0.87
-                0.7     0.73    0.78   0.81   0.82   0.85
-                0.8     0.73    0.78   0.80   0.82   0.85
-                0.9     0.73    0.70   0.72   0.74   0.75
-                0.95    0.73    0.60   0.65   0.68   0.70  
-                </tableData>
-            </table>
         </function>
         
         <function name="aero/coefficient/Clr">
@@ -4615,7 +4607,7 @@
                 <property>aero/coefficient/dCm_aeroelasticity</property>
                 <property>aero/coefficient/dCm_alphaae</property>
                 <product>
-                    <property>aero/coefficient/CL</property>
+                    <property>aero/coefficient/CL_total</property>
                     <sum>
                         <property>aero/CoG-mac-pct</property>
                         <value>-25</value>
@@ -4649,6 +4641,7 @@
         </axis>
 
         <!-- YAW -->
+        
         <function name="aero/coefficient/Cn_beta">
             <description>Yaw_moment_due_to_beta_coefficient</description>
             <product>
@@ -4666,6 +4659,7 @@
                             <property>aero/CoG-mac-pct</property>
                             <value>25</value>
                         </difference>
+                        <value>0.01</value> <!-- convert to percentage -->
                         <quotient>
                             <property>metrics/cbarw-ft</property>
                             <property>metrics/bw-ft</property>
@@ -4748,8 +4742,6 @@
         <function name="aero/coefficient/Cnb_rate">
             <description>Yaw_moment_due_to_beta_rate</description>
             <product>
-                <property>aero/bi2vel</property>
-                <property>aero/betadot-rad_sec</property>
                 <product>
                     <table> <!-- graph 6.0-8 -->
                         <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
@@ -4763,38 +4755,33 @@
                         0.4363    -0.014
                         </tableData>
                     </table>
-                    <property>aero/coefficient/Cnb_rate_aeroelastic</property>
+                    <table> <!-- graph 6.0-8 -->
+                        <independentVar lookup="row">velocities/mach</independentVar>
+                        <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                        <tableData>
+                                  0   10000  20000  30000  40000
+                        0.0     1.0     1.0    1.0    1.0    1.0
+                        0.1     1.0     1.0    1.0    1.0    1.0
+                        0.2     1.0     1.0    1.0    1.0    1.0
+                        0.3     1.0     1.0    1.0    1.01   1.01
+                        0.4     1.0     1.01   1.05   1.10   1.15
+                        0.5     1.02    1.10   1.20   1.24   1.26   
+                        0.6     1.24    1.25   1.35   1.40   1.60
+                        0.7     1.45    1.60   1.75   1.85   2.00
+                        0.8     1.75    2.00   2.20   2.30   2.50
+                        0.9     1.75    2.00   2.10   2.30   2.50   
+                        0.95    1.75    2.10   2.30   2.45   2.75
+                        </tableData>
+                    </table>
                 </product>
+                <property>aero/betadot-rad_sec</property>
+                <property>aero/bi2vel</property>
             </product>
-        </function>
-        
-        <function name="aero/coefficient/Cnb_rate_aeroelastic">
-            <description>Yaw_moment_due_to_beta_rate_aeroelastic</description>
-            <table> <!-- graph 6.0-8 -->
-                <independentVar lookup="row">velocities/mach</independentVar>
-                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
-                <tableData>
-                          0   10000  20000  30000  40000
-                0.0     1.0     1.0    1.0    1.0    1.0
-                0.1     1.0     1.0    1.0    1.0    1.0
-                0.2     1.0     1.0    1.0    1.0    1.0
-                0.3     1.0     1.0    1.0    1.01   1.01
-                0.4     1.0     1.01   1.05   1.10   1.15
-                0.5     1.02    1.10   1.20   1.24   1.26   
-                0.6     1.24    1.25   1.35   1.40   1.60
-                0.7     1.45    1.60   1.75   1.85   2.00
-                0.8     1.75    2.00   2.20   2.30   2.50
-                0.9     1.75    2.00   2.10   2.30   2.50   
-                0.95    1.75    2.10   2.30   2.45   2.75
-                </tableData>
-            </table>
         </function>
         
         <function name="aero/coefficient/Cnp">
             <description>Yaw_moment_due_to_roll_rate</description>
             <product>
-                <property>aero/bi2vel</property>
-                <property>velocities/p-aero-rad_sec</property>
                 <table> <!-- graph 6.0-9 -->
                     <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
                     <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
@@ -4809,6 +4796,8 @@
                     0.4363   0.040   0.024  -0.090   -0.124   -0.070   -0.044   -0.026
                     </tableData>
                 </table>
+                <property>velocities/p-aero-rad_sec</property>
+                <property>aero/bi2vel</property>
             </product>
         </function>
         
