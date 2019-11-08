@@ -769,7 +769,8 @@
 	</offsets>
 	<overlay>
 		<params>
-			<n1>/engines/engine[0]/n1</n1>
+			<n1>engines/engine[0]/n1</n1>
+            <reverser-pos-norm>engines/engine[0]/reverser-pos-norm</reverser-pos-norm>
 		</params>
 	</overlay>
 </model>
@@ -786,7 +787,8 @@
 	</offsets>
  	<overlay>
 		<params>
-			<n1>/engines/engine[1]/n1</n1>
+			<n1>engines/engine[1]/n1</n1>
+            <reverser-pos-norm>engines/engine[1]/reverser-pos-norm</reverser-pos-norm>
 		</params>
 	</overlay>
 </model>
@@ -803,7 +805,8 @@
 	</offsets>
  	<overlay>
 		<params>
-			<n1>/engines/engine[2]/n1</n1>
+			<n1>engines/engine[2]/n1</n1>
+            <reverser-pos-norm>engines/engine[2]/reverser-pos-norm</reverser-pos-norm>
 		</params>
 	</overlay>
 </model>
@@ -820,7 +823,8 @@
 	</offsets>
  	<overlay>
 		<params>
-			<n1>/engines/engine[3]/n1</n1>
+			<n1>engines/engine[3]/n1</n1>
+            <reverser-pos-norm>engines/engine[3]/reverser-pos-norm</reverser-pos-norm>
 		</params>
 	</overlay>
 </model>

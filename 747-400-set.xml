@@ -25,7 +25,7 @@
 		<cockpit type="int">3</cockpit>
 		<model type="int">3</model>
 	</rating>
-	<version>20191101</version>
+	<version>20191108</version>
 	
 	<flight-model>jsb</flight-model>
 	<aero>747-400</aero>
@@ -362,23 +362,18 @@ left mouse button and counter clockwise using the middle mouse button.
 <engines>
 	<engine n="0">
 		<running>false</running>
-		<reverser-position type="double">0.000000</reverser-position>
 	</engine>
 	<engine n="1">
 		<running>false</running>
-		<reverser-position type="double">0.000000</reverser-position>
 	</engine>
 	<engine n="2">
 		<running>false</running>
-		<reverser-position type="double">0.000000</reverser-position>
 	</engine>
 	<engine n="3">
 		<running>false</running>
-		<reverser-position type="double">0.000000</reverser-position>
 	</engine>   
 	<engine n="4">
 		<running>false</running>
-		<reverser-position type="double">0.000000</reverser-position>
 	</engine> 
 	<apu> 
 		<n1 alias="/engines/engine[4]/n1" /> 

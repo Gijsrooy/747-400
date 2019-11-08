@@ -39,7 +39,7 @@
 <animation>
 	<type>translate</type>
 	<object-name>engine_reverser</object-name>
-	<property>engines/engine/reverser-pos-norm</property>
+	<property alias="../../params/reverser-pos-norm"/>
 	<factor>0.6</factor>
 	<axis>
 		<x>1</x>
