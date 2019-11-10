@@ -1162,38 +1162,38 @@
            2   =    37     = FLIGHT DETENT
            3   =    77     = UP
         -->
-		<fcs_function name="fcs/speed-brake-handle-pos-deg">
+        <fcs_function name="fcs/speed-brake-handle-pos-deg">
             <function>
-		        <table> <!-- graph 19.0-10 -->
-		            <independentVar>/autopilot/autospoilers/step</independentVar>
-		            <tableData>
-		                 0.0  0.0
-		                 1.0  6.0
-		                 2.0 37.0
-		                 3.0 77.0
-		            </tableData>
-		        </table>
-			</function>
-		</fcs_function>
+                <table> <!-- graph 19.0-10 -->
+                    <independentVar>/autopilot/autospoilers/step</independentVar>
+                    <tableData>
+                         0.0  0.0
+                         1.0  6.0
+                         2.0 37.0
+                         3.0 77.0
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
 
         <!-- spoilers 1 and 2 -->
-		<fcs_function name="fcs/spoiler[0]/cmd-deg">
+        <fcs_function name="fcs/spoiler[0]/cmd-deg">
             <function>
-		        <table> <!-- graph 19.0-10 -->
-		            <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
-		            <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
-		            <tableData>
-		                     -80.0  -10.0  0.0  10.0  80.0
-		                 0.0  45.0   0.0   0.0   0.0   0.0
-		                 6.0  45.0   0.0   0.0   0.0   0.0  
-		                21.5  45.0   0.0   0.0   0.0   0.0
-		                37.0  45.0   0.0   0.0   0.0   0.0
-		                77.0  45.0  45.0  45.0  45.0   0.0
-		            </tableData>
-		        </table>
-			</function>
-			<output>fcs/spoiler[1]/cmd-deg</output>
-		</fcs_function>
+                <table> <!-- graph 19.0-10 -->
+                    <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
+                    <tableData>
+                             -80.0  -10.0  0.0  10.0  80.0
+                         0.0  45.0   0.0   0.0   0.0   0.0
+                         6.0  45.0   0.0   0.0   0.0   0.0  
+                        21.5  45.0   0.0   0.0   0.0   0.0
+                        37.0  45.0   0.0   0.0   0.0   0.0
+                        77.0  45.0  45.0  45.0  45.0   0.0
+                    </tableData>
+                </table>
+            </function>
+            <output>fcs/spoiler[1]/cmd-deg</output>
+        </fcs_function>
         
         <actuator name="fcs/spoiler[0]/actuator">
             <input>fcs/spoiler[0]/cmd-deg</input>
@@ -1209,25 +1209,25 @@
         
         
         <!-- spoilers 3 and 4 -->
-		<fcs_function name="fcs/spoiler[2]/cmd-deg">
+        <fcs_function name="fcs/spoiler[2]/cmd-deg">
             <function>
-		        <table> <!-- graph 19.0-10 -->
-		            <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
-		            <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
-		            <tableData>
-		                     -80.0 -38.0 -10.0   0.0  10.0  80.0
-		                 0.0  45.0   0.0   0.0   0.0   0.0   0.0
-		                 6.0  45.0   0.0   0.0   0.0   0.0   0.0
-		                21.5  45.0  45.0  25.0  22.5  20.0   0.0
-		                37.0  45.0  45.0  45.0  45.0  45.0   0.0
-		                77.0  45.0  45.0  45.0  45.0  45.0   0.0
-		            </tableData>
-		        </table>
-			</function>
-			<output>fcs/spoiler[3]/cmd-deg</output>
-		</fcs_function>
+                <table> <!-- graph 19.0-10 -->
+                    <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
+                    <tableData>
+                             -80.0 -38.0 -10.0   0.0  10.0  80.0
+                         0.0  45.0   0.0   0.0   0.0   0.0   0.0
+                         6.0  45.0   0.0   0.0   0.0   0.0   0.0
+                        21.5  45.0  45.0  25.0  22.5  20.0   0.0
+                        37.0  45.0  45.0  45.0  45.0  45.0   0.0
+                        77.0  45.0  45.0  45.0  45.0  45.0   0.0
+                    </tableData>
+                </table>
+            </function>
+            <output>fcs/spoiler[3]/cmd-deg</output>
+        </fcs_function>
 
-		<actuator name="fcs/spoiler[2]/actuator">
+        <actuator name="fcs/spoiler[2]/actuator">
             <input>fcs/spoiler[2]/cmd-deg</input>
             <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
             <output>fcs/spoiler[2]/pos-deg</output>
@@ -1241,45 +1241,45 @@
         
         
         <!-- spoiler 5 -->
-		<fcs_function name="fcs/spoiler[4]/cmd-deg">
+        <fcs_function name="fcs/spoiler[4]/cmd-deg">
             <function>
-		        <table> <!-- graph 19.0-10 -->
-		            <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
-		            <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
-		            <tableData>
-		                     -80.0 -42.0 -10.0   0.0  10.0  40.0  80.0
-		                 0.0  20.0  20.0   0.0   0.0   0.0   0.0   0.0
-		                 6.0  20.0  20.0   0.0   0.0   0.0   0.0   0.0
-		                21.5  20.0  20.0  20.0  20.0  20.0   0.0   0.0
-		                37.0  20.0  20.0  20.0  20.0  20.0  20.0   0.0
-		                77.0  20.0  20.0  20.0  20.0  20.0  20.0   0.0
-		            </tableData>
-		        </table>
-			</function>
-		</fcs_function>
+                <table> <!-- graph 19.0-10 -->
+                    <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
+                    <tableData>
+                             -80.0 -42.0 -10.0   0.0  10.0  40.0  80.0
+                         0.0  20.0  20.0   0.0   0.0   0.0   0.0   0.0
+                         6.0  20.0  20.0   0.0   0.0   0.0   0.0   0.0
+                        21.5  20.0  20.0  20.0  20.0  20.0   0.0   0.0
+                        37.0  20.0  20.0  20.0  20.0  20.0  20.0   0.0
+                        77.0  20.0  20.0  20.0  20.0  20.0  20.0   0.0
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
 
-		<actuator name="fcs/spoiler[4]/actuator">
+        <actuator name="fcs/spoiler[4]/actuator">
             <input>fcs/spoiler[4]/cmd-deg</input>
             <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
             <output>fcs/spoiler[4]/pos-deg</output>
         </actuator>
 
         <!-- spoilers 6 and 7 -->
-		<fcs_function name="fcs/spoiler[5]/cmd-deg">
+        <fcs_function name="fcs/spoiler[5]/cmd-deg">
             <function>
-		        <table> <!-- graph 19.0-10 -->
-		            <independentVar>fcs/speed-brake-handle-pos-deg</independentVar>
-		            <tableData>
-		                 0.0   0.0
-		                 6.0   0.0
-		                21.5   0.0
-		                37.0  20.0
-		                77.0  20.0
-		            </tableData>
-		        </table>
-			</function>
+                <table> <!-- graph 19.0-10 -->
+                    <independentVar>fcs/speed-brake-handle-pos-deg</independentVar>
+                    <tableData>
+                         0.0   0.0
+                         6.0   0.0
+                        21.5   0.0
+                        37.0  20.0
+                        77.0  20.0
+                    </tableData>
+                </table>
+            </function>
             <output>fcs/spoiler[6]/cmd-deg</output>
-		</fcs_function>
+        </fcs_function>
 
         <actuator name="fcs/spoiler[5]/actuator">
             <input>fcs/spoiler[5]/cmd-deg</input>
@@ -1295,49 +1295,49 @@
         
         
         <!-- spoiler 8 -->
-		<fcs_function name="fcs/spoiler[7]/cmd-deg">
+        <fcs_function name="fcs/spoiler[7]/cmd-deg">
             <function>
-		        <table> <!-- graph 19.0-10 -->
-		            <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
-		            <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
-		            <tableData>
-		                     -80.0 -40.0 -10.0   0.0  10.0  42.0  80.0
-		                 0.0   0.0   0.0   0.0   0.0   0.0  20.0  20.0
-		                 6.0   0.0   0.0   0.0   0.0   0.0  20.0  20.0
-		                21.5   0.0   0.0  20.0  20.0  20.0  20.0  20.0
-		                37.0   0.0  20.0  20.0  20.0  20.0  20.0  20.0
-		                77.0   0.0  20.0  20.0  20.0  20.0  20.0  20.0
-		            </tableData>
-		        </table>
-			</function>
-		</fcs_function>
+                <table> <!-- graph 19.0-10 -->
+                    <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
+                    <tableData>
+                             -80.0 -40.0 -10.0   0.0  10.0  42.0  80.0
+                         0.0   0.0   0.0   0.0   0.0   0.0  20.0  20.0
+                         6.0   0.0   0.0   0.0   0.0   0.0  20.0  20.0
+                        21.5   0.0   0.0  20.0  20.0  20.0  20.0  20.0
+                        37.0   0.0  20.0  20.0  20.0  20.0  20.0  20.0
+                        77.0   0.0  20.0  20.0  20.0  20.0  20.0  20.0
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
 
-		<actuator name="fcs/spoiler[7]/actuator">
+        <actuator name="fcs/spoiler[7]/actuator">
             <input>fcs/spoiler[7]/cmd-deg</input>
             <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
             <output>fcs/spoiler[7]/pos-deg</output>
         </actuator>
         
         <!-- spoilers 9 and 10 -->
-		<fcs_function name="fcs/spoiler[8]/cmd-deg">
+        <fcs_function name="fcs/spoiler[8]/cmd-deg">
             <function>
-		        <table> <!-- graph 19.0-10 -->
-		            <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
-		            <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
-		            <tableData>
-		                     -80.0 -10.0   0.0  10.0  38.0  80.0
-		                 0.0   0.0   0.0   0.0   0.0   0.0  45.0
-		                 6.0   0.0   0.0   0.0   0.0   0.0  45.0
-		                21.5   0.0  20.0  22.5  25.0  45.0  45.0
-		                37.0   0.0  45.0  45.0  45.0  45.0  45.0
-		                77.0   0.0  45.0  45.0  45.0  45.0  45.0
-		            </tableData>
-		        </table>
-			</function>
-			<output>fcs/spoiler[9]/cmd-deg</output>
-		</fcs_function>
+                <table> <!-- graph 19.0-10 -->
+                    <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
+                    <tableData>
+                             -80.0 -10.0   0.0  10.0  38.0  80.0
+                         0.0   0.0   0.0   0.0   0.0   0.0  45.0
+                         6.0   0.0   0.0   0.0   0.0   0.0  45.0
+                        21.5   0.0  20.0  22.5  25.0  45.0  45.0
+                        37.0   0.0  45.0  45.0  45.0  45.0  45.0
+                        77.0   0.0  45.0  45.0  45.0  45.0  45.0
+                    </tableData>
+                </table>
+            </function>
+            <output>fcs/spoiler[9]/cmd-deg</output>
+        </fcs_function>
 
-		<actuator name="fcs/spoiler[8]/actuator">
+        <actuator name="fcs/spoiler[8]/actuator">
             <input>fcs/spoiler[8]/cmd-deg</input>
             <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
             <output>fcs/spoiler[8]/pos-deg</output>
@@ -1350,25 +1350,25 @@
         </actuator>
         
         <!-- spoilers 11 and 12 -->
-		<fcs_function name="fcs/spoiler[10]/cmd-deg">
+        <fcs_function name="fcs/spoiler[10]/cmd-deg">
             <function>
-		        <table> <!-- graph 19.0-10 -->
-		            <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
-		            <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
-		            <tableData>
-		                     -80.0 -10.0   0.0  10.0  80.0
-		                 0.0   0.0   0.0   0.0   0.0  45.0
-		                 6.0   0.0   0.0   0.0   0.0  45.0  
-		                21.5   0.0   0.0   0.0   0.0  45.0
-		                37.0   0.0   0.0   0.0   0.0  45.0
-		                77.0   0.0  45.0  45.0  45.0  45.0
-		            </tableData>
-		        </table>
-			</function>
-			<output>fcs/spoiler[11]/cmd-deg</output>
-		</fcs_function>
+                <table> <!-- graph 19.0-10 -->
+                    <independentVar lookup="row">fcs/speed-brake-handle-pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/wheel-pos-deg</independentVar>
+                    <tableData>
+                             -80.0 -10.0   0.0  10.0  80.0
+                         0.0   0.0   0.0   0.0   0.0  45.0
+                         6.0   0.0   0.0   0.0   0.0  45.0  
+                        21.5   0.0   0.0   0.0   0.0  45.0
+                        37.0   0.0   0.0   0.0   0.0  45.0
+                        77.0   0.0  45.0  45.0  45.0  45.0
+                    </tableData>
+                </table>
+            </function>
+            <output>fcs/spoiler[11]/cmd-deg</output>
+        </fcs_function>
 
-		<actuator name="fcs/spoiler[10]/actuator">
+        <actuator name="fcs/spoiler[10]/actuator">
             <input>fcs/spoiler[10]/cmd-deg</input>
             <rate_limit> 75 </rate_limit> <!-- 75 deg/sec -->
             <output>fcs/spoiler[10]/pos-deg</output>
@@ -2852,7 +2852,7 @@
                     <independentVar lookup="row">velocities/mach</independentVar>
                     <independentVar lookup="column">atmosphere/density-altitude</independentVar>
                     <tableData>
-                        	       0.0000 10000.0000 40000.0000
+                                   0.0000 10000.0000 40000.0000
                         0.0000     0.0142     0.0142     0.0142
                         0.4000     0.0128     0.0130     0.0139
                         0.6000     0.0117     0.0123     0.0140
@@ -3175,7 +3175,7 @@
                     <independentVar lookup="row">velocities/mach</independentVar>
                     <independentVar lookup="column">atmosphere/density-altitude</independentVar>
                     <tableData>
-                        	        0.00000 10000.00000 40000.00000
+                                    0.00000 10000.00000 40000.00000
                         0.00000     0.00325     0.00325     0.00325
                         0.40000     0.00255     0.00290     0.00350
                         0.70000     0.00175     0.00245     0.00355
@@ -4006,7 +4006,7 @@
             <description>Roll_moment_due_to_inboard_ailerons</description>
             <product>
                 <value>2</value>
-				<property>aero/function/KdAI</property>
+                <property>aero/function/KdAI</property>
                 <property>aero/coefficient/Clinboardeffect</property>
                 <property>aero/coefficient/dClinboardaeroelastic</property>
                 <property>aero/coefficient/dCl_rera_inboard_aeroelastic</property>
@@ -4805,16 +4805,16 @@
             <description>Yawing_moment_coefficient_due_to_yaw_rate</description>
             <product>
                 <table> <!-- graph 6.0-10 -->
-	                <independentVar>aero/CoG-mac-pct</independentVar>
-	                <tableData>
-	                11   1.06
-	                15   1.04
-	                20   1.02
-	                25   1.00
-	                30   0.98
-	                33   0.97
-	                </tableData>
-	            </table>
+                    <independentVar>aero/CoG-mac-pct</independentVar>
+                    <tableData>
+                    11   1.06
+                    15   1.04
+                    20   1.02
+                    25   1.00
+                    30   0.98
+                    33   0.97
+                    </tableData>
+                </table>
                 <table> <!-- graph 6.0-10 -->
                     <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
                     <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
@@ -4829,24 +4829,24 @@
                    25.000 -0.300 -0.300 -0.325 -0.370 -0.450 -0.465 -0.490
                     </tableData>
                 </table>
-	            <table> <!-- graph 6.0-10 -->
-	                <independentVar lookup="row">velocities/mach</independentVar>
-	                <independentVar lookup="column">atmosphere/density-altitude</independentVar>
-	                <tableData>
-	                         0.00 10000.00 20000.00 25000.00 30000.00 40000.00
-	                0.00     1.00     1.00     1.00     1.00     1.00     1.00
-	                0.10     0.99     1.00     1.00     1.00     1.00     1.00
-	                0.20     0.98     0.99     1.00     1.00     1.01     1.01
-	                0.30     0.95     0.99     1.00     1.00     1.02     1.03
-	                0.40     0.93     0.97     1.00     1.01     1.03     1.05
-	                0.50     0.90     0.95     0.99     1.02     1.04     1.09
-	                0.60     0.86     0.93     0.99     1.03     1.06     1.13
-	                0.70     0.83     0.90     0.99     1.05     1.08     1.19
-	                0.80     0.80     0.86     0.95     1.06     1.10     1.23
-	                0.90     0.80     0.83     0.87     0.93     1.07     1.25
-	                0.95     0.80     0.82     0.84     0.86     0.98     1.18
-	                </tableData>
-	            </table>
+                <table> <!-- graph 6.0-10 -->
+                    <independentVar lookup="row">velocities/mach</independentVar>
+                    <independentVar lookup="column">atmosphere/density-altitude</independentVar>
+                    <tableData>
+                             0.00 10000.00 20000.00 25000.00 30000.00 40000.00
+                    0.00     1.00     1.00     1.00     1.00     1.00     1.00
+                    0.10     0.99     1.00     1.00     1.00     1.00     1.00
+                    0.20     0.98     0.99     1.00     1.00     1.01     1.01
+                    0.30     0.95     0.99     1.00     1.00     1.02     1.03
+                    0.40     0.93     0.97     1.00     1.01     1.03     1.05
+                    0.50     0.90     0.95     0.99     1.02     1.04     1.09
+                    0.60     0.86     0.93     0.99     1.03     1.06     1.13
+                    0.70     0.83     0.90     0.99     1.05     1.08     1.19
+                    0.80     0.80     0.86     0.95     1.06     1.10     1.23
+                    0.90     0.80     0.83     0.87     0.93     1.07     1.25
+                    0.95     0.80     0.82     0.84     0.86     0.98     1.18
+                    </tableData>
+                </table>
                 <property>velocities/r-aero-rad_sec</property>
                 <property>aero/bi2vel</property>
             </product>
@@ -4859,12 +4859,12 @@
                 <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
                 <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                 <tableData>
-					          0.00000  1.00000  5.00000 10.00000 20.00000 25.00000 30.00000
-					-5.00000  0.00110  0.00110  0.00115  0.00130  0.00150  0.00145  0.00145
-					 0.00000  0.00095  0.00095  0.00100  0.00123  0.00145  0.00160  0.00170
-					10.00000  0.00070  0.00070  0.00075  0.00095  0.00120  0.00165  0.00180
-					20.00000  0.00002  0.00002  0.00015  0.00032  0.00055  0.00135  0.00155
-					25.00000 -0.00020 -0.00020 -0.00015 -0.00015 -0.00015  0.00075  0.00085
+                              0.00000  1.00000  5.00000 10.00000 20.00000 25.00000 30.00000
+                    -5.00000  0.00110  0.00110  0.00115  0.00130  0.00150  0.00145  0.00145
+                     0.00000  0.00095  0.00095  0.00100  0.00123  0.00145  0.00160  0.00170
+                    10.00000  0.00070  0.00070  0.00075  0.00095  0.00120  0.00165  0.00180
+                    20.00000  0.00002  0.00002  0.00015  0.00032  0.00055  0.00135  0.00155
+                    25.00000 -0.00020 -0.00020 -0.00015 -0.00015 -0.00015  0.00075  0.00085
                 </tableData>
             </table>
         </function>
@@ -4877,14 +4877,14 @@
                     <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
                     <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                     <tableData>
-					          0.00000  1.00000  5.00000 10.00000 20.00000 25.00000 30.00000
-					-5.00000  0.00205  0.00205  0.00215  0.00235  0.00255  0.00285  0.00285
-					 0.00000  0.00225  0.00225  0.00232  0.00252  0.00275  0.00300  0.00300
-					 5.00000  0.00180  0.00180  0.00200  0.00225  0.00250  0.00270  0.00270
-					10.00000  0.00080  0.00080  0.00135  0.00165  0.00195  0.00215  0.00215
-					15.00000 -0.00030 -0.00030  0.00070  0.00097  0.00130  0.00160  0.00160
-					20.00000 -0.00065 -0.00065 -0.00020 -0.00013 -0.00005  0.00025  0.00025
-					25.00000 -0.00030 -0.00030 -0.00010 -0.00005  0.00000  0.00040  0.00040
+                              0.00000  1.00000  5.00000 10.00000 20.00000 25.00000 30.00000
+                    -5.00000  0.00205  0.00205  0.00215  0.00235  0.00255  0.00285  0.00285
+                     0.00000  0.00225  0.00225  0.00232  0.00252  0.00275  0.00300  0.00300
+                     5.00000  0.00180  0.00180  0.00200  0.00225  0.00250  0.00270  0.00270
+                    10.00000  0.00080  0.00080  0.00135  0.00165  0.00195  0.00215  0.00215
+                    15.00000 -0.00030 -0.00030  0.00070  0.00097  0.00130  0.00160  0.00160
+                    20.00000 -0.00065 -0.00065 -0.00020 -0.00013 -0.00005  0.00025  0.00025
+                    25.00000 -0.00030 -0.00030 -0.00010 -0.00005  0.00000  0.00040  0.00040
                     </tableData>
                 </table>
                 <value>0.33</value> <!-- values in table are for the complete group of 3 panels -->
