@@ -21,8 +21,6 @@
   <alignment>center-center</alignment>
  </params>
 
- <path>null.ac</path>
-
  <text>
   <name>text</name>
   <axis-alignment>yz-plane</axis-alignment>

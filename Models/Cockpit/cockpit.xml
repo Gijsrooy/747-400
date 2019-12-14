@@ -29,21 +29,6 @@
 	</offsets>
 </model>
 
-<model>
-	<name>seats</name>
-	<path>Aircraft/747-400/Models/Cockpit/seats.xml</path>
-</model>
-
-<model>
-	<name>yokes</name>
-	<path>Aircraft/747-400/Models/Cockpit/yokes.xml</path>
-	<condition>
-		<not>
-			<property>sim/model/hide-yoke</property>
-		</not>
-	</condition>
-</model>
-
 <!-- ### PEDESTAL PANEL ### -->
 
 <effect>
@@ -358,17 +343,6 @@
 	<step>0.005</step>
 	<axis>
 		<y>-1</y>
-	</axis>
-</animation>
-
-
-<animation>
-	<type>textranslate</type>
-	<object-name>stab.trim.greenband</object-name>
-	<property>/instrumentation/stabilizer-trim-indicator/greenband</property>
-	<factor>0.0185</factor>
-	<axis>
-		<y>1</y>
 	</axis>
 </animation>
 
@@ -755,7 +729,7 @@
 			<command>set-tooltip</command>
 			<label>Flaps: %2d</label>
 			<tooltip-id>flaps</tooltip-id>
-			<property>/fdm/jsbsim/fcs/flap-cmd-deg</property>
+			<property>/fdm/jsbsim/fcs/flaps/cmd-detent-deg</property>
 		</binding>
 	</hovered>
 	<interpolation>
@@ -1296,6 +1270,315 @@
 			<command>property-swap</command>
 			<property>/instrumentation/comm[2]/frequencies/selected-mhz</property>
 			<property>/instrumentation/comm[2]/frequencies/standby-mhz</property>
+		</binding>
+	</action>
+</animation>
+
+<!-- Seats -->
+
+<animation>
+	<type>pick</type>
+	<object-name>captainseat</object-name>
+	<action>
+		<button>0</button>
+		<repeatable>false</repeatable>
+		<binding>
+			<command>nasal</command>
+			<script>Boeing747.captain_seat.toggle();</script>
+		</binding>
+	</action>
+</animation>
+
+<animation>
+	<type>translate</type>
+	<object-name>captainseat</object-name>
+	<property>controls/seat/captain/position-norm</property>
+	<interpolation>
+		<entry>
+			<ind>0</ind>
+			<dep>0</dep>
+		</entry>
+		<entry>
+			<ind>0.8</ind>
+			<dep>0.254</dep>
+		</entry>
+		<entry>
+			<ind>1</ind>
+			<dep>0.254</dep>
+		</entry>
+	</interpolation>
+	<factor>0.254</factor>
+	<axis>
+		<x>1</x>
+		<y>0</y>
+		<z>0</z>
+	</axis>
+</animation>
+
+<animation>
+	<type>translate</type>
+	<object-name>captainseat</object-name>
+	<property>controls/seat/captain/position-norm</property>
+	<interpolation>
+		<entry>
+			<ind>0</ind>
+			<dep>0</dep>
+		</entry>
+		<entry>
+			<ind>0.8</ind>
+			<dep>0</dep>
+		</entry>
+		<entry>
+			<ind>1</ind>
+			<dep>0.089</dep>
+		</entry>
+	</interpolation>
+	<axis>
+		<x> 0</x>
+		<y>-1</y>
+		<z> 0</z>
+	</axis>
+</animation>
+
+<animation>
+	<type>pick</type>
+	<object-name>firstofficerseat</object-name>
+	<action>
+		<button>0</button>
+		<repeatable>false</repeatable>
+		<binding>
+			<command>nasal</command>
+			<script>Boeing747.firstofficer_seat.toggle();</script>
+		</binding>
+	</action>
+</animation>
+
+<animation>
+	<type>translate</type>
+	<object-name>firstofficerseat</object-name>
+	<property>controls/seat/firstofficer/position-norm</property>
+	<interpolation>
+		<entry>
+			<ind>0</ind>
+			<dep>0</dep>
+		</entry>
+		<entry>
+			<ind>0.8</ind>
+			<dep>0.254</dep>
+		</entry>
+		<entry>
+			<ind>1</ind>
+			<dep>0.254</dep>
+		</entry>
+	</interpolation>
+	<factor>0.254</factor>
+	<axis>
+		<x>1</x>
+		<y>0</y>
+		<z>0</z>
+	</axis>
+</animation>
+
+<animation>
+	<type>translate</type>
+	<object-name>firstofficerseat</object-name>
+	<property>controls/seat/firstofficer/position-norm</property>
+	<interpolation>
+		<entry>
+			<ind>0</ind>
+			<dep>0</dep>
+		</entry>
+		<entry>
+			<ind>0.8</ind>
+			<dep>0</dep>
+		</entry>
+		<entry>
+			<ind>1</ind>
+			<dep>0.089</dep>
+		</entry>
+	</interpolation>
+	<axis>
+		<x>0</x>
+		<y>1</y>
+		<z>0</z>
+	</axis>
+</animation>
+
+<!-- Yokes -->
+
+<model>
+	<name>EFB1</name>
+	<path>Aircraft/747-400/Models/Cockpit/Instruments/EFB/EFB.xml</path>
+	<offsets>
+		<x-m> 1.063</x-m>
+		<y-m>-0.533</y-m>
+		<z-m> 0.765</z-m>
+		<pitch-deg>-8</pitch-deg>
+	</offsets>
+</model>
+
+<model>
+	<name>EFB2</name>
+	<path>Aircraft/747-400/Models/Cockpit/Instruments/EFB/EFB.xml</path>
+	<offsets>
+		<x-m>1.063</x-m>
+		<y-m>0.533</y-m>
+		<z-m>0.765</z-m>
+		<pitch-deg>-8</pitch-deg>
+	</offsets>
+</model>
+
+<animation>
+	<type>select</type>
+	<object-name>EFB1</object-name>
+	<object-name>EFB2</object-name>
+	<object-name>left_chart</object-name>
+	<object-name>left_column</object-name>
+	<object-name>left_yoke</object-name>
+	<object-name>right_chart</object-name>
+	<object-name>right_column</object-name>
+	<object-name>right_yoke</object-name>
+	<condition>
+		<not>
+			<property>sim/model/hide-yoke</property>
+		</not>
+	</condition>
+</animation>
+
+<animation>
+	<type>rotate</type>
+	<object-name>left_chart</object-name>
+	<object-name>left_column</object-name>
+	<object-name>left_yoke</object-name>
+	<object-name>EFB1</object-name>
+	<object-name>right_chart</object-name>
+	<object-name>right_column</object-name>
+	<object-name>right_yoke</object-name>
+	<object-name>EFB2</object-name>
+	<property>controls/flight/elevator</property>
+	<factor>12.5</factor>
+	<center>
+		<x-m> 1.10</x-m>
+		<y-m> 0.0</y-m>
+		<z-m>-0.025</z-m>
+	</center>
+	<axis>
+		<x> 0.0</x>
+		<y>-1.0</y>
+		<z> 0.0</z>
+	</axis>
+</animation>
+
+<animation>
+	<type>rotate</type>
+	<object-name>left_chart</object-name>
+	<object-name>left_yoke</object-name>
+	<object-name>EFB1</object-name>
+	<property>controls/flight/aileron</property>
+	<factor>88</factor>
+	<center>
+		<x-m> 1.048</x-m>
+		<y-m>-0.533</y-m>
+		<z-m> 0.724</z-m>
+	</center>
+	<axis>
+		<x>-1.0</x>
+		<y> 0.0</y>
+		<z> 0.0</z>
+	</axis>
+</animation>
+
+<animation>
+	<type>rotate</type>
+	<object-name>right_chart</object-name>
+	<object-name>right_yoke</object-name>
+	<object-name>EFB2</object-name>
+	<property>controls/flight/aileron</property>
+	<factor>88</factor>
+	<center>
+		<x-m>1.048</x-m>
+		<y-m>0.533</y-m>
+		<z-m>0.724</z-m>
+	</center>
+	<axis>
+		<x>-1.0</x>
+		<y> 0.0</y>
+		<z> 0.0</z>
+	</axis>
+</animation>
+
+<!-- Rudder pedals -->
+
+<animation>
+	<type>translate</type>
+	<object-name>pedals_l</object-name>
+	<property>controls/flight/rudder</property>
+	<factor>0.06</factor>
+	<axis>
+		<x>1.0</x>
+		<y>0.0</y>
+		<z>0.0</z>
+	</axis>
+</animation>
+
+<animation>
+	<type>translate</type>
+	<object-name>pedals_r</object-name>
+	<property>controls/flight/rudder</property>
+	<factor>-0.06</factor>
+	<axis>
+		<x>1.0</x>
+		<y>0.0</y>
+		<z>0.0</z>
+	</axis>
+</animation>
+
+<animation>
+	<type>rotate</type>
+	<object-name>pedals_l</object-name>
+	<property>controls/gear/brake-left</property>
+	<factor>-10</factor>
+	<axis>
+		<x>0.0</x>
+		<y>1.0</y>
+		<z>0.0</z>
+	</axis>
+	<center>
+		<x-m>0.757</x-m>
+		<y-m>0</y-m>
+		<z-m>0.057</z-m>
+	</center>
+</animation>
+
+<animation>
+	<type>rotate</type>
+	<object-name>pedals_r</object-name>
+	<property>controls/gear/brake-right</property>
+	<factor>-10</factor>
+	<axis>
+		<x>0.0</x>
+		<y>1.0</y>
+		<z>0.0</z>
+	</axis>
+	<center>
+		<x-m>0.757</x-m>
+		<y-m>0</y-m>
+		<z-m>0.057</z-m>
+	</center>
+</animation>
+
+<animation>
+	<type>pick</type>
+	<object-name>left_chart</object-name>
+	<object-name>right_chart</object-name>
+	<action>
+		<button>0</button>
+		<binding>
+			<command>nasal</command>
+			<script>
+				var mal = gui.Dialog.new("/sim/gui/dialogs/Boeing747/menu/dialog","Aircraft/747-400/Dialogs/yokechart-dialog.xml");
+				mal.open();
+			</script>
 		</binding>
 	</action>
 </animation>
