@@ -179,7 +179,7 @@ var caution_messages = func {
 		append(msgs_caution,"FUEL JETT SYS");
 	if (getprop("controls/failures/gear[0]/stuck") or getprop("controls/failures/gear[1]/stuck") or getprop("controls/failures/gear[2]/stuck") or getprop("controls/failures/gear[3]/stuck") or getprop("controls/failures/gear[4]/stuck"))
 		append(msgs_caution,"GEAR DISAGREE");
-	if (getprop("controls/flight/speedbrake") and ((radio_alt<800 and radio_alt>15) or flaps>0.7 or throttle>0.1))
+	if (getprop("controls/flight/speedbrake") and ((radio_alt < 800 and radio_alt > 15) or flaps > 0.7 or (radio_alt > 15 and throttle > 0.1)))
 		append(msgs_caution,">SPEEDBRAKES EXT");	
 }
 

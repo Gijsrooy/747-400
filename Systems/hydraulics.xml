@@ -102,7 +102,7 @@
 		</switch>
 		
 		<!-- Control surface deflection rates -->
-		<switch name="systems/hydraulic/left-outboard-aileron/range-limit-up">
+		<switch name="systems/hydraulic/left-outboard-aileron/range-limit-up-rad_sec">
 			<default value="0.960"/> <!-- 55 deg/sec -->
 			<test  logic="OR" value="0.785"> <!-- 45 deg/sec -->
 				/systems/hydraulic/pressure[0] LT 1000
@@ -110,7 +110,7 @@
 			</test>
 		</switch>
 		
-		<switch name="systems/hydraulic/right-outboard-aileron/range-limit-up">
+		<switch name="systems/hydraulic/right-outboard-aileron/range-limit-up-rad_sec">
 			<default value="0.960"/> <!-- 55 deg/sec -->
 			<test  logic="OR" value="0.785"> <!-- 45 deg/sec -->
 				/systems/hydraulic/pressure[2] LT 1000
@@ -118,7 +118,7 @@
 			</test>
 		</switch>
 		
-		<switch name="systems/hydraulic/left-inboard-aileron/range-limit-up">
+		<switch name="systems/hydraulic/left-inboard-aileron/range-limit-up-rad_sec">
 			<default value="0.785"/> <!-- 45 deg/sec -->
 			<test  logic="OR" value="0.611"> <!-- 35 deg/sec -->
 				/systems/hydraulic/pressure[0] LT 1000
@@ -126,7 +126,7 @@
 			</test>
 		</switch>
 		
-		<switch name="systems/hydraulic/right-inboard-aileron/range-limit-up">
+		<switch name="systems/hydraulic/right-inboard-aileron/range-limit-up-rad_sec">
 			<default value="0.785"/> <!-- 45 deg/sec -->
 			<test  logic="OR" value="0.611"> <!-- 35 deg/sec -->
 				/systems/hydraulic/pressure[1] LT 1000
@@ -134,7 +134,7 @@
 			</test>
 		</switch>
 		
-		<switch name="systems/hydraulic/left-outboard-aileron/range-limit-down">
+		<switch name="systems/hydraulic/left-outboard-aileron/range-limit-down-rad_sec">
 			<default value="0.785"/> <!-- 45 deg/sec -->
 			<test  logic="OR" value="0.384"> <!-- 22 deg/sec -->
 				/systems/hydraulic/pressure[0] LT 1000
@@ -142,7 +142,7 @@
 			</test>
 		</switch>
 		
-		<switch name="systems/hydraulic/right-outboard-aileron/range-limit-down">
+		<switch name="systems/hydraulic/right-outboard-aileron/range-limit-down-rad_sec">
 			<default value="0.785"/> <!-- 45 deg/sec -->
 			<test  logic="OR" value="0.384"> <!-- 22 deg/sec -->
 				/systems/hydraulic/pressure[2] LT 1000
@@ -150,7 +150,7 @@
 			</test>
 		</switch>
 		
-		<switch name="systems/hydraulic/left-inboard-aileron/range-limit-down">
+		<switch name="systems/hydraulic/left-inboard-aileron/range-limit-down-rad_sec">
 			<default value="0.698"/> <!-- 40 deg/sec -->
 			<test  logic="OR" value="0.471"> <!-- 27 deg/sec -->
 				/systems/hydraulic/pressure[0] LT 1000
@@ -158,7 +158,7 @@
 			</test>
 		</switch>
 		
-		<switch name="systems/hydraulic/right-inboard-aileron/range-limit-down">
+		<switch name="systems/hydraulic/right-inboard-aileron/range-limit-down-rad_sec">
 			<default value="0.698"/> <!-- 40 deg/sec -->
 			<test  logic="OR" value="0.471"> <!-- 27 deg/sec -->
 				/systems/hydraulic/pressure[1] LT 100
