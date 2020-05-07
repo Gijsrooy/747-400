@@ -16,7 +16,7 @@
 	
 <model>
 	<name>Pushback</name>
-	<path>Models/Airport/Pushback/Goldhofert.xml</path>
+	<path>Aircraft/747-400/Models/Autopush/Goldhofert.xml</path>
 	<offsets>
 		<x-m>-21.993</x-m>
 		<y-m>  0.000</y-m>

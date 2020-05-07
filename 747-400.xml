@@ -7,7 +7,7 @@
     <fileheader>
         <author>Gijs de Rooy</author>
         <filecreationdate>2008</filecreationdate>
-        <version>20200425</version>
+        <version>20200507</version>
         <description>Boeing 747-400 with GE CF6-80C2B1F engines</description>
 
         <license>
@@ -611,7 +611,6 @@
     <system file="fuel"/>
     <system file="gear"/>
     <system file="hydraulics"/>
-    <system file="pushback"/>
     <system file="systems"/>
     <system file="wingflex"/>
 
@@ -1583,28 +1582,38 @@
         <fcs_function name="Nose Wheel Steering 0">
           <function name="fcs/steer-nose-deg[0]">
             <description>Steering command for nose gear</description>
-            <sum>
+            <ifthen>
+              <eq>
+                <property>/sim/model/autopush/connected</property>
+                <value>1</value>
+              </eq>
               <product>
-                <table>
-                   <independentVar lookup="row">/controls/gear/tiller-cmd-norm</independentVar>
-                   <independentVar lookup="column">/controls/flight/rudder</independentVar>
-                   <tableData>
-                      -1   0   1
-                  -1 -70 -70 -70
-                   0  -7   0   7
-                   1  70  70  70
-                   </tableData>
-                </table>
-                <property>/controls/gear/tiller-enabled</property>
+                <property>/sim/model/autopush/autopush-cmd-norm</property>
+                <value>70</value>
               </product>
-              <product>
+              <sum>
                 <product>
-                   <property>/controls/flight/rudder</property>
-                   <value>70</value>
+                  <table>
+                    <independentVar lookup="row">/controls/gear/tiller-cmd-norm</independentVar>
+                    <independentVar lookup="column">/controls/flight/rudder</independentVar>
+                    <tableData>
+                    -1   0   1
+                    -1 -70 -70 -70
+                     0  -7   0   7
+                     1  70  70  70
+                    </tableData>
+                  </table>
+                  <property>/controls/gear/tiller-enabled</property>
                 </product>
-                <property>/controls/gear/tiller-disabled</property>
-              </product>
-            </sum>
+                <product>
+                  <product>
+                    <property>/controls/flight/rudder</property>
+                    <value>70</value>
+                  </product>
+                  <property>/controls/gear/tiller-disabled</property>
+                </product>
+              </sum>
+            </ifthen>
           </function>
         </fcs_function>
         
@@ -5256,7 +5265,7 @@
     
     <external_reactions>
 
-        <force name="pushback" frame="BODY">
+        <force name="tractor" frame="BODY">
             <location unit="IN">
                 <x>  300 </x>
                 <y>    0 </y>

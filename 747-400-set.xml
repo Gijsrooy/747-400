@@ -25,7 +25,7 @@
 		<cockpit type="int">3</cockpit>
 		<model type="int">3</model>
 	</rating>
-	<version>20200425</version>
+	<version>20200507</version>
 	
 	<flight-model>jsb</flight-model>
 	<aero>747-400</aero>
@@ -68,11 +68,7 @@
 			<jetway-hood-deg type="float">0</jetway-hood-deg>
 		</door>
 		<hide-yoke type="bool">0</hide-yoke>
-		<pushback>
-			<kp type="double">3000</kp>
-			<kd type="double">0</kd>
-			<position-norm type="double">0</position-norm>
-		</pushback>
+		<autopush include="autopush-config.xml"/>
 		<fallback-model-index>352</fallback-model-index>
 	</model>
 	
@@ -267,10 +263,10 @@ left mouse button and counter clockwise using the middle mouse button.
 				 
 				<item>
 					<label>Pushback</label>
-					<name>pushback</name>
+					<name>autopush</name>
 					<binding>
 						<command>dialog-show</command>
-						<dialog-name>pushback</dialog-name>
+						<dialog-name>autopush</dialog-name>
 					</binding>
 				</item>
 
@@ -343,6 +339,11 @@ left mouse button and counter clockwise using the middle mouse button.
 			<string n="1" type="string"></string> <!-- MP TDM1 -->
 		</generic>
 	</multiplay>
+	
+	<aircraft-data>
+		<path>sim/model/autopush/route/show</path>
+		<path>sim/model/autopush/route/show-wingtip</path>
+	</aircraft-data>
 
 </sim>
 
@@ -799,6 +800,18 @@ left mouse button and counter clockwise using the middle mouse button.
 		<file>Aircraft/747-400/Nasal/wipers.nas</file>
 		<file>Aircraft/Generic/limits.nas</file>
 	</Boeing747>
+	<autopush>
+		<file>Nasal/Autopush/autopush.nas</file>
+	</autopush>
+	<autopush_driver>
+		<file>Nasal/Autopush/driver.nas</file>
+	</autopush_driver>
+	<dynarr>
+		<file>Nasal/Autopush/dynarr.nas</file>
+	</dynarr>
+	<autopush_route>
+		<file>Nasal/Autopush/route.nas</file>
+	</autopush_route>
 	<cdu>
 		<file>Aircraft/Instruments-3d/cdu/boeing.nas</file>
 	</cdu>
@@ -905,5 +918,18 @@ left mouse button and counter clockwise using the middle mouse button.
 		<max-lb type="double">7000.0</max-lb>
 	</weight>
 </payload>
+
+<fdm>
+	<jsbsim>
+		<external_reactions>
+			<tractor>
+				<magnitude alias="/sim/model/autopush/force-lbf"/>
+				<x alias="/sim/model/autopush/force-x"/>
+				<y alias="/sim/model/autopush/force-y"/>
+				<z alias="/sim/model/autopush/force-z"/>
+			</tractor>
+		</external_reactions>
+	</jsbsim>
+</fdm>
  
 </PropertyList>
