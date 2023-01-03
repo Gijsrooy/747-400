@@ -337,12 +337,12 @@
 <animation>
 	<type>textranslate</type>
 	<object-name>stab.trim.ind</object-name>
-	<property>/fdm/jsbsim/fcs/stabilizer/int-pos-deg</property>
-	<bias>5.0</bias> <!-- adjust offset -->
-	<factor>0.01074</factor>
+	<property>/fdm/jsbsim/fcs/stabilizer/trim-units</property>
+	<bias>-7.75</bias>
+	<factor>0.0055</factor>
 	<step>0.005</step>
 	<axis>
-		<y>-1</y>
+		<y>1</y>
 	</axis>
 </animation>
 
