@@ -3,21 +3,56 @@
 
 <sim>
 	<description>Boeing 747-400</description>
-	<long-description>The Boeing 747-400 "Queen of the Skies" is a four-engine wide-body airliner. The -400 variant is the best-selling model of the 747 family.
-	</long-description>
+	<long-description>The Boeing 747-400 "Queen of the Skies" is a four-engine wide-body airliner. The -400 variant is the best-selling model of the 747 family.</long-description>
 	<tags>
 		<tag>passenger</tag>
 		<tag>boeing</tag>
 		<tag>1980s</tag>
+		<tag>1990s</tag>
+		<tag>2000s</tag>
+		<tag>2010s</tag>
+		<tag>2020s</tag>
 		<tag>ifr</tag>
 		<tag>retractable-gear</tag>
 		<tag>glass-cockpit</tag>
 		<tag>pressurised</tag>
 		<tag>dual-controls</tag>
 		<tag>jet</tag>
-		<tag>4-engine</tag>
+		<tag>four-engine</tag>
 	</tags>
-	<author>Gijs de Rooy, Jonathan Redpath, Ivan Ngeow, Markus Bulik and others</author>
+	<authors>
+		<author>
+			<name>Gijs de Rooy</name>
+			<description>Main developer</description>
+		</author>
+		<author>
+			<name>Jonathan Redpath</name>
+			<description>FDM</description>
+			<nick>legoboyvdlp</nick>
+		</author>
+		<author>
+			<name>Ivan Ngeow</name>
+			<description>2D panels, electric and hydraulic systems</description>
+		</author>
+		<author>
+			<name>Markus Bulik</name>
+			<description>Autopilot</description>
+		</author>
+		<author>
+			<name>Alexander Barrett</name>
+			<description>Sounds</description>
+		</author>
+		<author>
+			<name>Ron Jensen</name>
+			<description>Body gear steering</description>
+		</author>
+	</authors>
+	<urls>
+		<home-page>https://wiki.flightgear.org/Boeing_747-400</home-page>
+		<support>https://forum.flightgear.org</support>
+		<wikipedia>https://en.wikipedia.org/wiki/Boeing_747-400</wikipedia>
+		<code-repository>https://github.com/gijsrooy/747-400</code-repository>
+	</urls>
 	<status>early production</status>
 	<rating>
 		<FDM type="int">4</FDM>
@@ -25,7 +60,8 @@
 		<cockpit type="int">3</cockpit>
 		<model type="int">3</model>
 	</rating>
-	<version>20200507</version>
+	<version>20230103</version>
+	<primary-set type="bool">true</primary-set>
 	
 	<flight-model>jsb</flight-model>
 	<aero>747-400</aero>
@@ -345,6 +381,14 @@ left mouse button and counter clockwise using the middle mouse button.
 	</aircraft-data>
 
 </sim>
+
+<aircraft>
+	<icao>
+		<wake-turbulence-category>H</wake-turbulence-category>
+		<type type="string">B744</type>
+		<surveillance type="string">S</surveillance>
+	</icao>
+</aircraft>
 
 <consumables>
 	<fuel>
