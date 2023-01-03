@@ -231,7 +231,7 @@ var canvas_fuel = {
 		res2arrow.setBool("visible", getprop("/fdm/jsbsim/propulsion/tank[5]/external-flow-rate-pps"));
 		res3arrow.setBool("visible", getprop("/fdm/jsbsim/propulsion/tank[6]/external-flow-rate-pps"));
 		stabarrow.setBool("visible", getprop("/fdm/jsbsim/propulsion/tank[7]/external-flow-rate/tank[0]"));
-		if (getprop("/fdm/jsbsim/propulsion/jettison-flow-rates") != 0) 
+		if (getprop("/fdm/jsbsim/propulsion/fuel-dump-rate-pps") != 0) 
 			stabline.hide();
 		else 
 			stabline.show();
@@ -248,7 +248,7 @@ var canvas_fuel = {
 		xfeed2.setRotation(0.5 * math.pi * getprop("/controls/fuel/tank[2]/x-feed"));
 		xfeed3.setRotation(0.5 * math.pi * getprop("/controls/fuel/tank[3]/x-feed"));
 		xfeed4.setRotation(0.5 * math.pi * getprop("/controls/fuel/tank[4]/x-feed"));
-		if (getprop("/fdm/jsbsim/propulsion/jettison-flow-rates") > 0) {
+		if (getprop("/fdm/jsbsim/propulsion/fuel-dump-rate-pps") > 0) {
 			jettisonLines.show();
 			jettison.show();
 			ovrd2aft.setColor(1,0,1);
