@@ -196,7 +196,7 @@ var canvas_primary = {
 		var engn1max = [0,getprop("/fdm/jsbsim/eec/throttle-max-cmd-norm[0]") or 0,getprop("/fdm/jsbsim/eec/throttle-max-cmd-norm[0]") or 0,getprop("/fdm/jsbsim/eec/throttle-max-cmd-norm[0]") or 0,getprop("/fdm/jsbsim/eec/throttle-max-cmd-norm[0]") or 0];
 		
 		for(var n = 1; n<=4; n+=1){
-			var revPos = getprop("engines/engine["~n~"]/reverser-pos-norm") or 0;
+			var revPos = getprop("engines/engine["~(n-1)~"]/reverser-pos-norm") or 0;
 			if (revPos > 0) {
 				me["eng"~n~"n1ref"].setText("REV");
 				if (revPos != 1)
