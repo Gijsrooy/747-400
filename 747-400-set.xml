@@ -48,7 +48,7 @@
 
 	<model>
 		<path>Aircraft/747-400/Models/747-400.xml</path>
-		<fallback-model-index type="int">352</fallback-model-index>
+		<fallback-model-index type="int">351</fallback-model-index>
 		<door>
 			<position-x-m type="float">-20.38</position-x-m>
 			<position-y-m type="float"> -2.89</position-y-m>
@@ -69,7 +69,6 @@
 		</door>
 		<hide-yoke type="bool">0</hide-yoke>
 		<autopush include="autopush-config.xml"/>
-		<fallback-model-index>352</fallback-model-index>
 	</model>
 	
 	<systems>
