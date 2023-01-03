@@ -7,7 +7,7 @@
     <fileheader>
         <author>Gijs de Rooy</author>
         <filecreationdate>2008</filecreationdate>
-        <version>20200507</version>
+        <version>20230103</version>
         <description>Boeing 747-400 with GE CF6-80C2B1F engines</description>
 
         <license>
@@ -385,16 +385,6 @@
     <propulsion>
 
         <engine file="GE_CF6-80C2B1F">
-            <location unit="IN">
-                <x> 1400 </x>
-                <y> -834 </y>
-                <z> -100 </z>
-            </location>
-            <orient unit="DEG">
-                <roll>  0.0 </roll>
-                <pitch> 0.0 </pitch>
-                <yaw>   0.0 </yaw>
-            </orient>
             <feed>1</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -411,16 +401,6 @@
         </engine>
 
         <engine file="GE_CF6-80C2B1F">
-            <location unit="IN">
-                <x>  900 </x>
-                <y> -470 </y>
-                <z> -100 </z>
-            </location>
-            <orient unit="DEG">
-                <roll>  0.0 </roll>
-                <pitch> 0.0 </pitch>
-                <yaw>   0.0 </yaw>
-            </orient>
             <feed>2</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -437,16 +417,6 @@
         </engine>
 
         <engine file="GE_CF6-80C2B1F">
-            <location unit="IN">
-                <x>  900 </x>
-                <y>  470 </y>
-                <z> -100 </z>
-            </location>
-            <orient unit="DEG">
-                <roll>  0.0 </roll>
-                <pitch> 0.0 </pitch>
-                <yaw>   0.0 </yaw>
-            </orient>
             <feed>3</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -463,16 +433,6 @@
         </engine>
 
         <engine file="GE_CF6-80C2B1F">
-            <location unit="IN">
-                <x> 1400 </x>
-                <y>  834 </y>
-                <z> -100 </z>
-            </location>
-            <orient unit="DEG">
-                <roll>  0.0 </roll>
-                <pitch> 0.0 </pitch>
-                <yaw>   0.0 </yaw>
-            </orient>
             <feed>4</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -489,16 +449,6 @@
         </engine>
         
         <engine file="APU_PW901">
-            <location unit="IN">
-                <x> 2700 </x>
-                <y>    0 </y>
-                <z>  120 </z>
-            </location>
-            <orient unit="DEG">
-                <roll>  0.0 </roll>
-                <pitch> 0.0 </pitch>
-                <yaw>   0.0 </yaw>
-            </orient>
             <feed>2</feed>
             <thruster file="direct">
                 <location unit="IN">
