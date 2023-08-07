@@ -32,8 +32,8 @@ var canvas_stat = {
 		me["rudPosUpp"].setTranslation(-140*getprop("fdm/jsbsim/fcs/rudder-pos-norm"),0);
 		me["elevPosLeft"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/elevator[0]/pos-norm"));
 		me["elevPosRight"].setTranslation(0,-100*getprop("fdm/jsbsim/fcs/elevator[0]/pos-norm"));
-		me["splPosLeft"].setTranslation(0,-127*getprop("fdm/jsbsim/fcs/spoiler[0]/pos-rad"));
-		me["splPosRight"].setTranslation(0,-127*getprop("fdm/jsbsim/fcs/spoiler[11]/pos-rad"));
+		me["splPosLeft"].setTranslation(0,-2.22*getprop("fdm/jsbsim/fcs/spoiler[0]/pos-deg"));
+		me["splPosRight"].setTranslation(0,-2.22*getprop("fdm/jsbsim/fcs/spoiler[11]/pos-deg"));
 		me["apun1"].setText(sprintf("%3.01f",getprop("engines/engine[4]/n1")));
 		me["apun2"].setText(sprintf("%2.01f",getprop("engines/engine[4]/n2")));
 		me["apuegt"].setText(sprintf("%3.0f",(getprop("engines/engine[4]/egt-degf")-32)/1.8));
