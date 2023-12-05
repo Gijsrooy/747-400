@@ -58,7 +58,7 @@ We're now fully configured to begin our pushback and engine start. The passenger
 		<message>Open the 747-400 > Pushback dialog and connect the pushback.</message>
 		<exit>
 			<condition>
-				<property>/sim/model/pushback/position-norm</property>
+				<property>/sim/model/autopush/connected</property>
 			</condition>
 		</exit>
     </step>
@@ -85,7 +85,7 @@ We're now fully configured to begin our pushback and engine start. The passenger
 		<exit>
 			<condition>
 				<not>
-					<property>/sim/model/pushback/position-norm</property>
+					<property>/sim/model/autopush/connected</property>
 				</not>
 			</condition>
 		</exit>
@@ -116,7 +116,7 @@ We're now fully configured to begin our pushback and engine start. The passenger
     <step>
 		<message>Turn ON continuous ignition.</message>
 		<marker>
-			<x-m> 0.0198</x-m>
+			<x-m>0.0198</x-m>
 			<y-m>-0.0835</y-m>
 			<z-m>-0.0033</z-m>
 			<scale>1.6777</scale>

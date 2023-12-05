@@ -83,24 +83,17 @@
 	<step>
 		<message>Enable Autothrottle.</message>
 		<exit>
-			<condition>            
-				<or>
-					<equals>    
-						<property>/autopilot/locks/speed</property>
-						<value>speed-with-throttle-ias</value>
-					</equals>
-					<equals> 
-						<property>/autopilot/locks/speed</property>
-						<value>speed-with-throttle-mach</value>
-					</equals>
-				</or>
+			<condition>
+				<equals>
+					<property>/autopilot/locks/speed</property>
+					<value>speed-with-throttle</value>
+				</equals>
 			</condition>
 		</exit>
 	</step>
 
 	<step>
-	<!--<message>Ensure that F/D is ON, runway heading (183) is set in HDG, IAS is set to V2, LNAV and VNAV are armed, and that altitude is 10,000.</message>-->
-	<message>Ensure that runway heading (183) is set in HDG, IAS is set to V2 and that altitude is 10,000.</message>
+		<message>Ensure Flight Director is ON, runway heading is set to 183 degree, IAS is set to V2 and that altitude is 10,000.</message>
 		<exit>
 			<condition>
 				<equals>
@@ -108,7 +101,7 @@
 					<value>1</value>
 				</equals>
 				<equals>
-					<property>/autopilot/settings/target/true-heading-deg</property>
+					<property>/autopilot/settings/heading-bug-deg</property>
 					<value>183</value>
 				</equals>
 				<equals>
@@ -116,7 +109,7 @@
 					<property>/instrumentation/fmc/vspeeds/V2</property>
 				</equals>
 				<equals>
-					<property>/autopilot/settings/target-altitude-feet</property>
+					<property>/autopilot/settings/target-altitude-ft</property>
 					<value>10000</value>
 				</equals>
 			</condition>
