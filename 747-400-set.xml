@@ -730,40 +730,6 @@ left mouse button and counter clockwise using the middle mouse button.
 			<volume>0.8</volume>
 		</speaker>
 	</mk-viii>
-	<radar>
-		<switch type="string" archive="y">on</switch>
-		<mode-control type="int" archive="y">1</mode-control>
-		<display-mode>plan</display-mode>
-		<display-controls>
-			<WX type="bool" archive="y">false</WX>
-			<pos type="bool" archive="y">true</pos>
-			<data type="bool" archive="y">true</data>
-			<symbol type="bool" archive="y">true</symbol>
-			<rotate type="bool" archive="y">true</rotate>
-		</display-controls>
-		<serviceable type="bool">true</serviceable>
-		<range type="int" archive="y">10</range>
-		<reference-range-nm type="double" archive="y">640</reference-range-nm>
-		<mode type="string" archive="y">WX</mode>
-		<font>
-			<color>
-				<red type="float">0.7</red>
-				<green type="float">0.7</green>
-				<blue type="float">0.7</blue>
-				<alpha type="float">1</alpha>
-			</color>
-			<name type="string" archive="y">helvetica_bold.txf</name>
-			<size type="float">8</size>
-			<line-spacing type="float">0.2</line-spacing>
-		</font>
-		<lightning type="bool" archive="y">true</lightning>
-		<display-mode type="string" archive="y">arc</display-mode>
-		<radar-texture-path type="string" archive="y">Aircraft/747-400/Models/Cockpit/Instruments/MFD/od_wxradar.png</radar-texture-path>
-		<echo-texture-path type="string" archive="y">Aircraft/747-400/Models/Cockpit/Instruments/MFD/wxecho.png</echo-texture-path>
-		<minimized type="bool" archive="y">false</minimized>
-		<heading-marker type="bool" archive="y">true</heading-marker>
-		<limit-deg type="int">360</limit-deg>
-	</radar> 
 	<tcas>
 		<serviceable type="bool">true</serviceable>
 		<inputs>
