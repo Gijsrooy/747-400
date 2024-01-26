@@ -422,6 +422,9 @@ setlistener("sim/signals/fdm-initialized", func() {
 setlistener("sim/signals/reinit", func pfd_display.del());
 
 var showPfd = func() {
-	var dlg = canvas.Window.new([600, 600], "dialog").set("resize", 1);
-	dlg.setCanvas(pfd_display);
+	var dlg = canvas.Window.new([600, 600], "dialog")
+		.set("resize", 1)
+		.lockAspectRatio()
+		.setTitle("PFD")
+		.setCanvas(pfd_display);
 }

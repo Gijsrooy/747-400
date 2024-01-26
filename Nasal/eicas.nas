@@ -354,6 +354,9 @@ setlistener("/instrumentation/eicas/display", func {
 });
 
 var showEicas = func() {
-	var dlg = canvas.Window.new([400, 400], "dialog").set("resize", 1);
-	dlg.setCanvas(secondary_eicas);
+	var dlg = canvas.Window.new([600, 600], "dialog")
+		.set("resize", 1)
+		.lockAspectRatio()
+		.setTitle("Secondary EICAS")
+		.setCanvas(secondary_eicas);
 }

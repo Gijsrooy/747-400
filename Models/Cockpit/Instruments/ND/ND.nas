@@ -59,6 +59,9 @@ var _list = setlistener("sim/signals/fdm-initialized", func() {
 });
 
 var showNd = func(pilot='cpt') {
-	var dlg = canvas.Window.new([400, 400], "dialog");
-	dlg.setCanvas( nd_display[pilot] );
+	var dlg = canvas.Window.new([600, 600], "dialog")
+		.set("resize", 1)
+		.lockAspectRatio()
+		.setTitle("ND")
+		.setCanvas( nd_display[pilot] );
 }

@@ -254,6 +254,9 @@ setlistener("/nasal/canvas/loaded", func {
 }, 1);
 
 var showPrimaryEicas = func() {
-	var dlg = canvas.Window.new([512, 512], "dialog");
-	dlg.setCanvas(primary_eicas);
+	var dlg = canvas.Window.new([600, 600], "dialog")
+		.set("resize", 1)
+		.lockAspectRatio()
+		.setTitle("Primary EICAS")
+		.setCanvas(primary_eicas);
 }
