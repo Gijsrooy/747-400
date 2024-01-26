@@ -71,12 +71,6 @@ This file selects the instrumentation modules that should be available.
         <name>dme</name>
         <number>1</number>
     </dme>
-    
-    <groundradar>
-        <name>groundradar</name>
-        <airport-id-source>instrumentation/groundradar/id</airport-id-source>
-        <range-source>instrumentation/groundradar/range</range-source>
-    </groundradar>
 
     <heading-indicator>
         <name>heading-indicator</name>

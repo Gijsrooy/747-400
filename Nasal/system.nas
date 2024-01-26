@@ -299,8 +299,3 @@ controls.click = func {
 	setprop(propName,1);
 	settimer(func { click_reset(propName) },0.4);
 }
-
-## Yoke charts and other late-initialisation stuff ##
-_setlistener("/sim/signals/fdm-initialized", func {
-	setprop("/instrumentation/groundradar/id", getprop("/sim/airport/closest-airport-id"));
-});

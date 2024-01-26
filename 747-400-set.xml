@@ -350,18 +350,6 @@ left mouse button and counter clockwise using the middle mouse button.
 						</script>
 					</binding>
 				</item>
-				
-				<item>
-					<label>Yoke charts</label>
-					<binding>
-						<command>nasal</command>
-						<script>
-							var mal = gui.Dialog.new("/sim/gui/dialogs/Boeing747/menu/dialog","Aircraft/747-400/Dialogs/yokechart-dialog.xml");
-							mal.open();
-						</script>
-					</binding>
-				</item>
-
 			</menu>
 		</default>
 	</menubar>
@@ -709,9 +697,6 @@ left mouse button and counter clockwise using the middle mouse button.
 	<fmc>
 		<to-flap>20</to-flap>
 	</fmc>
-	<groundradar>
-		<range>2</range>
-	</groundradar>
 	<mk-viii>
 		<serviceable>1</serviceable>
 		<configuration-module>
