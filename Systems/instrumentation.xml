@@ -133,7 +133,7 @@ This file selects the instrumentation modules that should be available.
         <name type="string">transponder</name>
         <number type="int">0</number>
         <mode type="int">2</mode>
-        <bus-volts type="double">8.0</bus-volts>
+        <minimum-supply-volts type="double">8.0</minimum-supply-volts>
         <encoder-path type="string">/instrumentation/altimeter</encoder-path>
         <kt70-compatibility type="bool">0</kt70-compatibility>
     </transponder>
