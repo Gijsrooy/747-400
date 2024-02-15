@@ -2,324 +2,310 @@
 # Boeing 747-400 EICAS by Gijs de Rooy
 # ==============================================================================
 
-var fuel_canvas = {};
-var text3840 = {};
-var stab = {};
-var main1 = {};
-var main2 = {};
-var main3 = {};
-var main4 = {};
-var res2 = {};
-var res3 = {};
-var center = {};
-var main1aft = {};
-var main1fwd = {};
-var main2aft = {};
-var main2fwd = {};
-var main3aft = {};
-var main3fwd = {};
-var main4aft = {};
-var main4fwd = {};
-var ovrd2aft = {};
-var ovrd2fwd = {};
-var ovrd3aft = {};
-var ovrd3fwd = {};
-var stabpumpl = {};
-var stabpumpr = {};
-var res2arrow = {};
-var res3arrow = {};
-var bar0pump1 = {};
-var bar0pump2 = {};
-var bareng1 = {};
-var bareng2 = {};
-var bareng3 = {};
-var bareng4 = {};
-var bar1pump = {};
-var bar2pump = {};
-var bar3pump = {};
-var bar4pump = {};
-var barxfeed1 = {};
-var barxfeed2 = {};
-var barxfeed3 = {};
-var barxfeed4 = {};
-var stabarrow = {};
-var stabpumplines = {};
-var stabline = {};
-var xfeed1 = {};
-var xfeed2 = {};
-var xfeed3 = {};
-var xfeed4 = {};
-var jettisonLines = {};
-var jettison = {};
-var jettisonTime = {};
-var jettisonTimeCount = {};
-var canvas_group = {};
+var canvas_lowerEICASPageFuel = {
+	new: func(svg, name) {
+		var obj = {parents: [canvas_lowerEICASPageFuel, B744SecondaryEICAS] };
+		obj.group = obj.canvas.createGroup();
+		obj.name = name;
 
-var canvas_fuel = {
-	new: func(canvas_group)
-	{
-		var m = { parents: [canvas_fuel] };
-		var eicas = canvas_group;
-		var font_mapper = func(family, weight)
-		{
-			if( family == "Liberation Sans" and weight == "normal" )
-				return "LiberationFonts/LiberationSans-Regular.ttf";
+		canvas.parsesvg(obj.group, svg, {"font-mapper": obj.font_mapper} );
+
+		foreach(var key; obj.getKeys()) {
+			obj[key] = obj.group.getElementById(key);
 		};
-		
-		canvas.parsesvg(eicas, "Aircraft/747-400/Models/Cockpit/Instruments/EICAS/fuel.svg", {'font-mapper': font_mapper});
-		
-		text3840 = eicas.getElementById("text3840");
-		stab = eicas.getElementById("stab");
-		main1 = eicas.getElementById("main1");
-		main2 = eicas.getElementById("main2");
-		main3 = eicas.getElementById("main3");
-		main4 = eicas.getElementById("main4");
-		res2 = eicas.getElementById("res2");
-		res3 = eicas.getElementById("res3");
-		center = eicas.getElementById("center");
-		main1aft = eicas.getElementById("main1aft");
-		main1fwd = eicas.getElementById("main1fwd");
-		main2aft = eicas.getElementById("main2aft");
-		main2fwd = eicas.getElementById("main2fwd");
-		main3aft = eicas.getElementById("main3aft");
-		main3fwd = eicas.getElementById("main3fwd");
-		main4aft = eicas.getElementById("main4aft");
-		main4fwd = eicas.getElementById("main4fwd");
-		ovrd2aft = eicas.getElementById("ovrd2aft");
-		ovrd2fwd = eicas.getElementById("ovrd2fwd");
-		ovrd3aft = eicas.getElementById("ovrd3aft");
-		ovrd3fwd = eicas.getElementById("ovrd3fwd");
-		stabpumpl = eicas.getElementById("stabpumpl");
-		stabpumpr = eicas.getElementById("stabpumpr");
-		res2arrow = eicas.getElementById("res2arrow");
-		res3arrow = eicas.getElementById("res3arrow");
-		bar0pump1 = eicas.getElementById("bar0pump1");
-		bar0pump2 = eicas.getElementById("bar0pump2");
-		bareng1 = eicas.getElementById("bareng1");
-		bareng2 = eicas.getElementById("bareng2");
-		bareng3 = eicas.getElementById("bareng3");
-		bareng4 = eicas.getElementById("bareng4");
-		bar1pump = eicas.getElementById("bar1pump");
-		bar2pump = eicas.getElementById("bar2pump");
-		bar3pump = eicas.getElementById("bar3pump");
-		bar4pump = eicas.getElementById("bar4pump");
-		barxfeed1 = eicas.getElementById("barxfeed1");
-		barxfeed2 = eicas.getElementById("barxfeed2");
-		barxfeed3 = eicas.getElementById("barxfeed3");
-		barxfeed4 = eicas.getElementById("barxfeed4");
-		stabarrow = eicas.getElementById("stabarrow");
-		stabpumplines = eicas.getElementById("stabpumplines");
-		stabline = eicas.getElementById("stabline");
-		xfeed1 = eicas.getElementById("xfeed1").updateCenter();
-		xfeed2 = eicas.getElementById("xfeed2").updateCenter();
-		xfeed3 = eicas.getElementById("xfeed3").updateCenter();
-		xfeed4 = eicas.getElementById("xfeed4").updateCenter();
-		jettisonLines = eicas.getElementById("jettisonLines");
-		jettison = eicas.getElementById("jettison");
-		jettisonTime = eicas.getElementById("jettisonTime");
-		jettisonTimeCount = eicas.getElementById("jettisonTimeCount");
-		
-		return m;
+
+		obj.update_items = [
+			props.UpdateManager.FromHashValue("totalFuel", 100, func(val) {
+				obj["text3840"].setText(sprintf("%3.01f", val * LB2KG / 1000));
+			}),
+			props.UpdateManager.FromHashValue("center", 100, func(val) {
+				obj["center"].setText(sprintf("%3.01f", val * LB2KG / 1000));
+			}),
+			props.UpdateManager.FromHashList(["main1","main4"], 10, func(val) {
+				obj["main1"].setText(sprintf("%3.01f", val.main1 * LB2KG / 1000));
+				if (val.main1 < 2000 or (math.abs(val.main4 - val.main1)) > 3000) {
+					obj["main1"].setColor(1,0.5,0);
+				} else {
+					obj["main1"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main1","main1aft"], nil, func(val) {
+				if (val.main1aft and val.main1 < 10 ) {
+					obj["main1aft"].setColor(1,0.5,0);
+				} elsif (val.main1aft) {
+					obj["main1aft"].setColor(0,1,0);
+				} else {
+					obj["main1aft"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main1","main1fwd"], 1, func(val) {
+				if (val.main1fwd and val.main1 < 10 ) {
+					obj["main1fwd"].setColor(1,0.5,0);
+				} elsif (val.main1fwd) {
+					obj["main1fwd"].setColor(0,1,0);
+				} else {
+					obj["main1fwd"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main2","main3"], 10, func(val) {
+				obj["main2"].setText(sprintf("%3.01f", val.main2 * LB2KG / 1000));
+				if (val.main3 < 2000 or (math.abs(val.main2 - val.main3)) > 6000) {
+					obj["main2"].setColor(1,0.5,0);
+				} else {
+					obj["main2"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main2","main2aft"], 1, func(val) {
+				if (val.main2aft and val.main2 < 10 ) {
+					obj["main2aft"].setColor(1,0.5,0);
+				} elsif (val.main2aft) {
+					obj["main2aft"].setColor(0,1,0);
+				} else {
+					obj["main2aft"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main2","main2fwd"], 1, func(val) {
+				if (val.main2fwd and val.main2 < 10 ) {
+					obj["main2fwd"].setColor(1,0.5,0);
+				} elsif (val.main2fwd) {
+					obj["main2fwd"].setColor(0,1,0);
+				} else {
+					obj["main2fwd"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main2","ovrd2aft","jettisonrate"], 1, func(val) {
+				if (val.ovrd2aft and val.main2 < 10 ) {
+					obj["ovrd2aft"].setColor(1,0.5,0);
+				} elsif (val.jettisonrate > 0) {
+					obj["ovrd2aft"].setColor(1,0,1);
+				} elsif (val.ovrd2aft) {
+					obj["ovrd2aft"].setColor(0,1,0);
+				} else {
+					obj["ovrd2aft"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main2","ovrd2fwd","jettisonrate"], 1, func(val) {
+				if (val.ovrd2fwd and val.main2 < 10 ) {
+					obj["ovrd2fwd"].setColor(1,0.5,0);
+				} elsif (val.jettisonrate > 0) {
+					obj["ovrd2fwd"].setColor(1,0,1);
+				} elsif (val.ovrd2fwd) {
+					obj["ovrd2fwd"].setColor(0,1,0);
+				} else {
+					obj["ovrd2fwd"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main2","main3"], 10, func(val) {
+				obj["main3"].setText(sprintf("%3.01f", val.main3 * LB2KG / 1000));
+				if (val.main3 < 2000 or (math.abs(val.main3 - val.main2)) > 6000) {
+					obj["main3"].setColor(1,0.5,0);
+				} else {
+					obj["main3"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main3","main3aft"], 1, func(val) {
+				if (val.main3aft and val.main3 < 10 ) {
+					obj["main3aft"].setColor(1,0.5,0);
+				} elsif (val.main3aft) {
+					obj["main3aft"].setColor(0,1,0);
+				} else {
+					obj["main3aft"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main3","main3fwd"], 1, func(val) {
+				if (val.main3fwd and val.main3 < 10 ) {
+					obj["main3fwd"].setColor(1,0.5,0);
+				} elsif (val.main3fwd) {
+					obj["main3fwd"].setColor(0,1,0);
+				} else {
+					obj["main3fwd"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main3","ovrd3aft","jettisonrate"], 1, func(val) {
+				if (val.ovrd3aft and val.main3 < 10 ) {
+					obj["ovrd3aft"].setColor(1,0.5,0);
+				} elsif (val.jettisonrate > 0) {
+					obj["ovrd3aft"].setColor(1,0,1);
+				} elsif (val.ovrd3aft) {
+					obj["ovrd3aft"].setColor(0,1,0);
+				} else {
+					obj["ovrd3aft"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main3","ovrd3fwd","jettisonrate"], 1, func(val) {
+				if (val.ovrd3fwd and val.main3 < 10 ) {
+					obj["ovrd3fwd"].setColor(1,0.5,0);
+				} elsif (val.jettisonrate > 0) {
+					obj["ovrd3fwd"].setColor(1,0,1);
+				} elsif (val.ovrd3fwd) {
+					obj["ovrd3fwd"].setColor(0,1,0);
+				} else {
+					obj["ovrd3fwd"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main1","main4"], 10, func(val) {
+				obj["main4"].setText(sprintf("%3.01f", val.main4 * LB2KG / 1000));
+				if (val.main4 < 2000 or (math.abs(val.main1 - val.main4)) > 3000) {
+					obj["main4"].setColor(1,0.5,0);
+				} else {
+					obj["main4"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main4","main4aft"], 1, func(val) {
+				if (val.main4aft and val.main4 < 10 ) {
+					obj["main4aft"].setColor(1,0.5,0);
+				} elsif (val.main4aft) {
+					obj["main4aft"].setColor(0,1,0);
+				} else {
+					obj["main4aft"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashList(["main4","main4fwd"], 1, func(val) {
+				if (val.main4fwd and val.main4 < 10 ) {
+					obj["main4fwd"].setColor(1,0.5,0);
+				} elsif (val.main4fwd) {
+					obj["main4fwd"].setColor(0,1,0);
+				} else {
+					obj["main4fwd"].setColor(1,1,1);
+				}
+			}),
+			props.UpdateManager.FromHashValue("res2", 100, func(val) {
+				obj["res2"].setText(sprintf("%3.01f", val * LB2KG / 1000));
+			}),
+			props.UpdateManager.FromHashValue("res3", 100, func(val) {
+				obj["res3"].setText(sprintf("%3.01f", val * LB2KG / 1000));
+			}),
+
+			props.UpdateManager.FromHashValue("stab", 100, func(val) {
+				obj["stab"].setText(sprintf("%3.01f", val * LB2KG / 1000));
+			}),
+			props.UpdateManager.FromHashList(["stab","stabextff","stabpump"], 1, func(val) {
+				if (val.stabpump) {
+					if (val.stab < 10 ) {
+						obj["stabpumpl"].setColor(1,0.5,0);
+						obj["stabpumpr"].setColor(1,0.5,0);
+						obj["stabpumplines"].setColor(1,0.5,0);
+					} elsif (val.stabextff != 0) {
+						obj["stabpumpl"].setColor(0,1,0);
+						obj["stabpumpr"].setColor(0,1,0);
+						obj["stabpumplines"].setColor(0,1,0);
+					} else {
+						obj["stabpumpl"].setColor(0,1,1);
+						obj["stabpumpr"].setColor(0,1,1);
+					}
+				} else {
+					obj["stabpumpl"].setColor(1,1,1);
+					obj["stabpumpr"].setColor(1,1,1);
+				}
+			}),
+
+			props.UpdateManager.FromHashValue("xfeed1", 1, func(val) {
+				obj["barxfeed1"].setVisible(val);
+				obj["xfeed1"].setRotation(0.5 * math.pi * val);
+			}),
+			props.UpdateManager.FromHashValue("xfeed2", 1, func(val) {
+				obj["barxfeed2"].setVisible(val);
+				obj["xfeed2"].setRotation(0.5 * math.pi * val);
+			}),
+			props.UpdateManager.FromHashValue("xfeed3", 1, func(val) {
+				obj["barxfeed3"].setVisible(val);
+				obj["xfeed3"].setRotation(0.5 * math.pi * val);
+			}),
+			props.UpdateManager.FromHashValue("xfeed4", 1, func(val) {
+				obj["barxfeed4"].setVisible(val);
+				obj["xfeed4"].setRotation(0.5 * math.pi * val);
+			}),
+			props.UpdateManager.FromHashValue("eng1ff", 0.1, func(val) {
+				obj["bareng1"].setVisible(val);
+			}),
+			props.UpdateManager.FromHashValue("eng2ff", 0.1, func(val) {
+				obj["bareng2"].setVisible(val);
+			}),
+			props.UpdateManager.FromHashValue("eng3ff", 0.1, func(val) {
+				obj["bareng3"].setVisible(val);
+			}),
+			props.UpdateManager.FromHashValue("eng4ff", 0.1, func(val) {
+				obj["bareng4"].setVisible(val);
+			}),
+			props.UpdateManager.FromHashList(["jettisonrate","fueldumptime"], 1, func(val) {
+				if (val.jettisonrate > 0) {
+					obj["jettisonLines"].show();
+					obj["jettison"].show();
+					obj["stabpumpl"].setColor(1,0,1);
+					obj["stabpumpr"].setColor(1,0,1);
+					obj["stabpumplines"].setColor(1,0,1);
+					obj["jettisonTime"].show();
+					obj["jettisonTimeCount"].show();
+					obj["jettisonTimeCount"].setText(sprintf("%2.0f", val.fueldumptime / 60));
+					obj["stabline"].hide();
+				} else {
+					obj["jettisonLines"].hide();
+					obj["jettison"].hide();
+					obj["jettisonTime"].hide();
+					obj["jettisonTimeCount"].hide();
+					obj["stabline"].show();
+				}
+			}),
+		];
+
+		return obj;
 	},
-	update: func()
-	{
-		if (getprop("/controls/fuel/tank[1]/pump-aft") and getprop("/consumables/fuel/tank[1]/level-lbs") < 10 ) {
-			main1aft.setColor(1,0.5,0);
-		} elsif (getprop("/controls/fuel/tank[1]/pump-aft")) {
-			main1aft.setColor(0,1,0);
-		} else {
-			main1aft.setColor(1,1,1);
-		}
-		if (getprop("/controls/fuel/tank[1]/pump-fwd") and getprop("/consumables/fuel/tank[1]/level-lbs") < 10 ) {
-			main1fwd.setColor(1,0.5,0);
-		} elsif (getprop("/controls/fuel/tank[1]/pump-fwd")) {
-			main1fwd.setColor(0,1,0);
-		} else {
-			main1fwd.setColor(1,1,1);
-		}
-		if (getprop("/controls/fuel/tank[2]/pump-aft") and getprop("/consumables/fuel/tank[2]/level-lbs") < 10 ) {
-			main2aft.setColor(1,0.5,0);
-		} elsif (getprop("/controls/fuel/tank[2]/pump-aft")) {
-			main2aft.setColor(0,1,0);
-		} else {
-			main2aft.setColor(1,1,1);
-		}
-		if (getprop("/controls/fuel/tank[2]/pump-fwd") and getprop("/consumables/fuel/tank[2]/level-lbs") < 10 ) {
-			main2fwd.setColor(1,0.5,0);
-		} elsif (getprop("/controls/fuel/tank[2]/pump-fwd")) {
-			main2fwd.setColor(0,1,0);
-		} else {
-			main2fwd.setColor(1,1,1);
-		}
-		if (getprop("/controls/fuel/tank[3]/pump-aft") and getprop("/consumables/fuel/tank[3]/level-lbs") < 10 ) {
-			main3aft.setColor(1,0.5,0);
-		} elsif (getprop("/controls/fuel/tank[3]/pump-aft")) {
-			main3aft.setColor(0,1,0);
-		} else {
-			main3aft.setColor(1,1,1);
-		}
-		if (getprop("/controls/fuel/tank[3]/pump-fwd") and getprop("/consumables/fuel/tank[3]/level-lbs") < 10 ) {
-			main3fwd.setColor(1,0.5,0);
-		} elsif (getprop("/controls/fuel/tank[3]/pump-fwd")) {
-			main3fwd.setColor(0,1,0);
-		} else {
-			main3fwd.setColor(1,1,1);
-		}
-		if (getprop("/controls/fuel/tank[4]/pump-aft") and getprop("/consumables/fuel/tank[4]/level-lbs") < 10 ) {
-			main4aft.setColor(1,0.5,0);
-		} elsif (getprop("/controls/fuel/tank[4]/pump-aft")) {
-			main4aft.setColor(0,1,0);
-		} else {
-			main4aft.setColor(1,1,1);
-		}
-		if (getprop("/controls/fuel/tank[4]/pump-fwd") and getprop("/consumables/fuel/tank[4]/level-lbs") < 10 ) {
-			main4fwd.setColor(1,0.5,0);
-		} elsif (getprop("/controls/fuel/tank[4]/pump-fwd")) {
-			main4fwd.setColor(0,1,0);
-		} else {
-			main4fwd.setColor(1,1,1);
-		}
-		
-		if (getprop("/controls/fuel/tank[2]/ovrd-aft") and getprop("/consumables/fuel/tank[2]/level-lbs") < 10 ) {
-			ovrd2aft.setColor(1,0,0.5);
-		} elsif (getprop("/controls/fuel/tank[2]/ovrd-aft")) {
-			ovrd2aft.setColor(0,1,1);
-		} else {
-			ovrd2aft.setColor(1,1,1);
-		}
-		if (getprop("/controls/fuel/tank[2]/ovrd-fwd") and getprop("/consumables/fuel/tank[2]/level-lbs") < 10 ) {
-			ovrd2fwd.setColor(1,0,0.5);
-		} elsif (getprop("/controls/fuel/tank[2]/ovrd-fwd")) {
-			ovrd2fwd.setColor(0,1,1);
-		} else {
-			ovrd2fwd.setColor(1,1,1);
-		}
-		if (getprop("/controls/fuel/tank[3]/ovrd-aft") and getprop("/consumables/fuel/tank[3]/level-lbs") < 10 ) {
-			ovrd3aft.setColor(1,0,0.5);
-		} elsif (getprop("/controls/fuel/tank[3]/ovrd-aft")) {
-			ovrd3aft.setColor(0,1,1);
-		} else {
-			ovrd3aft.setColor(1,1,1);
-		}
-		if (getprop("/controls/fuel/tank[3]/ovrd-fwd") and getprop("/consumables/fuel/tank[3]/level-lbs") < 10 ) {
-			ovrd3fwd.setColor(1,0,0.5);
-		} elsif (getprop("/controls/fuel/tank[3]/ovrd-fwd")) {
-			ovrd3fwd.setColor(0,1,1);
-		} else {
-			ovrd3fwd.setColor(1,1,1);
-		}
-		
-		
-		if (getprop("/controls/fuel/tank[7]/pump") and getprop("/consumables/fuel/tank[7]/level-lbs") < 10 ) {
-			stabpumpl.setColor(1,0.5,0);
-			stabpumpr.setColor(1,0.5,0);
-			stabpumplines.setColor(1,0.5,0);
-		} elsif (getprop("/controls/fuel/tank[7]/pump") and getprop("/fdm/jsbsim/propulsion/tank[7]/external-flow-rate-pps") != 0) {
-			stabpumpl.setColor(0,1,0);
-			stabpumpr.setColor(0,1,0);
-			stabpumplines.setColor(0,1,0);
-		} elsif (getprop("/controls/fuel/tank[7]/pump")) {
-			stabpumpl.setColor(0,1,1);
-			stabpumpr.setColor(0,1,1);
-		} else {
-			stabpumpl.setColor(1,1,1);
-			stabpumpr.setColor(1,1,1);
-		}
-		
-		bar0pump1.setBool("visible", getprop("/fdm/jsbsim/propulsion/tank[0]/external-flow-rate-pps"));
-		bar0pump2.setBool("visible", getprop("/fdm/jsbsim/propulsion/tank[0]/external-flow-rate-pps"));
-		res2arrow.setBool("visible", getprop("/fdm/jsbsim/propulsion/tank[5]/external-flow-rate-pps"));
-		res3arrow.setBool("visible", getprop("/fdm/jsbsim/propulsion/tank[6]/external-flow-rate-pps"));
-		stabarrow.setBool("visible", getprop("/fdm/jsbsim/propulsion/tank[7]/external-flow-rate/tank[0]"));
-		if (getprop("/fdm/jsbsim/propulsion/fuel-dump-rate-pps") != 0) 
-			stabline.hide();
-		else 
-			stabline.show();
+	getKeys: func() {
+		return ["bareng1","bareng2","bareng3","bareng4","barxfeed1","barxfeed2","barxfeed3","barxfeed4","center",
+		"main1","main1aft","main1fwd","main2","main2aft","main2fwd","main3","main3aft","main3fwd","main4","main4aft","main4fwd",
+		"ovrd2aft","ovrd2fwd","ovrd3aft","ovrd3fwd","res2","res3","stab","text3840","xfeed1","xfeed2","xfeed3","xfeed4",
+		"jettison","jettisonLines","jettisonTime","jettisonTimeCount","stabline","stabpumpl","stabpumpr","stabpumplines"];
+	},
+	update: func(notification) {
+		me.updatePower();
 
-		bareng1.setBool("visible", getprop("/fdm/jsbsim/propulsion/engine[0]/fuel-flow-rate-pps"));
-		bareng2.setBool("visible", getprop("/fdm/jsbsim/propulsion/engine[1]/fuel-flow-rate-pps"));
-		bareng3.setBool("visible", getprop("/fdm/jsbsim/propulsion/engine[2]/fuel-flow-rate-pps"));
-		bareng4.setBool("visible", getprop("/fdm/jsbsim/propulsion/engine[3]/fuel-flow-rate-pps"));
-		barxfeed1.setBool("visible", getprop("/controls/fuel/tank[1]/x-feed"));
-		barxfeed2.setBool("visible", getprop("/controls/fuel/tank[2]/x-feed"));
-		barxfeed3.setBool("visible", getprop("/controls/fuel/tank[3]/x-feed"));
-		barxfeed4.setBool("visible", getprop("/controls/fuel/tank[4]/x-feed"));
-		xfeed1.setRotation(0.5 * math.pi * getprop("/controls/fuel/tank[1]/x-feed"));
-		xfeed2.setRotation(0.5 * math.pi * getprop("/controls/fuel/tank[2]/x-feed"));
-		xfeed3.setRotation(0.5 * math.pi * getprop("/controls/fuel/tank[3]/x-feed"));
-		xfeed4.setRotation(0.5 * math.pi * getprop("/controls/fuel/tank[4]/x-feed"));
-		if (getprop("/fdm/jsbsim/propulsion/fuel-dump-rate-pps") > 0) {
-			jettisonLines.show();
-			jettison.show();
-			ovrd2aft.setColor(1,0,1);
-			ovrd2fwd.setColor(1,0,1);
-			ovrd3aft.setColor(1,0,1);
-			ovrd3fwd.setColor(1,0,1);
-			stabpumpl.setColor(1,0,1);
-			stabpumpr.setColor(1,0,1);
-			stabpumplines.setColor(1,0,1);
-			jettisonTime.show();
-			jettisonTimeCount.show();
-			jettisonTimeCount.setText(sprintf("%2.0f",getprop("/fdm/jsbsim/propulsion/fuel-dump-time-sec")/60));
-		} else {
-			jettisonLines.hide();
-			jettison.hide();
-			jettisonTime.hide();
-			jettisonTimeCount.hide();
+		if (me.group.getVisible() == 0) {
+			return;
 		}
-		
-		if (getprop("/fdm/jsbsim/propulsion/tank[1]/external-flow-rate-pps") or (getprop("/fdm/jsbsim/propulsion/engine[0]/fuel-flow-rate-pps") > 0 and (getprop("/controls/fuel/tank[1]/pump-aft") or getprop("/controls/fuel/tank[1]/pump-fwd")))) {
-			bar1pump.show();
-		} else {
-			bar1pump.hide();
-		}
-		if (getprop("/fdm/jsbsim/propulsion/tank[2]/external-flow-rate-pps") or (getprop("/fdm/jsbsim/propulsion/engine[1]/fuel-flow-rate-pps") > 0 and (getprop("/controls/fuel/tank[2]/pump-aft") or getprop("/controls/fuel/tank[2]/pump-fwd")))) {
-			bar2pump.show();
-		} else {
-			bar2pump.hide();
-		}
-		if (getprop("/fdm/jsbsim/propulsion/tank[3]/external-flow-rate-pps") or (getprop("/fdm/jsbsim/propulsion/engine[2]/fuel-flow-rate-pps") > 0 and (getprop("/controls/fuel/tank[3]/pump-aft") or getprop("/controls/fuel/tank[3]/pump-fwd")))) {
-			bar3pump.show();
-		} else {
-			bar3pump.hide();
-		}
-		if (getprop("/fdm/jsbsim/propulsion/tank[4]/external-flow-rate-pps") or (getprop("/fdm/jsbsim/propulsion/engine[3]/fuel-flow-rate-pps") > 0 and (getprop("/controls/fuel/tank[4]/pump-aft") or getprop("/controls/fuel/tank[4]/pump-fwd")))) {
-			bar4pump.show();
-		} else {
-			bar4pump.hide();
-		}
-		
-		if (getprop("/consumables/fuel/tank[1]/level-lbs") < 2000 or (math.abs((getprop("/consumables/fuel/tank[1]/level-lbs")-getprop("/consumables/fuel/tank[4]/level-lbs"))) > 3000)) {
-			main1.setColor(0,1,1);
-		} else {
-			main1.setColor(1,1,1);
-		}
-		if (getprop("/consumables/fuel/tank[2]/level-lbs") < 2000 or (math.abs((getprop("/consumables/fuel/tank[2]/level-lbs")-getprop("/consumables/fuel/tank[3]/level-lbs"))) > 6000)) {
-			main2.setColor(0,1,1);
-		} else {
-			main2.setColor(1,1,1);
-		}
-		if (getprop("/consumables/fuel/tank[3]/level-lbs") < 2000 or (math.abs((getprop("/consumables/fuel/tank[2]/level-lbs")-getprop("/consumables/fuel/tank[3]/level-lbs"))) > 6000)) {
-			main3.setColor(0,1,1);
-		} else {
-			main3.setColor(1,1,1);
-		}
-		if (getprop("/consumables/fuel/tank[4]/level-lbs") < 2000 or (math.abs((getprop("/consumables/fuel/tank[1]/level-lbs")-getprop("/consumables/fuel/tank[4]/level-lbs"))) > 3000)) {
-			main4.setColor(0,1,1);
-		} else {
-			main4.setColor(1,1,1);
-		}
-		
-		text3840.setText(sprintf("%3.01f",getprop("/fdm/jsbsim/propulsion/total-fuel-lbs")*LB2KG/1000));
-		center.setText(sprintf("%3.01f",getprop("/consumables/fuel/tank[0]/level-lbs")*LB2KG/1000));
-		main1.setText(sprintf("%3.01f",getprop("/consumables/fuel/tank[1]/level-lbs")*LB2KG/1000));
-		main2.setText(sprintf("%3.01f",getprop("/consumables/fuel/tank[2]/level-lbs")*LB2KG/1000));
-		main3.setText(sprintf("%3.01f",getprop("/consumables/fuel/tank[3]/level-lbs")*LB2KG/1000));
-		main4.setText(sprintf("%3.01f",getprop("/consumables/fuel/tank[4]/level-lbs")*LB2KG/1000));
-		res2.setText(sprintf("%3.01f",getprop("/consumables/fuel/tank[5]/level-lbs")*LB2KG/1000));
-		res3.setText(sprintf("%3.01f",getprop("/consumables/fuel/tank[6]/level-lbs")*LB2KG/1000));
-		stab.setText(sprintf("%3.01f",getprop("/consumables/fuel/tank[7]/level-lbs")*LB2KG/1000));
 
-		settimer(func me.update(), 0);
+		foreach(var update_item; me.update_items) {
+			update_item.update(notification);
+		}
+	},
+	updatePower: func() {
+		me.group.setVisible(getprop("/instrumentation/eicas/display") == "FUEL")
 	}
 };
+
+var input = {
+	eng1ff: "/fdm/jsbsim/propulsion/engine[0]/fuel-flow-rate-pps",
+	eng2ff: "/fdm/jsbsim/propulsion/engine[1]/fuel-flow-rate-pps",
+	eng3ff: "/fdm/jsbsim/propulsion/engine[2]/fuel-flow-rate-pps",
+	eng4ff: "/fdm/jsbsim/propulsion/engine[3]/fuel-flow-rate-pps",
+	totalFuel: "/fdm/jsbsim/propulsion/total-fuel-lbs",
+	center: "/consumables/fuel/tank[0]/level-lbs",
+	main1: "/consumables/fuel/tank[1]/level-lbs",
+	main1aft: "/controls/fuel/tank[1]/pump-aft",
+	main1fwd: "/controls/fuel/tank[1]/pump-fwd",
+	main2: "/consumables/fuel/tank[2]/level-lbs",
+	main2aft: "/controls/fuel/tank[2]/pump-aft",
+	main2fwd: "/controls/fuel/tank[2]/pump-fwd",
+	ovrd2aft: "/controls/fuel/tank[2]/ovrd-aft",
+	ovrd2fwd: "/controls/fuel/tank[2]/ovrd-fwd",
+	main3: "/consumables/fuel/tank[3]/level-lbs",
+	main3aft: "/controls/fuel/tank[3]/pump-aft",
+	main3fwd: "/controls/fuel/tank[3]/pump-fwd",
+	ovrd3aft: "/controls/fuel/tank[3]/ovrd-aft",
+	ovrd3fwd: "/controls/fuel/tank[3]/ovrd-fwd",
+	main4: "/consumables/fuel/tank[4]/level-lbs",
+	main4aft: "/controls/fuel/tank[4]/pump-aft",
+	main4fwd: "/controls/fuel/tank[4]/pump-fwd",
+	res2: "/consumables/fuel/tank[5]/level-lbs",
+	res3: "/consumables/fuel/tank[6]/level-lbs",
+	stab: "/consumables/fuel/tank[7]/level-lbs",
+	stabpump: "/controls/fuel/tank[7]/pump",
+	stabextff: "/fdm/jsbsim/propulsion/tank[7]/external-flow-rate-pps",
+	xfeed1: "/controls/fuel/tank[1]/x-feed",
+	xfeed2: "/controls/fuel/tank[2]/x-feed",
+	xfeed3: "/controls/fuel/tank[3]/x-feed",
+	xfeed4: "/controls/fuel/tank[4]/x-feed",
+	jettisonrate: "/fdm/jsbsim/propulsion/fuel-dump-rate-pps",
+	fueldumptime: "/fdm/jsbsim/propulsion/fuel-dump-time-sec",
+};
+
+emexec.ExecModule.register("B744 secondary EICAS", input, canvas_lowerEICASPageFuel.new("Aircraft/747-400/Models/Cockpit/Instruments/EICAS/fuel.svg", "fuel"));

@@ -767,6 +767,7 @@ left mouse button and counter clockwise using the middle mouse button.
 		<file>Aircraft/747-400/Nasal/autopilot-routemanager.nas</file>
 		<file>Aircraft/747-400/Nasal/copilot.nas</file>
 		<file>Aircraft/747-400/Nasal/doors.nas</file>
+		<file>Aircraft/747-400/Models/Cockpit/Instruments/EICAS/secondary.nas</file>
 		<file>Aircraft/747-400/Models/Cockpit/Instruments/EICAS/doors.nas</file>
 		<file>Aircraft/747-400/Models/Cockpit/Instruments/EICAS/elec.nas</file>
 		<file>Aircraft/747-400/Models/Cockpit/Instruments/EICAS/eng.nas</file>

@@ -1196,9 +1196,8 @@
 		<button>0</button>
 		<repeatable>false</repeatable>  
 		<binding>
-			<command>property-assign</command>
-			<property>/instrumentation/eicas/display</property>
-			<value type="string">ENG</value>
+			<command>nasal</command>
+			<script>Boeing747.setSecondaryEICASPage("ENG");</script>
 		</binding>
 	</action>
 </animation>
@@ -1209,9 +1208,8 @@
 		<button>0</button>
 		<repeatable>false</repeatable>  
 		<binding>
-			<command>property-assign</command>
-			<property>/instrumentation/eicas/display</property>
-			<value type="string">STAT</value>
+			<command>nasal</command>
+			<script>Boeing747.setSecondaryEICASPage("STAT");</script>
 		</binding>
 	</action>
 </animation>
@@ -1222,9 +1220,8 @@
 		<button>0</button>
 		<repeatable>false</repeatable>  
 		<binding>
-			<command>property-assign</command>
-			<property>/instrumentation/eicas/display</property>
-			<value type="string">ELEC</value>
+			<command>nasal</command>
+			<script>Boeing747.setSecondaryEICASPage("ELEC");</script>
 		</binding>
 	</action>
 </animation>
@@ -1235,22 +1232,20 @@
 		<button>0</button>
 		<repeatable>false</repeatable>  
 		<binding>
-			<command>property-assign</command>
-			<property>/instrumentation/eicas/display</property>
-			<value type="string">FUEL</value>
+			<command>nasal</command>
+			<script>Boeing747.setSecondaryEICASPage("FUEL");</script>
 		</binding>
 	</action>
 </animation>
-<animation>
+<!--<animation>
 	<type>pick</type>
 	<object-name>btn.eicas.ecs</object-name>
 	<action>
 		<button>0</button>
 		<repeatable>false</repeatable>  
 		<binding>
-			<command>property-assign</command>
-			<property>/instrumentation/eicas/display</property>
-			<value type="string">ECS</value>
+			<command>nasal</command>
+			<script>Boeing747.setSecondaryEICASPage("ECS");</script>
 		</binding>
 	</action>
 </animation>
@@ -1261,12 +1256,11 @@
 		<button>0</button>
 		<repeatable>false</repeatable>  
 		<binding>
-			<command>property-assign</command>
-			<property>/instrumentation/eicas/display</property>
-			<value type="string">HYD</value>
+			<command>nasal</command>
+			<script>Boeing747.setSecondaryEICASPage("HYD");</script>
 		</binding>
 	</action>
-</animation>
+</animation>-->
 <animation>
 	<type>pick</type>
 	<object-name>btn.eicas.drs</object-name>
@@ -1274,9 +1268,8 @@
 		<button>0</button>
 		<repeatable>false</repeatable>  
 		<binding>
-			<command>property-assign</command>
-			<property>/instrumentation/eicas/display</property>
-			<value type="string">DRS</value>
+			<command>nasal</command>
+			<script>Boeing747.setSecondaryEICASPage("DRS");</script>
 		</binding>
 	</action>
 </animation>
@@ -1287,9 +1280,8 @@
 		<button>0</button>
 		<repeatable>false</repeatable>  
 		<binding>
-			<command>property-assign</command>
-			<property>/instrumentation/eicas/display</property>
-			<value type="string">GEAR</value>
+			<command>nasal</command>
+			<script>Boeing747.setSecondaryEICASPage("GEAR");</script>
 		</binding>
 	</action>
 </animation>
