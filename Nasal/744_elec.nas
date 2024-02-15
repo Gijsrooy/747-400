@@ -520,17 +520,17 @@ var flowbars = func
   } elsif (s[0] == 'idg1') {
     if (c > 1) {
       if (elec_sys[0].bt == 0) {
-	x += 1;
-	setprop(sys~'eicas/flowbar.bt[0]', 1);
-	setprop(sys~'eicas/flowbar.sync1', 1);
-	setprop(sys~'eicas/flowbar.sync2.1', 1);
+        x += 1;
+        setprop(sys~'eicas/flowbar.bt[0]', 1);
+        setprop(sys~'eicas/flowbar.sync1', 1);
+        setprop(sys~'eicas/flowbar.sync2.1', 1);
       }
       if (elec_sys[1].bt == 0) {
-	x += 1;
-	setprop(sys~'eicas/flowbar.bt[1]', 1);
+        x += 1;
+        setprop(sys~'eicas/flowbar.bt[1]', 1);
       }
       if (s[1] == 'idg1' and x < c)
-	doSSB = 1;
+        doSSB = 1;
     }
   }
 
@@ -562,17 +562,17 @@ var flowbars = func
   } elsif (s[1] == 'idg1') {
     if (c > 1) {
       if (elec_sys[3].bt == 0) {
-	x += 1;
-	setprop(sys~'eicas/flowbar.bt[3]', 1);
-	setprop(sys~'eicas/flowbar.sync4', 1);
-	setprop(sys~'eicas/flowbar.sync3.1', 1);
+        x += 1;
+        setprop(sys~'eicas/flowbar.bt[3]', 1);
+        setprop(sys~'eicas/flowbar.sync4', 1);
+        setprop(sys~'eicas/flowbar.sync3.1', 1);
       }
       if (elec_sys[2].bt == 0) {
-	x += 1;
-	setprop(sys~'eicas/flowbar.bt[2]', 1);
+        x += 1;
+        setprop(sys~'eicas/flowbar.bt[2]', 1);
       }
       if (s[0] == 'idg1' and x < c)
-	doSSB = 1;
+        doSSB = 1;
     }
   }
 
