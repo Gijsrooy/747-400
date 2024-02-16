@@ -2,21 +2,21 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="1024"
    height="1024"
    id="svg5180"
    xml:space="preserve"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="gear.svg"><sodipodi:namedview
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="gear.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"><sodipodi:namedview
    pagecolor="#ffffff"
    bordercolor="#666666"
    borderopacity="1"
@@ -29,355 +29,20 @@
    inkscape:window-height="716"
    id="namedview102"
    showgrid="false"
-   inkscape:zoom="0.460937"
-   inkscape:cx="112.92"
-   inkscape:cy="471.398"
+   inkscape:zoom="1"
+   inkscape:cx="512"
+   inkscape:cy="512"
    inkscape:window-x="-8"
    inkscape:window-y="-8"
    inkscape:window-maximized="1"
-   inkscape:current-layer="layer1" /><metadata
+   inkscape:current-layer="layer1"
+   inkscape:showpageshadow="0"
+   inkscape:pagecheckerboard="1"
+   inkscape:deskcolor="#d1d1d1" /><metadata
    id="metadata5186"><rdf:RDF><cc:Work
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
          rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /><dc:creator><cc:Agent><dc:title>Gijs de Rooy</dc:title></cc:Agent></dc:creator></cc:Work></rdf:RDF></metadata><defs
-   id="defs5184"><clipPath
-   id="clipPath3177"><path
-     d="m 109.44,459.54 194.4,0 0,-216 -194.4,0 0,216 z"
-     id="path3179" /></clipPath><clipPath
-   id="clipPath3133"><path
-     d="m 44.64,520.2 324,0 0,-6.24 -324,0 0,6.24 z"
-     id="path3135" /></clipPath><clipPath
-   id="clipPath3109"><path
-     d="m 44.64,36 324,0 0,-10.08 -324,0 0,10.08 z"
-     id="path3111" /></clipPath><clipPath
-   id="clipPath3095"><path
-     d="m 44.64,36 324,0 0,-10.08 -324,0 0,10.08 z"
-     id="path3097" /></clipPath><clipPath
-   id="clipPath3071"><path
-     d="m 44.64,561.24 324,0 0,-4.32 -324,0 0,4.32 z"
-     id="path3073" /></clipPath><clipPath
-   id="clipPath3035"><path
-     d="m 44.64,594 324,0 0,-28.8 -324,0 0,28.8 z"
-     id="path3037" /></clipPath><clipPath
-   id="clipPath3019"><path
-     d="m 44.64,594 324,0 0,-28.8 -324,0 0,28.8 z"
-     id="path3021" /></clipPath>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</defs>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   id="defs5184" />
 <g
    inkscape:groupmode="layer"
    id="layer3"
@@ -394,8 +59,7 @@
    inkscape:label="Layer"
    style="display:inline"><text
    inkscape:label="#text5605-4"
-   sodipodi:linespacing="125%"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    xml:space="preserve"
    id="gear1btms1"
    y="481.19583"
@@ -404,43 +68,31 @@
      id="tspan3042"
      y="481.19583"
      x="229.24115">9</tspan></text>
-
-
-
 <text
    x="229.24115"
    y="575.83997"
    id="gear1btms3"
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
-   sodipodi:linespacing="125%"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    inkscape:label="#text5605-4"><tspan
      x="229.24115"
      y="575.83997"
      id="tspan3058"
      style="font-size:35px;text-align:end;text-anchor:end">9</tspan></text>
-
-
-
 <text
    x="293.78351"
    y="481.19583"
    id="gear1btms2"
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
-   sodipodi:linespacing="125%"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    inkscape:label="#text5605-4"><tspan
      x="293.78351"
      y="481.19583"
      id="tspan3066"
      style="font-size:35px;text-align:end;text-anchor:end">9</tspan></text>
-
-
-
 <text
    inkscape:label="#text5605-4"
-   sodipodi:linespacing="125%"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    xml:space="preserve"
    id="gear1btms4"
    y="575.83997"
@@ -449,54 +101,39 @@
      id="tspan3070"
      y="575.83997"
      x="293.78351">9</tspan></text>
-
-
-
 <text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#50c8ff;fill-opacity:1;stroke:none;display:inline;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#50c8ff;fill-opacity:1;stroke:none"
    x="408.16174"
    y="367.70346"
-   id="text3873"
-   sodipodi:linespacing="125%"><tspan
+   id="text3873"><tspan
      sodipodi:role="line"
      id="tspan3875"
      x="408.16174"
      y="367.70346"
-     style="font-size:35px;fill:#50c8ff;fill-opacity:1">BRAKE TEMP</tspan></text>
-
-
-
+     style="font-size:35px;line-height:1.25;fill:#50c8ff;fill-opacity:1">BRAKE TEMP</tspan></text>
 <text
-   sodipodi:linespacing="125%"
    id="text3898"
    y="417.60178"
    x="408.16174"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#50c8ff;fill-opacity:1;stroke:none;display:inline;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#50c8ff;fill-opacity:1;stroke:none"
    xml:space="preserve"><tspan
-     style="font-size:35px;fill:#50c8ff;fill-opacity:1"
+     style="font-size:35px;line-height:1.25;fill:#50c8ff;fill-opacity:1"
      y="417.60178"
      x="408.16174"
      id="tspan3900"
      sodipodi:role="line">TIRE PRESS</tspan></text>
-
-
-
 <text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#50c8ff;fill-opacity:1;stroke:none;display:inline;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;display:inline;fill:#50c8ff;fill-opacity:1;stroke:none"
    x="399.7244"
    y="650.82214"
-   id="text3902"
-   sodipodi:linespacing="125%"><tspan
+   id="text3902"><tspan
      sodipodi:role="line"
      id="tspan3904"
      x="399.7244"
      y="650.82214"
-     style="font-size:35px;fill:#50c8ff;fill-opacity:1">GEAR DOORS</tspan></text>
-
-
-
+     style="font-size:35px;line-height:1.25;fill:#50c8ff;fill-opacity:1">GEAR DOORS</tspan></text>
 <g
    id="g3956"><path
      style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -609,20 +246,15 @@
    y="481.19583"
    id="gear4btms1"
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
-   sodipodi:linespacing="125%"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    inkscape:label="#text5605-4"><tspan
      x="761.85132"
      y="481.19583"
      id="tspan7174"
      style="font-size:35px;text-align:end;text-anchor:end">9</tspan></text>
-
-
-
 <text
    inkscape:label="#text5605-4"
-   sodipodi:linespacing="125%"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    xml:space="preserve"
    id="gear4btms3"
    y="575.83997"
@@ -631,13 +263,9 @@
      id="tspan7178"
      y="575.83997"
      x="761.85132">9</tspan></text>
-
-
-
 <text
    inkscape:label="#text5605-4"
-   sodipodi:linespacing="125%"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    xml:space="preserve"
    id="gear4btms2"
    y="481.19583"
@@ -646,28 +274,20 @@
      id="tspan7182"
      y="481.19583"
      x="826.39368">9</tspan></text>
-
-
-
 <text
    x="826.39368"
    y="575.83997"
    id="gear4btms4"
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
-   sodipodi:linespacing="125%"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    inkscape:label="#text5605-4"><tspan
      x="826.39368"
      y="575.83997"
      id="tspan7186"
      style="font-size:35px;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1">9</tspan></text>
-
-
-
 <text
    inkscape:label="#text5605-4"
-   sodipodi:linespacing="125%"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    xml:space="preserve"
    id="gear3btms1"
    y="739.3653"
@@ -676,43 +296,31 @@
      id="tspan7190"
      y="739.3653"
      x="638.19031">9</tspan></text>
-
-
-
 <text
    x="638.19031"
    y="834.00946"
    id="gear3btms3"
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
-   sodipodi:linespacing="125%"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    inkscape:label="#text5605-4"><tspan
      x="638.19031"
      y="834.00946"
      id="tspan7194"
      style="font-size:35px;text-align:end;text-anchor:end">9</tspan></text>
-
-
-
 <text
    x="702.73267"
    y="739.3653"
    id="gear3btms2"
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
-   sodipodi:linespacing="125%"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    inkscape:label="#text5605-4"><tspan
      x="702.73267"
      y="739.3653"
      id="tspan7198"
      style="font-size:35px;text-align:end;text-anchor:end">9</tspan></text>
-
-
-
 <text
    inkscape:label="#text5605-4"
-   sodipodi:linespacing="125%"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    xml:space="preserve"
    id="gear3btms4"
    y="834.00946"
@@ -721,28 +329,20 @@
      id="tspan7202"
      y="834.00946"
      x="702.73267">9</tspan></text>
-
-
-
 <text
    x="350.73267"
    y="739.3653"
    id="gear2btms1"
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
-   sodipodi:linespacing="125%"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    inkscape:label="#text5605-4"><tspan
      x="350.73267"
      y="739.3653"
      id="tspan7206"
      style="font-size:35px;text-align:end;text-anchor:end">9</tspan></text>
-
-
-
 <text
    inkscape:label="#text5605-4"
-   sodipodi:linespacing="125%"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    xml:space="preserve"
    id="gear2btms3"
    y="834.00946"
@@ -751,13 +351,9 @@
      id="tspan7210"
      y="834.00946"
      x="350.73267">9</tspan></text>
-
-
-
 <text
    inkscape:label="#text5605-4"
-   sodipodi:linespacing="125%"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    xml:space="preserve"
    id="gear2btms2"
    y="739.3653"
@@ -766,24 +362,17 @@
      id="tspan7214"
      y="739.3653"
      x="415.27502">9</tspan></text>
-
-
-
 <text
    x="415.27502"
    y="834.00946"
    id="gear2btms4"
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
-   sodipodi:linespacing="125%"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22px;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:end;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:end;fill:#ffffff;fill-opacity:1;stroke:none"
    inkscape:label="#text5605-4"><tspan
      x="415.27502"
      y="834.00946"
      id="tspan7218"
      style="font-size:35px;text-align:end;text-anchor:end;fill:#ffffff;fill-opacity:1">9</tspan></text>
-
-
-
 <g
    id="g7491"
    transform="translate(266.817,-317.938)"><path
@@ -820,79 +409,64 @@
      transform="matrix(0.868147,0,0,1.01529,30.5003,-55.6819)" /><g
      id="g7513" /></g><text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none"
    x="200.6779"
    y="648.67798"
    id="gear1closed"
-   sodipodi:linespacing="125%"
    inkscape:label="#text5447"><tspan
      sodipodi:role="line"
      id="tspan5449"
      x="200.6779"
      y="648.67798"
-     style="font-size:25px">CLOSED</tspan></text>
-
-
+     style="font-size:25px;line-height:1.25">CLOSED</tspan></text>
 <text
-   sodipodi:linespacing="125%"
    id="gear4closed"
    y="648.67798"
    x="731.46344"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none"
    xml:space="preserve"
    inkscape:label="#text5451"><tspan
-     style="font-size:25px"
+     style="font-size:25px;line-height:1.25"
      y="648.67798"
      x="731.46344"
      id="tspan5453"
      sodipodi:role="line">CLOSED</tspan></text>
-
-
 <text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none"
    x="609.28082"
    y="907.48517"
    id="gear3closed"
-   sodipodi:linespacing="125%"
    inkscape:label="#text5455"><tspan
      sodipodi:role="line"
      id="tspan5457"
      x="609.28082"
      y="907.48517"
-     style="font-size:25px">CLOSED</tspan></text>
-
-
+     style="font-size:25px;line-height:1.25">CLOSED</tspan></text>
 <text
-   sodipodi:linespacing="125%"
    id="gear2closed"
    y="907.48517"
    x="320.73846"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none"
    xml:space="preserve"
    inkscape:label="#text5459"><tspan
-     style="font-size:25px"
+     style="font-size:25px;line-height:1.25"
      y="907.48517"
      x="320.73846"
      id="tspan5461"
      sodipodi:role="line">CLOSED</tspan></text>
-
-
 <text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#ffffff;fill-opacity:1;stroke:none"
    x="469.03091"
    y="231.25053"
    id="gear0closed"
-   sodipodi:linespacing="125%"
    inkscape:label="#text5463"><tspan
      sodipodi:role="line"
      id="tspan5465"
      x="469.03091"
      y="231.25053"
-     style="font-size:25px">CLOSED</tspan></text>
-
-
+     style="font-size:25px;line-height:1.25">CLOSED</tspan></text>
 <rect
    style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
    id="rect5469"

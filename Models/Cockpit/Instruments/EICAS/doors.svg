@@ -2,20 +2,20 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
    width="1024"
    height="1024"
    id="svg5180"
    xml:space="preserve"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="doors.svg"><sodipodi:namedview
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="doors.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/"><sodipodi:namedview
    pagecolor="#000000"
    bordercolor="#666666"
    borderopacity="1"
@@ -28,404 +28,27 @@
    inkscape:window-height="716"
    id="namedview102"
    showgrid="false"
-   inkscape:zoom="0.460937"
-   inkscape:cx="26.0172"
-   inkscape:cy="335.002"
+   inkscape:zoom="1"
+   inkscape:cx="512"
+   inkscape:cy="512"
    inkscape:window-x="-8"
    inkscape:window-y="-8"
    inkscape:window-maximized="1"
    inkscape:current-layer="layer1"
    inkscape:object-nodes="true"
-   inkscape:snap-smooth-nodes="true" /><metadata
+   inkscape:snap-smooth-nodes="true"
+   inkscape:showpageshadow="0"
+   inkscape:pagecheckerboard="1"
+   inkscape:deskcolor="#d1d1d1" /><metadata
    id="metadata5186"><rdf:RDF><cc:Work
        rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title><dc:creator><cc:Agent><dc:title>Gijs de Rooy</dc:title></cc:Agent></dc:creator></cc:Work></rdf:RDF></metadata><defs
-   id="defs5184"><clipPath
-   id="clipPath3177"><path
-     d="m 109.44,459.54 194.4,0 0,-216 -194.4,0 0,216 z"
-     id="path3179" /></clipPath><clipPath
-   id="clipPath3133"><path
-     d="m 44.64,520.2 324,0 0,-6.24 -324,0 0,6.24 z"
-     id="path3135" /></clipPath><clipPath
-   id="clipPath3109"><path
-     d="m 44.64,36 324,0 0,-10.08 -324,0 0,10.08 z"
-     id="path3111" /></clipPath><clipPath
-   id="clipPath3095"><path
-     d="m 44.64,36 324,0 0,-10.08 -324,0 0,10.08 z"
-     id="path3097" /></clipPath><clipPath
-   id="clipPath3071"><path
-     d="m 44.64,561.24 324,0 0,-4.32 -324,0 0,4.32 z"
-     id="path3073" /></clipPath><clipPath
-   id="clipPath3035"><path
-     d="m 44.64,594 324,0 0,-28.8 -324,0 0,28.8 z"
-     id="path3037" /></clipPath><clipPath
-   id="clipPath3019"><path
-     d="m 44.64,594 324,0 0,-28.8 -324,0 0,28.8 z"
-     id="path3021" /></clipPath>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</defs>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+         rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /><dc:creator><cc:Agent><dc:title>Gijs de Rooy</dc:title></cc:Agent></dc:creator></cc:Work></rdf:RDF></metadata><defs
+   id="defs5184" />
 <g
    inkscape:groupmode="layer"
    id="layer1"
    inkscape:label="Layer"
    style="display:inline">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <path
    style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
    d="m 452,780 0,-466 c 15.828,-164.408 36.883,-214.5766 60,-216 30.043,-1.395 55.898,49.507 70,216 l 0,466 c 0,117.404 -130,127.423 -130,0 z"
@@ -433,138 +56,103 @@
    inkscape:connector-curvature="0"
    sodipodi:nodetypes="cccccc" /><text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    x="171.98651"
    y="258.28519"
-   id="text4086"
-   sodipodi:linespacing="125%"><tspan
+   id="text4086"><tspan
      sodipodi:role="line"
      id="tspan4088"
      x="171.98651"
      y="258.28519"
-     style="font-size:28px;fill:#00ffff">MAIN ELEC</tspan></text>
-
-
+     style="font-size:28px;line-height:1.25;fill:#00ffff">MAIN ELEC</tspan></text>
 <text
-   sodipodi:linespacing="125%"
    id="text4210"
    y="291.91229"
    x="171.98651"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    xml:space="preserve"><tspan
-     style="font-size:28px;fill:#00ffff"
+     style="font-size:28px;line-height:1.25;fill:#00ffff"
      y="291.91229"
      x="171.98651"
      id="tspan4212"
      sodipodi:role="line">ENTRY 1</tspan></text>
-
-
-
-
-
-
-
-
-
-
 <text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    x="689.41022"
    y="290.82758"
-   id="text4246"
-   sodipodi:linespacing="125%"><tspan
+   id="text4246"><tspan
      sodipodi:role="line"
      id="tspan4248"
      x="689.41022"
      y="290.82758"
-     style="font-size:28px;fill:#00ffff">ENTRY 1</tspan></text>
-
-
+     style="font-size:28px;line-height:1.25;fill:#00ffff">ENTRY 1</tspan></text>
 <text
-   sodipodi:linespacing="125%"
    id="text4250"
    y="663.9801"
    x="171.98651"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    xml:space="preserve"><tspan
-     style="font-size:28px;fill:#00ffff"
+     style="font-size:28px;line-height:1.25;fill:#00ffff"
      y="663.9801"
      x="171.98651"
      id="tspan4252"
      sodipodi:role="line">ENTRY 4</tspan></text>
-
-
 <text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    x="689.41022"
    y="661.81061"
-   id="text4254"
-   sodipodi:linespacing="125%"><tspan
+   id="text4254"><tspan
      sodipodi:role="line"
      id="tspan4256"
      x="689.41022"
      y="661.81061"
-     style="font-size:28px;fill:#00ffff">ENTRY 4</tspan></text>
-
-
+     style="font-size:28px;line-height:1.25;fill:#00ffff">ENTRY 4</tspan></text>
 <text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    x="171.98651"
    y="782.21741"
-   id="text4258"
-   sodipodi:linespacing="125%"><tspan
+   id="text4258"><tspan
      sodipodi:role="line"
      id="tspan4260"
      x="171.98651"
      y="782.21741"
-     style="font-size:28px;fill:#00ffff">ENTRY 5</tspan></text>
-
-
+     style="font-size:28px;line-height:1.25;fill:#00ffff">ENTRY 5</tspan></text>
 <text
-   sodipodi:linespacing="125%"
    id="text4262"
    y="782.21741"
    x="689.41022"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    xml:space="preserve"><tspan
-     style="font-size:28px;fill:#00ffff"
+     style="font-size:28px;line-height:1.25;fill:#00ffff"
      y="782.21741"
      x="689.41022"
      id="tspan4264"
      sodipodi:role="line">ENTRY 5</tspan></text>
-
-
 <text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    x="689.41022"
    y="742.08179"
-   id="text4266"
-   sodipodi:linespacing="125%"><tspan
+   id="text4266"><tspan
      sodipodi:role="line"
      id="tspan4268"
      x="689.41022"
      y="742.08179"
-     style="font-size:28px;fill:#00ffff">BULK CARGO</tspan></text>
-
-
+     style="font-size:28px;line-height:1.25;fill:#00ffff">BULK CARGO</tspan></text>
 <text
-   sodipodi:linespacing="125%"
    id="text4270"
    y="708.45465"
    x="689.41022"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    xml:space="preserve"><tspan
-     style="font-size:28px;fill:#00ffff"
+     style="font-size:28px;line-height:1.25;fill:#00ffff"
      y="708.45465"
      x="689.41022"
      id="tspan4272"
      sodipodi:role="line">AFT CARGO</tspan></text>
-
-
 <path
    style="fill:none;stroke:#00ffff;stroke-width:3;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
    d="m 449.667,251.343 -119.937,0"
@@ -746,108 +334,92 @@
    inkscape:connector-curvature="0"
    sodipodi:nodetypes="cccccc" /><text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    x="171.98651"
    y="374.35297"
-   id="text4214"
-   sodipodi:linespacing="125%"><tspan
+   id="text4214"><tspan
      sodipodi:role="line"
      id="tspan4216"
      x="171.98651"
      y="374.35297"
-     style="font-size:28px;fill:#00ffff">UPPER DECK</tspan></text>
-
+     style="font-size:28px;line-height:1.25;fill:#00ffff">UPPER DECK</tspan></text>
 <text
-   sodipodi:linespacing="125%"
    id="text4218"
    y="414.48856"
    x="171.98651"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    xml:space="preserve"><tspan
-     style="font-size:28px;fill:#00ffff"
+     style="font-size:28px;line-height:1.25;fill:#00ffff"
      y="414.48856"
      x="171.98651"
      id="tspan4220"
      sodipodi:role="line">ENTRY 2</tspan></text>
-
 <text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    x="171.98651"
    y="513.20044"
-   id="text4222"
-   sodipodi:linespacing="125%"><tspan
+   id="text4222"><tspan
      sodipodi:role="line"
      id="tspan4224"
      x="171.98651"
      y="513.20044"
-     style="font-size:28px;fill:#00ffff">ENTRY 3</tspan></text>
-
+     style="font-size:28px;line-height:1.25;fill:#00ffff">ENTRY 3</tspan></text>
 <text
-   sodipodi:linespacing="125%"
    id="text4226"
    y="513.20044"
    x="689.41022"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    xml:space="preserve"><tspan
-     style="font-size:28px;fill:#00ffff"
+     style="font-size:28px;line-height:1.25;fill:#00ffff"
      y="513.20044"
      x="689.41022"
      id="tspan4228"
      sodipodi:role="line">ENTRY 3</tspan></text>
-
 <text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    x="689.41022"
    y="450.28519"
-   id="text4230"
-   sodipodi:linespacing="125%"><tspan
+   id="text4230"><tspan
      sodipodi:role="line"
      id="tspan4232"
      x="689.41022"
      y="450.28519"
-     style="font-size:28px;fill:#00ffff">CTR ELEC</tspan></text>
-
+     style="font-size:28px;line-height:1.25;fill:#00ffff">CTR ELEC</tspan></text>
 <text
-   sodipodi:linespacing="125%"
    id="text4234"
    y="416.65808"
    x="689.41022"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    xml:space="preserve"><tspan
-     style="font-size:28px;fill:#00ffff"
+     style="font-size:28px;line-height:1.25;fill:#00ffff"
      y="416.65808"
      x="689.41022"
      id="tspan4236"
      sodipodi:role="line">ENTRY 2</tspan></text>
-
 <text
    xml:space="preserve"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    x="689.41022"
    y="374.353"
-   id="text4238"
-   sodipodi:linespacing="125%"><tspan
+   id="text4238"><tspan
      sodipodi:role="line"
      id="tspan4240"
      x="689.41022"
      y="374.353"
-     style="font-size:28px;fill:#00ffff">UPPER DECK</tspan></text>
-
+     style="font-size:28px;line-height:1.25;fill:#00ffff">UPPER DECK</tspan></text>
 <text
-   sodipodi:linespacing="125%"
    id="text4242"
    y="335.30215"
    x="689.41022"
-   style="font-size:22px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Liberation Sans;-inkscape-font-specification:Liberation Sans"
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:0%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none"
    xml:space="preserve"><tspan
-     style="font-size:28px;fill:#00ffff"
+     style="font-size:28px;line-height:1.25;fill:#00ffff"
      y="335.30215"
      x="689.41022"
      id="tspan4244"
      sodipodi:role="line">FWD CARGO</tspan></text>
-
 <path
    sodipodi:nodetypes="cc"
    inkscape:connector-curvature="0"
