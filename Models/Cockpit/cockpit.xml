@@ -86,7 +86,7 @@
 		<repeatable>false</repeatable>
 		<binding>
 			<command>nasal</command>
-			<script>Boeing747.showPrimaryEicas();</script>
+			<script>Boeing747.showPrimaryEICAS();</script>
 		</binding>
 	</action>
 </animation>
