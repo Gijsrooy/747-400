@@ -69,8 +69,14 @@ var B744PFD = {
 				obj.h_rot.setRotation(-val * D2R, obj["horizon"].getCenter());
 				obj["bankPointer"].setRotation(-val * D2R);
 			}),
-			props.UpdateManager.FromHashValue("hdg", 0.1, func(val) {
-				obj["compass"].setRotation(-val * D2R);
+			props.UpdateManager.FromHashList(["hdg","ias","selHdg","track"], 0.1, func(val) {
+				obj["compass"].setRotation(-val.hdg * D2R);
+				obj["selHdgPtr"].setRotation((val.selHdg - val.hdg) * D2R);
+				if (val.ias > 10) {
+					obj["trackIndicator"].setRotation((val.track - val.hdg) * D2R);
+				} else {
+					obj["trackIndicator"].setRotation(0);
+				}
 			}),
 
 			props.UpdateManager.FromHashList(["passiveMode","roll","targetRoll"], 0.1, func(val) {
@@ -460,8 +466,8 @@ var B744PFD = {
 		"curAlt1","curAlt2","curAlt3","curAltBox","curAltMtrTxt","curSpd","curSpdTen",
 		"dhText","dmeDist","fdX","fdY","flaps0","flaps1","flaps10","flaps20","flaps5",
 		"gpwsAlert","gsPtr","gsScale","horizon","ilsCourse","ilsId","locPtr","locScale","locScaleExp","machText","markerBeacon","markerBeaconText",
-		"maxSpdInd","mcpAltMtr","minimums","minSpdInd","pitchMode","radioAltInd","risingRwy","risingRwyPtr","rollMode","selAltBox","selAltPtr","selHdgText",
-		"spdTape","spdTrend","speedText","tenThousand","touchdown","v1","v2","vertSpd","vr","vref","vsiNeedle","vsPointer"];
+		"maxSpdInd","mcpAltMtr","minimums","minSpdInd","pitchMode","radioAltInd","risingRwy","risingRwyPtr","rollMode","selAltBox","selAltPtr","selHdgPtr","selHdgText",
+		"spdTape","spdTrend","speedText","tenThousand","touchdown","trackIndicator","v1","v2","vertSpd","vr","vref","vsiNeedle","vsPointer"];
 	},
 
 	update: func(notification) {
@@ -488,7 +494,7 @@ var input = {
 	flaps30: "/instrumentation/pfd/flaps-30-kt",
 	gsInRange: "/instrumentation/nav/gs-in-range",
 	gsNeedle: "/instrumentation/nav/gs-needle-deflection-norm",
-	hdg: "/orientation/heading-deg",
+	hdg: "/orientation/heading-magnetic-deg",	
 	hdgLock: "/autopilot/locks/heading",
 	ias: "/instrumentation/airspeed-indicator/indicated-speed-kt",
 	iasMax: "/instrumentation/pfd/overspeed-kt",
@@ -506,11 +512,12 @@ var input = {
 	phase: "/instrumentation/fmc/phase-name",
 	pitch: "/orientation/pitch-deg",
 	roll: "/orientation/roll-deg",
-	selHdg: "/autopilot/settings/true-heading-deg",
+	selHdg: "/autopilot/settings/heading-bug-deg",
 	spdLock: "/autopilot/locks/speed",
 	spdTrend: "/instrumentation/pfd/speed-trend-up",
 	targetRoll: "/autopilot/internal/target-roll-deg",
 	targetVs: "instrumentation/pfd/target-vs",
+	track: "/orientation/track-magnetic-deg",
 	v1: "/instrumentation/fmc/vspeeds/V1",
 	v2: "/instrumentation/fmc/vspeeds/V2",
 	vr: "/instrumentation/fmc/vspeeds/VR",
