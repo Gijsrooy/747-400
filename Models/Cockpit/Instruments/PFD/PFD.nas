@@ -156,7 +156,10 @@ var B744PFD = {
 				if (val.vSpd != nil) {
 					var vertSpd = val.vSpd * 60;
 					if (abs(vertSpd) > 400) {
-						obj["vertSpd"].setText(sprintf("%4.0f", roundToNearest(vertSpd, 50)));
+						var vsiText = sprintf("%4.0f", roundToNearest(abs(vertSpd), 50));
+						if (abs(vertSpd) > 9999) vsiText = "9999";
+						obj["vertSpd"].setTranslation(0, -540 * (vertSpd > 0));
+						obj["vertSpd"].setText(vsiText);
 						obj["vertSpd"].show();
 					} else {
 						obj["vertSpd"].hide();
