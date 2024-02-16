@@ -12,419 +12,517 @@ var roundToNearest = func(n, m) {
 var pfd_canvas = nil;
 var pfd_display = nil;
 
-var canvas_PFD = {
-	new: func(canvas_group)
-	{
-		var m = { parents: [canvas_PFD] };
-		var pfd = canvas_group;
-		var font_mapper = func(family, weight)
-		{
-			if( family == "Liberation Sans" and weight == "normal" )
-				return "LiberationFonts/LiberationSans-Regular.ttf";
+var B744PFD = {
+	new: func(svg, name) {
+		var obj = { parents: [B744PFD] };
+		obj.canvas = canvas.new({
+			"name": "PFD",
+			"size": [1024, 1024],
+			"view": [1024, 1024],
+			"mipmapping": 1
+		});
+		obj.canvas.addPlacement({"node": "pfdScreen"});
+
+		obj.font_mapper = func(family, weight) {
+			return "LiberationFonts/LiberationSans-Regular.ttf";
 		};
-		
-		canvas.parsesvg(pfd, "Aircraft/747-400/Models/Cockpit/Instruments/PFD/PFD.svg", {'font-mapper': font_mapper});
-		
-		var svg_keys = ["afdsMode","altTape","altText1","altText2","atMode","bankPointer","baroSet","cmdSpd","compass","curAlt1","curAlt2","curAlt3","curAltBox","curAltMtrTxt","curSpd","curSpdTen","dhText","dmeDist","fdX","fdY","flaps0","flaps1","flaps10","flaps20","flaps5","gpwsAlert","gsPtr","gsScale","horizon","ilsCourse","ilsId","locPtr","locScale","locScaleExp","machText","markerBeacon","markerBeaconText","maxSpdInd","mcpAltMtr","minimums","minSpdInd","pitchMode","radioAltInd","risingRwy","risingRwyPtr","rollMode","selAltBox","selAltPtr","selHdgText","spdTape","spdTrend","speedText","tenThousand","touchdown","v1","v2","vertSpd","vr","vref","vsiNeedle","vsPointer"];
-		foreach(var key; svg_keys) {
-			m[key] = pfd.getElementById(key);
-		}
-		debug.dump(m["horizon"].getCenter());
-		m.h_trans = m["horizon"].createTransform();
-		m.h_rot = m["horizon"].createTransform();
-		
-		var c1 = m["spdTrend"].getCenter();
-		m["spdTrend"].createTransform().setTranslation(-c1[0], -c1[1]);
-		m["spdTrend_scale"] = m["spdTrend"].createTransform();
-		m["spdTrend"].createTransform().setTranslation(c1[0], c1[1]);
-		var c2 = m["risingRwyPtr"].getCenter();
-		m["risingRwyPtr"].createTransform().setTranslation(-c2[0], -c2[1]);
-		m["risingRwyPtr_scale"] = m["risingRwyPtr"].createTransform();
-		m["risingRwyPtr"].createTransform().setTranslation(c2[0], c2[1]);
-		
-		m["horizon"].set("clip", "rect(241.8, 694.7, 733.5, 211.1)");
-		m["minSpdInd"].set("clip", "rect(156, 1024, 829, 0)");
-		m["maxSpdInd"].set("clip", "rect(156, 1024, 829, 0)");
-		m["spdTape"].set("clip", "rect(156, 1024, 829, 0)");
-		m["altTape"].set("clip", "rect(156, 1024, 829, 0)");
-		m["cmdSpd"].set("clip", "rect(156, 1024, 829, 0)");
-		m["selAltPtr"].set("clip", "rect(156, 1024, 829, 0)");
-		m["vsiNeedle"].set("clip", "rect(287, 1024, 739, 930)");
-		m["compass"].set("clip", "rect(700, 1024, 990, 0)");
-		m["curAlt3"].set("clip", "rect(463, 1024, 531, 0)");
-		m["curSpdTen"].set("clip", "rect(455, 1024, 541, 0)");
-		
-		setlistener("autopilot/locks/passive-mode",            func { m.update_ap_modes() } );
-		setlistener("autopilot/locks/altitude",                func { m.update_ap_modes() } );
-		setlistener("autopilot/locks/heading",                 func { m.update_ap_modes() } );
-		setlistener("autopilot/locks/speed",                   func { m.update_ap_modes() } );
-		m.update_ap_modes();
 
-		return m;
-	},
-	update: func()
-	{
-		var radioAlt = getprop("position/altitude-agl-ft")-24;
-		#var radioAlt = getprop("instrumentation/radar-altimeter/radar-altitude-ft") or 0;
-		var alt = getprop("instrumentation/altimeter/indicated-altitude-ft");
-		var ias = getprop("instrumentation/airspeed-indicator/indicated-speed-kt");
-		if (ias < 30)
-			ias = 30;
-		var pitch = getprop("orientation/pitch-deg");
-		var roll =  getprop("orientation/roll-deg");
-		var hdg =  getprop("orientation/heading-deg");
-		var vSpd = getprop("/velocities/vertical-speed-fps");
-		var wow = getprop("gear/gear/wow");
-		var apAlt = getprop("autopilot/settings/target-altitude-ft");
-		var apSpd = getprop("autopilot/settings/target-speed-kt");
-		
-		#10 deg = 105px
-		me.h_trans.setTranslation(0,pitch*10.5);
-		me.h_rot.setRotation(-roll*D2R,me["horizon"].getCenter());
-		
-		me["bankPointer"].setRotation(-roll*D2R);
-		me["compass"].setRotation(-hdg*D2R);
-			
-		# Flight director
-		if (getprop("autopilot/locks/passive-mode") == 1) {
-			if (getprop("autopilot/internal/target-roll-deg") != nil) {
-				var fdRoll = (roll-getprop("/autopilot/internal/target-roll-deg"))*10.5;
-				if (fdRoll > 200)
-					fdRoll = 200;
-				elsif (fdRoll < -200)
-					fdRoll = -200;
-				me["fdX"].setTranslation(-fdRoll,0);
-			}
-			me["fdX"].show();
-			#me["fdY"].show();
-		} else {
-			me["fdX"].hide();
-			me["fdY"].hide();
-		}
-		
-		# 121 kts = 675 px -> 5.584
-		# 806 ft = 675 px -> 0.837
-		var cmdSpd = apSpd-ias;
-		if (cmdSpd > 60)
-			cmdSpd = 60;
-		elsif(cmdSpd < -60)
-			cmdSpd = -60;
-		me["cmdSpd"].setTranslation(0,-cmdSpd*5.584);
-		var mach = getprop("velocities/mach");
-		if (mach >= 0.40) {
-			me["machText"].setText(sprintf("%.3f",mach));
-			me["machText"].show();
-		} else
-			me["machText"].hide();
-		me["altText1"].setText(sprintf("%2.0f",math.floor(apAlt/1000)));
-		me["altText2"].setText(sprintf("%03.0f",math.mod(apAlt,1000)));
-		me["mcpAltMtr"].setText(sprintf("%5.0f",apAlt*FT2M));
-		
-		#if ()
-		#	gpwsAlert.setText(getprop("instrumentation/mk-viii/outputs/warning"));
-		#else
-		#	gpwsAlert.setText("");
-		var altAbs = abs(alt);
-		me["curAlt1"].setText(sprintf("%2.0f",math.floor(altAbs/1000)));
-		me["curAlt2"].setText(sprintf("%1.0f",math.mod(math.floor(altAbs/100),10)));
-		me["curAlt3"].setTranslation(0,(math.mod(altAbs,100)/20)*35);
-		me["curAltMtrTxt"].setText(sprintf("%4.0f",alt*FT2M));
-		var curAltDiff = alt-apAlt;
-		if (abs(curAltDiff) > 300 and abs(curAltDiff) < 900) {
-			me["curAltBox"].setStrokeLineWidth(5);
-			if ((alt > apAlt and vSpd > 1) or (alt < apAlt and vSpd < 1)) {
-				me["curAltBox"].setColor(1,0.5,0);
-				me["selAltBox"].hide();
-			} else {
-				me["curAltBox"].setColor(1,1,1);
-				me["selAltBox"].show();
-			}
-		} else {
-			me["curAltBox"].setStrokeLineWidth(3);
-			me["curAltBox"].setColor(1,1,1);
-			me["selAltBox"].hide();
-		}
-		if (curAltDiff > 403)
-			curAltDiff = 403;
-		elsif (curAltDiff < -403)
-			curAltDiff = -403;
-		me["selAltPtr"].setTranslation(0,curAltDiff*0.837);
+		obj.group = obj.canvas.createGroup();
+		obj.name = name;
 
-		me["curSpd"].setText(sprintf("%2.0f",math.floor(ias/10)));
-		me["curSpdTen"].setTranslation(0,math.mod(ias,10)*45);
+		canvas.parsesvg(obj.group, svg, {"font-mapper": obj.font_mapper} );
+
+		foreach(var key; obj.getKeys()) {
+			obj[key] = obj.group.getElementById(key);
+		};
+
+		obj.h_trans = obj["horizon"].createTransform();
+		obj.h_rot = obj["horizon"].createTransform();
 		
-		if (getprop("instrumentation/marker-beacon/outer")) {
-			me["markerBeacon"].show();
-			me["markerBeaconText"].setText("OM");
-		} elsif (getprop("instrumentation/marker-beacon/middle")) {
-			me["markerBeacon"].show();
-			me["markerBeaconText"].setText("MM");
-		} elsif (getprop("instrumentation/marker-beacon/inner")) {
-			me["markerBeacon"].show();
-			me["markerBeaconText"].setText("IM");
-		} else {
-			me["markerBeacon"].hide();
-		}
+		var c1 = obj["spdTrend"].getCenter();
+		obj["spdTrend"].createTransform().setTranslation(-c1[0], -c1[1]);
+		obj["spdTrend_scale"] = obj["spdTrend"].createTransform();
+		obj["spdTrend"].createTransform().setTranslation(c1[0], c1[1]);
+		var c2 = obj["risingRwyPtr"].getCenter();
+		obj["risingRwyPtr"].createTransform().setTranslation(-c2[0], -c2[1]);
+		obj["risingRwyPtr_scale"] = obj["risingRwyPtr"].createTransform();
+		obj["risingRwyPtr"].createTransform().setTranslation(c2[0], c2[1]);
 		
-		var sigQ = getprop("instrumentation/nav/signal-quality-norm") or 0;
-		if(sigQ > 0.95) {
-			var deflection = getprop("instrumentation/nav/heading-needle-deflection-norm"); # 1 dot = 1 degree, full needle deflection is 10 deg
-			if (deflection > 0.3)
-				deflection = 0.3;
-			if (deflection < -0.3)
-				deflection = -0.3;
-				
-			me["locPtr"].show();
+		obj["horizon"].set("clip", "rect(241.8, 694.7, 733.5, 211.1)");
+		obj["minSpdInd"].set("clip", "rect(156, 1024, 829, 0)");
+		obj["maxSpdInd"].set("clip", "rect(156, 1024, 829, 0)");
+		obj["spdTape"].set("clip", "rect(156, 1024, 829, 0)");
+		obj["altTape"].set("clip", "rect(156, 1024, 829, 0)");
+		obj["cmdSpd"].set("clip", "rect(156, 1024, 829, 0)");
+		obj["selAltPtr"].set("clip", "rect(156, 1024, 829, 0)");
+		obj["vsiNeedle"].set("clip", "rect(287, 1024, 739, 930)");
+		obj["compass"].set("clip", "rect(700, 1024, 990, 0)");
+		obj["curAlt3"].set("clip", "rect(463, 1024, 531, 0)");
+		obj["curSpdTen"].set("clip", "rect(455, 1024, 541, 0)");
+
+		obj.update_items = [
 			
-			if (radioAlt < 2500) {
-				me["risingRwy"].show();
-				me["risingRwyPtr"].show();
-				if (radioAlt< 200) {
-					if(abs(deflection) < 0.1)
-						me["risingRwy"].setTranslation(deflection*500,-(200-radioAlt)*0.682);
-					else
-						me["risingRwy"].setTranslation(deflection*250,-(200-radioAlt)*0.682);
-					me["risingRwyPtr_scale"].setScale(1, ((200-radioAlt)*0.682)/11);
+			props.UpdateManager.FromHashValue("pitch", 0.025, func(val) {
+				obj.h_trans.setTranslation(0, val * 10.5); #10 deg = 105px
+			}),
+			props.UpdateManager.FromHashValue("roll", 0.025, func(val) {
+				obj.h_rot.setRotation(-val * D2R, obj["horizon"].getCenter());
+				obj["bankPointer"].setRotation(-val * D2R);
+			}),
+			props.UpdateManager.FromHashValue("hdg", 0.1, func(val) {
+				obj["compass"].setRotation(-val * D2R);
+			}),
+
+			props.UpdateManager.FromHashList(["passiveMode","roll","targetRoll"], 0.1, func(val) {
+				if (val.passiveMode == 1) {
+					if (val.targetRoll != nil) {
+						var fdRoll = (val.roll - val.targetRoll) * 10.5;
+						if (fdRoll > 200)
+							fdRoll = 200;
+						elsif (fdRoll < -200)
+							fdRoll = -200;
+						obj["fdX"].setTranslation(-fdRoll, 0);
+					}
+					obj["fdX"].show();
+					#obj["fdY"].show();
 				} else {
-					me["risingRwy"].setTranslation(deflection*150,0);
-					me["risingRwyPtr_scale"].setScale(1, 1);
+					obj["fdX"].hide();
+					obj["fdY"].hide();
 				}
-			} else {
-				me["risingRwy"].hide();
-				me["risingRwyPtr"].hide();
-			}
+			}),
 			
-			if(abs(deflection) < 0.233) # 2 1/3 dot
-				me["locPtr"].setColorFill(1,0,1,1);
-			else
-				me["locPtr"].setColorFill(1,0,1,0);
-			if(abs(deflection) < 0.1) {
-				me["locPtr"].setTranslation(deflection*500,0);
-				me["risingRwyPtr"].setTranslation(deflection*500,0);
-				me["locScaleExp"].show();
-				me["locScale"].hide();
-			} else {
-				me["locPtr"].setTranslation(deflection*250,0);
-				me["risingRwyPtr"].setTranslation(deflection*250,0);
-				me["locScaleExp"].hide();
-				me["locScale"].show();
+			# 121 kts = 675 px -> 5.584
+			# 806 ft = 675 px -> 0.837
+			
+			props.UpdateManager.FromHashList(["apSpd","ias"], 0.1, func(val) {
+				if (val.ias < 30) val.ias = 30;
+				var cmdSpd = val.apSpd - val.ias;
+				if (cmdSpd > 60)
+					cmdSpd = 60;
+				elsif(cmdSpd < -60)
+					cmdSpd = -60;
+				obj["cmdSpd"].setTranslation(0, -cmdSpd * 5.584);
+			}),
+
+			props.UpdateManager.FromHashValue("mach", 0.001, func(val) {
+				if (val >= 0.40) {
+					obj["machText"].setText(sprintf("%.3f", val));
+					obj["machText"].show();
+				} else {
+					obj["machText"].hide();
+				}
+			}),
+
+			props.UpdateManager.FromHashValue("apAlt", 1, func(val) {
+				obj["altText1"].setText(sprintf("%2.0f", math.floor(val / 1000)));
+				obj["altText2"].setText(sprintf("%03.0f", math.mod(val, 1000)));
+				obj["mcpAltMtr"].setText(sprintf("%5.0f", val * FT2M));
+			}),
+
+			props.UpdateManager.FromHashValue("alt", 1, func(val) {
+				var altAbs = abs(val);
+				obj["curAlt1"].setText(sprintf("%2.0f", math.floor(altAbs / 1000)));
+				obj["curAlt2"].setText(sprintf("%1.0f", math.mod(math.floor(altAbs / 100), 10)));
+				obj["curAlt3"].setTranslation(0, (math.mod(altAbs, 100) / 20) * 35);
+				obj["curAltMtrTxt"].setText(sprintf("%4.0f", val * FT2M));
+			}),
+
+			props.UpdateManager.FromHashList(["alt","apAlt","targetVs","vSpd"], 1, func(val) {
+				var curAltDiff = val.alt - val.apAlt;
+				if (abs(curAltDiff) > 300 and abs(curAltDiff) < 900) {
+					obj["curAltBox"].setStrokeLineWidth(5);
+					if ((val.alt > val.apAlt and val.vSpd > 1) or (val.alt < val.apAlt and val.vSpd < 1)) {
+						obj["curAltBox"].setColor(1, 0.5, 0);
+						obj["selAltBox"].hide();
+					} else {
+						obj["curAltBox"].setColor(1, 1, 1);
+						obj["selAltBox"].show();
+					}
+				} else {
+					obj["curAltBox"].setStrokeLineWidth(3);
+					obj["curAltBox"].setColor(1, 1, 1);
+					obj["selAltBox"].hide();
+				}
+				if (curAltDiff > 403)
+					curAltDiff = 403;
+				elsif (curAltDiff < -403)
+					curAltDiff = -403;
+				obj["selAltPtr"].setTranslation(0, curAltDiff * 0.837);
+
+				if (val.alt < 10000 and val.alt > 0)
+					obj["tenThousand"].show();
+				else
+					obj["tenThousand"].hide();
+				if (val.vSpd != nil) {
+					var vertSpd = val.vSpd * 60;
+					if (abs(vertSpd) > 400) {
+						obj["vertSpd"].setText(sprintf("%4.0f", roundToNearest(vertSpd, 50)));
+						obj["vertSpd"].show();
+					} else {
+						obj["vertSpd"].hide();
+					}
+					obj["vsPointer"].setTranslation(0, -val.targetVs);
+				}
+			}),
+
+			props.UpdateManager.FromHashValue("ias", 0.1, func(val) {
+				obj["curSpd"].setText(sprintf("%2.0f", math.floor(val / 10)));
+				obj["curSpdTen"].setTranslation(0, math.mod(val, 10) * 45);
+			}),
+
+			props.UpdateManager.FromHashList(["markerInner","markerMiddle","markerOuter"], nil, func(val) {
+				if (val.markerOuter) {
+					obj["markerBeacon"].show();
+					obj["markerBeaconText"].setText("OM");
+				} elsif (val.markerMiddle) {
+					obj["markerBeacon"].show();
+					obj["markerBeaconText"].setText("MM");
+				} elsif (val.markerInner) {
+					obj["markerBeacon"].show();
+					obj["markerBeaconText"].setText("IM");
+				} else {
+					obj["markerBeacon"].hide();
+				}
+			}),
+
+			props.UpdateManager.FromHashList(["agl","navSigQ","navNeedle"], nil, func(val) {
+				if(val.navSigQ > 0.95) {
+					var deflection = val.navNeedle; # 1 dot = 1 degree, full needle deflection is 10 deg
+					if (deflection > 0.3)
+						deflection = 0.3;
+					if (deflection < -0.3)
+						deflection = -0.3;
+						
+					obj["locPtr"].show();
+					
+					var radioAlt = val.agl - 24;
+					if (radioAlt < 2500) {
+						obj["risingRwy"].show();
+						obj["risingRwyPtr"].show();
+						if (radioAlt< 200) {
+							if(abs(deflection) < 0.1)
+								obj["risingRwy"].setTranslation(deflection * 500, -(200 - radioAlt) * 0.682);
+							else
+								obj["risingRwy"].setTranslation(deflection * 250, -(200 - radioAlt) * 0.682);
+							obj["risingRwyPtr_scale"].setScale(1, ((200 - radioAlt) * 0.682) / 11);
+						} else {
+							obj["risingRwy"].setTranslation(deflection * 150, 0);
+							obj["risingRwyPtr_scale"].setScale(1, 1);
+						}
+					} else {
+						obj["risingRwy"].hide();
+						obj["risingRwyPtr"].hide();
+					}
+					
+					if(abs(deflection) < 0.233) # 2 1/3 dot
+						obj["locPtr"].setColorFill(1, 0, 1, 1);
+					else
+						obj["locPtr"].setColorFill(1, 0, 1, 0);
+					if(abs(deflection) < 0.1) {
+						obj["locPtr"].setTranslation(deflection * 500, 0);
+						obj["risingRwyPtr"].setTranslation(deflection * 500, 0);
+						obj["locScaleExp"].show();
+						obj["locScale"].hide();
+					} else {
+						obj["locPtr"].setTranslation(deflection * 250, 0);
+						obj["risingRwyPtr"].setTranslation(deflection * 250, 0);
+						obj["locScaleExp"].hide();
+						obj["locScale"].show();
+					}
+				} else {
+					obj["locPtr"].hide();
+					obj["locScaleExp"].hide();
+					obj["locScale"].hide();
+					obj["risingRwy"].hide();
+					obj["risingRwyPtr"].hide();
+				}
+			}),
+
+			props.UpdateManager.FromHashList(["gsInRange","gsNeedle"], nil, func(val) {
+				if(val.gsInRange) {
+					obj["gsPtr"].show();
+					obj["gsScale"].show();
+					obj["gsPtr"].setTranslation(0, -val.gsNeedle * 140);
+				} else {
+					obj["gsPtr"].hide();
+					obj["gsScale"].hide();
+				}
+			}),
+
+			props.UpdateManager.FromHashValue("agl", 1, func(val) {
+				var radioAlt = val - 24;
+				if (radioAlt < 2500) {
+					if (radioAlt > 500)
+						obj["radioAltInd"].setText(sprintf("%4.0f", roundToNearest(radioAlt, 20)));
+					elsif (radioAlt > 100)
+						obj["radioAltInd"].setText(sprintf("%4.0f", roundToNearest(radioAlt, 10)));
+					else
+						obj["radioAltInd"].setText(sprintf("%4.0f", roundToNearest(radioAlt, 2)));
+					obj["radioAltInd"].show();
+				} else {
+					obj["radioAltInd"].hide();
+				}
+			}),
+
+			props.UpdateManager.FromHashValue("spdTrend", 0.01, func(val) {
+				if (abs(val > 0.1))
+					obj["spdTrend_scale"].setScale(1, val);
+				else
+					obj["spdTrend_scale"].setScale(1, 0);
+			}),
+
+			props.UpdateManager.FromHashValue("ias", 0.1, func(val) {
+				obj["spdTape"].setTranslation(0, val * 5.584);
+			}),
+			props.UpdateManager.FromHashValue("alt", 1, func(val) {
+				obj["altTape"].setTranslation(0, val * 0.837);
+			}),
+
+			props.UpdateManager.FromHashValue("vsiDeg", 1, func(val) {
+				obj["vsiNeedle"].setRotation(val * D2R);
+			}),
+
+			props.UpdateManager.FromHashList(["passiveMode","altLock","hdgLock","spdLock"], nil, func(val) {
+				if (val.passiveMode == 1)
+					obj["afdsMode"].setText("FD");
+				elsif (val.altLock != "" or val.hdgLock != "" or val.spdLock != "")
+					obj["afdsMode"].setText("CMD");
+				else
+					obj["afdsMode"].setText("");
+
+				if (val.spdLock == "speed-with-throttle")
+					obj["atMode"].setText("SPD");
+				elsif (val.spdLock ==  "speed-with-pitch-trim")
+					obj["atMode"].setText("THR");
+				else
+					obj["atMode"].setText("");
+
+				if (val.hdgLock == "wing-leveler")
+					obj["rollMode"].setText("HDG HOLD");
+				elsif (val.hdgLock ==  "dg-heading-hold")
+					obj["rollMode"].setText("HDG SEL");
+				elsif (val.hdgLock ==  "nav1-hold")
+					obj["rollMode"].setText("LNAV");
+				else
+					obj["rollMode"].setText("");
+
+				obj["vsPointer"].hide();
+				if (val.altLock == "vertical-speed-hold") {
+					obj["pitchMode"].setText("V/S");
+					obj["vsPointer"].show();
+				} elsif (val.altLock ==  "altitude-hold")
+					obj["pitchMode"].setText("ALT");
+				elsif (val.altLock ==  "gs1-hold")
+					obj["pitchMode"].setText("G/S");
+				elsif (val.altLock ==  "speed-with-pitch-trim")
+					obj["pitchMode"].setText("FLCH SPD");
+				else
+					obj["pitchMode"].setText("");
+			}),
+
+			props.UpdateManager.FromHashValue("navId", nil, func(val) {
+				obj["ilsId"].setText(val);
+			}),
+
+			props.UpdateManager.FromHashList(["v1","v2","vr","wow"], 1, func(val) {
+				if (val.v1 or 0 > 0) {
+					if (val.wow) {
+						obj["v1"].show();
+						obj["v1"].setTranslation(0, -val.v1 * 5.63915);
+						obj["vr"].show();
+						obj["vr"].setTranslation(0, -val.vr * 5.63915);
+					} else {
+						obj["v1"].hide();
+						obj["vr"].hide();
+					}
+					obj["v2"].setTranslation(0, -val.v2 * 5.63915);
+				} else {
+					obj["v1"].hide();
+					obj["vr"].hide();
+				}
+			}),
+
+			props.UpdateManager.FromHashValue("flaps0", 1, func(val) {
+				obj["flaps0"].setTranslation(0, -val * 5.63915);
+			}),
+			props.UpdateManager.FromHashValue("flaps1", 1, func(val) {
+				obj["flaps1"].setTranslation(0, -val * 5.63915);
+			}),
+			props.UpdateManager.FromHashValue("flaps5", 1, func(val) {
+				obj["flaps5"].setTranslation(0, -val * 5.63915);
+			}),
+			props.UpdateManager.FromHashValue("flaps10", 1, func(val) {
+				obj["flaps10"].setTranslation(0, -val * 5.63915);
+			}),
+			props.UpdateManager.FromHashValue("flaps20", 1, func(val) {
+				obj["flaps20"].setTranslation(0, -val * 5.63915);
+			}),
+
+			props.UpdateManager.FromHashList(["flaps","flaps25","flaps30","phase"], 1, func(val) {
+				if (val.phase == "APPROACH") {
+					if (val.flaps == 1)
+						var vref = val.flaps30;
+					else
+						var vref = val.flaps25;
+					obj["vref"].show();
+					obj["vref"].setTranslation(0, -vref * 5.63915);
+				} else {
+					obj["vref"].hide();
+				}
+			}),
+
+			props.UpdateManager.FromHashList(["alt","flaps"], nil, func(val) {
+				obj["flaps0"].hide();
+				obj["flaps1"].hide();
+				obj["flaps5"].hide();
+				obj["flaps10"].hide();
+				obj["flaps20"].hide();
+				if (val.alt < 20000) {
+					if (val.flaps == 0.033) {
+						obj["flaps0"].show(); obj["flaps1"].show();
+					} elsif (val.flaps == 0.167) {
+						obj["flaps1"].show(); obj["flaps5"].show();
+					} elsif (val.flaps == 0.333) {
+						obj["flaps5"].show(); obj["flaps10"].show();
+					} elsif (val.flaps == 0.667) {
+						obj["flaps10"].show(); obj["flaps20"].show();
+					}
+				}
+			}),
+
+			props.UpdateManager.FromHashValue("iasMin", 1, func(val) {
+				obj["minSpdInd"].setTranslation(0, -val * 5.63915);
+			}),
+			props.UpdateManager.FromHashValue("iasMax", 1, func(val) {
+				obj["maxSpdInd"].setTranslation(0, -val * 5.63915);
+			}),
+
+			props.UpdateManager.FromHashValue("destElev", 1, func(val) {
+				if (val != nil) {
+					obj["touchdown"].setTranslation(0, -val * 0.9);
+					obj["touchdown"].show();
+				} else {
+					obj["touchdown"].hide();
+				}
+			}),
+
+			props.UpdateManager.FromHashList(["ias","wow"], 1, func(val) {
+				if(val.wow or (val.ias <= 35)) {
+					obj["minSpdInd"].hide();
+					obj["maxSpdInd"].hide();
+				} else {
+					obj["minSpdInd"].show();
+					obj["maxSpdInd"].show();
+				}
+			}),
+
+			props.UpdateManager.FromHashValue("altInhg", 0.01, func(val) {
+				obj["baroSet"].setText(sprintf("%2.2f", val));
+			}),
+			props.UpdateManager.FromHashValue("ilsCourse", 1, func(val) {
+				obj["ilsCourse"].setText(sprintf("CRS %3.0f", val));
+			}),
+			props.UpdateManager.FromHashValue("dh", 1, func(val) {
+				obj["dhText"].setText(sprintf("DH%3.0f", val));
+				obj["minimums"].setTranslation(0, -val * 0.9);
+			}),
+			props.UpdateManager.FromHashValue("selHdg", 1, func(val) {
+				obj["selHdgText"].setText(sprintf("%3.0f", val));
+			}),
+			props.UpdateManager.FromHashValue("apSpd", 1, func(val) {
+				obj["speedText"].setText(sprintf("%3.0f", val));
+			}),
+			
+			props.UpdateManager.FromHashValue("navDist", 1, func(val) {
+				if (val > 0) {
+					obj["dmeDist"].setText(sprintf("DME %2.01f", val * 0.000539));
+					obj["dmeDist"].show();
+				} else {
+					obj["dmeDist"].hide();
+				}
+			}),
+		];
+
+		obj.update = func(notification) {
+			foreach(var update_item; obj.update_items) {
+				update_item.update(notification);
 			}
-		} else {
-			me["locPtr"].hide();
-			me["locScaleExp"].hide();
-			me["locScale"].hide();
-			me["risingRwy"].hide();
-			me["risingRwyPtr"].hide();
-		}
-		
-		if(getprop("instrumentation/nav/gs-in-range")) {
-			me["gsPtr"].show();
-			me["gsScale"].show();
-			me["gsPtr"].setTranslation(0,-getprop("instrumentation/nav/gs-needle-deflection-norm")*140);
-		} else {
-			me["gsPtr"].hide();
-			me["gsScale"].hide();
-		}
-		
-		if (alt < 10000 and alt > 0)
-			me["tenThousand"].show();
-		else
-			me["tenThousand"].hide();
-		if (vSpd != nil) {
-			var vertSpd = vSpd*60;
-			if (abs(vertSpd) > 400) {
-				me["vertSpd"].setText(sprintf("%4.0f",roundToNearest(vertSpd,50)));
-				me["vertSpd"].show();
-			} else {
-				me["vertSpd"].hide();
-			}
-			var targetVs = getprop("instrumentation/pfd/target-vs") or 0;
-			me["vsPointer"].setTranslation(0,-targetVs);
-		}
-		if (radioAlt < 2500) {
-			if (radioAlt > 500)
-				me["radioAltInd"].setText(sprintf("%4.0f",roundToNearest(radioAlt,20)));
-			elsif (radioAlt > 100)
-				me["radioAltInd"].setText(sprintf("%4.0f",roundToNearest(radioAlt,10)));
-			else
-				me["radioAltInd"].setText(sprintf("%4.0f",roundToNearest(radioAlt,2)));
-			me["radioAltInd"].show();
-		} else {
-			me["radioAltInd"].hide();
-		}
-		var spdTrend = getprop("instrumentation/pfd/speed-trend-up") or 0;
-		if (abs(spdTrend > 0.1))
-			me["spdTrend_scale"].setScale(1, spdTrend);
-		else
-			me["spdTrend_scale"].setScale(1, 0);
-		
-		me["spdTape"].setTranslation(0,ias*5.584);
-		me["altTape"].setTranslation(0,alt*0.837);
-		
-		var vsiDeg = getprop("instrumentation/pfd/vsi-needle-deg") or 0;
-		me["vsiNeedle"].setRotation(vsiDeg*D2R);
-		
-		settimer(func me.update(), 0.03);
+		};
+
+		return obj;
 	},
-	update_ap_modes: func()
-	{
-		# Modes
-		if (getprop("autopilot/locks/passive-mode") == 1)
-			me["afdsMode"].setText("FD");
-		elsif (getprop("autopilot/locks/altitude") != "" or getprop("autopilot/locks/heading") != "" or getprop("autopilot/locks/speed") != "")
-			me["afdsMode"].setText("CMD");
-		else
-			me["afdsMode"].setText("");
-		
-		var apSpd = getprop("/autopilot/locks/speed");
-		if (apSpd == "speed-with-throttle")
-			me["atMode"].setText("SPD");
-		elsif (apSpd ==  "speed-with-pitch-trim")
-			me["atMode"].setText("THR");
-		else
-			me["atMode"].setText("");
-		var apRoll = getprop("/autopilot/locks/heading");
-		if (apRoll == "wing-leveler")
-			me["rollMode"].setText("HDG HOLD");
-		elsif (apRoll ==  "dg-heading-hold")
-			me["rollMode"].setText("HDG SEL");
-		elsif (apRoll ==  "nav1-hold")
-			me["rollMode"].setText("LNAV");
-		else
-			me["rollMode"].setText("");
-		me["vsPointer"].hide();
-		var apPitch = getprop("/autopilot/locks/altitude");
-		if (apPitch == "vertical-speed-hold") {
-			me["pitchMode"].setText("V/S");
-			me["vsPointer"].show();
-		} elsif (apPitch ==  "altitude-hold")
-			me["pitchMode"].setText("ALT");
-		elsif (apPitch ==  "gs1-hold")
-			me["pitchMode"].setText("G/S");
-		elsif (apPitch ==  "speed-with-pitch-trim")
-			me["pitchMode"].setText("FLCH SPD");
-		else
-			me["pitchMode"].setText("");
+
+	getKeys: func() {
+		return ["afdsMode","altTape","altText1","altText2","atMode","bankPointer","baroSet","cmdSpd","compass",
+		"curAlt1","curAlt2","curAlt3","curAltBox","curAltMtrTxt","curSpd","curSpdTen",
+		"dhText","dmeDist","fdX","fdY","flaps0","flaps1","flaps10","flaps20","flaps5",
+		"gpwsAlert","gsPtr","gsScale","horizon","ilsCourse","ilsId","locPtr","locScale","locScaleExp","machText","markerBeacon","markerBeaconText",
+		"maxSpdInd","mcpAltMtr","minimums","minSpdInd","pitchMode","radioAltInd","risingRwy","risingRwyPtr","rollMode","selAltBox","selAltPtr","selHdgText",
+		"spdTape","spdTrend","speedText","tenThousand","touchdown","v1","v2","vertSpd","vr","vref","vsiNeedle","vsPointer"];
 	},
-	update_slow: func()
-	{
-		var wow = getprop("gear/gear/wow");
-		var flaps = getprop("/controls/flight/flaps");
-		var alt = getprop("instrumentation/altimeter/indicated-altitude-ft");
-		var apSpd = getprop("autopilot/settings/target-speed-kt");
-		var dh = getprop("instrumentation/mk-viii/inputs/arinc429/decision-height");
-		
-		if (var navId = getprop("instrumentation/nav/nav-id") != nil)
-			me["ilsId"].setText(navId);
-		
-		var v1 = getprop("instrumentation/fmc/speeds/v1-kt") or 0;
-		if (v1 > 0) {
-			if (wow) {
-				me["v1"].show();
-				me["v1"].setTranslation(0,-v1*5.63915);
-				me["vr"].show();
-				me["vr"].setTranslation(0,-getprop("instrumentation/fmc/speeds/vr-kt")*5.63915);
-			} else {
-				me["v1"].hide();
-				me["vr"].hide();
-			}
-			me["v2"].setTranslation(0,-getprop("instrumentation/fmc/speeds/v2-kt")*5.63915);
-		} else {
-			me["v1"].hide();
-			me["vr"].hide();
-		}
-		if (getprop("instrumentation/pfd/flaps-0-kt") != nil) {
-			me["flaps0"].setTranslation(0,-getprop("instrumentation/pfd/flaps-0-kt")*5.63915);
-			me["flaps1"].setTranslation(0,-getprop("instrumentation/pfd/flaps-1-kt")*5.63915);
-			me["flaps5"].setTranslation(0,-getprop("instrumentation/pfd/flaps-5-kt")*5.63915);
-			me["flaps10"].setTranslation(0,-getprop("instrumentation/pfd/flaps-10-kt")*5.63915);
-			me["flaps20"].setTranslation(0,-getprop("instrumentation/pfd/flaps-20-kt")*5.63915);
-		}
-		
-		if (getprop("instrumentation/fmc/phase-name") == "APPROACH") {
-			if (flaps == 1)
-				var vref = getprop("instrumentation/pfd/flaps-30-kt");
-			else
-				var vref = getprop("instrumentation/pfd/flaps-25-kt");
-			me["vref"].show();
-			me["vref"].setTranslation(0,-vref*5.63915);
-		} else
-			me["vref"].hide();
-		
-		me["flaps0"].hide();
-		me["flaps1"].hide();
-		me["flaps5"].hide();
-		me["flaps10"].hide();
-		me["flaps20"].hide();
-		if (alt < 20000) {
-			if (flaps == 0.033) {
-				me["flaps0"].show(); me["flaps1"].show();
-			} elsif (flaps == 0.167) {
-				me["flaps1"].show(); me["flaps5"].show();
-			} elsif (flaps == 0.333) {
-				me["flaps5"].show(); me["flaps10"].show();
-			} elsif (flaps == 0.667) {
-				me["flaps10"].show(); me["flaps20"].show();
-			}
-		}
-		if (getprop("instrumentation/weu/state/stall-speed") != nil)
-			me["minSpdInd"].setTranslation(0,-getprop("instrumentation/weu/state/stall-speed")*5.63915);
-		if (getprop("instrumentation/pfd/overspeed-kt") != nil)
-			me["maxSpdInd"].setTranslation(0,-getprop("instrumentation/pfd/overspeed-kt")*5.63915);
-		if (dh != nil)
-			me["minimums"].setTranslation(0,-dh*0.9);
-		if (getprop("autopilot/route-manager/destination/field-elevation-ft") != nil) {
-			me["touchdown"].setTranslation(0,-getprop("autopilot/route-manager/destination/field-elevation-ft")*0.9);
-			me["touchdown"].show();
-		} else
-			me["touchdown"].hide();
-		
-		if(wow or (getprop("instrumentation/airspeed-indicator/indicated-speed-kt") <= 35)) {
-			me["minSpdInd"].hide();
-			me["maxSpdInd"].hide();
-		} else {
-			me["minSpdInd"].show();
-			me["maxSpdInd"].show();
-		}
-		me["baroSet"].setText(sprintf("%2.2f",getprop("instrumentation/altimeter/setting-inhg")));
-		me["ilsCourse"].setText(sprintf("CRS %3.0f",getprop("instrumentation/nav/radials/selected-deg")));
-		me["dhText"].setText(sprintf("DH%3.0f",dh));
-		me["selHdgText"].setText(sprintf("%3.0f",getprop("autopilot/settings/true-heading-deg")));
-		me["speedText"].setText(sprintf("%3.0f",apSpd));
-        
-		#if (getprop("instrumentation/dme/in-range")) {
-		var navDist = getprop("instrumentation/nav/nav-distance") or 0;
-		if(navDist > 0) {
-			me["dmeDist"].setText(sprintf("DME %2.01f",navDist*0.000539));
-			me["dmeDist"].show();
-		} else {
-			me["dmeDist"].hide();
-		}
-		
-		settimer(func me.update_slow(), 0.5);
-	},
+
+	update: func(notification) {
+		obj.update(notification);
+	}
 };
 
-setlistener("sim/signals/fdm-initialized", func() {
-	pfd_display = canvas.new({
-		"name": "PFD",
-		"size": [1024, 1024],
-		"view": [1024, 1024],
-		"mipmapping": 1
-	});
-	pfd_display.addPlacement({"node": "pfdScreen"});
-	var group = pfd_display.createGroup();
-	pfd_canvas = canvas_PFD.new(group);
-	pfd_canvas.update();
-	pfd_canvas.update_slow();
-});
+var input = {
+	agl: "/position/altitude-agl-ft",
+	alt: "/instrumentation/altimeter/indicated-altitude-ft",
+	altInhg: "/instrumentation/altimeter/setting-inhg",
+	altLock: "/autopilot/locks/altitude",
+	apAlt: "/autopilot/settings/target-altitude-ft",
+	apSpd: "/autopilot/settings/target-speed-kt",
+	destElev: "/autopilot/route-manager/destination/field-elevation-ft",
+	dh: "/instrumentation/mk-viii/inputs/arinc429/decision-height",
+	flaps: "/controls/flight/flaps",
+	flaps0: "/instrumentation/pfd/flaps-0-kt",
+	flaps1: "/instrumentation/pfd/flaps-1-kt",
+	flaps5: "/instrumentation/pfd/flaps-5-kt",
+	flaps10: "/instrumentation/pfd/flaps-10-kt",
+	flaps20: "/instrumentation/pfd/flaps-20-kt",
+	flaps25: "/instrumentation/pfd/flaps-25-kt",
+	flaps30: "/instrumentation/pfd/flaps-30-kt",
+	gsInRange: "/instrumentation/nav/gs-in-range",
+	gsNeedle: "/instrumentation/nav/gs-needle-deflection-norm",
+	hdg: "/orientation/heading-deg",
+	hdgLock: "/autopilot/locks/heading",
+	ias: "/instrumentation/airspeed-indicator/indicated-speed-kt",
+	iasMax: "/instrumentation/pfd/overspeed-kt",
+	iasMin: "/instrumentation/weu/state/stall-speed",
+	ilsCourse: "/instrumentation/nav/radials/selected-deg",
+	mach: "/velocities/mach",
+	markerInner: "/instrumentation/marker-beacon/inner",
+	markerMiddle: "/instrumentation/marker-beacon/middle",
+	markerOuter: "/instrumentation/marker-beacon/outer",
+	navDist: "/instrumentation/nav/nav-distance",
+	navId: "/instrumentation/nav/nav-id",
+	navNeedle: "/instrumentation/nav/heading-needle-deflection-norm",
+	navSigQ: "/instrumentation/nav/signal-quality-norm",
+	passiveMode: "/autopilot/locks/passive-mode",
+	phase: "/instrumentation/fmc/phase-name",
+	pitch: "/orientation/pitch-deg",
+	roll: "/orientation/roll-deg",
+	selHdg: "/autopilot/settings/true-heading-deg",
+	spdLock: "/autopilot/locks/speed",
+	spdTrend: "/instrumentation/pfd/speed-trend-up",
+	targetRoll: "/autopilot/internal/target-roll-deg",
+	targetVs: "instrumentation/pfd/target-vs",
+	v1: "/instrumentation/fmc/vspeeds/V1",
+	v2: "/instrumentation/fmc/vspeeds/V2",
+	vr: "/instrumentation/fmc/vspeeds/VR",
+	vsiDeg: "/instrumentation/pfd/vsi-needle-deg",
+	vSpd: "/velocities/vertical-speed-fps",
+	wow: "/gear/gear/wow",
+};
 
-setlistener("sim/signals/reinit", func pfd_display.del());
+var pfd = B744PFD.new("Aircraft/747-400/Models/Cockpit/Instruments/PFD/PFD.svg", "PFD");
+emexec.ExecModule.register("B744 PFD", input, pfd);
 
-var showPfd = func() {
+var showPFD = func() {
 	var dlg = canvas.Window.new([600, 600], "dialog")
-		.set("resize", 1)
-		.lockAspectRatio()
-		.setTitle("PFD")
-		.setCanvas(pfd_display);
+        .set("resize", 1)
+ 		.lockAspectRatio()
+ 		.setTitle("PFD")
+	    .setCanvas(pfd.canvas);
 }

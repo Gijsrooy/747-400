@@ -88,7 +88,7 @@
 		<repeatable>false</repeatable>
 		<binding>
 			<command>nasal</command>
-			<script>Boeing747.showPfd();</script>
+			<script>Boeing747.showPFD();</script>
 		</binding>
 	</action>
 </animation>
