@@ -16,7 +16,6 @@
 		<tag>retractable-gear</tag>
 		<tag>glass-cockpit</tag>
 		<tag>pressurised</tag>
-		<tag>dual-controls</tag>
 		<tag>jet</tag>
 		<tag>four-engine</tag>
 	</tags>
@@ -318,17 +317,6 @@ left mouse button and counter clockwise using the middle mouse button.
 					<binding>
 						<command>nasal</command>
 						<script>aircraft.livery.dialog.open()</script>
-					</binding>
-				</item>
-				
-				<item>
-					<label>Select MP-copilot</label>
-					<binding>
-						<command>nasal</command>
-						<script>
-							dual_control_tools.
-							copilot_dialog.show(aircraft_dual_control.copilot_type);
-						</script>
 					</binding>
 				</item>
 				
@@ -809,15 +797,6 @@ left mouse button and counter clockwise using the middle mouse button.
 	<cdu>
 		<file>Aircraft/Instruments-3d/cdu/boeing.nas</file>
 	</cdu>
-	<dual_control_tools>
-		<file>Aircraft/Generic/DualControl/dual-control-tools.nas</file>
-	</dual_control_tools>
-	<aircraft_dual_control>
-		<file>Aircraft/747-400/DualControl/747-400-dual-control.nas</file>
-	</aircraft_dual_control>
-	<dual_control>
-		<file>Aircraft/Generic/DualControl/pilot-dual-control.nas</file>
-	</dual_control>
 	<electrical>
 		<file>Aircraft/747-400/Nasal/744_elec.nas</file>
 	</electrical>
