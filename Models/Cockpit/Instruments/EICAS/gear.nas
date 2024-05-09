@@ -12,6 +12,20 @@ var canvas_lowerEICASPageGear = {
 
 		foreach(var key; obj.getKeys()) {
 			obj[key] = obj.group.getElementById(key);
+			
+			var clip_el = obj.group.getElementById(key ~ "_clip");
+			if (clip_el != nil) {
+				clip_el.setVisible(0);
+				var tran_rect = clip_el.getTransformedBounds();
+
+				var clip_rect = sprintf("rect(%d,%d, %d,%d)", 
+				tran_rect[1],
+				tran_rect[2],
+				tran_rect[3],
+				tran_rect[0]);
+				obj[key].set("clip", clip_rect);
+				obj[key].set("clip-frame", canvas.Element.PARENT);
+			}
 		};
 
 		obj.update_items = [
@@ -30,18 +44,23 @@ var canvas_lowerEICASPageGear = {
 
 			props.UpdateManager.FromHashValue("gear0pos", 0.1, func(val) {
 				obj["gear0closed"].setVisible(val < 0.1);
+				obj["gear0transit"].setVisible(val >= 0.1 and val < 0.9);
 			}),
 			props.UpdateManager.FromHashValue("gear1pos", 0.1, func(val) {
 				obj["gear1closed"].setVisible(val < 0.1);
+				obj["gear1transit"].setVisible(val >= 0.1 and val < 0.9);
 			}),
 			props.UpdateManager.FromHashValue("gear2pos", 0.1, func(val) {
 				obj["gear2closed"].setVisible(val < 0.1);
+				obj["gear2transit"].setVisible(val >= 0.1 and val < 0.9);
 			}),
 			props.UpdateManager.FromHashValue("gear3pos", 0.1, func(val) {
 				obj["gear3closed"].setVisible(val < 0.1);
+				obj["gear3transit"].setVisible(val >= 0.1 and val < 0.9);
 			}),
 			props.UpdateManager.FromHashValue("gear4pos", 0.1, func(val) {
 				obj["gear4closed"].setVisible(val < 0.1);
+				obj["gear4transit"].setVisible(val >= 0.1 and val < 0.9);
 			}),
 		];
 
@@ -72,7 +91,8 @@ var canvas_lowerEICASPageGear = {
 		"gear2btms1","gear2btms2","gear2btms3","gear2btms4",
 		"gear3btms1","gear3btms2","gear3btms3","gear3btms4",
 		"gear4btms1","gear4btms2","gear4btms3","gear4btms4",
-		"gear0closed","gear1closed","gear2closed","gear3closed","gear4closed"];
+		"gear0closed","gear1closed","gear2closed","gear3closed","gear4closed",
+		"gear0transit","gear1transit","gear2transit","gear3transit","gear4transit"];
 	},
 
 	update: func(notification) {
