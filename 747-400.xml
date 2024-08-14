@@ -4685,17 +4685,17 @@
         <function name="aero/coefficient/Cnb_alpha">
             <description>Yaw_moment_due_to_beta_alpha</description>
             <table> <!-- graph 6.0-6 -->
-                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
                 <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                 <tableData>
                          0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
-               -0.0873   0.0033  0.0033  0.0034   0.0035   0.0025   0.0026   0.0028
+               -5.0000   0.0033  0.0033  0.0034   0.0035   0.0025   0.0026   0.0028
                 0.0000   0.0032  0.0032  0.0033   0.0034   0.0026   0.0027   0.0029
-                0.0873   0.0030  0.0030  0.0031   0.0032   0.0027   0.0028   0.0029
-                0.1745   0.0026  0.0026  0.0028   0.0030   0.0030   0.0032   0.0034
-                0.2618   0.0025  0.0025  0.0028   0.0030   0.0032   0.0036   0.0038
-                0.3491   0.0025  0.0025  0.0029   0.0032   0.0035   0.0038   0.0042
-                0.4363   0.0022  0.0022  0.0033   0.0037   0.0040   0.0042   0.0045
+                5.0000   0.0030  0.0030  0.0031   0.0032   0.0027   0.0028   0.0030
+               10.0000   0.0026  0.0026  0.0028   0.0030   0.0030   0.0032   0.0034
+               15.0000   0.0025  0.0025  0.0028   0.0030   0.0032   0.0036   0.0038
+               20.0000   0.0025  0.0025  0.0029   0.0032   0.0035   0.0038   0.0042
+               25.0000   0.0022  0.0022  0.0033   0.0036   0.0040   0.0042   0.0045
                 </tableData>
             </table>
         </function>
@@ -4706,18 +4706,19 @@
                 <independentVar lookup="row">velocities/mach</independentVar>
                 <independentVar lookup="column">atmosphere/density-altitude</independentVar>
                 <tableData>
-                          0   10000  20000  30000  40000
-                0.0     1.0     1.0    1.0    1.0    1.0
-                0.1     0.98    0.98   0.99   1.0    1.0
-                0.2     0.95    0.96   0.97   0.98   0.98
-                0.3     0.90    0.93   0.95   0.96   0.97
-                0.4     0.85    0.90   0.94   0.96   0.98
-                0.5     0.83    0.88   0.94   0.97   1.02   
-                0.6     0.80    0.88   0.95   1.00   1.04
-                0.7     0.78    0.89   0.97   1.04   1.10
-                0.8     0.77    0.90   1.00   1.10   1.18
-                0.9     0.77    0.89   1.00   1.10   1.20   
-                0.95    0.77    0.76   0.90   1.02   1.12
+                         0.00 10000.00 20000.00 30000.00 40000.00
+                0.00     1.00     1.00     1.00     1.00     1.00
+                0.10     0.98     0.98     0.99     1.00     1.00
+                0.20     0.95     0.96     0.97     0.98     0.99
+                0.30     0.90     0.93     0.95     0.97     0.98
+                0.40     0.85     0.90     0.94     0.97     0.99
+                0.50     0.82     0.88     0.94     0.98     1.01
+                0.60     0.80     0.88     0.95     1.00     1.04
+                0.70     0.78     0.88     0.97     1.04     1.10
+                0.80     0.77     0.89     1.00     1.10     1.18
+                0.85     0.77     0.92     1.05     1.16     1.25
+                0.90     0.77     0.89     1.00     1.10     1.20
+                0.95     0.77     0.76     0.90     1.02     1.12
                 </tableData>
             </table>
         </function>
@@ -4736,18 +4737,18 @@
         <function name="aero/coefficient/Fnbeta">
             <description>Yaw_moment_due_to_beta_ground_effect_function</description>
             <table> <!-- graph 6.0-7 -->
-                <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
+                <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
                 <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
                 <tableData>
-                         0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
-                0.0000   0.2200  0.2200  0.2200   0.1600  -0.0400  -0.2300  -0.3100
-                0.0350   0.1500  0.1500  0.1500   0.1000  -0.1000  -0.3000  -0.3800
-                0.0698   0.0500  0.0500  0.0500   0.0000  -0.1700  -0.3600  -0.4500
-                0.1047  -0.0400 -0.0400 -0.0400  -0.1000  -0.2700  -0.4300  -0.5000
-                0.1396  -0.1000 -0.1000 -0.1000  -0.1650  -0.3500  -0.5000  -0.6000
-                0.1745  -0.1600 -0.1600 -0.1600  -0.2200  -0.4000  -0.5600  -0.6800
-                0.2094  -0.2500 -0.2500 -0.2500  -0.3200  -0.4600  -0.5800  -0.6700
-                0.2443  -0.3500 -0.3500 -0.3500  -0.4400  -0.5200  -0.5800  -0.6000
+                        0.000  1.000  5.000 10.000 20.000 25.000 30.000
+                 0.000  0.220  0.220  0.220  0.160 -0.040 -0.230 -0.310
+                 2.000  0.150  0.150  0.150  0.100 -0.100 -0.300 -0.380
+                 4.000  0.050  0.050  0.050  0.000 -0.170 -0.360 -0.450
+                 6.000 -0.040 -0.040 -0.040 -0.100 -0.270 -0.430 -0.510
+                 8.000 -0.100 -0.100 -0.100 -0.165 -0.350 -0.500 -0.600
+                10.000 -0.160 -0.160 -0.160 -0.220 -0.400 -0.580 -0.680
+                12.000 -0.250 -0.250 -0.250 -0.320 -0.460 -0.580 -0.670
+                14.000 -0.370 -0.370 -0.370 -0.440 -0.520 -0.560 -0.600
                 </tableData>
             </table>
         </function>
@@ -4795,20 +4796,79 @@
         <function name="aero/coefficient/Cnp">
             <description>Yaw_moment_due_to_roll_rate</description>
             <product>
-                <table> <!-- graph 6.0-9 -->
-                    <independentVar lookup="row">aero/alpha-wing-rad</independentVar>
-                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
-                    <tableData>
-                             0.0000  1.0000  5.0000  10.0000  20.0000  25.0000  30.0000
-                   -0.0873   0.096   0.090   0.070    0.056    0.030    0.024    0.022
-                    0.0000   0.030   0.026   0.010   -0.006   -0.027   -0.038   -0.042
-                    0.0873  -0.032  -0.040  -0.050   -0.063   -0.084   -0.100   -0.118
-                    0.1745  -0.070  -0.094  -0.110   -0.124   -0.158   -0.184   -0.210
-                    0.2618   0.040  -0.030  -0.168   -0.196   -0.230   -0.250   -0.260
-                    0.3491   0.040   0.024  -0.162   -0.194   -0.200   -0.180   -0.090
-                    0.4363   0.040   0.024  -0.090   -0.124   -0.070   -0.044   -0.026
-                    </tableData>
-                </table>
+                <sum>
+                    <product>
+                        <table>
+                            <independentVar lookup="row">velocities/mach</independentVar>
+                            <tableData>
+                                0.00 1.00
+                                0.60 1.00
+                                0.80 0.00
+                            </tableData>
+                        </table>
+                        <table> <!-- graph 6.0-9 -->
+                            <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
+                            <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                            <tableData>
+                                    0.000  1.000  5.000 10.000 20.000 25.000 30.000
+                            -5.000  0.096  0.090  0.070  0.056  0.030  0.024  0.022
+                             0.000  0.029  0.023  0.006 -0.006 -0.027 -0.038 -0.042
+                             5.000 -0.032 -0.040 -0.050 -0.063 -0.084 -0.100 -0.118
+                             8.000 -0.063 -0.074 -0.085 -0.099 -0.124 -0.150 -0.172
+                            10.000 -0.070 -0.094 -0.110 -0.124 -0.158 -0.184 -0.210
+                            15.000  0.040 -0.030 -0.176 -0.196 -0.230 -0.250 -0.260
+                            20.000  0.040  0.024 -0.162 -0.194 -0.200 -0.180 -0.090
+                            25.000  0.040  0.024 -0.090 -0.124 -0.070 -0.044 -0.026
+                            </tableData>
+                        </table>
+                    </product>
+                    <product>
+                        <table>
+                            <independentVar lookup="row">velocities/mach</independentVar>
+                            <tableData>
+                                0.00 0.00
+                                0.60 0.00
+                                0.80 1.00
+                                0.85 0.00
+                            </tableData>
+                        </table>
+                        <table> <!-- graph 6.0-9 -->
+                            <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
+                            <tableData>
+                            -5.000  0.096
+                             0.000  0.029
+                             5.000 -0.032
+                             8.000 -0.049
+                            10.000 -0.034
+                            12.000  0.032
+                            15.000  0.072
+                            15.400  0.076
+                            </tableData>
+                        </table>
+                    </product>
+                    <product>
+                        <table>
+                            <independentVar lookup="row">velocities/mach</independentVar>
+                            <tableData>
+                                0.00 0.00
+                                0.80 0.00
+                                0.85 1.00
+                            </tableData>
+                        </table>
+                        <table> <!-- graph 6.0-9 -->
+                            <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
+                            <tableData>
+                            -5.000  0.096
+                             0.000  0.029
+                             3.000 -0.006
+                             5.000 -0.009
+                             8.000  0.025
+                            10.000  0.049
+                            12.400  0.072
+                            </tableData>
+                        </table>
+                    </product>
+                </sum>
                 <property>velocities/p-aero-rad_sec</property>
                 <property>aero/bi2vel</property>
             </product>
@@ -4895,7 +4955,7 @@
                      0.00000  0.00225  0.00225  0.00232  0.00252  0.00275  0.00300  0.00300
                      5.00000  0.00180  0.00180  0.00200  0.00225  0.00250  0.00270  0.00270
                     10.00000  0.00080  0.00080  0.00135  0.00165  0.00195  0.00215  0.00215
-                    15.00000 -0.00030 -0.00030  0.00070  0.00097  0.00130  0.00160  0.00160
+                    14.00000 -0.00010 -0.00010  0.00070  0.00097  0.00130  0.00160  0.00160
                     20.00000 -0.00065 -0.00065 -0.00020 -0.00013 -0.00005  0.00025  0.00025
                     25.00000 -0.00030 -0.00030 -0.00010 -0.00005  0.00000  0.00040  0.00040
                     </tableData>
@@ -4909,8 +4969,18 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dCnsp1</property>
-                <property>fcs/spoiler[0]/pos-deg</property>
-                <value>0.0222</value> <!-- per 45 deg, simplified graph 6.0-11 for now -->
+                <table> <!-- graph 6.0-11 -->
+                    <independentVar lookup="row">fcs/spoiler[0]/pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                               0.00 30.00
+                         0.00  0.00  0.00
+                        15.00  0.14  0.20
+                        30.00  0.35  0.60
+                        40.00  0.65  0.86
+                        45.00  1.00  1.00
+                    </tableData>
+                </table>
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -4921,8 +4991,18 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dCnsp2</property>
-                <property>fcs/spoiler[1]/pos-deg</property>
-                <value>0.0222</value> <!-- per 45 deg -->
+                <table> <!-- graph 6.0-11 -->
+                    <independentVar lookup="row">fcs/spoiler[1]/pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                               0.00 30.00
+                         0.00  0.00  0.00
+                        15.00  0.14  0.20
+                        30.00  0.35  0.60
+                        40.00  0.65  0.86
+                        45.00  1.00  1.00
+                    </tableData>
+                </table>
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -4933,8 +5013,18 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dCnsp2</property>
-                <property>fcs/spoiler[2]/pos-deg</property>
-                <value>0.0222</value> <!-- per 45 deg -->
+                <table> <!-- graph 6.0-11 -->
+                    <independentVar lookup="row">fcs/spoiler[2]/pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                               0.00 30.00
+                         0.00  0.00  0.00
+                        15.00  0.14  0.20
+                        30.00  0.35  0.60
+                        40.00  0.65  0.86
+                        45.00  1.00  1.00
+                    </tableData>
+                </table>
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -4945,8 +5035,18 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dCnsp2</property>
-                <property>fcs/spoiler[3]/pos-deg</property>
-                <value>0.0222</value> <!-- per 45 deg -->
+                <table> <!-- graph 6.0-11 -->
+                    <independentVar lookup="row">fcs/spoiler[3]/pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                               0.00 30.00
+                         0.00  0.00  0.00
+                        15.00  0.14  0.20
+                        30.00  0.35  0.60
+                        40.00  0.65  0.86
+                        45.00  1.00  1.00
+                    </tableData>
+                </table>
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -4957,8 +5057,18 @@
             <product>
                 <value>-1</value>
                 <property>aero/coefficient/dCnsp1</property>
-                <property>fcs/spoiler[4]/pos-deg</property>
-                <value>0.0222</value> <!-- per 45 deg -->
+                <table> <!-- graph 6.0-11 -->
+                    <independentVar lookup="row">fcs/spoiler[4]/pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                               0.00 30.00
+                         0.00  0.00  0.00
+                        15.00  0.14  0.20
+                        30.00  0.35  0.60
+                        40.00  0.65  0.86
+                        45.00  1.00  1.00
+                    </tableData>
+                </table>
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -4968,8 +5078,18 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_8_deflection</description>
             <product>
                 <property>aero/coefficient/dCnsp1</property>
-                <property>fcs/spoiler[7]/pos-deg</property>
-                <value>0.0222</value> <!-- per 45 deg -->
+                <table> <!-- graph 6.0-11 -->
+                    <independentVar lookup="row">fcs/spoiler[7]/pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                               0.00 30.00
+                         0.00  0.00  0.00
+                        15.00  0.14  0.20
+                        30.00  0.35  0.60
+                        40.00  0.65  0.86
+                        45.00  1.00  1.00
+                    </tableData>
+                </table>
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -4979,8 +5099,18 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_9_deflection</description>
             <product>
                 <property>aero/coefficient/dCnsp2</property>
-                <property>fcs/spoiler[8]/pos-deg</property>
-                <value>0.0222</value> <!-- per 45 deg -->
+                <table> <!-- graph 6.0-11 -->
+                    <independentVar lookup="row">fcs/spoiler[8]/pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                               0.00 30.00
+                         0.00  0.00  0.00
+                        15.00  0.14  0.20
+                        30.00  0.35  0.60
+                        40.00  0.65  0.86
+                        45.00  1.00  1.00
+                    </tableData>
+                </table>
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -4990,8 +5120,18 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_10_deflection</description>
             <product>
                 <property>aero/coefficient/dCnsp2</property>
-                <property>fcs/spoiler[9]/pos-deg</property>
-                <value>0.0222</value> <!-- per 45 deg -->
+                <table> <!-- graph 6.0-11 -->
+                    <independentVar lookup="row">fcs/spoiler[9]/pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                               0.00 30.00
+                         0.00  0.00  0.00
+                        15.00  0.14  0.20
+                        30.00  0.35  0.60
+                        40.00  0.65  0.86
+                        45.00  1.00  1.00
+                    </tableData>
+                </table>
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -5001,8 +5141,18 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_11_deflection</description>
             <product>
                 <property>aero/coefficient/dCnsp2</property>
-                <property>fcs/spoiler[10]/pos-deg</property>
-                <value>0.0222</value> <!-- per 45 deg -->
+                <table> <!-- graph 6.0-11 -->
+                    <independentVar lookup="row">fcs/spoiler[10]/pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                               0.00 30.00
+                         0.00  0.00  0.00
+                        15.00  0.14  0.20
+                        30.00  0.35  0.60
+                        40.00  0.65  0.86
+                        45.00  1.00  1.00
+                    </tableData>
+                </table>
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
@@ -5012,16 +5162,26 @@
             <description>Yawing_moment_coefficient_due_to_spoiler_12_deflection</description>
             <product>
                 <property>aero/coefficient/dCnsp1</property>
-                <property>fcs/spoiler[11]/pos-deg</property>
-                <value>0.0222</value> <!-- per 45 deg -->
+                <table> <!-- graph 6.0-11 -->
+                    <independentVar lookup="row">fcs/spoiler[11]/pos-deg</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                               0.00 30.00
+                         0.00  0.00  0.00
+                        15.00  0.14  0.20
+                        30.00  0.35  0.60
+                        40.00  0.65  0.86
+                        45.00  1.00  1.00
+                    </tableData>
+                </table>
                 <property>aero/coefficient/CnspM</property>
                 <property>aero/coefficient/FCnspGE</property>
             </product>
         </function>
         
         <function name="aero/coefficient/CnspM">
-            <description>Rolling_moment_coefficient_due_to_mach_spoilers</description>
-            <table> <!-- graph 5.0-13 -->
+            <description>Yawing_moment_coefficient_due_to_mach_spoilers</description>
+            <table> <!-- graph 6.0-13 -->
                 <independentVar lookup="row">velocities/mach</independentVar>
                 <independentVar lookup="column">aero/alpha-wing-deg</independentVar>
                 <tableData>
