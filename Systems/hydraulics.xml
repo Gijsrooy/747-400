@@ -80,7 +80,7 @@
 				/systems/hydraulic/pressure[2] LT 1000
 				/systems/hydraulic/pressure[3] LT 1000
 			</test>
-			<output>fcs/aileron[3]/malfunction/fail_stuck</output>
+			<output>fcs/aileron[3]/actuator/malfunction/fail_stuck</output>
 		</switch>
 		<switch name="failures/hydraulics[8]">
 			<default value="0"/>
