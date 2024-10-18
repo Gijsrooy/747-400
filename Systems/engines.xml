@@ -312,7 +312,7 @@
             <input> fcs/throttle-cmd-norm[1] </input>
             <gain> eec/throttle-max-cmd-norm </gain>
             <clipto>
-              <min> 0</min>]]
+              <min> 0</min>
               <max> 1</max>
             </clipto>
             <output>fcs/throttle-pos-norm[1]</output>
