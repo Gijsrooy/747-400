@@ -39,9 +39,9 @@ You just stepped through the cockpit door of the cold and dark 747-400, the most
     <step>
 		<message>Turn ON the BATTERY switch at the overhead panel.</message>
 		<marker>
-			<x-m> 1.31</x-m>
+			<x-m>1.31</x-m>
 			<y-m>-0.26</y-m>
-			<z-m> 1.40</z-m>
+			<z-m>1.40</z-m>
 			<scale>0.9174</scale>
 		</marker>
 		<exit>
