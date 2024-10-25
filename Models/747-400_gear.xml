@@ -310,11 +310,11 @@
   </entry>
   <entry>
    <ind>23</ind>
-   <dep>60</dep>
+   <dep>53</dep>
   </entry>
   <entry>
    <ind>100</ind>
-   <dep>60</dep>
+   <dep>53</dep>
   </entry>
  </interpolation>
  <center>
@@ -556,11 +556,11 @@
   </entry>
   <entry>
    <ind>23</ind>
-   <dep>60</dep>
+   <dep>53</dep>
   </entry>
   <entry>
    <ind>100</ind>
-   <dep>60</dep>
+   <dep>53</dep>
   </entry>
  </interpolation>
  <center>
@@ -812,11 +812,11 @@
   </entry>
   <entry>
    <ind>23</ind>
-   <dep>10</dep>
+   <dep>8</dep>
   </entry>
   <entry>
    <ind>100</ind>
-   <dep>10</dep>
+   <dep>8</dep>
   </entry>
  </interpolation>
  <center>
@@ -976,11 +976,11 @@
   </entry>
   <entry>
    <ind>23</ind>
-   <dep>10</dep>
+   <dep>8</dep>
   </entry>
   <entry>
    <ind>100</ind>
-   <dep>10</dep>
+   <dep>8</dep>
   </entry>
  </interpolation>
  <center>
