@@ -445,21 +445,43 @@ left mouse button and counter clockwise using the middle mouse button.
 	</flight>
 
 	<fuel>
+		<jettison>
+			<selector type="int">0</selector>
+			<fuel-to-remain-lbs type="int">28000</fuel-to-remain-lbs>
+		</jettison>
+		<tank n="0">
+			<override-pump n="0" type="bool">0</override-pump>
+			<override-pump n="1" type="bool">0</override-pump>
+		</tank>
 		<tank n="1">
+			<pump n="0" type="bool">0</pump>
+			<pump n="1" type="bool">0</pump>
 			<x-feed type="bool">0</x-feed>
 		</tank>
 		<tank n="2">
-			<x-feed type="bool">0</x-feed>
+			<override-pump n="0" type="bool">0</override-pump>
+			<override-pump n="1" type="bool">0</override-pump>
+			<pump n="0" type="bool">0</pump>
+			<pump n="1" type="bool">0</pump>
+			<x-feed type="bool">1</x-feed>
 		</tank>
 		<tank n="3">
-			<x-feed type="bool">0</x-feed>
+			<override-pump n="0" type="bool">0</override-pump>
+			<override-pump n="1" type="bool">0</override-pump>
+			<pump n="0" type="bool">0</pump>
+			<pump n="1" type="bool">0</pump>
+			<x-feed type="bool">1</x-feed>
 		</tank>
 		<tank n="4">
+			<pump n="0" type="bool">0</pump>
+			<pump n="1" type="bool">0</pump>
 			<x-feed type="bool">0</x-feed>
 		</tank>
 		<tank n="7">
-			<pump type="bool">0</pump>
+			<pump n="0" type="bool">0</pump>
+			<pump n="1" type="bool">0</pump>
 		</tank>
+		<transfer-main-1-4 type="bool">0</transfer-main-1-4>
 	</fuel>
 
 	<gear>

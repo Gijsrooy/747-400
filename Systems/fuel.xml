@@ -1,70 +1,116 @@
 <?xml version="1.0"?>
 
 <system name="fuel">
-	<!--
-	<property>/controls/fuel/tank[1]/x-feed</property>
-	<property>/controls/fuel/tank[2]/x-feed</property>
-	<property>/controls/fuel/tank[3]/x-feed</property>
-	<property>/controls/fuel/tank[4]/x-feed</property>
-	<property>/controls/fuel/tank[7]/pump</property>
-	<property>/controls/fuel/dump-valve</property>
-	-->
-	<property>/controls/fuel/fuel-to-remain-lbs</property>
-	<property>/controls/fuel/transfer-main-1-4</property>
 
 	<channel name="fuel">
 
-		<!-- from CWT to MAIN #2 -->
-		<switch name="propulsion/tank[0]/external-flow-rate/tank[2]">
-			<default value="0"/>
-			<test logic="AND" value="25">
-				propulsion/tank[0]/contents-lbs gt 0
-				propulsion/tank[2]/contents-lbs lt 59965
-			</test>
-		</switch>
-		<!-- from CWT to MAIN #3 -->
-		<switch name="propulsion/tank[0]/external-flow-rate/tank[3]">
-			<default value="0"/>
-			<test logic="AND" value="25">
-				propulsion/tank[0]/contents-lbs gt 0
-				propulsion/tank[3]/contents-lbs lt 59965
-			</test>
-		</switch>
 		<!-- JETTISON -->
-		<switch name="propulsion/tank[0]/external-flow-rate/jettison">
-			<default value="0"/>
-			<test logic="AND" value="33">
-				/controls/fuel/dump-valve == 1
-				propulsion/total-fuel-lbs gt /controls/fuel/fuel-to-remain-lbs
+
+		<switch name="propulsion/jettison">
+			<default value="0" />
+			<test logic="AND" value="1">
+				<test logic="OR">
+					/controls/fuel/jettison/valve[0] == 1
+					/controls/fuel/jettison/valve[1] == 1
+				</test>
+				/controls/fuel/jettison/selector gt 0
+				propulsion/total-fuel-lbs gt /controls/fuel/jettison/fuel-to-remain-lbs
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[0]/external-flow-rate/jettison[0]">
+			<default value="0" />
+			<test logic="AND" value="16.5">
+				propulsion/jettison == 1
+				propulsion/tank[0]/override-pump[0]/psi gt 0
 				propulsion/tank[0]/contents-lbs gt 7055
 			</test>
 		</switch>
+		<switch name="propulsion/tank[0]/external-flow-rate/jettison[1]">
+			<default value="0" />
+			<test logic="AND" value="16.5">
+				propulsion/jettison == 1
+				propulsion/tank[0]/override-pump[1]/psi gt 0
+				propulsion/tank[0]/contents-lbs gt 7055
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[1]/external-flow/tank[2]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				<test logic="OR">
+					propulsion/jettison == 1
+					/controls/fuel/transfer-main-1-4 == 1
+				</test>
+				<test logic="OR">
+					propulsion/tank[2]/contents-lbs lt 20000
+					propulsion/tank[3]/contents-lbs lt 20000
+				</test>
+			</test>
+		</switch>
+		<switch name="propulsion/tank[1]/external-flow-rate/tank[2]">
+			<default value="0" />
+			<test logic="AND" value="25">
+				propulsion/tank[1]/external-flow/tank[2] == 1
+				propulsion/tank[1]/contents-lbs gt 0.0
+				propulsion/tank[2]/pct-full lt 99.9
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[4]/external-flow/tank[3]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				<test logic="OR">
+					propulsion/jettison == 1
+					/controls/fuel/transfer-main-1-4 == 1
+				</test>
+				<test logic="OR">
+					propulsion/tank[2]/contents-lbs lt 20000
+					propulsion/tank[3]/contents-lbs lt 20000
+				</test>
+			</test>
+		</switch>
+		<switch name="propulsion/tank[4]/external-flow-rate/tank[3]">
+			<default value="0" />
+			<test logic="AND" value="25">
+				propulsion/tank[4]/external-flow/tank[3] == 1
+				propulsion/tank[4]/contents-lbs gt 0.0
+				propulsion/tank[3]/pct-full lt 99.9
+			</test>
+		</switch>
+
 		<switch name="propulsion/tank[2]/external-flow-rate/jettison">
-			<default value="0"/>
+			<default value="0" />
 			<test logic="AND" value="33">
-				/controls/fuel/dump-valve == 1
-				propulsion/total-fuel-lbs gt /controls/fuel/fuel-to-remain-lbs
+				propulsion/jettison == 1
+				<test logic="OR">
+					propulsion/tank[2]/override-pump[0]/psi gt 0
+					propulsion/tank[2]/override-pump[1]/psi gt 0
+				</test>
 				propulsion/tank[2]/contents-lbs gt 7055
 			</test>
 		</switch>
 		<switch name="propulsion/tank[3]/external-flow-rate/jettison">
-			<default value="0"/>
+			<default value="0" />
 			<test logic="AND" value="33">
-				/controls/fuel/dump-valve == 1
-				propulsion/total-fuel-lbs gt /controls/fuel/fuel-to-remain-lbs
+				propulsion/jettison == 1
+				<test logic="OR">
+					propulsion/tank[3]/override-pump[0]/psi gt 0
+					propulsion/tank[3]/override-pump[1]/psi gt 0
+				</test>
 				propulsion/tank[3]/contents-lbs gt 7055
 			</test>
 		</switch>
 		<switch name="propulsion/tank[7]/external-flow-rate/jettison">
-			<default value="0"/>
+			<default value="0" />
 			<test logic="AND" value="33">
-				/controls/fuel/dump-valve == 1
-				propulsion/total-fuel-lbs gt /controls/fuel/fuel-to-remain-lbs
+				propulsion/jettison == 1
 				propulsion/tank[7]/contents-lbs gt 7055
 			</test>
 		</switch>
 		<summer name="propulsion/fuel-dump-rate-pps">
-			<input>propulsion/tank[0]/external-flow-rate/jettison</input>
+			<input>propulsion/tank[0]/external-flow-rate/jettison[0]</input>
+			<input>propulsion/tank[0]/external-flow-rate/jettison[1]</input>
 			<input>propulsion/tank[2]/external-flow-rate/jettison</input>
 			<input>propulsion/tank[3]/external-flow-rate/jettison</input>
 			<input>propulsion/tank[7]/external-flow-rate/jettison</input>
@@ -74,177 +120,1180 @@
 				<quotient>
 					<sum>
 						<property>propulsion/total-fuel-lbs</property>
-						<product>
-							<value>-1</value>
-							<property>/controls/fuel/fuel-to-remain-lbs</property>
-						</product>
+						<property>-/controls/fuel/jettison/fuel-to-remain-lbs</property>
 					</sum>
-					<sum>
-						<property>propulsion/tank[0]/external-flow-rate/jettison</property>
-						<property>propulsion/tank[2]/external-flow-rate/jettison</property>
-						<property>propulsion/tank[3]/external-flow-rate/jettison</property>
-						<property>propulsion/tank[7]/external-flow-rate/jettison</property>
-					</sum>
+					<property>propulsion/fuel-dump-rate-pps</property>
 				</quotient>
 			</function>
 		</fcs_function>
 
-		<!-- from MAIN #1 to MAIN #2 -->
-		<switch name="propulsion/tank[1]/external-flow-rate/tank[2]">
-			<default value="0"/>
-			<test logic="AND" value="25">
-				/controls/fuel/tank[1]/x-feed == 1
-				/controls/fuel/tank[2]/x-feed == 1
-				propulsion/tank[1]/contents-lbs gt propulsion/tank[2]/contents-lbs
-				propulsion/tank[1]/contents-lbs gt 7050
-				propulsion/tank[2]/contents-lbs lt 84057
-			</test>
-			<test logic="AND" value="25">
-				/controls/fuel/dump-valve == 1
-				propulsion/total-fuel-lbs gt /controls/fuel/fuel-to-remain-lbs
-				propulsion/tank[1]/contents-lbs gt 7050
-				propulsion/tank[2]/contents-lbs lt 20000
-			</test>
-			<test logic="AND" value="25">
-				/controls/fuel/transfer-main-1-4 == 1
-				propulsion/tank[1]/contents-lbs gt 7050
-				propulsion/tank[2]/contents-lbs lt 84057
+		<!-- PUMPS -->
+
+		<switch name="propulsion/tank[0]/override-pump[0]/psi">
+			<default value="0" />
+			<test logic="AND" value="45">
+				/controls/fuel/tank[0]/override-pump[0] == 1
+				propulsion/tank[0]/contents-lbs ge 2000
 			</test>
 		</switch>
-		<!-- from MAIN #2 to MAIN #1 -->
-		<switch name="propulsion/tank[2]/external-flow-rate/tank[1]">
-			<default value="0"/>
-			<test logic="AND" value="25">
-				/controls/fuel/tank[1]/x-feed == 1
-				/controls/fuel/tank[2]/x-feed == 1
-				propulsion/tank[1]/contents-lbs lt propulsion/tank[2]/contents-lbs
-				propulsion/tank[1]/contents-lbs lt 29694
-				propulsion/tank[2]/contents-lbs gt 0
+		<switch name="propulsion/tank[0]/override-pump[1]/psi">
+			<default value="0" />
+			<test logic="AND" value="45">
+				/controls/fuel/tank[0]/override-pump[1] == 1
+				propulsion/tank[0]/contents-lbs ge 2000
 			</test>
 		</switch>
-		<!-- from MAIN #3 to MAIN #4 -->
-		<switch name="propulsion/tank[3]/external-flow-rate/tank[4]">
-			<default value="0"/>
-			<test logic="AND" value="25">
-				/controls/fuel/tank[3]/x-feed == 1
-				/controls/fuel/tank[4]/x-feed == 1
-				propulsion/tank[4]/contents-lbs lt propulsion/tank[3]/contents-lbs
-				propulsion/tank[3]/contents-lbs gt 0
-				propulsion/tank[4]/contents-lbs lt 29694
+		<switch name="propulsion/tank[2]/override-pump[0]/psi">
+			<default value="0" />
+			<test logic="AND" value="45">
+				/controls/fuel/tank[2]/override-pump[0] == 1
+				<test logic="OR">
+					propulsion/tank[0]/contents-lbs le 3000
+					propulsion/jettison == 1
+				</test>
+				propulsion/tank[2]/contents-lbs ge 7000
 			</test>
 		</switch>
-		<!-- from MAIN #4 to MAIN #3 -->
-		<switch name="propulsion/tank[4]/external-flow-rate/tank[3]">
-			<default value="0"/>
-			<test logic="AND" value="25">
-				/controls/fuel/tank[3]/x-feed == 1
-				/controls/fuel/tank[4]/x-feed == 1
-				propulsion/tank[4]/contents-lbs gt propulsion/tank[3]/contents-lbs
-				propulsion/tank[3]/contents-lbs lt 84057
-				propulsion/tank[4]/contents-lbs gt 7050
-			</test>
-			<test logic="AND" value="25">
-				/controls/fuel/dump-valve == 1
-				propulsion/total-fuel-lbs gt /controls/fuel/fuel-to-remain-lbs
-				propulsion/tank[3]/contents-lbs lt 20000
-				propulsion/tank[4]/contents-lbs gt 7050
-			</test>
-			<test logic="AND" value="25">
-				/controls/fuel/transfer-main-1-4 == 1
-				propulsion/tank[3]/contents-lbs lt 84057
-				propulsion/tank[4]/contents-lbs gt 7050
+		<switch name="propulsion/tank[2]/override-pump[1]/psi">
+			<default value="0" />
+			<test logic="AND" value="45">
+				/controls/fuel/tank[2]/override-pump[1] == 1
+				<test logic="OR">
+					propulsion/tank[0]/contents-lbs le 3000
+					propulsion/jettison == 1
+				</test>
+				propulsion/tank[2]/contents-lbs ge 7000
 			</test>
 		</switch>
-		<!-- from RESERVE #2 to MAIN 2 -->
-		<switch name="propulsion/tank[5]/external-flow-rate/tank[2]">
-			<default value="0"/>
-			<test logic="AND" value="25">
-				propulsion/tank[5]/contents-lbs gt 0.0
-				propulsion/tank[2]/contents-lbs lt 40100.0
+		<switch name="propulsion/tank[3]/override-pump[0]/psi">
+			<default value="0" />
+			<test logic="AND" value="45">
+				/controls/fuel/tank[3]/override-pump[0] == 1
+				<test logic="OR">
+					propulsion/tank[0]/contents-lbs le 3000
+					propulsion/jettison == 1
+				</test>
+				propulsion/tank[3]/contents-lbs ge 7000
 			</test>
 		</switch>
-		<!-- from RESERVE #3 to MAIN 3 -->
-		<switch name="propulsion/tank[6]/external-flow-rate/tank[3]">
-			<default value="0"/>
-			<test logic="AND" value="25">
-				propulsion/tank[6]/contents-lbs gt 0.0
-				propulsion/tank[3]/contents-lbs lt 40100.0
+		<switch name="propulsion/tank[3]/override-pump[1]/psi">
+			<default value="0" />
+			<test logic="AND" value="45">
+				/controls/fuel/tank[3]/override-pump[1] == 1
+				<test logic="OR">
+					propulsion/tank[0]/contents-lbs le 3000
+					propulsion/jettison == 1
+				</test>
+				propulsion/tank[3]/contents-lbs ge 7000
 			</test>
 		</switch>
-		<!-- from STAB to CWT -->
-		<switch name="propulsion/tank[7]/external-flow-rate/tank[0]">
-			<default value="0"/>
-			<test logic="AND" value="25">
-				propulsion/tank[0]/contents-lbs lt 80400.0
-				propulsion/tank[7]/contents-lbs gt 0.0
-				/controls/fuel/tank[7]/pump == 1
+		<switch name="propulsion/tank[1]/pump[0]/psi">
+			<default value="0" />
+			<test logic="AND" value="20">
+				/controls/fuel/tank[1]/pump[0] == 1
+				propulsion/tank[1]/contents-lbs ge 2000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[1]/pump[1]/psi">
+			<default value="0" />
+			<test logic="AND" value="20">
+				/controls/fuel/tank[1]/pump[1] == 1
+				propulsion/tank[1]/contents-lbs ge 2000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[2]/pump[0]/psi">
+			<default value="0" />
+			<test logic="AND" value="20">
+				/controls/fuel/tank[2]/pump[0] == 1
+				propulsion/tank[2]/contents-lbs ge 2000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[2]/pump[1]/psi">
+			<default value="0" />
+			<test logic="AND" value="20">
+				/controls/fuel/tank[2]/pump[1] == 1
+				propulsion/tank[2]/contents-lbs ge 2000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[3]/pump[0]/psi">
+			<default value="0" />
+			<test logic="AND" value="20">
+				/controls/fuel/tank[3]/pump[0] == 1
+				propulsion/tank[3]/contents-lbs ge 2000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[3]/pump[1]/psi">
+			<default value="0" />
+			<test logic="AND" value="20">
+				/controls/fuel/tank[3]/pump[1] == 1
+				propulsion/tank[3]/contents-lbs ge 2000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[4]/pump[0]/psi">
+			<default value="0" />
+			<test logic="AND" value="20">
+				/controls/fuel/tank[4]/pump[0] == 1
+				propulsion/tank[4]/contents-lbs ge 2000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[4]/pump[1]/psi">
+			<default value="0" />
+			<test logic="AND" value="20">
+				/controls/fuel/tank[4]/pump[1] == 1
+				propulsion/tank[4]/contents-lbs ge 2000
 			</test>
 		</switch>
 
-		<summer name="propulsion/tank[0]/external-flow-rate-sum">
-			<input>-propulsion/tank[0]/external-flow-rate/jettison</input>
+		<!-- CROSSFEED VALVES -->
+
+		<actuator name="propulsion/tank[1]/x-feed">
+			<input>/controls/fuel/tank[1]/x-feed</input>
+			<rate_limit>0.333</rate_limit>
+		</actuator>
+		<switch name="propulsion/tank[1]/x-feed/transit">
+			<default value="1" />
+			<test logic="AND" value="0">
+				propulsion/tank[1]/x-feed == /controls/fuel/tank[1]/x-feed
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[2]/x-feed/logic">
+			<default value="/controls/fuel/tank[2]/x-feed" />
+			<test logic="AND" value="0">
+				/controls/fuel/tank[2]/x-feed == 1
+				fcs/flaps/pos-deg ge 10
+				fcs/flaps/pos-deg le 20
+			</test>
+		</switch>
+		<actuator name="propulsion/tank[2]/x-feed">
+			<input>propulsion/tank[2]/x-feed/logic</input>
+			<rate_limit>0.333</rate_limit>
+		</actuator>
+		<switch name="propulsion/tank[2]/x-feed/transit">
+			<default value="1" />
+			<test logic="AND" value="0">
+				propulsion/tank[2]/x-feed == propulsion/tank[2]/x-feed/logic
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[3]/x-feed/logic">
+			<default value="/controls/fuel/tank[3]/x-feed" />
+			<test logic="AND" value="0">
+				/controls/fuel/tank[3]/x-feed == 1
+				fcs/flaps/pos-deg ge 10
+				fcs/flaps/pos-deg le 20
+			</test>
+		</switch>
+		<actuator name="propulsion/tank[3]/x-feed">
+			<input>propulsion/tank[3]/x-feed/logic</input>
+			<rate_limit>0.333</rate_limit>
+		</actuator>
+		<switch name="propulsion/tank[3]/x-feed/transit">
+			<default value="1" />
+			<test logic="AND" value="0">
+				propulsion/tank[3]/x-feed == propulsion/tank[3]/x-feed/logic
+			</test>
+		</switch>
+
+		<actuator name="propulsion/tank[4]/x-feed">
+			<input>/controls/fuel/tank[4]/x-feed</input>
+			<rate_limit>0.333</rate_limit>
+		</actuator>
+		<switch name="propulsion/tank[4]/x-feed/transit">
+			<default value="1" />
+			<test logic="AND" value="0">
+				propulsion/tank[4]/x-feed == /controls/fuel/tank[4]/x-feed
+			</test>
+		</switch>
+
+		<fcs_function name="propulsion/tank[12]/fuel-pressure-psi">
+			<function>
+				<max>
+					<property>propulsion/tank[0]/override-pump[0]/psi</property>
+					<property>propulsion/tank[0]/override-pump[1]/psi</property>
+					<property>propulsion/tank[2]/override-pump[0]/psi</property>
+					<property>propulsion/tank[2]/override-pump[1]/psi</property>
+					<property>propulsion/tank[3]/override-pump[0]/psi</property>
+					<property>propulsion/tank[3]/override-pump[1]/psi</property>
+					<product>
+						<property>propulsion/tank[1]/x-feed</property>
+						<property>propulsion/tank[1]/pump[0]/psi</property>
+					</product>
+					<product>
+						<property>propulsion/tank[1]/x-feed</property>
+						<property>propulsion/tank[1]/pump[1]/psi</property>
+					</product>
+					<product>
+						<property>propulsion/tank[2]/x-feed</property>
+						<property>propulsion/tank[2]/pump[0]/psi</property>
+					</product>
+					<product>
+						<property>propulsion/tank[2]/x-feed</property>
+						<property>propulsion/tank[2]/pump[1]/psi</property>
+					</product>
+					<product>
+						<property>propulsion/tank[3]/x-feed</property>
+						<property>propulsion/tank[3]/pump[0]/psi</property>
+					</product>
+					<product>
+						<property>propulsion/tank[3]/x-feed</property>
+						<property>propulsion/tank[3]/pump[1]/psi</property>
+					</product>
+					<product>
+						<property>propulsion/tank[4]/x-feed</property>
+						<property>propulsion/tank[4]/pump[0]/psi</property>
+					</product>
+					<product>
+						<property>propulsion/tank[4]/x-feed</property>
+						<property>propulsion/tank[4]/pump[1]/psi</property>
+					</product>
+				</max>
+			</function>
+		</fcs_function>
+
+		<!-- from INNER and CWT to crossfeed manifold-->
+
+		<switch name="propulsion/tank[0]/external-flow/tank[12]">
+			<default value="0" />
+			<test logic="OR" value="1">
+				propulsion/tank[0]/override-pump[0]/psi gt 0
+				propulsion/tank[0]/override-pump[1]/psi gt 0
+			</test>
+		</switch>
+		<switch name="propulsion/tank[0]/external-flow-rate/tank[12]">
+			<default value="0" />
+			<test logic="AND" value="20">
+				propulsion/tank[0]/external-flow/tank[12] == 1
+				propulsion/tank[12]/contents-lbs lt 9
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[1]/external-flow/tank[8]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[1]/x-feed == 0 
+				<test logic="OR">
+					propulsion/tank[1]/pump[0]/psi gt 0
+					propulsion/tank[1]/pump[1]/psi gt 0
+				</test>
+			</test>
+		</switch>
+		<switch name="propulsion/tank[1]/external-flow-rate/tank[8]">
+			<default value="0" />
+			<test logic="AND" value="20">
+				propulsion/tank[1]/external-flow/tank[8] == 1
+				propulsion/tank[8]/contents-lbs lt 9
+			</test>
+		</switch>
+		<switch name="propulsion/tank[1]/external-flow/tank[12]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[1]/x-feed == 1
+				propulsion/tank[12]/fuel-pressure-psi lt 45
+				<test logic="OR">
+					propulsion/tank[1]/pump[0]/psi gt 0
+					propulsion/tank[1]/pump[1]/psi gt 0
+				</test>
+			</test>
+		</switch>
+		<switch name="propulsion/tank[1]/external-flow-rate/tank[12]">
+			<default value="0" />
+			<test logic="AND" value="20">
+				propulsion/tank[1]/external-flow/tank[12] == 1
+				propulsion/tank[12]/contents-lbs lt 9
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[2]/external-flow/tank[9]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[2]/x-feed == 0
+				<test logic="OR">
+					propulsion/tank[2]/pump[0]/psi gt 0
+					propulsion/tank[2]/pump[1]/psi gt 0
+				</test>
+			</test>
+		</switch>
+		<switch name="propulsion/tank[2]/external-flow-rate/tank[9]">
+			<default value="0" />
+			<test logic="AND" value="20">
+				propulsion/tank[2]/external-flow/tank[9] == 1
+				propulsion/tank[9]/contents-lbs lt 9
+			</test>
+		</switch>
+		<switch name="propulsion/tank[2]/external-flow/tank[12]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[2]/x-feed == 1
+				propulsion/tank[12]/fuel-pressure-psi lt 45
+				<test logic="OR">
+					propulsion/tank[2]/pump[0]/psi gt 0
+					propulsion/tank[2]/pump[1]/psi gt 0
+				</test>
+				propulsion/tank[2]/override-pump[0]/psi == 0
+				propulsion/tank[2]/override-pump[1]/psi == 0
+			</test>
+		</switch>
+		<switch name="propulsion/tank[2]/external-override-flow/tank[12]">
+			<default value="0" />
+			<test logic="OR" value="1">
+				propulsion/tank[2]/override-pump[0]/psi gt 0
+				propulsion/tank[2]/override-pump[1]/psi gt 0
+			</test>
+		</switch>
+		<switch name="propulsion/tank[2]/external-flow-rate/tank[12]">
+			<default value="0" />
+			<test logic="AND" value="20">
+				<test logic="OR">
+					propulsion/tank[2]/external-flow/tank[12] == 1
+					propulsion/tank[2]/external-override-flow/tank[12] == 1
+				</test>
+				propulsion/tank[12]/contents-lbs lt 9
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[3]/external-flow/tank[10]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[3]/x-feed == 0
+				<test logic="OR">
+					propulsion/tank[3]/pump[0]/psi gt 0
+					propulsion/tank[3]/pump[1]/psi gt 0
+				</test>
+			</test>
+		</switch>
+		<switch name="propulsion/tank[3]/external-flow-rate/tank[10]">
+			<default value="0" />
+			<test logic="AND" value="20">
+				propulsion/tank[3]/external-flow/tank[10] == 1
+				propulsion/tank[10]/contents-lbs lt 9
+			</test>
+		</switch>
+		<switch name="propulsion/tank[3]/external-flow/tank[12]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[3]/x-feed == 1
+				propulsion/tank[12]/fuel-pressure-psi lt 45
+				<test logic="OR">
+					propulsion/tank[3]/pump[0]/psi gt 0
+					propulsion/tank[3]/pump[1]/psi gt 0
+				</test>
+				propulsion/tank[3]/override-pump[0]/psi == 0
+				propulsion/tank[3]/override-pump[1]/psi == 0
+			</test>
+		</switch>
+		<switch name="propulsion/tank[3]/external-override-flow/tank[12]">
+			<default value="0" />
+			<test logic="OR" value="1">
+				propulsion/tank[3]/override-pump[0]/psi gt 0
+				propulsion/tank[3]/override-pump[1]/psi gt 0
+			</test>
+		</switch>
+		<switch name="propulsion/tank[3]/external-flow-rate/tank[12]">
+			<default value="0" />
+			<test logic="AND" value="20">
+				<test logic="OR">
+					propulsion/tank[3]/external-flow/tank[12] == 1
+					propulsion/tank[3]/external-override-flow/tank[12] == 1
+				</test>
+				propulsion/tank[12]/contents-lbs lt 9
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[4]/external-flow/tank[11]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[4]/x-feed == 0
+				<test logic="OR">
+					propulsion/tank[4]/pump[0]/psi gt 0
+					propulsion/tank[4]/pump[1]/psi gt 0
+				</test>
+			</test>
+		</switch>
+		<switch name="propulsion/tank[4]/external-flow-rate/tank[11]">
+			<default value="0" />
+			<test logic="AND" value="20">
+				propulsion/tank[4]/external-flow/tank[11] == 1
+				propulsion/tank[11]/contents-lbs lt 9
+			</test>
+		</switch>
+		<switch name="propulsion/tank[4]/external-flow/tank[12]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[4]/x-feed == 1
+				propulsion/tank[12]/fuel-pressure-psi lt 45
+				<test logic="OR">
+					propulsion/tank[4]/pump[0]/psi gt 0
+					propulsion/tank[4]/pump[1]/psi gt 0
+				</test>
+			</test>
+		</switch>
+		<switch name="propulsion/tank[4]/external-flow-rate/tank[12]">
+			<default value="0" />
+			<test logic="AND" value="20">
+				propulsion/tank[4]/external-flow/tank[12] == 1
+				propulsion/tank[12]/contents-lbs lt 9
+			</test>
+		</switch>
+
+		<!-- from crossfeed manifold to engine tanks -->
+
+		<switch name="propulsion/tank[12]/external-flow/tank[8]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[12]/fuel-pressure-psi gt 0
+				propulsion/tank[1]/x-feed == 1
+			</test>
+		</switch>
+		<switch name="propulsion/tank[12]/external-flow-rate/tank[8]">
+			<default value="0" />
+			<test logic="AND" value="5">
+				propulsion/tank[12]/external-flow/tank[8] == 1
+				propulsion/tank[12]/contents-lbs gt 1
+				propulsion/tank[8]/contents-lbs lt 9
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[12]/external-flow/tank[9]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[12]/fuel-pressure-psi gt 0
+				propulsion/tank[2]/x-feed == 1
+			</test>
+		</switch>
+		<switch name="propulsion/tank[12]/external-flow-rate/tank[9]">
+			<default value="0" />
+			<test logic="AND" value="5">
+				propulsion/tank[12]/external-flow/tank[9] == 1
+				propulsion/tank[12]/contents-lbs gt 1
+				propulsion/tank[9]/contents-lbs lt 9
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[12]/external-flow/tank[10]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[12]/fuel-pressure-psi gt 0
+				propulsion/tank[3]/x-feed == 1
+			</test>
+		</switch>
+		<switch name="propulsion/tank[12]/external-flow-rate/tank[10]">
+			<default value="0" />
+			<test logic="AND" value="5">
+				propulsion/tank[12]/external-flow/tank[10] == 1
+				propulsion/tank[12]/contents-lbs gt 1
+				propulsion/tank[10]/contents-lbs lt 9
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[12]/external-flow/tank[11]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[12]/fuel-pressure-psi gt 0
+				propulsion/tank[4]/x-feed == 1
+			</test>
+		</switch>
+		<switch name="propulsion/tank[12]/external-flow-rate/tank[11]">
+			<default value="0" />
+			<test logic="AND" value="5">
+				propulsion/tank[12]/external-flow/tank[11] == 1
+				propulsion/tank[12]/contents-lbs gt 1
+				propulsion/tank[11]/contents-lbs lt 9
+			</test>
+		</switch>
+
+		<!-- from RESERVE #2 to MAIN 2 and RESERVE #3 to MAIN 3 -->
+
+		<switch name="propulsion/tank[5]/external-flow/tank[2]">
+			<default value="0" />
+			<test logic="OR" value="1">
+				propulsion/tank[2]/contents-lbs lt 40100.0
+				propulsion/tank[3]/contents-lbs lt 40100.0
+			</test>
+			<output>propulsion/tank[6]/external-flow/tank[3]</output>
+		</switch>
+		<switch name="propulsion/tank[5]/external-flow-rate/tank[2]">
+			<default value="0" />
+			<test logic="AND" value="25">
+				propulsion/tank[2]/pct-full lt 99.9
+				propulsion/tank[5]/contents-lbs gt 0.0
+				propulsion/tank[5]/external-flow/tank[2] == 1
+			</test>
+		</switch>
+		<switch name="propulsion/tank[6]/external-flow-rate/tank[3]">
+			<default value="0" />
+			<test logic="AND" value="25">
+				propulsion/tank[3]/pct-full lt 99.9
+				propulsion/tank[6]/contents-lbs gt 0.0
+				propulsion/tank[6]/external-flow/tank[3] == 1
+			</test>
+		</switch>
+
+		<!-- SCAVENGE pump-->
+
+		<switch name="propulsion/tank[0]/external-flow/tank[2]">
+			<default value="0" />
+			<test logic="OR" value="1">
+				propulsion/tank[0]/contents-lbs lt 4000
+			</test>
+			<output>propulsion/tank[0]/external-flow/tank[3]</output>
+		</switch>
+		<switch name="propulsion/tank[0]/external-flow-rate/tank[2]">
+			<default value="0" />
+			<test logic="AND" value="10">
+				propulsion/tank[2]/pct-full lt 99.9
+				propulsion/tank[0]/contents-lbs gt 0.0
+				propulsion/tank[0]/external-flow/tank[2] == 1
+			</test>
+		</switch>
+		<switch name="propulsion/tank[0]/external-flow-rate/tank[3]">
+			<default value="0" />
+			<test logic="AND" value="10">
+				propulsion/tank[3]/pct-full lt 99.9
+				propulsion/tank[0]/contents-lbs gt 0.0
+				propulsion/tank[0]/external-flow/tank[3] == 1
+			</test>
+		</switch>
+
+		<!-- MAIN transfer -->
+
+		<switch name="propulsion/tank[1]/external-flow/tank[2]">
+			<default value="0" />
+			<test logic="OR" value="1">
+				propulsion/tank[2]/contents-lbs lt 20000
+				propulsion/tank[3]/contents-lbs lt 20000
+			</test>
+			<output>propulsion/tank[4]/external-flow/tank[3]</output>
+		</switch>
+		<switch name="propulsion/tank[1]/external-flow-rate/tank[2]">
+			<default value="0" />
+			<test logic="AND" value="10">
+				propulsion/tank[2]/pct-full lt 99.9
+				propulsion/tank[1]/contents-lbs gt 7000
+				propulsion/tank[1]/external-flow/tank[2] == 1
+			</test>
+		</switch>
+		<switch name="propulsion/tank[4]/external-flow-rate/tank[3]">
+			<default value="0" />
+			<test logic="AND" value="10">
+				propulsion/tank[3]/pct-full lt 99.9
+				propulsion/tank[4]/contents-lbs gt 7000
+				propulsion/tank[4]/external-flow/tank[3] == 1
+			</test>
+		</switch>
+
+		<!-- from STAB to CWT -->
+
+		<switch name="propulsion/tank[7]/pump[0]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[7]/pump[0] == 1
+				propulsion/tank[0]/contents-lbs le 80400
+			</test>
+		</switch>
+		<switch name="propulsion/tank[7]/pump[1]">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[7]/pump[1] == 1
+				propulsion/tank[0]/contents-lbs le 80400
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[7]/external-flow-rate/tank[0]">
+			<default value="0" />
+			<test logic="AND" value="12.5">
+				<test logic="OR">
+					propulsion/tank[7]/pump[0] == 1
+					propulsion/tank[7]/pump[1] == 1
+				</test>
+				propulsion/tank[7]/contents-lbs gt 0.0
+				propulsion/tank[0]/pct-full lt 99.9
+			</test>
+		</switch>
+
+		<summer name="propulsion/tank[0]/external-flow-rate-pps">
+			<input>-propulsion/tank[0]/external-flow-rate/jettison[0]</input>
+			<input>-propulsion/tank[0]/external-flow-rate/jettison[1]</input>
 			<input>-propulsion/tank[0]/external-flow-rate/tank[2]</input>
 			<input>-propulsion/tank[0]/external-flow-rate/tank[3]</input>
+			<input>-propulsion/tank[0]/external-flow-rate/tank[12]</input>
 			<input>propulsion/tank[7]/external-flow-rate/tank[0]</input>
-			<output>propulsion/tank[0]/external-flow-rate-pps</output>
 		</summer>
-		
-		<summer name="propulsion/tank[1]/external-flow-rate-sum">
+
+		<summer name="propulsion/tank[1]/external-flow-rate-pps">
 			<input>-propulsion/tank[1]/external-flow-rate/tank[2]</input>
-			<input>propulsion/tank[2]/external-flow-rate/tank[1]</input>
-			<output>propulsion/tank[1]/external-flow-rate-pps</output>
+			<input>-propulsion/tank[1]/external-flow-rate/tank[8]</input>
+			<input>-propulsion/tank[1]/external-flow-rate/tank[12]</input>
 		</summer>
-		
-		<summer name="propulsion/tank[2]/external-flow-rate-sum">
+
+		<summer name="propulsion/tank[2]/external-flow-rate-pps">
 			<input>-propulsion/tank[2]/external-flow-rate/jettison</input>
-			<input>-propulsion/tank[2]/external-flow-rate/tank[1]</input>
+			<input>-propulsion/tank[2]/external-flow-rate/tank[9]</input>
+			<input>-propulsion/tank[2]/external-flow-rate/tank[12]</input>
 			<input>propulsion/tank[0]/external-flow-rate/tank[2]</input>
 			<input>propulsion/tank[1]/external-flow-rate/tank[2]</input>
 			<input>propulsion/tank[5]/external-flow-rate/tank[2]</input>
-			<output>propulsion/tank[2]/external-flow-rate-pps</output>
 		</summer>
-		
-		<summer name="propulsion/tank[3]/external-flow-rate-sum">
+
+		<summer name="propulsion/tank[3]/external-flow-rate-pps">
 			<input>-propulsion/tank[3]/external-flow-rate/jettison</input>
-			<input>-propulsion/tank[3]/external-flow-rate/tank[4]</input>
+			<input>-propulsion/tank[3]/external-flow-rate/tank[10]</input>
+			<input>-propulsion/tank[3]/external-flow-rate/tank[12]</input>
 			<input>propulsion/tank[0]/external-flow-rate/tank[3]</input>
 			<input>propulsion/tank[4]/external-flow-rate/tank[3]</input>
 			<input>propulsion/tank[6]/external-flow-rate/tank[3]</input>
-			<output>propulsion/tank[3]/external-flow-rate-pps</output>
 		</summer>
-		
-		<summer name="propulsion/tank[4]/external-flow-rate-sum">
+
+		<summer name="propulsion/tank[4]/external-flow-rate-pps">
 			<input>-propulsion/tank[4]/external-flow-rate/tank[3]</input>
-			<input>propulsion/tank[3]/external-flow-rate/tank[4]</input>
-			<output>propulsion/tank[4]/external-flow-rate-pps</output>
+			<input>-propulsion/tank[4]/external-flow-rate/tank[11]</input>
+			<input>-propulsion/tank[4]/external-flow-rate/tank[12]</input>
 		</summer>
-		
-		<summer name="propulsion/tank[5]/external-flow-rate-sum">
+
+		<summer name="propulsion/tank[5]/external-flow-rate-pps">
 			<input>-propulsion/tank[5]/external-flow-rate/tank[2]</input>
-			<output>propulsion/tank[5]/external-flow-rate-pps</output>
 		</summer>
-		
-		<summer name="propulsion/tank[6]/external-flow-rate-sum">
+
+		<summer name="propulsion/tank[6]/external-flow-rate-pps">
 			<input>-propulsion/tank[6]/external-flow-rate/tank[3]</input>
-			<output>propulsion/tank[6]/external-flow-rate-pps</output>
 		</summer>
-		
-		<summer name="propulsion/tank[7]/external-flow-rate-sum">
+
+		<summer name="propulsion/tank[7]/external-flow-rate-pps">
 			<input>-propulsion/tank[7]/external-flow-rate/jettison</input>
 			<input>-propulsion/tank[7]/external-flow-rate/tank[0]</input>
-			<output>propulsion/tank[7]/external-flow-rate-pps</output>
 		</summer>
-		
-		<!-- low pressure warnings -->
-		
-		<switch name="propulsion/tank[7]/pump-low-pressure">
-			<default value="0"/>
+
+		<summer name="propulsion/tank[8]/external-flow-rate-pps">
+			<input>propulsion/tank[12]/external-flow-rate/tank[8]</input>
+			<input>propulsion/tank[1]/external-flow-rate/tank[8]</input>
+		</summer>
+		<summer name="propulsion/tank[9]/external-flow-rate-pps">
+			<input>propulsion/tank[12]/external-flow-rate/tank[9]</input>
+			<input>propulsion/tank[2]/external-flow-rate/tank[9]</input>
+		</summer>
+		<summer name="propulsion/tank[10]/external-flow-rate-pps">
+			<input>propulsion/tank[12]/external-flow-rate/tank[10]</input>
+			<input>propulsion/tank[3]/external-flow-rate/tank[10]</input>
+		</summer>
+		<summer name="propulsion/tank[11]/external-flow-rate-pps">
+			<input>propulsion/tank[12]/external-flow-rate/tank[11]</input>
+			<input>propulsion/tank[4]/external-flow-rate/tank[11]</input>
+		</summer>
+
+		<summer name="propulsion/tank[12]/external-flow-rate-pps">
+			<input>propulsion/tank[0]/external-flow-rate/tank[12]</input>
+			<input>propulsion/tank[1]/external-flow-rate/tank[12]</input>
+			<input>propulsion/tank[2]/external-flow-rate/tank[12]</input>
+			<input>propulsion/tank[3]/external-flow-rate/tank[12]</input>
+			<input>propulsion/tank[4]/external-flow-rate/tank[12]</input>
+			<input>-propulsion/tank[12]/external-flow-rate/tank[8]</input>
+			<input>-propulsion/tank[12]/external-flow-rate/tank[9]</input>
+			<input>-propulsion/tank[12]/external-flow-rate/tank[10]</input>
+			<input>-propulsion/tank[12]/external-flow-rate/tank[11]</input>
+		</summer>
+
+	</channel>
+
+	<channel name="low pressure warnings" execrate="10">
+
+		<switch name="propulsion/tank[0]/override-pump[0]/low-pressure">
+			<default value="0" />
 			<test logic="AND" value="1">
-				/controls/fuel/tank[7]/pump == 1
+				/controls/fuel/tank[0]/override-pump[0] == 1
+				propulsion/tank[0]/contents-lbs lt 3000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[0]/override-pump[1]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[0]/override-pump[1] == 1
+				propulsion/tank[0]/contents-lbs lt 3000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[1]/pump[0]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[1]/pump[0] == 1
+				propulsion/tank[1]/contents-lbs lt 500
+			</test>
+		</switch>
+		<switch name="propulsion/tank[1]/pump[1]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[1]/pump[1] == 1
+				propulsion/tank[1]/contents-lbs lt 500
+			</test>
+		</switch>
+		<switch name="propulsion/tank[2]/override-pump[0]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[2]/override-pump[0] == 1
+				propulsion/tank[2]/contents-lbs lt 7000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[2]/override-pump[1]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[2]/override-pump[1] == 1
+				propulsion/tank[2]/contents-lbs lt 7000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[2]/pump[0]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[2]/pump[0] == 1
+				propulsion/tank[2]/contents-lbs lt 500
+			</test>
+		</switch>
+		<switch name="propulsion/tank[2]/pump[1]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[2]/pump[1] == 1
+				propulsion/tank[2]/contents-lbs lt 500
+			</test>
+		</switch>
+		<switch name="propulsion/tank[3]/override-pump[0]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[3]/override-pump[0] == 1
+				propulsion/tank[3]/contents-lbs lt 7000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[3]/override-pump[1]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[3]/override-pump[1] == 1
+				propulsion/tank[3]/contents-lbs lt 7000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[3]/pump[0]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[3]/pump[0] == 1
+				propulsion/tank[3]/contents-lbs lt 500
+			</test>
+		</switch>
+		<switch name="propulsion/tank[3]/pump[1]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[3]/pump[1] == 1
+				propulsion/tank[3]/contents-lbs lt 500
+			</test>
+		</switch>
+		<switch name="propulsion/tank[4]/pump[0]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[4]/pump[0] == 1
+				propulsion/tank[4]/contents-lbs lt 500
+			</test>
+		</switch>
+		<switch name="propulsion/tank[4]/pump[1]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				/controls/fuel/tank[4]/pump[1] == 1
+				propulsion/tank[4]/contents-lbs lt 500
+			</test>
+		</switch>
+		<switch name="propulsion/tank[7]/pump[0]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[7]/pump[0] == 1
 				propulsion/tank[7]/contents-lbs lt 500
 			</test>
 		</switch>
-	   
-    </channel>
-	
+		<switch name="propulsion/tank[7]/pump[1]/low-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[7]/pump[1] == 1
+				propulsion/tank[7]/contents-lbs lt 500
+			</test>
+		</switch>
+
+		<switch name="propulsion/engine[0]/low-fuel-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[8]/contents-lbs lt 3
+				/controls/engines/engine[0]/cutoff == 0
+			</test>
+		</switch>
+		<switch name="propulsion/engine[1]/low-fuel-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[9]/contents-lbs lt 3
+				/controls/engines/engine[1]/cutoff == 0
+			</test>
+		</switch>
+		<switch name="propulsion/engine[2]/low-fuel-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[10]/contents-lbs lt 3
+				/controls/engines/engine[2]/cutoff == 0
+			</test>
+		</switch>
+		<switch name="propulsion/engine[3]/low-fuel-pressure">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[11]/contents-lbs lt 3
+				/controls/engines/engine[3]/cutoff == 0
+			</test>
+		</switch>
+
+		<switch name="propulsion/tank[1]/low-quantity">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[1]/contents-lbs lt 2000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[2]/low-quantity">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[2]/contents-lbs lt 2000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[3]/low-quantity">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[3]/contents-lbs lt 2000
+			</test>
+		</switch>
+		<switch name="propulsion/tank[4]/low-quantity">
+			<default value="0" />
+			<test logic="AND" value="1">
+				propulsion/tank[4]/contents-lbs lt 2000
+			</test>
+		</switch>
+
+		<fcs_function name="propulsion/diff-1-4-lbs">
+			<function>
+				<abs>
+					<difference>
+						<property>propulsion/tank[1]/contents-lbs</property>
+						<property>propulsion/tank[4]/contents-lbs</property>
+					</difference>
+				</abs>
+			</function>
+		</fcs_function>
+		<fcs_function name="propulsion/diff-2-3-lbs">
+			<function>
+				<abs>
+					<difference>
+						<property>propulsion/tank[2]/contents-lbs</property>
+						<property>propulsion/tank[3]/contents-lbs</property>
+					</difference>
+				</abs>
+			</function>
+		</fcs_function>
+
+		<switch name="propulsion/tank[1]/imbalance">
+			<default value="propulsion/tank[1]/imbalance" />
+			<test logic="AND" value="0">
+				propulsion/diff-1-4-lbs lt 1000
+			</test>
+			<test logic="AND" value="1">
+				propulsion/diff-1-4-lbs gt 3000
+			</test>
+			<output>propulsion/tank[4]/imbalance</output>
+		</switch>
+		<switch name="propulsion/tank[2]/imbalance">
+			<default value="propulsion/tank[2]/imbalance" />
+			<test logic="AND" value="0">
+				propulsion/diff-2-3-lbs lt 1000
+			</test>
+			<test logic="AND" value="1">
+				propulsion/diff-2-3-lbs gt 6000
+			</test>
+			<output>propulsion/tank[3]/imbalance</output>
+		</switch>
+
+		<switch name="/instrumentation/eicas/fuel/flow[1]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/tank[1]/external-flow/tank[8] == 1
+				propulsion/tank[1]/external-flow/tank[12] == 1
+				propulsion/engine[0]/low-fuel-pressure == 1
+			</test>
+		</switch>
+
+		<switch name="/instrumentation/eicas/fuel/flow[2]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/engine[0]/fuel-flow-rate-pps gt 0
+			</test>
+		</switch>
+
+		<switch name="/instrumentation/eicas/fuel/flow[3]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/tank[1]/external-flow/tank[12] == 1
+				<test logic="AND">
+					propulsion/tank[12]/external-flow/tank[8] == 1
+					propulsion/engine[0]/fuel-flow-rate-pps gt 0
+				</test>
+			</test>
+		</switch>
+
+		<switch name="/instrumentation/eicas/fuel/flow[4]">
+			<default value="0"/>
+			<test logic="AND" value="1">
+				propulsion/tank[2]/external-override-flow/tank[12] == 1
+			</test>
+		</switch>
+
+		<switch name="/instrumentation/eicas/fuel/flow[5]">
+			<default value="0"/>
+			<test logic="AND" value="1">
+				propulsion/tank[12]/fuel-pressure-psi gt 0
+				<test logic="OR">
+					/instrumentation/eicas/fuel/flow[3] == 1
+					/instrumentation/eicas/fuel/flow[8] == 1
+				</test>
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[6]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/tank[2]/external-flow/tank[9] == 1
+				propulsion/tank[2]/external-flow/tank[12] == 1
+				propulsion/engine[1]/low-fuel-pressure == 1
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[7]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/engine[1]/fuel-flow-rate-pps gt 0
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[8]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/tank[2]/external-flow/tank[12] == 1
+				<test logic="AND">
+					propulsion/tank[12]/external-flow/tank[9] == 1
+					propulsion/engine[1]/fuel-flow-rate-pps gt 0
+				</test>
+			</test>
+		</switch>
+
+		<switch name="/instrumentation/eicas/fuel/flow[10]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				<test logic="AND">
+					/instrumentation/eicas/fuel/flow[12] == 1
+					/instrumentation/eicas/fuel/flow[18] == 1
+				</test>
+				<test logic="AND">
+					/instrumentation/eicas/fuel/flow[5] == 1
+					/instrumentation/eicas/fuel/flow[13] == 1
+				</test>
+				<test logic="AND">
+					/instrumentation/eicas/fuel/flow[5] == 1
+					/instrumentation/eicas/fuel/flow[18] == 1
+				</test>
+			</test>
+		</switch>
+
+		<switch name="/instrumentation/eicas/fuel/flow[12]">
+			<default value="0"/>
+			<test logic="AND" value="1">
+				propulsion/tank[0]/external-flow/tank[12] == 1
+				propulsion/tank[0]/override-pump[0]/psi gt 0
+				<test logic="OR">
+					/instrumentation/eicas/fuel/flow[3] == 1
+					/instrumentation/eicas/fuel/flow[8] == 1
+					/instrumentation/eicas/fuel/flow[16] == 1
+					/instrumentation/eicas/fuel/flow[21] == 1
+				</test>
+			</test>
+		</switch>
+
+		<switch name="/instrumentation/eicas/fuel/flow[13]">
+			<default value="0"/>
+			<test logic="AND" value="1">
+				propulsion/tank[0]/external-flow/tank[12] == 1
+				propulsion/tank[0]/override-pump[1]/psi gt 0
+				<test logic="OR">
+					/instrumentation/eicas/fuel/flow[3] == 1
+					/instrumentation/eicas/fuel/flow[8] == 1
+					/instrumentation/eicas/fuel/flow[16] == 1
+					/instrumentation/eicas/fuel/flow[21] == 1
+				</test>
+			</test>
+		</switch>
+
+		<switch name="/instrumentation/eicas/fuel/flow[14]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/tank[3]/external-flow/tank[10] == 1
+				propulsion/tank[3]/external-flow/tank[12] == 1
+				propulsion/engine[2]/low-fuel-pressure == 1
+			</test>
+		</switch>
+		
+		<switch name="/instrumentation/eicas/fuel/flow[15]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/engine[2]/fuel-flow-rate-pps gt 0
+			</test>
+		</switch>
+
+		<switch name="/instrumentation/eicas/fuel/flow[16]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/tank[3]/external-flow/tank[12] == 1
+				<test logic="AND">
+					propulsion/tank[12]/external-flow/tank[10] == 1
+					propulsion/engine[2]/fuel-flow-rate-pps gt 0
+				</test>
+			</test>
+		</switch>
+
+		<switch name="/instrumentation/eicas/fuel/flow[17]">
+			<default value="0"/>
+			<test logic="AND" value="1">
+				propulsion/tank[3]/external-override-flow/tank[12] == 1
+			</test>
+		</switch>
+
+		<switch name="/instrumentation/eicas/fuel/flow[18]">
+			<default value="0"/>
+			<test logic="AND" value="1">
+				propulsion/tank[12]/fuel-pressure-psi gt 0
+				<test logic="OR">
+					/instrumentation/eicas/fuel/flow[16] == 1
+					/instrumentation/eicas/fuel/flow[21] == 1
+				</test>
+			</test>
+		</switch>
+
+		<switch name="/instrumentation/eicas/fuel/flow[19]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/tank[4]/external-flow/tank[11] == 1
+				propulsion/tank[4]/external-flow/tank[12] == 1
+				propulsion/engine[3]/low-fuel-pressure == 1
+			</test>
+		</switch>
+		
+		<switch name="/instrumentation/eicas/fuel/flow[20]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/engine[3]/fuel-flow-rate-pps gt 0
+			</test>
+		</switch>
+		
+		<switch name="/instrumentation/eicas/fuel/flow[21]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/tank[4]/external-flow/tank[12] == 1
+				<test logic="AND">
+					propulsion/tank[12]/external-flow/tank[11] == 1
+					propulsion/engine[3]/fuel-flow-rate-pps gt 0
+				</test>
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[24]">
+			<default value="0"/>
+			<test logic="AND" value="1">
+				propulsion/tank[0]/external-flow-rate/jettison[0] gt 0
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[25]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/tank[0]/external-flow-rate/jettison[0] gt 0
+				propulsion/tank[2]/external-flow-rate/jettison gt 0
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[27]">
+			<default value="0"/>
+			<test logic="AND" value="1">
+				<test logic="OR">
+					propulsion/tank[0]/external-flow-rate/jettison[0] gt 0
+					propulsion/tank[0]/external-flow-rate/jettison[1] gt 0
+					propulsion/tank[2]/external-flow-rate/jettison gt 0
+					propulsion/tank[3]/external-flow-rate/jettison gt 0
+					propulsion/tank[7]/external-flow-rate/jettison gt 0
+				</test>
+				/controls/fuel/jettison/valve[0] == 1
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[29]">
+			<default value="0"/>
+			<test logic="AND" value="1">
+				propulsion/tank[2]/external-flow-rate/jettison gt 0
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[32]">
+			<default value="0"/>
+			<test logic="AND" value="1">
+				propulsion/tank[0]/external-flow-rate/jettison[1] gt 0
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[33]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				propulsion/tank[0]/external-flow-rate/jettison[1] gt 0
+				propulsion/tank[3]/external-flow-rate/jettison gt 0
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[35]">
+			<default value="0"/>
+			<test logic="AND" value="1">
+				<test logic="OR">
+					propulsion/tank[0]/external-flow-rate/jettison[0] gt 0
+					propulsion/tank[0]/external-flow-rate/jettison[1] gt 0
+					propulsion/tank[2]/external-flow-rate/jettison gt 0
+					propulsion/tank[3]/external-flow-rate/jettison gt 0
+					propulsion/tank[7]/external-flow-rate/jettison gt 0
+				</test>
+				/controls/fuel/jettison/valve[1] == 1
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[37]">
+			<default value="0"/>
+			<test logic="AND" value="1">
+				propulsion/tank[3]/external-flow-rate/jettison gt 0
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[380]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				<test logic="AND">
+					<test logic="OR">
+						/instrumentation/eicas/fuel/flow[33] == 1
+						propulsion/tank[7]/external-flow-rate/jettison gt 0
+					</test>
+					/controls/fuel/jettison/valve[0] == 1
+				</test>
+				<test logic="AND">
+					/instrumentation/eicas/fuel/flow[25] == 1
+					/controls/fuel/jettison/valve[1] == 1
+				</test>
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[381]">
+			<default value="0"/>
+			<test logic="OR" value="1">
+				<test logic="AND">
+					<test logic="OR">
+						/instrumentation/eicas/fuel/flow[25] == 1
+						propulsion/tank[7]/external-flow-rate/jettison gt 0
+					</test>
+					/controls/fuel/jettison/valve[1] == 1
+				</test>
+				<test logic="AND">
+					/instrumentation/eicas/fuel/flow[33] == 1
+					/controls/fuel/jettison/valve[0] == 1
+				</test>
+			</test>
+		</switch>
+		<switch name="/instrumentation/eicas/fuel/flow[39]">
+			<default value="0"/>
+			<test logic="AND" value="1">
+				propulsion/tank[7]/external-flow-rate/jettison gt 0
+			</test>
+		</switch>
+
+	</channel>
+
 </system>

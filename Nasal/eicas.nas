@@ -163,19 +163,19 @@ var caution_messages = func {
 		append(msgs_caution,substr(msgs_eng_cutoff,0,size(msgs_eng_cutoff)-2)~" SHUTDOWN");
 	}
 	var msgs_eng_fuel_press = "FUEL PRESS ENG ";
-	if (!getprop("controls/fuel/tank[1]/x-feed") and !getprop("controls/fuel/tank[1]/pump-aft") and !getprop("controls/fuel/tank[1]/pump-fwd"))
+	if (!getprop("controls/fuel/tank[1]/x-feed") and getprop("fdm/jsbsim/propulsion/tank[1]/pump[0]/low-pressure") and getprop("fdm/jsbsim/propulsion/tank[1]/pump[1]/low-pressure"))
 		msgs_eng_fuel_press = msgs_eng_fuel_press~"1, ";
-	if (!getprop("controls/fuel/tank[2]/x-feed") and !getprop("controls/fuel/tank[2]/pump-aft") and !getprop("controls/fuel/tank[2]/pump-fwd"))
+	if (!getprop("controls/fuel/tank[2]/x-feed") and getprop("fdm/jsbsim/propulsion/tank[2]/pump[0]/low-pressure") and getprop("fdm/jsbsim/propulsion/tank[2]/pump[1]/low-pressure"))
 		msgs_eng_fuel_press = msgs_eng_fuel_press~"2, ";
-	if (!getprop("controls/fuel/tank[3]/x-feed") and !getprop("controls/fuel/tank[3]/pump-aft") and !getprop("controls/fuel/tank[3]/pump-fwd"))
+	if (!getprop("controls/fuel/tank[3]/x-feed") and getprop("fdm/jsbsim/propulsion/tank[3]/pump[0]/low-pressure") and getprop("fdm/jsbsim/propulsion/tank[3]/pump[1]/low-pressure"))
 		msgs_eng_fuel_press = msgs_eng_fuel_press~"3, ";
-	if (!getprop("controls/fuel/tank[4]/x-feed") and !getprop("controls/fuel/tank[4]/pump-aft") and !getprop("controls/fuel/tank[4]/pump-fwd"))
+	if (!getprop("controls/fuel/tank[4]/x-feed") and getprop("fdm/jsbsim/propulsion/tank[4]/pump[0]/low-pressure") and getprop("fdm/jsbsim/propulsion/tank[4]/pump[1]/low-pressure"))
 		msgs_eng_fuel_press = msgs_eng_fuel_press~"4, ";
 	if (size(msgs_eng_fuel_press) > 15)
 		append(msgs_caution,substr(msgs_eng_fuel_press,0,size(msgs_eng_fuel_press)-2));
 	if ((getprop("/consumables/fuel/tank[1]/level-lbs") < 1985) or (getprop("/consumables/fuel/tank[2]/level-lbs") < 1985) or (getprop("/consumables/fuel/tank[3]/level-lbs") < 1985) or (getprop("/consumables/fuel/tank[4]/level-lbs") < 1985))
 		append(msgs_caution,"FUEL QTY LOW");
-	if ((getprop("/consumables/fuel/total-fuel-lbs") < getprop("/controls/fuel/fuel-to-remain-lbs")) and (getprop("/controls/fuel/dump-valve") == 1))
+	if ((getprop("/consumables/fuel/total-fuel-lbs") < getprop("/controls/fuel/jettison/fuel-to-remain-lbs")) and (getprop("/controls/fuel/jettison/valve[0]") or getprop("/controls/fuel/jettison/valve[1]")))
 		append(msgs_caution,"FUEL JETT SYS");
 	if (getprop("controls/failures/gear[0]/stuck") or getprop("controls/failures/gear[1]/stuck") or getprop("controls/failures/gear[2]/stuck") or getprop("controls/failures/gear[3]/stuck") or getprop("controls/failures/gear[4]/stuck"))
 		append(msgs_caution,"GEAR DISAGREE");
@@ -221,11 +221,11 @@ var advisory_messages = func {
 	}
 	if (getprop("/controls/flight/flaps") != getprop("/fdm/jsbsim/fcs/flap-cmd-norm"))
 		append(msgs_advisory,">FLAP RELIEF");
-	if (math.abs((fuel[1]-fuel[4])) > 3000)
+	if (getprop("/fdm/jsbsim/propulsion/imbalance-1-4"))
 		append(msgs_advisory,">FUEL IMBAL 1-4");
-	if (math.abs((getprop("/consumables/fuel/tank[2]/level-lbs")-fuel[3])) > 6000)
+	if (getprop("/fdm/jsbsim/propulsion/imbalance-2-3"))
 		append(msgs_advisory,">FUEL IMBAL 2-3");
-	if (((fuel[2] <= (fuel[1]+20)) or (fuel[3] <= (fuel[4]+20))) and !getprop("/controls/fuel/dump-valve") and (xfeed[0] or xfeed[3]))
+	if (((fuel[2] <= (fuel[1]+20)) or (fuel[3] <= (fuel[4]+20))) and !getprop("/controls/fuel/jettison/selector") and (xfeed[0] or xfeed[3]))
 		append(msgs_advisory,">FUEL TANK/ENG");
 	#if ((((fuel[2] > fuel[1]) or (fuel[3] > fuel[4])) or getprop("/gear/gear/wow") == 1 ) and xfeed[0] and xfeed[3])
 	#	append(msgs_advisory,">FUEL XFER 1+4");
@@ -233,9 +233,18 @@ var advisory_messages = func {
 		append(msgs_advisory,"HYD PRESS DEM 1, 2, 3, 4");
 	if (getprop("/systems/hydraulic/engine-pump-pressure-low[0]") == 1 or getprop("/systems/hydraulic/engine-pump-pressure-low[1]") == 1 or getprop("/systems/hydraulic/engine-pump-pressure-low[2]") == 1 or getprop("/systems/hydraulic/engine-pump-pressure-low[3]") == 1)
 		append(msgs_advisory,"HYD PRESS ENG 1, 2, 3, 4");
-	if (getprop("/controls/fuel/dump-valve") == 1)
-		append(msgs_advisory,">JETT NOZ ON");
-	if (((abs(fuel[1]-fuel[2]) > 10) or (abs(fuel[3]-fuel[4]) > 10)) and (!xfeed[0] or !xfeed[3]))
+	if (getprop("/controls/fuel/jettison/valve[0]") or getprop("/controls/fuel/jettison/valve[1]")) {
+		var msgJettNoz = ">JETT NOZ ON";
+		if (!(getprop("/controls/fuel/jettison/valve[0]") and getprop("/controls/fuel/jettison/valve[1]"))) {
+			if (getprop("/controls/fuel/jettison/valve[0]")) {
+				msgJettNoz = msgJettNoz~" L";
+			} else {
+				msgJettNoz = msgJettNoz~" R";
+			}
+		}
+		append(msgs_advisory,msgJettNoz);
+	}
+	if (((abs(fuel[1]-fuel[2]) > 300) or (abs(fuel[3]-fuel[4]) > 300)) and (!xfeed[0] or !xfeed[3]))
 		append(msgs_advisory,">X FEED CONFIG");
 	if (!getprop("controls/flight/yaw-damper"))
 		append(msgs_advisory,">YAW DAMPER LWR, UPR");

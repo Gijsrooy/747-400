@@ -184,53 +184,79 @@ You just stepped through the cockpit door of the cold and dark 747-400, the most
 		</exit>
     </step>
 
-                                        <!--
     <step>
 		<message>Ensure all fuel pumps are OFF.</message>
 		<exit>
-			<condition>    
+			<condition>
 				<and>
-					<equals>       
-						<property>/controls/fuel/tank[1]/pump-fwd</property>
+					<equals>
+						<property>/controls/fuel/tank[0]/override-pump[0]</property>
 						<value>false</value>
 					</equals>
-					<equals>       
-						<property>/controls/fuel/tank[1]/pump-aft</property>
+					<equals>
+						<property>/controls/fuel/tank[0]/override-pump[1]</property>
 						<value>false</value>
 					</equals>
-					<equals>       
-						<property>/controls/fuel/tank[2]/pump-fwd</property>
+					<equals>
+						<property>/controls/fuel/tank[1]/pump[0]</property>
 						<value>false</value>
 					</equals>
-					<equals>       
-						<property>/controls/fuel/tank[2]/pump-aft</property>
+					<equals>
+						<property>/controls/fuel/tank[1]/pump[1]</property>
+						<value>false</value>
+					</equals>
+					<equals>
+						<property>/controls/fuel/tank[2]/override-pump[0]</property>
+						<value>false</value>
+					</equals>
+					<equals>
+						<property>/controls/fuel/tank[2]/override-pump[1]</property>
+						<value>false</value>
+					</equals>
+					<equals>
+						<property>/controls/fuel/tank[2]/pump[0]</property>
+						<value>false</value>
+					</equals>
+					<equals>
+						<property>/controls/fuel/tank[2]/pump[1]</property>
+						<value>false</value>
+					</equals>
+					<equals>
+						<property>/controls/fuel/tank[3]/override-pump[0]</property>
+						<value>false</value>
+					</equals>
+					<equals>
+						<property>/controls/fuel/tank[3]/override-pump[1]</property>
+						<value>false</value>
+					</equals>
+					<equals>
+						<property>/controls/fuel/tank[3]/pump[0]</property>
+						<value>false</value>
+					</equals>
+					<equals>
+						<property>/controls/fuel/tank[3]/pump[1]</property>
 						<value>false</value>
 					</equals>       
-					<equals>       
-						<property>/controls/fuel/tank[3]/pump-fwd</property>
+					<equals>
+						<property>/controls/fuel/tank[4]/pump[0]</property>
 						<value>false</value>
 					</equals>
-					<equals>       
-						<property>/controls/fuel/tank[3]/pump-aft</property>
-						<value>false</value>
-					</equals>       
-					<equals>       
-						<property>/controls/fuel/tank[4]/pump-fwd</property>
+					<equals>
+						<property>/controls/fuel/tank[4]/pump[1]</property>
 						<value>false</value>
 					</equals>
-					<equals>       
-						<property>/controls/fuel/tank[4]/pump-aft</property>
+					<equals>
+						<property>/controls/fuel/tank[7]/pump[0]</property>
 						<value>false</value>
 					</equals>
-					<equals>       
-						<property>/controls/fuel/tank[7]/pump</property>
+					<equals>
+						<property>/controls/fuel/tank[7]/pump[1]</property>
 						<value>false</value>
 					</equals>
 				</and>
 			</condition>
 		</exit>
     </step>
-                                        -->
 
     <step>
 		<message>Disable NACELLE and WING ANTI-ICE.</message>
@@ -502,15 +528,22 @@ You just stepped through the cockpit door of the cold and dark 747-400, the most
 		<exit>
 			<condition>  
 				<and>
-					<property>/controls/fuel/tank[1]/pump-aft</property>
-					<property>/controls/fuel/tank[1]/pump-fwd</property>
-					<property>/controls/fuel/tank[2]/pump-aft</property>
-					<property>/controls/fuel/tank[2]/pump-fwd</property>
-					<property>/controls/fuel/tank[3]/pump-aft</property>
-					<property>/controls/fuel/tank[3]/pump-fwd</property>
-					<property>/controls/fuel/tank[4]/pump-aft</property>
-					<property>/controls/fuel/tank[4]/pump-fwd</property>
-					<property>/controls/fuel/tank[7]/pump</property>
+					<property>/controls/fuel/tank[0]/override-pump[0]</property>
+					<property>/controls/fuel/tank[0]/override-pump[1]</property>
+					<property>/controls/fuel/tank[1]/pump[0]</property>
+					<property>/controls/fuel/tank[1]/pump[1]</property>
+					<property>/controls/fuel/tank[2]/override-pump[0]</property>
+					<property>/controls/fuel/tank[2]/override-pump[1]</property>
+					<property>/controls/fuel/tank[2]/pump[0]</property>
+					<property>/controls/fuel/tank[2]/pump[1]</property>
+					<property>/controls/fuel/tank[3]/override-pump[0]</property>
+					<property>/controls/fuel/tank[3]/override-pump[1]</property>
+					<property>/controls/fuel/tank[3]/pump[0]</property>
+					<property>/controls/fuel/tank[3]/pump[1]</property>
+					<property>/controls/fuel/tank[4]/pump[0]</property>
+					<property>/controls/fuel/tank[4]/pump[1]</property>
+					<property>/controls/fuel/tank[7]/pump[0]</property>
+					<property>/controls/fuel/tank[7]/pump[1]</property>
 				</and>
 			</condition>
 		</exit>

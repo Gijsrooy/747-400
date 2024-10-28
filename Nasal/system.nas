@@ -162,19 +162,28 @@ var autostart = func {
 	setprop("/controls/lighting/taxi-lights",1);
 	setprop("/controls/lighting/turnoff-light-l",1);
 	setprop("/controls/lighting/turnoff-light-r",1);
+	setprop("/controls/fuel/tank[0]/override-pump[0]",1);
+	setprop("/controls/fuel/tank[0]/override-pump[1]",1);
 	setprop("/controls/fuel/tank[1]/x-feed",1);
 	setprop("/controls/fuel/tank[2]/x-feed",1);
 	setprop("/controls/fuel/tank[3]/x-feed",1);
 	setprop("/controls/fuel/tank[4]/x-feed",1);
-	setprop("/controls/fuel/tank[1]/pump-aft",1);
-	setprop("/controls/fuel/tank[1]/pump-fwd",1);
-	setprop("/controls/fuel/tank[2]/pump-aft",1);
-	setprop("/controls/fuel/tank[2]/pump-fwd",1);
-	setprop("/controls/fuel/tank[3]/pump-aft",1);
-	setprop("/controls/fuel/tank[3]/pump-fwd",1);
-	setprop("/controls/fuel/tank[4]/pump-aft",1);
-	setprop("/controls/fuel/tank[4]/pump-fwd",1);
-	setprop("/controls/fuel/tank[7]/pump",1);
+	setprop("/controls/fuel/tank[1]/pump[0]",1);
+	setprop("/controls/fuel/tank[1]/pump[1]",1);
+	setprop("/controls/fuel/tank[2]/override-pump[0]",1);
+	setprop("/controls/fuel/tank[2]/override-pump[1]",1);
+	setprop("/controls/fuel/tank[2]/pump[0]",1);
+	setprop("/controls/fuel/tank[2]/pump[1]",1);
+	setprop("/controls/fuel/tank[3]/override-pump[0]",1);
+	setprop("/controls/fuel/tank[3]/override-pump[1]",1);
+	setprop("/controls/fuel/tank[3]/pump[0]",1);
+	setprop("/controls/fuel/tank[3]/pump[1]",1);
+	setprop("/controls/fuel/tank[4]/pump[0]",1);
+	setprop("/controls/fuel/tank[4]/pump[1]",1);
+	if (getprop("/consumables/fuel/tank[7]/level-lbs") > 6600) {
+		setprop("/controls/fuel/tank[7]/pump[0]",1);
+		setprop("/controls/fuel/tank[7]/pump[1]",1);
+	}
 	setprop("/controls/hydraulic/demand-pump",1);
 	setprop("/controls/hydraulic/demand-pump[1]",1);
 	setprop("/controls/hydraulic/demand-pump[2]",1);

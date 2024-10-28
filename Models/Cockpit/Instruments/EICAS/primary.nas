@@ -162,18 +162,18 @@ var B744PrimaryEICAS = {
 				obj["tat"].setText(sprintf("%+02.0fc", val));
 			}),
 
-			props.UpdateManager.FromHashValue("fuelTotal", 10, func(val) {
+			props.UpdateManager.FromHashValue("fuelTotal", 100, func(val) {
 				obj["fuelTotal"].setText(sprintf("%03.01f", val * LB2KG / 1000));
 			}),
 
-			props.UpdateManager.FromHashValue("fuelDumpRate", 0.1, func(val) {
+			props.UpdateManager.FromHashValue("fuelJettison", 1, func(val) {
 				obj["fuelTemp"].setVisible(val == 0);
 				obj["fuelTempL"].setVisible(val == 0);
 				obj["fuelToRemain"].setVisible(val > 0);
 				obj["fuelToRemainL"].setVisible(val > 0);
 			}),
 
-			props.UpdateManager.FromHashValue("fuelToRemain", 1, func(val) {
+			props.UpdateManager.FromHashValue("fuelToRemain", 100, func(val) {
 				obj["fuelToRemain"].setText(sprintf("%03.01f",val * LB2KG / 1000));
 			}),
 
@@ -365,9 +365,9 @@ var input = {
 	eng4rev: "/engines/engine[3]/reverser-pos-norm",
 	flapsCmd: "/fdm/jsbsim/fcs/flaps/cmd-detent-deg",
 	flapsPos: "/fdm/jsbsim/fcs/flaps/pos-deg",
-	fuelDumpRate: "/fdm/jsbsim/propulsion/fuel-dump-rate-pps",
+	fuelJettison: "/controls/fuel/jettison/selector",
 	fuelTemp: "/consumables/fuel/tank[1]/temperature_degC",
-	fuelToRemain: "controls/fuel/fuel-to-remain-lbs",
+	fuelToRemain: "/controls/fuel/jettison/fuel-to-remain-lbs",
 	fuelTotal: "/fdm/jsbsim/propulsion/total-fuel-lbs",
 	gear0pos: "/gear/gear[0]/position-norm",
 	gear1pos: "/gear/gear[1]/position-norm",

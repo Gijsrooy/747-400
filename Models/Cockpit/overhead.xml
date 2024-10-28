@@ -1287,26 +1287,51 @@
 		<repeatable>true</repeatable>	
 		<binding>
 			<command>property-adjust</command>
-			<property>/controls/fuel/fuel-to-remain-lbs</property>
+			<property>/controls/fuel/jettison/fuel-to-remain-lbs</property>
 			<factor>100</factor>
-			<min>0</min>
+			<min>28000</min>
 			<max>400000</max>
 		</binding>
 	</action>
 </animation>
 
 <animation>
+	<type>knob</type>
+	<object-name>jettisonSelector</object-name>
+	<property>/controls/fuel/jettison/selector</property>
+	<factor>-45</factor>
+	<action>
+		<binding>
+			<command>property-adjust</command>
+			<property>/controls/fuel/jettison/selector</property>
+			<factor>1</factor>
+			<min>0</min>
+			<max>2</max>
+		</binding>
+		<binding>
+			<command>nasal</command>
+			<script>controls.click();</script>
+		</binding>
+	</action>
+	<center>
+		<x-m>-0.004</x-m>
+		<y-m>0.109</y-m>
+	</center>
+	<axis>
+		<z>1</z>
+	</axis>
+</animation>
+
+<animation>
 	<type>pick</type>
 	<object-name>jettison.l.l</object-name>
 	<object-name>jettison.l.u</object-name>
-	<object-name>jettison.r.l</object-name>
-	<object-name>jettison.r.u</object-name>
 	<action>
 		<button>0</button>
 		<repeatable>false</repeatable>	
 		<binding>
 			<command>property-toggle</command>
-			<property>/controls/fuel/dump-valve</property>
+			<property>/controls/fuel/jettison/valve[0]</property>
 		</binding>
 	</action>
 </animation>
@@ -1314,9 +1339,7 @@
 	<type>translate</type>
 	<object-name>jettison.l.l</object-name>
 	<object-name>jettison.l.u</object-name>
-	<object-name>jettison.r.l</object-name>
-	<object-name>jettison.r.u</object-name>
-	<property>/controls/fuel/dump-valve</property>
+	<property>/controls/fuel/jettison/valve[0]</property>
 	<factor>0.0045</factor>
 	<axis>
 		<z>-1</z>
@@ -1325,8 +1348,39 @@
 <animation>
 	<type>textranslate</type>
 	<object-name>jettison.l.u</object-name>
+	<property>/controls/fuel/jettison/valve[0]</property>
+	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>pick</type>
+	<object-name>jettison.r.l</object-name>
 	<object-name>jettison.r.u</object-name>
-	<property>/controls/fuel/dump-valve</property>
+	<action>
+		<button>0</button>
+		<repeatable>false</repeatable>	
+		<binding>
+			<command>property-toggle</command>
+			<property>/controls/fuel/jettison/valve[1]</property>
+		</binding>
+	</action>
+</animation>
+<animation>
+	<type>translate</type>
+	<object-name>jettison.r.l</object-name>
+	<object-name>jettison.r.u</object-name>
+	<property>/controls/fuel/jettison/valve[1]</property>
+	<factor>0.0045</factor>
+	<axis>
+		<z>-1</z>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>jettison.r.u</object-name>
+	<property>/controls/fuel/jettison/valve[1]</property>
 	<factor>0.0537</factor>
 	<axis>
 		<x>1</x>
@@ -1699,7 +1753,6 @@
 
 <!-- Fuel -->
 
-
 <animation>
 	<type>pick</type>
 	<object-name>xfer.l</object-name>
@@ -1752,6 +1805,15 @@
 	<object-name>xfeed.1.l</object-name>
 	<property>controls/fuel/tank[1]/x-feed</property>
 	<factor>0.268</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>xfeed.1.u</object-name>
+	<property>fdm/jsbsim/propulsion/tank[1]/x-feed/transit</property>
+	<factor>0.107</factor>
 	<axis>
 		<x>1</x>
 	</axis>
@@ -1836,6 +1898,15 @@
 	</axis>
 </animation>
 <animation>
+	<type>textranslate</type>
+	<object-name>xfeed.2.u</object-name>
+	<property>fdm/jsbsim/propulsion/tank[2]/x-feed/transit</property>
+	<factor>0.107</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
 	<type>translate</type>
 	<object-name>xfeed.2.l</object-name>
 	<object-name>xfeed.2.u</object-name>
@@ -1915,6 +1986,15 @@
 	</axis>
 </animation>
 <animation>
+	<type>textranslate</type>
+	<object-name>xfeed.3.u</object-name>
+	<property>fdm/jsbsim/propulsion/tank[3]/x-feed/transit</property>
+	<factor>0.107</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
 	<type>translate</type>
 	<object-name>xfeed.3.l</object-name>
 	<object-name>xfeed.3.u</object-name>
@@ -1947,6 +2027,15 @@
 	</axis>
 </animation>
 <animation>
+	<type>textranslate</type>
+	<object-name>xfeed.4.u</object-name>
+	<property>fdm/jsbsim/propulsion/tank[4]/x-feed/transit</property>
+	<factor>0.107</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
 	<type>translate</type>
 	<object-name>xfeed.4.l</object-name>
 	<object-name>xfeed.4.u</object-name>
@@ -1961,14 +2050,12 @@
 	<type>pick</type>
 	<object-name>fuel_stab.l.l</object-name>
 	<object-name>fuel_stab.l.u</object-name>
-	<object-name>fuel_stab.r.l</object-name>
-	<object-name>fuel_stab.r.u</object-name>
 	<action>
 		<button>0</button>
 		<repeatable>false</repeatable>	
 		<binding>
 			<command>property-toggle</command>
-			<property>controls/fuel/tank[7]/pump</property>
+			<property>controls/fuel/tank[7]/pump[0]</property>
 		</binding>
 	</action>
 </animation>
@@ -1976,9 +2063,7 @@
 	<type>translate</type>
 	<object-name>fuel_stab.l.l</object-name>
 	<object-name>fuel_stab.l.u</object-name>
-	<object-name>fuel_stab.r.l</object-name>
-	<object-name>fuel_stab.r.u</object-name>
-	<property>/controls/fuel/tank[7]/pump</property>
+	<property>/controls/fuel/tank[7]/pump[0]</property>
 	<factor>0.005</factor>
 	<axis>
 		<z>-1</z>
@@ -1987,8 +2072,7 @@
 <animation>
 	<type>textranslate</type>
 	<object-name>fuel_stab.l.u</object-name>
-	<object-name>fuel_stab.r.u</object-name>
-	<property>/controls/fuel/tank[7]/pump</property>
+	<property>/controls/fuel/tank[7]/pump[0]</property>
 	<factor>0.0537</factor>
 	<axis>
 		<x>1</x>
@@ -1997,8 +2081,133 @@
 <animation>
 	<type>textranslate</type>
 	<object-name>fuel_stab.l.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[7]/pump[0]/low-pressure</property>
+	<factor>0.1611</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+
+<animation>
+	<type>pick</type>
 	<object-name>fuel_stab.r.l</object-name>
-	<property>/fdm/jsbsim/propulsion/tank[7]/pump-low-pressure</property>
+	<object-name>fuel_stab.r.u</object-name>
+	<action>
+		<button>0</button>
+		<repeatable>false</repeatable>	
+		<binding>
+			<command>property-toggle</command>
+			<property>controls/fuel/tank[7]/pump[1]</property>
+		</binding>
+	</action>
+</animation>
+<animation>
+	<type>translate</type>
+	<object-name>fuel_stab.r.l</object-name>
+	<object-name>fuel_stab.r.u</object-name>
+	<property>/controls/fuel/tank[7]/pump[1]</property>
+	<factor>0.005</factor>
+	<axis>
+		<z>-1</z>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>fuel_stab.r.u</object-name>
+	<property>/controls/fuel/tank[7]/pump[1]</property>
+	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>fuel_stab.r.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[7]/pump[1]/low-pressure</property>
+	<factor>0.1611</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+
+<animation>
+	<type>pick</type>
+	<object-name>pump.0.l.l</object-name>
+	<object-name>pump.0.l.u</object-name>
+	<action>
+		<button>0</button>
+		<repeatable>false</repeatable>	
+		<binding>
+			<command>property-toggle</command>
+			<property>controls/fuel/tank[0]/override-pump[0]</property>
+		</binding>
+	</action>
+</animation>
+<animation>
+	<type>translate</type>
+	<object-name>pump.0.l.l</object-name>
+	<object-name>pump.0.l.u</object-name>
+	<property>/controls/fuel/tank[0]/override-pump[0]</property>
+	<factor>0.005</factor>
+	<axis>
+		<z>-1</z>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>pump.0.l.u</object-name>
+	<property>/controls/fuel/tank[0]/override-pump[0]</property>
+	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>pump.0.l.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[0]/override-pump[0]/low-pressure</property>
+	<factor>0.1611</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+
+<animation>
+	<type>pick</type>
+	<object-name>pump.0.r.l</object-name>
+	<object-name>pump.0.r.u</object-name>
+	<action>
+		<button>0</button>
+		<repeatable>false</repeatable>	
+		<binding>
+			<command>property-toggle</command>
+			<property>controls/fuel/tank[0]/override-pump[1]</property>
+		</binding>
+	</action>
+</animation>
+<animation>
+	<type>translate</type>
+	<object-name>pump.0.r.l</object-name>
+	<object-name>pump.0.r.u</object-name>
+	<property>/controls/fuel/tank[0]/override-pump[1]</property>
+	<factor>0.005</factor>
+	<axis>
+		<z>-1</z>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>pump.0.r.u</object-name>
+	<property>/controls/fuel/tank[0]/override-pump[1]</property>
+	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>pump.0.r.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[0]/override-pump[1]/low-pressure</property>
 	<factor>0.1611</factor>
 	<axis>
 		<x>1</x>
@@ -2014,7 +2223,7 @@
 		<repeatable>false</repeatable>	
 		<binding>
 			<command>property-toggle</command>
-			<property>controls/fuel/tank[1]/pump-fwd</property>
+			<property>controls/fuel/tank[1]/pump[0]</property>
 		</binding>
 	</action>
 </animation>
@@ -2022,7 +2231,7 @@
 	<type>translate</type>
 	<object-name>pump.1.fwd.l</object-name>
 	<object-name>pump.1.fwd.u</object-name>
-	<property>/controls/fuel/tank[1]/pump-fwd</property>
+	<property>/controls/fuel/tank[1]/pump[0]</property>
 	<factor>0.005</factor>
 	<axis>
 		<z>-1</z>
@@ -2031,8 +2240,17 @@
 <animation>
 	<type>textranslate</type>
 	<object-name>pump.1.fwd.u</object-name>
-	<property>/controls/fuel/tank[1]/pump-fwd</property>
+	<property>/controls/fuel/tank[1]/pump[0]</property>
 	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>pump.1.fwd.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[1]/pump[0]/low-pressure</property>
+	<factor>0.1611</factor>
 	<axis>
 		<x>1</x>
 	</axis>
@@ -2047,7 +2265,7 @@
 		<repeatable>false</repeatable>	
 		<binding>
 			<command>property-toggle</command>
-			<property>controls/fuel/tank[1]/pump-aft</property>
+			<property>controls/fuel/tank[1]/pump[1]</property>
 		</binding>
 	</action>
 </animation>
@@ -2055,7 +2273,7 @@
 	<type>translate</type>
 	<object-name>pump.1.aft.l</object-name>
 	<object-name>pump.1.aft.u</object-name>
-	<property>/controls/fuel/tank[1]/pump-aft</property>
+	<property>/controls/fuel/tank[1]/pump[1]</property>
 	<factor>0.005</factor>
 	<axis>
 		<z>-1</z>
@@ -2064,8 +2282,17 @@
 <animation>
 	<type>textranslate</type>
 	<object-name>pump.1.aft.u</object-name>
-	<property>/controls/fuel/tank[1]/pump-aft</property>
+	<property>/controls/fuel/tank[1]/pump[1]</property>
 	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>pump.1.aft.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[1]/pump[1]/low-pressure</property>
+	<factor>0.1611</factor>
 	<axis>
 		<x>1</x>
 	</axis>
@@ -2080,7 +2307,7 @@
 		<repeatable>false</repeatable>	
 		<binding>
 			<command>property-toggle</command>
-			<property>controls/fuel/tank[2]/pump-fwd</property>
+			<property>controls/fuel/tank[2]/pump[0]</property>
 		</binding>
 	</action>
 </animation>
@@ -2088,7 +2315,7 @@
 	<type>translate</type>
 	<object-name>pump.2.fwd.l</object-name>
 	<object-name>pump.2.fwd.u</object-name>
-	<property>/controls/fuel/tank[2]/pump-fwd</property>
+	<property>/controls/fuel/tank[2]/pump[0]</property>
 	<factor>0.005</factor>
 	<axis>
 		<z>-1</z>
@@ -2097,8 +2324,17 @@
 <animation>
 	<type>textranslate</type>
 	<object-name>pump.2.fwd.u</object-name>
-	<property>/controls/fuel/tank[2]/pump-fwd</property>
+	<property>/controls/fuel/tank[2]/pump[0]</property>
 	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>pump.2.fwd.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[2]/pump[0]/low-pressure</property>
+	<factor>0.1611</factor>
 	<axis>
 		<x>1</x>
 	</axis>
@@ -2113,7 +2349,7 @@
 		<repeatable>false</repeatable>	
 		<binding>
 			<command>property-toggle</command>
-			<property>controls/fuel/tank[2]/pump-aft</property>
+			<property>controls/fuel/tank[2]/pump[1]</property>
 		</binding>
 	</action>
 </animation>
@@ -2121,7 +2357,7 @@
 	<type>translate</type>
 	<object-name>pump.2.aft.l</object-name>
 	<object-name>pump.2.aft.u</object-name>
-	<property>/controls/fuel/tank[2]/pump-aft</property>
+	<property>/controls/fuel/tank[2]/pump[1]</property>
 	<factor>0.005</factor>
 	<axis>
 		<z>-1</z>
@@ -2130,8 +2366,101 @@
 <animation>
 	<type>textranslate</type>
 	<object-name>pump.2.aft.u</object-name>
-	<property>/controls/fuel/tank[2]/pump-aft</property>
+	<property>/controls/fuel/tank[2]/pump[1]</property>
 	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>pump.2.aft.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[2]/pump[1]/low-pressure</property>
+	<factor>0.1611</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+
+<animation>
+	<type>pick</type>
+	<object-name>ovrd.2.aft.l</object-name>
+	<object-name>ovrd.2.aft.u</object-name>
+	<action>
+		<button>0</button>
+		<repeatable>false</repeatable>	
+		<binding>
+			<command>property-toggle</command>
+			<property>controls/fuel/tank[2]/override-pump[1]</property>
+		</binding>
+	</action>
+</animation>
+<animation>
+	<type>translate</type>
+	<object-name>ovrd.2.aft.l</object-name>
+	<object-name>ovrd.2.aft.u</object-name>
+	<property>/controls/fuel/tank[2]/override-pump[1]</property>
+	<factor>0.005</factor>
+	<axis>
+		<z>-1</z>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>ovrd.2.aft.u</object-name>
+	<property>/controls/fuel/tank[2]/override-pump[1]</property>
+	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>ovrd.2.aft.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[2]/override-pump[1]/low-pressure</property>
+	<factor>0.1611</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+
+<animation>
+	<type>pick</type>
+	<object-name>ovrd.2.fwd.l</object-name>
+	<object-name>ovrd.2.fwd.u</object-name>
+	<action>
+		<button>0</button>
+		<repeatable>false</repeatable>	
+		<binding>
+			<command>property-toggle</command>
+			<property>/controls/fuel/tank[2]/override-pump[0]</property>
+		</binding>
+	</action>
+</animation>
+<animation>
+	<type>translate</type>
+	<object-name>ovrd.2.fwd.l</object-name>
+	<object-name>ovrd.2.fwd.u</object-name>
+	<property>/controls/fuel/tank[2]/override-pump[0]</property>
+	<factor>0.005</factor>
+	<axis>
+		<z>-1</z>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>ovrd.2.fwd.u</object-name>
+	<property>/controls/fuel/tank[2]/override-pump[0]</property>
+	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>ovrd.2.fwd.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[2]/override-pump[0]/low-pressure</property>
+	<factor>0.1611</factor>
 	<axis>
 		<x>1</x>
 	</axis>
@@ -2146,7 +2475,7 @@
 		<repeatable>false</repeatable>	
 		<binding>
 			<command>property-toggle</command>
-			<property>controls/fuel/tank[3]/pump-fwd</property>
+			<property>controls/fuel/tank[3]/pump[0]</property>
 		</binding>
 	</action>
 </animation>
@@ -2154,7 +2483,7 @@
 	<type>translate</type>
 	<object-name>pump.3.fwd.l</object-name>
 	<object-name>pump.3.fwd.u</object-name>
-	<property>/controls/fuel/tank[3]/pump-fwd</property>
+	<property>/controls/fuel/tank[3]/pump[0]</property>
 	<factor>0.005</factor>
 	<axis>
 		<z>-1</z>
@@ -2163,8 +2492,17 @@
 <animation>
 	<type>textranslate</type>
 	<object-name>pump.3.fwd.u</object-name>
-	<property>/controls/fuel/tank[3]/pump-fwd</property>
+	<property>/controls/fuel/tank[3]/pump[0]</property>
 	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>pump.3.fwd.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[3]/pump[0]/low-pressure</property>
+	<factor>0.1611</factor>
 	<axis>
 		<x>1</x>
 	</axis>
@@ -2179,7 +2517,7 @@
 		<repeatable>false</repeatable>	
 		<binding>
 			<command>property-toggle</command>
-			<property>controls/fuel/tank[3]/pump-aft</property>
+			<property>controls/fuel/tank[3]/pump[1]</property>
 		</binding>
 	</action>
 </animation>
@@ -2187,7 +2525,7 @@
 	<type>translate</type>
 	<object-name>pump.3.aft.l</object-name>
 	<object-name>pump.3.aft.u</object-name>
-	<property>/controls/fuel/tank[3]/pump-aft</property>
+	<property>/controls/fuel/tank[3]/pump[1]</property>
 	<factor>0.005</factor>
 	<axis>
 		<z>-1</z>
@@ -2196,8 +2534,101 @@
 <animation>
 	<type>textranslate</type>
 	<object-name>pump.3.aft.u</object-name>
-	<property>/controls/fuel/tank[3]/pump-aft</property>
+	<property>/controls/fuel/tank[3]/pump[1]</property>
 	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>pump.3.aft.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[3]/pump[1]/low-pressure</property>
+	<factor>0.1611</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+
+<animation>
+	<type>pick</type>
+	<object-name>ovrd.3.aft.l</object-name>
+	<object-name>ovrd.3.aft.u</object-name>
+	<action>
+		<button>0</button>
+		<repeatable>false</repeatable>	
+		<binding>
+			<command>property-toggle</command>
+			<property>controls/fuel/tank[3]/override-pump[1]</property>
+		</binding>
+	</action>
+</animation>
+<animation>
+	<type>translate</type>
+	<object-name>ovrd.3.aft.l</object-name>
+	<object-name>ovrd.3.aft.u</object-name>
+	<property>/controls/fuel/tank[3]/override-pump[1]</property>
+	<factor>0.005</factor>
+	<axis>
+		<z>-1</z>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>ovrd.3.aft.u</object-name>
+	<property>/controls/fuel/tank[3]/override-pump[1]</property>
+	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>ovrd.3.aft.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[3]/override-pump[1]/low-pressure</property>
+	<factor>0.1611</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+
+<animation>
+	<type>pick</type>
+	<object-name>ovrd.3.fwd.l</object-name>
+	<object-name>ovrd.3.fwd.u</object-name>
+	<action>
+		<button>0</button>
+		<repeatable>false</repeatable>	
+		<binding>
+			<command>property-toggle</command>
+			<property>controls/fuel/tank[3]/override-pump[0]</property>
+		</binding>
+	</action>
+</animation>
+<animation>
+	<type>translate</type>
+	<object-name>ovrd.3.fwd.l</object-name>
+	<object-name>ovrd.3.fwd.u</object-name>
+	<property>/controls/fuel/tank[3]/override-pump[0]</property>
+	<factor>0.005</factor>
+	<axis>
+		<z>-1</z>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>ovrd.3.fwd.u</object-name>
+	<property>/controls/fuel/tank[3]/override-pump[0]</property>
+	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>ovrd.3.fwd.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[3]/override-pump[0]/low-pressure</property>
+	<factor>0.1611</factor>
 	<axis>
 		<x>1</x>
 	</axis>
@@ -2212,7 +2643,7 @@
 		<repeatable>false</repeatable>	
 		<binding>
 			<command>property-toggle</command>
-			<property>controls/fuel/tank[4]/pump-fwd</property>
+			<property>controls/fuel/tank[4]/pump[0]</property>
 		</binding>
 	</action>
 </animation>
@@ -2220,7 +2651,7 @@
 	<type>translate</type>
 	<object-name>pump.4.fwd.l</object-name>
 	<object-name>pump.4.fwd.u</object-name>
-	<property>/controls/fuel/tank[4]/pump-fwd</property>
+	<property>/controls/fuel/tank[4]/pump[0]</property>
 	<factor>0.005</factor>
 	<axis>
 		<z>-1</z>
@@ -2229,8 +2660,17 @@
 <animation>
 	<type>textranslate</type>
 	<object-name>pump.4.fwd.u</object-name>
-	<property>/controls/fuel/tank[4]/pump-fwd</property>
+	<property>/controls/fuel/tank[4]/pump[0]</property>
 	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>pump.4.fwd.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[4]/pump[0]/low-pressure</property>
+	<factor>0.1611</factor>
 	<axis>
 		<x>1</x>
 	</axis>
@@ -2245,7 +2685,7 @@
 		<repeatable>false</repeatable>	
 		<binding>
 			<command>property-toggle</command>
-			<property>controls/fuel/tank[4]/pump-aft</property>
+			<property>controls/fuel/tank[4]/pump[1]</property>
 		</binding>
 	</action>
 </animation>
@@ -2253,7 +2693,7 @@
 	<type>translate</type>
 	<object-name>pump.4.aft.l</object-name>
 	<object-name>pump.4.aft.u</object-name>
-	<property>/controls/fuel/tank[4]/pump-aft</property>
+	<property>/controls/fuel/tank[4]/pump[1]</property>
 	<factor>0.005</factor>
 	<axis>
 		<z>-1</z>
@@ -2262,8 +2702,17 @@
 <animation>
 	<type>textranslate</type>
 	<object-name>pump.4.aft.u</object-name>
-	<property>/controls/fuel/tank[4]/pump-aft</property>
+	<property>/controls/fuel/tank[4]/pump[1]</property>
 	<factor>0.0537</factor>
+	<axis>
+		<x>1</x>
+	</axis>
+</animation>
+<animation>
+	<type>textranslate</type>
+	<object-name>pump.4.aft.l</object-name>
+	<property>/fdm/jsbsim/propulsion/tank[4]/pump[1]/low-pressure</property>
+	<factor>0.1611</factor>
 	<axis>
 		<x>1</x>
 	</axis>

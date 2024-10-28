@@ -23215,7 +23215,7 @@ refs 3
 14 0.00483113760129 0.992749273777
 kids 0
 OBJECT poly
-name "fuel_stab.l.l.001"
+name "pump.0.l.l"
 data 21
 Mesh136 Component.161
 texture "overhead.png"
@@ -23463,7 +23463,7 @@ refs 4
 3 0.00788105838001 0.971399784088
 kids 0
 OBJECT poly
-name "fuel_stab.l.u.001"
+name "pump.0.l.u"
 data 21
 Mesh136 Component.162
 texture "overhead.png"
@@ -23711,7 +23711,7 @@ refs 3
 14 0.00483113760129 0.992749273777
 kids 0
 OBJECT poly
-name "fuel_stab.r.l.001"
+name "pump.0.r.l"
 data 21
 Mesh136 Component.161
 texture "overhead.png"
@@ -23959,7 +23959,7 @@ refs 4
 3 0.00788105838001 0.971399784088
 kids 0
 OBJECT poly
-name "fuel_stab.r.u.001"
+name "pump.0.r.u"
 data 21
 Mesh136 Component.162
 texture "overhead.png"
@@ -36265,7 +36265,7 @@ refs 3
 14 0.00483113760129 0.992749273777
 kids 0
 OBJECT poly
-name "xfeed.3.l.001"
+name "ovrd.3.fwd.l"
 data 21
 Mesh136 Component.161
 texture "overhead.png"
@@ -36492,7 +36492,7 @@ refs 3
 14 0.00483113760129 0.992749273777
 kids 0
 OBJECT poly
-name "xfeed.3.l.002"
+name "ovrd.3.aft.l"
 data 21
 Mesh136 Component.161
 texture "overhead.png"
@@ -36719,7 +36719,7 @@ refs 3
 14 0.00483113760129 0.992749273777
 kids 0
 OBJECT poly
-name "xfeed.3.l.003"
+name "ovrd.2.aft.l"
 data 21
 Mesh136 Component.161
 texture "overhead.png"
@@ -36946,7 +36946,7 @@ refs 3
 14 0.00483113760129 0.992749273777
 kids 0
 OBJECT poly
-name "xfeed.3.l.004"
+name "ovrd.2.fwd.l"
 data 21
 Mesh136 Component.161
 texture "overhead.png"
@@ -37194,7 +37194,7 @@ refs 4
 3 0.00788105838001 0.971399784088
 kids 0
 OBJECT poly
-name "xfeed.3.u.001"
+name "ovrd.3.fwd.u"
 data 21
 Mesh136 Component.162
 texture "overhead.png"
@@ -37215,7 +37215,7 @@ refs 4
 3 0.00788105838001 0.971399784088
 kids 0
 OBJECT poly
-name "xfeed.3.u.002"
+name "ovrd.3.aft.u"
 data 21
 Mesh136 Component.162
 texture "overhead.png"
@@ -37236,7 +37236,7 @@ refs 4
 3 0.00788105838001 0.971399784088
 kids 0
 OBJECT poly
-name "xfeed.3.u.003"
+name "ovrd.2.aft.u"
 data 21
 Mesh136 Component.162
 texture "overhead.png"
@@ -37257,7 +37257,7 @@ refs 4
 3 0.00788105838001 0.971399784088
 kids 0
 OBJECT poly
-name "xfeed.3.u.004"
+name "ovrd.2.fwd.u"
 data 21
 Mesh136 Component.162
 texture "overhead.png"
@@ -41555,7 +41555,7 @@ refs 3
 67 0.107083506882 0.915428578854
 kids 0
 OBJECT poly
-name "auto-ignition.002"
+name "jettisonSelector"
 data 10
 Circle.001
 texture "overhead.png"

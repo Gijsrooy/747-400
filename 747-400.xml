@@ -385,6 +385,7 @@
     <propulsion>
 
         <engine file="GE_CF6-80C2B1F">
+            <feed>8</feed>
             <feed>1</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -401,6 +402,7 @@
         </engine>
 
         <engine file="GE_CF6-80C2B1F">
+            <feed>9</feed>
             <feed>2</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -417,6 +419,7 @@
         </engine>
 
         <engine file="GE_CF6-80C2B1F">
+            <feed>10</feed>
             <feed>3</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -433,6 +436,7 @@
         </engine>
 
         <engine file="GE_CF6-80C2B1F">
+            <feed>11</feed>
             <feed>4</feed>
             <thruster file="direct">
                 <location unit="IN">
@@ -450,6 +454,7 @@
         
         <engine file="APU_PW901">
             <feed>2</feed>
+            <feed>3</feed>
             <thruster file="direct">
                 <location unit="IN">
                     <x> 2700 </x>
@@ -486,6 +491,7 @@
             <capacity unit="LBS"> 29694.4 </capacity>
             <contents unit="LBS"> 29694.4 </contents>
             <temperature> 70 </temperature>
+            <priority>2</priority>
         </tank>
 
         <tank type="FUEL">    <!-- Tank number 2 == main #2--> 
@@ -497,6 +503,7 @@
             <capacity unit="LBS"> 84058.0 </capacity>
             <contents unit="LBS"> 66138.0 </contents>
             <temperature> 70 </temperature>
+            <priority>2</priority>
         </tank>
 
         <tank type="FUEL">    <!-- Tank number 3 == main #3--> 
@@ -508,6 +515,7 @@
             <capacity unit="LBS"> 84058.0 </capacity>
             <contents unit="LBS"> 66138.0 </contents>
             <temperature> 70 </temperature>
+            <priority>2</priority>
         </tank>
 
         <tank type="FUEL">    <!-- Tank number 4 == Main #4--> 
@@ -519,6 +527,7 @@
             <capacity unit="LBS"> 29694.4 </capacity>
             <contents unit="LBS"> 29694.4 </contents>
             <temperature> 70 </temperature>
+            <priority>2</priority>
         </tank>
         
         <tank type="FUEL">    <!-- Tank number 5 == reserve #2--> 
@@ -551,6 +560,98 @@
             </location>
             <capacity unit="LBS"> 22110.0 </capacity>
             <contents unit="LBS">     0.0 </contents>
+            <temperature> 70 </temperature>
+        </tank>
+
+        <tank type="FUEL">    <!-- Tank number 8 == engine 1--> 
+            <location unit="IN">
+                <x>    0 </x>
+                <y>    0 </y>
+                <z>    0 </z>
+            </location>
+            <capacity unit="LBS"> 10.0 </capacity>
+            <contents unit="LBS">  0.0 </contents>
+            <temperature> 70 </temperature>
+            <priority>1</priority>
+        </tank>
+
+        <tank type="FUEL">    <!-- Tank number 9 == engine 2--> 
+            <location unit="IN">
+                <x>    0 </x>
+                <y>    0 </y>
+                <z>    0 </z>
+            </location>
+            <capacity unit="LBS"> 10.0 </capacity>
+            <contents unit="LBS">  0.0 </contents>
+            <temperature> 70 </temperature>
+            <priority>1</priority>
+        </tank>
+
+        <tank type="FUEL">    <!-- Tank number 10 == engine 3--> 
+            <location unit="IN">
+                <x>    0 </x>
+                <y>    0 </y>
+                <z>    0 </z>
+            </location>
+            <capacity unit="LBS"> 10.0 </capacity>
+            <contents unit="LBS">  0.0 </contents>
+            <temperature> 70 </temperature>
+            <priority>1</priority>
+        </tank>
+
+        <tank type="FUEL">    <!-- Tank number 11 == engine 4--> 
+            <location unit="IN">
+                <x>    0 </x>
+                <y>    0 </y>
+                <z>    0 </z>
+            </location>
+            <capacity unit="LBS"> 10.0 </capacity>
+            <contents unit="LBS">  0.0 </contents>
+            <temperature> 70 </temperature>
+            <priority>1</priority>
+        </tank>
+        
+        <tank type="FUEL">    <!-- Tank number 12 == crossfeed manifold --> 
+            <location unit="IN">
+                <x>    0 </x>
+                <y>    0 </y>
+                <z>    0 </z>
+            </location>
+            <capacity unit="LBS"> 10.0 </capacity>
+            <contents unit="LBS">  0.0 </contents>
+            <temperature> 70 </temperature>
+        </tank>
+
+        <tank type="FUEL">    <!-- Tank number 13 == crossfeed left manifold --> 
+            <location unit="IN">
+                <x>    0 </x>
+                <y>    0 </y>
+                <z>    0 </z>
+            </location>
+            <capacity unit="LBS"> 10.0 </capacity>
+            <contents unit="LBS">  0.0 </contents>
+            <temperature> 70 </temperature>
+        </tank>
+
+        <tank type="FUEL">    <!-- Tank number 14 == crossfeed right manifold --> 
+            <location unit="IN">
+                <x>    0 </x>
+                <y>    0 </y>
+                <z>    0 </z>
+            </location>
+            <capacity unit="LBS"> 10.0 </capacity>
+            <contents unit="LBS">  0.0 </contents>
+            <temperature> 70 </temperature>
+        </tank>
+
+        <tank type="FUEL">    <!-- Tank number 15 == jettison manifold --> 
+            <location unit="IN">
+                <x>    0 </x>
+                <y>    0 </y>
+                <z>    0 </z>
+            </location>
+            <capacity unit="LBS"> 10.0 </capacity>
+            <contents unit="LBS">  0.0 </contents>
             <temperature> 70 </temperature>
         </tank>
     </propulsion>
