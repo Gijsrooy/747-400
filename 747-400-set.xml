@@ -59,7 +59,7 @@
 		<cockpit type="int">3</cockpit>
 		<model type="int">3</model>
 	</rating>
-	<version>20230103</version>
+	<minimum-fg-version>2024.1.1</minimum-fg-version>
 	<primary-set type="bool">true</primary-set>
 	
 	<flight-model>jsb</flight-model>
