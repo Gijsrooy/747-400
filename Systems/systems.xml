@@ -9,25 +9,17 @@
 
         <fcs_function name="systems/stick-shaker-alpha-deg">
             <function>
-                <table>
-                    <independentVar>fcs/flap-pos-deg</independentVar>
-					<tableData>
-                        0.0   12.1
-						1.0   12.4
-                        5.0   17.6
-                       10.0   16.5
-                       20.0   16.2
-                       30.0   16.2
-                    </tableData>
-                    <!-- Don't know where this is coming from, not the NASA docs
-					<tableData>
-                        0.0   11.4
+                <table> <!-- graph 19.0-5 -->
+                    <independentVar>fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                        0.0   11.5
+                        1.0   11.6
                         5.0   16.0
                        10.0   15.5
                        20.0   15.5
                        25.0   14.6
                        30.0   14.6
-                    </tableData>-->
+                    </tableData>
                 </table>
             </function>
         </fcs_function>
