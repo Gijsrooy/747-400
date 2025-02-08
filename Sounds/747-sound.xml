@@ -219,8 +219,8 @@
 		<path>Sounds/gear-hrn.wav</path>
 		<condition>
 			<greater-than>
-				<property>/velocities/mach</property>
-				<value>0.9</value>
+				<property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
+				<property>/systems/fms/speeds/vmax</property>
 			</greater-than>
 		</condition>
 	</overspeed>

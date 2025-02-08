@@ -24,8 +24,6 @@ msgs_caution = [];
 msgs_advisory = [];
 msgs_memo = [];
 
-props.globals.initNode("/instrumentation/weu/state/stall-speed",-100);
-
 eicas = props.globals.initNode("/instrumentation/eicas");
 eicas_msg_warning	= eicas.initNode("msg/warning"," ","STRING");
 eicas_msg_caution	= eicas.initNode("msg/caution"," ","STRING");
@@ -129,10 +127,8 @@ var warning_messages = func {
 			msgs_fire = msgs_fire~"4, ";
 		append(msgs_warning,substr(msgs_fire,0,size(msgs_fire)-2));
 	}
-	if (getprop("instrumentation/fmc/vspeeds/Vmax") != nil) {
-		if(speed > getprop("instrumentation/fmc/vspeeds/Vmax"))
-			append(msgs_warning,">OVERSPEED");
-	}
+	if(speed > getprop("/systems/fms/speeds/vmax"))
+		append(msgs_warning,">OVERSPEED");
 	if (((getprop("/fdm/jsbsim/fcs/stabilizer/trim-units") - getprop("/fdm/jsbsim/aero/stab-trim-units") > 1) or (getprop("/fdm/jsbsim/fcs/stabilizer/trim-units") - getprop("/fdm/jsbsim/aero/stab-trim-units") < -1)) and wow)
 		append(msgs_warning,">CONFIG STAB");
 }

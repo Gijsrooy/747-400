@@ -337,14 +337,14 @@ var B744PFD = {
 				if (val.v1 or 0 > 0) {
 					if (val.wow) {
 						obj["v1"].show();
-						obj["v1"].setTranslation(0, -val.v1 * 5.63915);
+						obj["v1"].setTranslation(0, -val.v1 * 5.584);
 						obj["vr"].show();
-						obj["vr"].setTranslation(0, -val.vr * 5.63915);
+						obj["vr"].setTranslation(0, -val.vr * 5.584);
 					} else {
 						obj["v1"].hide();
 						obj["vr"].hide();
 					}
-					obj["v2"].setTranslation(0, -val.v2 * 5.63915);
+					obj["v2"].setTranslation(0, -val.v2 * 5.584);
 				} else {
 					obj["v1"].hide();
 					obj["vr"].hide();
@@ -352,19 +352,19 @@ var B744PFD = {
 			}),
 
 			props.UpdateManager.FromHashValue("flaps0", 1, func(val) {
-				obj["flaps0"].setTranslation(0, -val * 5.63915);
+				obj["flaps0"].setTranslation(0, -val * 5.584);
 			}),
 			props.UpdateManager.FromHashValue("flaps1", 1, func(val) {
-				obj["flaps1"].setTranslation(0, -val * 5.63915);
+				obj["flaps1"].setTranslation(0, -val * 5.584);
 			}),
 			props.UpdateManager.FromHashValue("flaps5", 1, func(val) {
-				obj["flaps5"].setTranslation(0, -val * 5.63915);
+				obj["flaps5"].setTranslation(0, -val * 5.584);
 			}),
 			props.UpdateManager.FromHashValue("flaps10", 1, func(val) {
-				obj["flaps10"].setTranslation(0, -val * 5.63915);
+				obj["flaps10"].setTranslation(0, -val * 5.584);
 			}),
 			props.UpdateManager.FromHashValue("flaps20", 1, func(val) {
-				obj["flaps20"].setTranslation(0, -val * 5.63915);
+				obj["flaps20"].setTranslation(0, -val * 5.584);
 			}),
 
 			props.UpdateManager.FromHashList(["flaps","flaps25","flaps30","phase"], 1, func(val) {
@@ -374,7 +374,7 @@ var B744PFD = {
 					else
 						var vref = val.flaps25;
 					obj["vref"].show();
-					obj["vref"].setTranslation(0, -vref * 5.63915);
+					obj["vref"].setTranslation(0, -vref * 5.584);
 				} else {
 					obj["vref"].hide();
 				}
@@ -400,10 +400,10 @@ var B744PFD = {
 			}),
 
 			props.UpdateManager.FromHashValue("iasMin", 1, func(val) {
-				obj["minSpdInd"].setTranslation(0, -val * 5.63915);
+				obj["minSpdInd"].setTranslation(0, -val * 5.584);
 			}),
 			props.UpdateManager.FromHashValue("iasMax", 1, func(val) {
-				obj["maxSpdInd"].setTranslation(0, -val * 5.63915);
+				obj["maxSpdInd"].setTranslation(0, -val * 5.584);
 			}),
 
 			props.UpdateManager.FromHashValue("destElev", 1, func(val) {
@@ -485,20 +485,20 @@ var input = {
 	destElev: "/autopilot/route-manager/destination/field-elevation-ft",
 	dh: "/instrumentation/mk-viii/inputs/arinc429/decision-height",
 	flaps: "/controls/flight/flaps",
-	flaps0: "/instrumentation/pfd/flaps-0-kt",
-	flaps1: "/instrumentation/pfd/flaps-1-kt",
-	flaps5: "/instrumentation/pfd/flaps-5-kt",
-	flaps10: "/instrumentation/pfd/flaps-10-kt",
-	flaps20: "/instrumentation/pfd/flaps-20-kt",
-	flaps25: "/instrumentation/pfd/flaps-25-kt",
-	flaps30: "/instrumentation/pfd/flaps-30-kt",
+	flaps0: "/systems/fms/speeds/flaps-0",
+	flaps1: "/systems/fms/speeds/flaps-1",
+	flaps5: "/systems/fms/speeds/flaps-5",
+	flaps10: "/systems/fms/speeds/flaps-10",
+	flaps20: "/systems/fms/speeds/flaps-20",
+	flaps25: "/systems/fms/speeds/flaps-25",
+	flaps30: "/systems/fms/speeds/flaps-30",
 	gsInRange: "/instrumentation/nav/gs-in-range",
 	gsNeedle: "/instrumentation/nav/gs-needle-deflection-norm",
 	hdg: "/orientation/heading-magnetic-deg",	
 	hdgLock: "/autopilot/locks/heading",
 	ias: "/instrumentation/airspeed-indicator/indicated-speed-kt",
-	iasMax: "/instrumentation/pfd/overspeed-kt",
-	iasMin: "/instrumentation/weu/state/stall-speed",
+	iasMax: "/systems/fms/speeds/vmax",
+	iasMin: "/systems/fms/speeds/vmin",
 	ilsCourse: "/instrumentation/nav/radials/selected-deg",
 	mach: "/velocities/mach",
 	markerInner: "/instrumentation/marker-beacon/inner",

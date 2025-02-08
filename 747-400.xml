@@ -660,6 +660,7 @@
     <system file="engines"/>
     <system file="failures"/>
     <system file="flaps"/>
+    <system file="fms"/>
     <system file="fuel"/>
     <system file="gear"/>
     <system file="hydraulics"/>

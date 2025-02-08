@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+
+<!-- Boeing 747-400 FMS -->
+<!-- Copyright (c) 2024-2025 Josh Davidson (Octal450) and Gijs de Rooy-->
+
+<system name="747-400: FMS">
+    <channel name="FMS Calculations" execrate="8">
+
+        <fcs_function name="/systems/fms/speeds/mmo-kts">
+            <function>
+                <product>
+                    <quotient>
+                        <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
+                        <max> <!-- Prevent divide by 0 -->
+                            <property>/instrumentation/airspeed-indicator/indicated-mach</property>
+                            <value>0.0001</value>
+                        </max>
+                    </quotient>
+                    <value>0.92</value>
+                </product>
+            </function>
+        </fcs_function>
+
+        <switch name="/systems/fms/speeds/vmo-mmo">
+            <default value="365"/>
+            <test logic="AND" value="/systems/fms/speeds/mmo-kts">
+                /systems/fms/speeds/mmo-kts lt 365
+                position/wow eq 0
+                /sim/time/elapsed-sec gt 0
+            </test>
+        </switch>
+
+        <!-- Gear Max -->
+        <fcs_function name="/systems/fms/speeds/gear-max-mach-kts">
+            <function>
+                <product>
+                    <quotient>
+                        <property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
+                        <max> <!-- Prevent divide by 0 -->
+                            <property>/instrumentation/airspeed-indicator/indicated-mach</property>
+                            <value>0.0001</value>
+                        </max>
+                    </quotient>
+                    <value>0.82</value>
+                </product>
+            </function>
+        </fcs_function>
+
+        <switch name="/systems/fms/speeds/gear-max-kts">
+            <default value="320"/>
+            <test logic="AND" value="/systems/fms/speeds/gear-max-mach-kts">
+                /systems/fms/speeds/gear-max-mach-kts lt 320
+                position/wow eq 0
+                /sim/time/elapsed-sec gt 0
+            </test>
+        </switch>
+
+        <switch name="/systems/fms/speeds/gear-ext-max-kts">
+            <default value="270"/>
+            <test logic="AND" value="/systems/fms/speeds/gear-max-mach-kts">
+                /systems/fms/speeds/gear-max-mach-kts lt 270
+                position/wow eq 0
+                /sim/time/elapsed-sec gt 0
+            </test>
+        </switch>
+
+        <switch name="/systems/fms/speeds/gear-ret-max-kts">
+            <default value="270"/>
+            <test logic="AND" value="/systems/fms/speeds/gear-max-mach-kts">
+                /systems/fms/speeds/gear-max-mach-kts lt 270
+                position/wow eq 0
+                /sim/time/elapsed-sec gt 0
+            </test>
+        </switch>
+
+        <!-- Flap/Gear Max -->
+        <switch name="/systems/fms/speeds/flap-gear-max">
+            <default value="0"/> <!-- Hide the tape -->
+            <test value="180">
+                fcs/flaps/pos-deg ge 26
+            </test>
+            <test value="205">
+                fcs/flaps/pos-deg ge 21
+            </test>
+            <test value="230">
+                fcs/flaps/pos-deg ge 11
+            </test>
+            <test value="240">
+                fcs/flaps/pos-deg ge 6
+            </test>
+            <test value="260">
+                fcs/flaps/pos-deg ge 2
+            </test>
+            <test logic="AND" value="/systems/fms/speeds/gear-ret-max-kts">
+                /controls/gear/gear-down eq 0
+                /gear/gear[1]/position-norm gt 0.01
+            </test>
+            <test logic="AND" value="/systems/fms/speeds/gear-ext-max-kts">
+                /controls/gear/gear-down eq 1
+                /gear/gear[1]/position-norm lt 0.99
+            </test>
+            <test value="280">
+                fcs/flaps/pos-deg ge 1
+            </test>        
+            <test value="/systems/fms/speeds/gear-max-kts">
+                /controls/gear/gear-down eq 1
+                /gear/gear[1]/position-norm ge 0.99
+            </test>
+        </switch>
+
+        <!-- Vmax -->
+        <switch name="/systems/fms/speeds/vmax">
+            <default value="/systems/fms/speeds/vmo-mmo"/>
+            <test value="/systems/fms/speeds/flap-gear-max">
+                /systems/fms/speeds/flap-gear-max gt 0
+            </test>
+            <clipto>
+                <min>100</min>
+                <max>100000</max>
+            </clipto>
+        </switch>
+
+        <!-- Vmin -->
+        <fcs_function name="/systems/fms/speeds/vmin">
+            <function>
+                <table> <!-- graph 2.0-37 -->
+                    <independentVar lookup="row">inertia/weight-lbs</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                                 0   1   5  10  20  25  30
+                        350000 134 104  98  96  91  88  85
+                        600000 176 140 130 127 122 118 112
+                        712000 192 156 144 141 136 118 112
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
+
+        <fcs_function name="/systems/fms/speeds/flaps-0">
+            <function>
+                <table>
+                    <independentVar lookup="row">inertia/weight-lbs</independentVar>
+                    <tableData>
+                             0 148
+                        875000 267
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        <fcs_function name="/systems/fms/speeds/flaps-1">
+            <function>
+                <table>
+                    <independentVar lookup="row">inertia/weight-lbs</independentVar>
+                    <tableData>
+                             0 130
+                        875000 245
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        <fcs_function name="/systems/fms/speeds/flaps-5">
+            <function>
+                <table>
+                    <independentVar lookup="row">inertia/weight-lbs</independentVar>
+                    <tableData>
+                             0 111
+                        875000 226
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        <fcs_function name="/systems/fms/speeds/flaps-10">
+            <function>
+                <table>
+                    <independentVar lookup="row">inertia/weight-lbs</independentVar>
+                    <tableData>
+                             0  88
+                        875000 207
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        <fcs_function name="/systems/fms/speeds/flaps-20">
+            <function>
+                <table>
+                    <independentVar lookup="row">inertia/weight-lbs</independentVar>
+                    <tableData>
+                             0  75
+                        875000 199
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        <fcs_function name="/systems/fms/speeds/flaps-25">
+            <function>
+                <table>
+                    <independentVar lookup="row">inertia/weight-lbs</independentVar>
+                    <tableData>
+                             0  66
+                        875000 197
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
+        <fcs_function name="/systems/fms/speeds/flaps-30">
+            <function>
+                <table>
+                    <independentVar lookup="row">inertia/weight-lbs</independentVar>
+                    <tableData>
+                             0  67
+                        875000 186
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
+
+    </channel>
+</system>

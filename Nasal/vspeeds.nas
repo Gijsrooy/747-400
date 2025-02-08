@@ -10,7 +10,6 @@ var Vref5 = "";
 var Vref10 = "";
 var Vref20 = "";
 var Vref30 = "";
-var Vmax = "";
 
 var vspeeds = func {
 	WT = getprop("/fdm/jsbsim/inertia/weight-lbs")*0.00045359237;
@@ -41,22 +40,6 @@ var vspeeds = func {
 	Vref10 = Vref30 + 40;
 	Vref20 = Vref30 + 20;
 	
-	Vmax = 365; # Vmo (Mach 0.92)
-	if (getprop("/controls/gear/gear-down"))
-		Vmax = 320;
-	if (flaps == 0.033)
-		Vmax = 280;
-	elsif (flaps == 0.167)
-		Vmax = 260;
-	elsif (flaps == 0.333)
-		Vmax = 240;
-	elsif (flaps == 0.667)
-		Vmax = 230;
-	elsif (flaps == 0.833)
-		Vmax = 205;
-	elsif (flaps == 1)
-		Vmax = 180;
-	
 	setprop("/instrumentation/fmc/vspeeds/V1",int(V1));
 	setprop("/instrumentation/fmc/vspeeds/VR",int(VR));
 	setprop("/instrumentation/fmc/vspeeds/Vref",Vref);
@@ -65,7 +48,6 @@ var vspeeds = func {
 	setprop("/instrumentation/fmc/vspeeds/Vref10",Vref10);
 	setprop("/instrumentation/fmc/vspeeds/Vref20",Vref20);
 	setprop("/instrumentation/fmc/vspeeds/Vref30",Vref30);
-	setprop("/instrumentation/fmc/vspeeds/Vmax",Vmax);
 	setprop("/instrumentation/fmc/vspeeds/V2",int(V2));
 	setprop("/instrumentation/fmc/stab-trim-units",getprop("/fdm/jsbsim/aero/stab-trim-units"));
 	settimer(vspeeds, 1);
