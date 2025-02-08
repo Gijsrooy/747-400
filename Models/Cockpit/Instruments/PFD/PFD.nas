@@ -333,20 +333,29 @@ var B744PFD = {
 				obj["ilsId"].setText(val);
 			}),
 
-			props.UpdateManager.FromHashList(["v1","v2","vr","wow"], 1, func(val) {
+			props.UpdateManager.FromHashList(["ias","v1","v2","vr","wow"], 1, func(val) {
 				if (val.v1 or 0 > 0) {
 					if (val.wow) {
-						obj["v1"].show();
-						obj["v1"].setTranslation(0, -val.v1 * 5.584);
+						if (val.v1 - val.ias > 55) {
+							obj["v1Text"].setText(sprintf("%3.0f", val.v1));
+							obj["v1"].hide();
+							obj["v1Numerical"].show();
+						} else {
+							obj["v1Numerical"].hide();
+							obj["v1"].setTranslation(0, -val.v1 * 5.584);
+							obj["v1"].show();
+						}
 						obj["vr"].show();
 						obj["vr"].setTranslation(0, -val.vr * 5.584);
 					} else {
 						obj["v1"].hide();
+						obj["v1Numerical"].hide();
 						obj["vr"].hide();
 					}
 					obj["v2"].setTranslation(0, -val.v2 * 5.584);
 				} else {
 					obj["v1"].hide();
+					obj["v1Numerical"].hide();
 					obj["vr"].hide();
 				}
 			}),
@@ -471,7 +480,7 @@ var B744PFD = {
 		"dhText","dmeDist","egpwsPitch","fdX","fdY","flaps0","flaps1","flaps10","flaps20","flaps5",
 		"gpwsAlert","gsPtr","gsScale","horizon","ilsCourse","ilsId","locPtr","locScale","locScaleExp","machText","markerBeacon","markerBeaconText",
 		"maxSpdInd","mcpAltMtr","minimums","minSpdInd","pitchMode","radioAltInd","risingRwy","risingRwyPtr","rollMode","selAltBox","selAltPtr","selHdgPtr","selHdgText",
-		"spdTape","spdTrend","speedText","tenThousand","touchdown","trackIndicator","v1","v2","vertSpd","vr","vref","vsiNeedle","vsPointer"];
+		"spdTape","spdTrend","speedText","tenThousand","touchdown","trackIndicator","v1","v1Numerical","v1Text","v2","vertSpd","vr","vref","vsiNeedle","vsPointer"];
 	},
 
 	update: func(notification) {
