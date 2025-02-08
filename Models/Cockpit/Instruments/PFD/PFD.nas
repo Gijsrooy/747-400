@@ -450,6 +450,10 @@ var B744PFD = {
 					obj["dmeDist"].hide();
 				}
 			}),
+
+			props.UpdateManager.FromHashValue("gpwsWarning", 1, func(val) {
+				obj["egpwsPitch"].setVisible(val);
+			}),
 		];
 
 		obj.update = func(notification) {
@@ -464,7 +468,7 @@ var B744PFD = {
 	getKeys: func() {
 		return ["afdsMode","altTape","altText1","altText2","atMode","bankPointer","baroSet","cmdSpd","compass",
 		"curAlt1","curAlt2","curAlt3","curAltBox","curAltMtrTxt","curSpd","curSpdTen",
-		"dhText","dmeDist","fdX","fdY","flaps0","flaps1","flaps10","flaps20","flaps5",
+		"dhText","dmeDist","egpwsPitch","fdX","fdY","flaps0","flaps1","flaps10","flaps20","flaps5",
 		"gpwsAlert","gsPtr","gsScale","horizon","ilsCourse","ilsId","locPtr","locScale","locScaleExp","machText","markerBeacon","markerBeaconText",
 		"maxSpdInd","mcpAltMtr","minimums","minSpdInd","pitchMode","radioAltInd","risingRwy","risingRwyPtr","rollMode","selAltBox","selAltPtr","selHdgPtr","selHdgText",
 		"spdTape","spdTrend","speedText","tenThousand","touchdown","trackIndicator","v1","v2","vertSpd","vr","vref","vsiNeedle","vsPointer"];
@@ -492,6 +496,7 @@ var input = {
 	flaps20: "/systems/fms/speeds/flaps-20",
 	flaps25: "/systems/fms/speeds/flaps-25",
 	flaps30: "/systems/fms/speeds/flaps-30",
+	gpwsWarning: "/instrumentation/mk-viii/outputs/discretes/gpws-warning",
 	gsInRange: "/instrumentation/nav/gs-in-range",
 	gsNeedle: "/instrumentation/nav/gs-needle-deflection-norm",
 	hdg: "/orientation/heading-magnetic-deg",	
