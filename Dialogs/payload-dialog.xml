@@ -715,7 +715,7 @@
 					<label>12345678</label>
 					<format>%.0f kg</format>
 					<live>true</live>
-					<property>/fdm/jsbsim/inertia/zero-fuel-weight-kg</property>
+					<property>/fdm/jsbsim/inertia/zfw-kg</property>
 				</text>
 				<text>
 					<row>0</row>
@@ -746,7 +746,7 @@
 					<label>99.9 MAC</label>
 					<format>%02.01f MAC</format>
 					<live>true</live>
-					<property>/fdm/jsbsim/aero/CoG-mac-pct</property>
+					<property>/fdm/jsbsim/inertia/cg-percent-mac</property>
 				</text>
 			</group>
 		</group>

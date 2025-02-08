@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+
+<!-- Boeing 747-400 Libraries -->
+<!-- Copyright (c) 2024-2025 Josh Davidson (Octal450) and Gijs de Rooy-->
+
+<system name="747-400: Libraries">
+	<channel name="FDM Rate Libraries">
+
+        <switch name="position/wow">
+            <default value="0"/>
+            <test logic="OR" value="1">
+                gear/unit[0]/WOW eq 1
+                gear/unit[1]/WOW eq 1
+                gear/unit[2]/WOW eq 1
+                gear/unit[3]/WOW eq 1
+                gear/unit[4]/WOW eq 1
+            </test>
+            <output>/position/wow</output> <!-- Copy to local tree -->
+        </switch>
+
+        <fcs_function name="inertia/zfw-kg">
+            <function>
+                <product>
+                    <sum>
+                        <property>inertia/weight-lbs</property>
+                        <property>-propulsion/total-fuel-lbs</property>
+                    </sum>
+                    <value>0.45359237</value>
+                </product>
+            </function>
+        </fcs_function>
+
+        <fcs_function name="inertia/weight-kg">
+            <function>
+                <product>
+                    <property>inertia/weight-lbs</property>
+                    <value>0.45359237</value>
+                </product>
+            </function>
+        </fcs_function>
+
+        <fcs_function name="inertia/cg-percent-mac">
+            <function>
+                <description>Center_of_Gravity_in_percentage_MAC</description>
+                <quotient>
+                    <sum>
+                        <property>inertia/cg-x-in</property>
+                        <value>-1258</value>
+                        <!--
+                        25MAC = B STA 1339.91
+                        MAC   = 327.78 inch
+                        327.78 * 0.25 = 81.945
+                        LEMAC = 1339.91 - 81.945 = B STA 1258
+                        -->
+                    </sum>
+                    <value>3.2778</value>
+                </quotient>
+            </function>
+            <output>/instrumentation/fmc/cg</output>
+        </fcs_function>
+
+    </channel>
+</system>

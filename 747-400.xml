@@ -656,6 +656,7 @@
         </tank>
     </propulsion>
 
+    <system file="libraries"/>
     <system file="engines"/>
     <system file="failures"/>
     <system file="flaps"/>
@@ -1800,13 +1801,6 @@
                 </product>
             </function>
         </aero_ref_pt_shift_x>
-    
-        <function name="inertia/weight-kg">
-            <product>
-                <property>inertia/weight-lbs</property>
-                <value>0.45359237</value>
-            </product>
-        </function>
         
         <function name="aero/alpha-wing-deg">
             <todegrees><property>aero/alpha-wing-rad</property></todegrees>
@@ -1878,27 +1872,11 @@
             </table>
         </function>
         
-        <function name="aero/CoG-mac-pct">
-            <description>Center_of_Gravity_in_percentage_MAC</description>
-            <quotient>
-                <sum>
-                    <property>inertia/cg-x-in</property>
-                    <value>-1258</value>
-                    <!--
-                    25MAC = B STA 1339.91
-                    MAC   = 327.78 inch
-                    327.78 * 0.25 = 81.945
-                    LEMAC = 1339.91 - 81.945 = B STA 1258
-                    -->
-                </sum>
-                <value>3.2778</value>
-            </quotient>
-        </function>
         <function name="aero/stab-trim-units">
             <description>Recommended stabilizer trim units</description>
             <table>
                 <independentVar lookup="row">inertia/weight-kg</independentVar>
-                <independentVar lookup="column">aero/CoG-mac-pct</independentVar>
+                <independentVar lookup="column">inertia/cg-percent-mac</independentVar>
                 <tableData>
                              9    13    17    21    25    29    33
                     200000   0     4     3.5   3     2.5   2     2
@@ -1918,7 +1896,7 @@
         
         <function name="aero/stab-trim-greenband-min-weight-kg">
             <table>
-                <independentVar>aero/CoG-mac-pct</independentVar>
+                <independentVar>inertia/cg-percent-mac</independentVar>
                 <tableData>
                     13   190509
                     22   226796
@@ -1930,7 +1908,7 @@
         </function>
         <function name="aero/stab-trim-greenband-max-weight-kg">
             <table>
-                <independentVar>aero/CoG-mac-pct</independentVar>
+                <independentVar>inertia/cg-percent-mac</independentVar>
                 <tableData>
                     13   208653
                     18   226796
@@ -1944,7 +1922,7 @@
         <function name="aero/stab-trim-greenband-min-units">
             <table>
                 <independentVar lookup="row">aero/stab-trim-greenband-min-weight-kg</independentVar>
-                <independentVar lookup="column">aero/CoG-mac-pct</independentVar>
+                <independentVar lookup="column">inertia/cg-percent-mac</independentVar>
                 <tableData>
                              9    13    17    21    25    29    33
                     200000   0     4     3.5   3     2.5   2     2
@@ -1964,7 +1942,7 @@
         <function name="aero/stab-trim-greenband-max-units">
             <table>
                 <independentVar lookup="row">aero/stab-trim-greenband-max-weight-kg</independentVar>
-                <independentVar lookup="column">aero/CoG-mac-pct</independentVar>
+                <independentVar lookup="column">inertia/cg-percent-mac</independentVar>
                 <tableData>
                              9    13    17    21    25    29    33
                     200000   0     4     3.5   3     2.5   2     2
@@ -2244,18 +2222,6 @@
                 <property>weight-index-fuel</property>
             </sum>
         </function>
-        <function name="inertia/zero-fuel-weight-kg">
-            <product>
-                <sum>
-                    <property>inertia/weight-lbs</property>
-                    <product>
-                        <property>propulsion/total-fuel-lbs</property>
-                        <value>-1</value>
-                    </product>
-                </sum>
-                <value>0.45359237</value>
-            </product>
-        </function>
         <function name="aero/calculated-CoG-to-mac-pct">
             <description>Calculated_TO_CoG_in_percent_MAC</description>
             <table>
@@ -2272,7 +2238,7 @@
         <function name="aero/calculated-CoG-zfw-mac-pct">
             <description>Calculated_ZFW_CoG_in_percent_MAC</description>
             <table>
-                <independentVar lookup="row">inertia/zero-fuel-weight-kg</independentVar>
+                <independentVar lookup="row">inertia/zfw-kg</independentVar>
                 <independentVar lookup="column">weight-index-zfw</independentVar>
                 <tableData>
                              1.0   29.0   80.0  91.0  132.0
@@ -2816,7 +2782,7 @@
             <product>
                 <!-- center of gravity factor -->
                 <table>
-                    <independentVar>aero/CoG-mac-pct</independentVar>
+                    <independentVar>inertia/cg-percent-mac</independentVar>
                     <tableData>
                         10.00   1.27
                         40.00   0.77
@@ -4467,7 +4433,7 @@
             <description>Change_in_basic_pitching_coefficient_due_to_rate_of_change_angle_of_attack</description>
             <product>
                 <table> <!-- graph 4.0-15 -->
-                    <independentVar>aero/CoG-mac-pct</independentVar>
+                    <independentVar>inertia/cg-percent-mac</independentVar>
                     <tableData>
                         10.00   1.18
                         40.00   0.82
@@ -4723,7 +4689,7 @@
                 <product>
                     <property>aero/coefficient/CL_total</property>
                     <sum>
-                        <property>aero/CoG-mac-pct</property>
+                        <property>inertia/cg-percent-mac</property>
                         <value>-25</value>
                     </sum>
                     <value>0.01</value>
@@ -4759,7 +4725,10 @@
         <function name="aero/coefficient/Cn_beta">
             <description>Yaw_moment_due_to_beta_coefficient</description>
             <product>
-                <property>aero/beta-switch</property>
+                <sum>
+                    <value>1</value>
+                    <property>-position/wow</property>
+                </sum>
                 <property>aero/beta-deg</property>
                 <sum>
                     <product>
@@ -4770,7 +4739,7 @@
                     <product>
                         <property>aero/coefficient/dCyb</property>
                         <difference>
-                            <property>aero/CoG-mac-pct</property>
+                            <property>inertia/cg-percent-mac</property>
                             <value>25</value>
                         </difference>
                         <value>0.01</value> <!-- convert from percentage -->
@@ -4979,7 +4948,7 @@
             <description>Yawing_moment_coefficient_due_to_yaw_rate</description>
             <product>
                 <table> <!-- graph 6.0-10 -->
-                    <independentVar>aero/CoG-mac-pct</independentVar>
+                    <independentVar>inertia/cg-percent-mac</independentVar>
                     <tableData>
                     11   1.06
                     15   1.04
@@ -5364,7 +5333,7 @@
                 <product>
                     <property>aero/coefficient/CYrudder</property>
                     <difference>
-                        <property>aero/CoG-mac-pct</property>
+                        <property>inertia/cg-percent-mac</property>
                         <value>25</value>
                     </difference>
                     <value>0.01</value> <!-- convert from percentage -->
