@@ -1873,28 +1873,6 @@
             </table>
         </function>
         
-        <function name="aero/stab-trim-units">
-            <description>Recommended stabilizer trim units</description>
-            <table>
-                <independentVar lookup="row">inertia/weight-kg</independentVar>
-                <independentVar lookup="column">inertia/cg-percent-mac</independentVar>
-                <tableData>
-                             9    13    17    21    25    29    33
-                    200000   0     4     3.5   3     2.5   2     2
-                    220000   0     5     4     3.5   3     2     2
-                    240000   0     6     5     4.5   3.5   2.5   2
-                    260000   8     7     6     5     4     3     2
-                    280000   8.5   7.5   6.5   5.5   4.5   3.5   2.5
-                    300000   9     8     7     6     5     4     3
-                    320000   9.5   8.5   7.5   6.5   5.5   4     3
-                    340000   9.5   8.5   7.5   6.5   5.5   4.5   3.5
-                    360000   9.5   8.5   7.5   6.5   5.5   4.5   3.5
-                    380000   9.5   9     8     7     5.5   5     3.5
-                    400000   9.5   9     8     7     6     5     4
-                </tableData>
-            </table>
-        </function>
-        
         <function name="aero/stab-trim-greenband-min-weight-kg">
             <table>
                 <independentVar>inertia/cg-percent-mac</independentVar>

@@ -49,7 +49,6 @@ var vspeeds = func {
 	setprop("/instrumentation/fmc/vspeeds/Vref20",Vref20);
 	setprop("/instrumentation/fmc/vspeeds/Vref30",Vref30);
 	setprop("/instrumentation/fmc/vspeeds/V2",int(V2));
-	setprop("/instrumentation/fmc/stab-trim-units",getprop("/fdm/jsbsim/aero/stab-trim-units"));
 	settimer(vspeeds, 1);
 }
 
