@@ -376,14 +376,10 @@ var B744PFD = {
 				obj["flaps20"].setTranslation(0, -val * 5.584);
 			}),
 
-			props.UpdateManager.FromHashList(["flaps","flaps25","flaps30","phase"], 1, func(val) {
+			props.UpdateManager.FromHashList(["vref","phase"], 1, func(val) {
 				if (val.phase == "APPROACH") {
-					if (val.flaps == 1)
-						var vref = val.flaps30;
-					else
-						var vref = val.flaps25;
+					obj["vref"].setTranslation(0, -val.vref * 5.584);
 					obj["vref"].show();
-					obj["vref"].setTranslation(0, -vref * 5.584);
 				} else {
 					obj["vref"].hide();
 				}
@@ -503,8 +499,6 @@ var input = {
 	flaps5: "/systems/fms/speeds/flaps-5",
 	flaps10: "/systems/fms/speeds/flaps-10",
 	flaps20: "/systems/fms/speeds/flaps-20",
-	flaps25: "/systems/fms/speeds/flaps-25",
-	flaps30: "/systems/fms/speeds/flaps-30",
 	gpwsWarning: "/instrumentation/mk-viii/outputs/discretes/gpws-warning",
 	gsInRange: "/instrumentation/nav/gs-in-range",
 	gsNeedle: "/instrumentation/nav/gs-needle-deflection-norm",
@@ -535,6 +529,7 @@ var input = {
 	v1: "/instrumentation/fmc/vspeeds/V1",
 	v2: "/instrumentation/fmc/vspeeds/V2",
 	vr: "/instrumentation/fmc/vspeeds/VR",
+	vref: "/systems/fms/speeds/vref",
 	vsiDeg: "/instrumentation/pfd/vsi-needle-deg",
 	vSpd: "/velocities/vertical-speed-fps",
 	wow: "/gear/gear/wow",

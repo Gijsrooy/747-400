@@ -214,6 +214,164 @@
             </function>
         </fcs_function>
 
+        <!-- Vref -->
+        <fcs_function name="/systems/fms/speeds/vref">
+            <function>
+                <table>
+                    <independentVar lookup="row">inertia/weight-kg</independentVar>
+                    <independentVar lookup="column">/systems/fms/flight-data/land-flaps</independentVar>
+                    <tableData>
+                                25  30
+                        180000 124 121
+                        200000 132 127
+                        250000 149 143
+                        300000 164 157
+                        330000 173 165
+                    </tableData>
+                </table>
+            </function>
+            <output>/instrumentation/fmc/vspeeds/Vref</output>
+        </fcs_function>
+
+        <!-- Vapp -->
+        <fcs_function name="/systems/fms/speeds/vapp">
+            <function>
+                <sum>
+                    <property>/systems/fms/speeds/vref</property>
+                    <value>5</value>
+                </sum>
+            </function>
+        </fcs_function>
+
+        <!-- Vmcg -->
+        <fcs_function name="/systems/fms/speeds/vmcg-to">
+            <function>
+                <table>
+                    <independentVar lookup="row">atmosphere/pressure-altitude</independentVar>
+                    <independentVar lookup="column">atmosphere/temperature-degc</independentVar>
+                    <tableData>
+                              -55   9  10  11  14  15  20  25  30  35  50  60
+                        -2000 125 125 125 125 125 125 125 125 125 125 118 112
+                            0 123 123 123 123 123 123 123 123 123 121 114 108
+                         2000 121 121 121 121 121 121 121 120 119 117 110 104
+                         4000 117 117 117 117 117 117 117 116 114 112 105 100
+                         6000 114 114 114 114 114 113 113 112 110 108 102  97
+                         8000 110 110 109 109 109 109 108 106 105 104  98  94
+                        10000 105 105 105 105 104 104 103 102 101  99  94  91
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
+
+        <!-- V1 -->
+        <fcs_function name="/systems/fms/speeds/v1-table">
+            <function>
+                <table>
+                    <independentVar lookup="row">inertia/weight-kg</independentVar>
+                    <independentVar lookup="column">/instrumentation/fmc/to-flap</independentVar>
+                    <tableData>
+                                10  20
+                        200000  95  90
+                        250000 116 110
+                        300000 133 128
+                        350000 148 143
+                        400000 160 155
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
+
+        <fcs_function name="/systems/fms/speeds/v1-slope-wind-delta">
+            <function>
+                <sum>
+                    <table>
+                        <independentVar lookup="row">inertia/weight-kg</independentVar>
+                        <independentVar lookup="column">/systems/fms/flight-data/to-slope</independentVar>
+                        <tableData>
+                                   -2 -1 0 1 2
+                            200000 -2 -1 0 1 2
+                            250000 -2 -1 0 1 2
+                            300000 -3 -1 0 1 2
+                            350000 -3 -2 0 1 3
+                            400000 -4 -2 0 2 3
+                        </tableData>
+                    </table>
+                    <table>
+                        <independentVar lookup="row">inertia/weight-kg</independentVar>
+                        <independentVar lookup="column">/systems/fms/flight-data/to-wind</independentVar>
+                        <tableData>
+                                   -15 -10  -5   0  10  20  30  40
+                            200000  -5  -4  -2   0   1   1   2   3
+                            250000  -5  -4  -2   0   1   1   2   3
+                            300000  -5  -4  -2   0   1   1   2   2
+                            350000  -5  -4  -2   0   1   1   2   2
+                            400000  -6  -4  -2   0   1   1   1   2
+                        </tableData>
+                    </table>
+                </sum>
+            </function>
+        </fcs_function>
+
+        <fcs_function name="/systems/fms/speeds/v1">
+            <function>
+                <max>
+                    <sum>
+                        <property>/systems/fms/speeds/v1-slope-wind-delta</property>
+                        <property>/systems/fms/speeds/v1-table</property>
+                    </sum>
+                    <property>/systems/fms/speeds/vmcg-to</property>
+                </max>
+            </function>
+            <output>/instrumentation/fmc/vspeeds/V1</output>
+        </fcs_function>
+
+        <!-- Vr -->
+        <fcs_function name="/systems/fms/speeds/vr-table">
+            <function>
+                <table>
+                    <independentVar lookup="row">inertia/weight-kg</independentVar>
+                    <independentVar lookup="column">/instrumentation/fmc/to-flap</independentVar>
+                    <tableData>
+                                10  20
+                        200000 110 105
+                        250000 129 123
+                        300000 147 141
+                        350000 164 158
+                        400000 178 171
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
+
+        <fcs_function name="/systems/fms/speeds/vr">
+            <function>
+                <max>
+                    <property>/systems/fms/speeds/vr-table</property>
+                    <property>/systems/fms/speeds/vmcg-to</property>
+                </max>
+            </function>
+            <output>/instrumentation/fmc/vspeeds/VR</output>
+        </fcs_function>
+
+        <!-- V2 -->
+        <fcs_function name="/systems/fms/speeds/v2">
+            <function>
+                <table>
+                    <independentVar lookup="row">inertia/weight-kg</independentVar>
+                    <independentVar lookup="column">/instrumentation/fmc/to-flap</independentVar>
+                    <tableData>
+                                10  20
+                        200000 136 130
+                        250000 150 144
+                        300000 164 158
+                        350000 177 171
+                        400000 189 182
+                    </tableData>
+                </table>
+            </function>
+            <output>/instrumentation/fmc/vspeeds/V2</output>
+        </fcs_function>
+
         <!-- Stabilizer Computer -->
         <fcs_function name="/systems/fms/internal/takeoff-stab-units-calc">
             <function>
