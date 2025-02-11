@@ -77,19 +77,19 @@
         <switch name="/systems/fms/speeds/flap-gear-max">
             <default value="0"/> <!-- Hide the tape -->
             <test value="180">
-                fcs/flaps/pos-deg ge 26
+                fcs/flaps/cmd-detent-deg == 30
             </test>
             <test value="205">
-                fcs/flaps/pos-deg ge 21
+                fcs/flaps/cmd-detent-deg == 25
             </test>
             <test value="230">
-                fcs/flaps/pos-deg ge 11
+                fcs/flaps/cmd-detent-deg == 20
             </test>
             <test value="240">
-                fcs/flaps/pos-deg ge 6
+                fcs/flaps/cmd-detent-deg == 10
             </test>
             <test value="260">
-                fcs/flaps/pos-deg ge 2
+                fcs/flaps/cmd-detent-deg == 5
             </test>
             <test logic="AND" value="/systems/fms/speeds/gear-ret-max-kts">
                 /controls/gear/gear-down eq 0
@@ -100,7 +100,7 @@
                 /gear/gear[1]/position-norm lt 0.99
             </test>
             <test value="280">
-                fcs/flaps/pos-deg ge 1
+                fcs/flaps/cmd-detent-deg == 1
             </test>        
             <test value="/systems/fms/speeds/gear-max-kts">
                 /controls/gear/gear-down eq 1

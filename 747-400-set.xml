@@ -787,6 +787,9 @@ left mouse button and counter clockwise using the middle mouse button.
 			<to-slope type="int">0</to-slope>
 			<to-wind type="int">0</to-wind>
 		</flight-data>
+		<internal n="0">
+			<phase type="int">0</phase>
+		</internal>
 	</fms>
 </systems>
 

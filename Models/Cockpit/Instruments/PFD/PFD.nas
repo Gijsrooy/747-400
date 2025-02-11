@@ -333,8 +333,8 @@ var B744PFD = {
 				obj["ilsId"].setText(val);
 			}),
 
-			props.UpdateManager.FromHashList(["ias","v1","v2","vr","wow"], 1, func(val) {
-				if (val.v1 or 0 > 0) {
+			props.UpdateManager.FromHashList(["ias","phase","flaps","toFlap","v1","v2","vr","wow"], 1, func(val) {
+				if (val.phase <= 1 and val.v1 > 0) {
 					if (val.wow) {
 						if (val.v1 - val.ias > 55) {
 							obj["v1Text"].setText(sprintf("%3.0f", val.v1));
@@ -345,39 +345,35 @@ var B744PFD = {
 							obj["v1"].setTranslation(0, -val.v1 * 5.584);
 							obj["v1"].show();
 						}
-						obj["vr"].show();
 						obj["vr"].setTranslation(0, -val.vr * 5.584);
+						if (abs(val.vr - val.v1) < 4) {
+							obj["vr_r"].show();
+							obj["vr_vr"].hide();
+						} else {
+							obj["vr_r"].hide();
+							obj["vr_vr"].show();
+						}
+						obj["vr"].show();
 					} else {
 						obj["v1"].hide();
 						obj["v1Numerical"].hide();
 						obj["vr"].hide();
 					}
-					obj["v2"].setTranslation(0, -val.v2 * 5.584);
 				} else {
 					obj["v1"].hide();
 					obj["v1Numerical"].hide();
 					obj["vr"].hide();
 				}
-			}),
-
-			props.UpdateManager.FromHashValue("flaps0", 1, func(val) {
-				obj["flaps0"].setTranslation(0, -val * 5.584);
-			}),
-			props.UpdateManager.FromHashValue("flaps1", 1, func(val) {
-				obj["flaps1"].setTranslation(0, -val * 5.584);
-			}),
-			props.UpdateManager.FromHashValue("flaps5", 1, func(val) {
-				obj["flaps5"].setTranslation(0, -val * 5.584);
-			}),
-			props.UpdateManager.FromHashValue("flaps10", 1, func(val) {
-				obj["flaps10"].setTranslation(0, -val * 5.584);
-			}),
-			props.UpdateManager.FromHashValue("flaps20", 1, func(val) {
-				obj["flaps20"].setTranslation(0, -val * 5.584);
+				if (val.phase <= 2 and val.flaps >= val.toFlap) {
+					obj["v2"].setTranslation(0, -val.v2 * 5.584);
+					obj["v2"].show();
+				} else {
+					obj["v2"].hide();
+				}
 			}),
 
 			props.UpdateManager.FromHashList(["vref","phase"], 1, func(val) {
-				if (val.phase == "APPROACH") {
+				if (val.phase >= 4) {
 					obj["vref"].setTranslation(0, -val.vref * 5.584);
 					obj["vref"].show();
 				} else {
@@ -385,21 +381,32 @@ var B744PFD = {
 				}
 			}),
 
-			props.UpdateManager.FromHashList(["alt","flaps"], nil, func(val) {
+			props.UpdateManager.FromHashList(["alt","flaps","flaps0","flaps1","flaps5","flaps10","flaps20","phase"], 1, func(val) {
 				obj["flaps0"].hide();
 				obj["flaps1"].hide();
 				obj["flaps5"].hide();
 				obj["flaps10"].hide();
 				obj["flaps20"].hide();
 				if (val.alt < 20000) {
-					if (val.flaps == 0.033) {
+					if (val.flaps == 0) {
+						obj["flaps0"].setTranslation(0, -val.flaps0 * 5.584);
+						obj["flaps0"].show();
+					} elsif (val.flaps == 1) {
+						obj["flaps0"].setTranslation(0, -val.flaps0 * 5.584);
+						obj["flaps1"].setTranslation(0, -val.flaps1 * 5.584);
 						obj["flaps0"].show(); obj["flaps1"].show();
-					} elsif (val.flaps == 0.167) {
+					} elsif (val.flaps == 5) {
+						obj["flaps1"].setTranslation(0, -val.flaps1 * 5.584);
+						obj["flaps5"].setTranslation(0, -val.flaps5 * 5.584);
 						obj["flaps1"].show(); obj["flaps5"].show();
-					} elsif (val.flaps == 0.333) {
+					} elsif (val.flaps == 10) {
+						obj["flaps5"].setTranslation(0, -val.flaps5 * 5.584);
+						obj["flaps10"].setTranslation(0, -val.flaps10 * 5.584);
 						obj["flaps5"].show(); obj["flaps10"].show();
-					} elsif (val.flaps == 0.667) {
-						obj["flaps10"].show(); obj["flaps20"].show();
+					} elsif (val.flaps == 20) {
+						obj["flaps10"].setTranslation(0, -val.flaps10 * 5.584);
+						obj["flaps20"].setTranslation(0, -val.flaps20 * 5.584);
+						obj["flaps10"].show(); obj["flaps20"].setVisible(val.phase >=4);
 					}
 				}
 			}),
@@ -476,7 +483,7 @@ var B744PFD = {
 		"dhText","dmeDist","egpwsPitch","fdX","fdY","flaps0","flaps1","flaps10","flaps20","flaps5",
 		"gpwsAlert","gsPtr","gsScale","horizon","ilsCourse","ilsId","locPtr","locScale","locScaleExp","machText","markerBeacon","markerBeaconText",
 		"maxSpdInd","mcpAltMtr","minimums","minSpdInd","pitchMode","radioAltInd","risingRwy","risingRwyPtr","rollMode","selAltBox","selAltPtr","selHdgPtr","selHdgText",
-		"spdTape","spdTrend","speedText","tenThousand","touchdown","trackIndicator","v1","v1Numerical","v1Text","v2","vertSpd","vr","vref","vsiNeedle","vsPointer"];
+		"spdTape","spdTrend","speedText","tenThousand","touchdown","trackIndicator","v1","v1Numerical","v1Text","v2","vertSpd","vr","vr_r","vr_vr","vref","vsiNeedle","vsPointer"];
 	},
 
 	update: func(notification) {
@@ -493,7 +500,7 @@ var input = {
 	apSpd: "/autopilot/settings/target-speed-kt",
 	destElev: "/autopilot/route-manager/destination/field-elevation-ft",
 	dh: "/instrumentation/mk-viii/inputs/arinc429/decision-height",
-	flaps: "/controls/flight/flaps",
+	flaps: "/fdm/jsbsim/fcs/flaps/cmd-detent-deg",
 	flaps0: "/systems/fms/speeds/flaps-0",
 	flaps1: "/systems/fms/speeds/flaps-1",
 	flaps5: "/systems/fms/speeds/flaps-5",
@@ -517,7 +524,7 @@ var input = {
 	navNeedle: "/instrumentation/nav/heading-needle-deflection-norm",
 	navSigQ: "/instrumentation/nav/signal-quality-norm",
 	passiveMode: "/autopilot/locks/passive-mode",
-	phase: "/instrumentation/fmc/phase-name",
+	phase: "/systems/fms/internal/phase",
 	pitch: "/orientation/pitch-deg",
 	roll: "/orientation/roll-deg",
 	selHdg: "/autopilot/settings/heading-bug-deg",
@@ -525,6 +532,7 @@ var input = {
 	spdTrend: "/instrumentation/pfd/speed-trend-up",
 	targetRoll: "/autopilot/internal/target-roll-deg",
 	targetVs: "instrumentation/pfd/target-vs",
+	toFlap: "/instrumentation/fmc/to-flap",
 	track: "/orientation/track-magnetic-deg",
 	v1: "/instrumentation/fmc/vspeeds/V1",
 	v2: "/instrumentation/fmc/vspeeds/V2",
