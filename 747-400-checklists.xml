@@ -118,14 +118,14 @@
                 <name>START switches</name>
                 <value>In, extinguished</value>
                 <condition>
-                    <and>
-                        <not>
+                    <not>
+                        <or>
                             <property>/controls/engines/engine[0]/starter</property>
                             <property>/controls/engines/engine[1]/starter</property>
                             <property>/controls/engines/engine[2]/starter</property>
                             <property>/controls/engines/engine[3]/starter</property>
-                        </not>
-                    </and>
+                        </or>
+                    </not>
                 </condition>
             </item>
             <item>
@@ -137,7 +137,10 @@
                 <value>Off</value>
                 <condition>
                     <not>
-                        <property>/controls/fuel/dump-valve</property>
+                        <or>
+                            <property>/controls/fuel/jettison/valve[0]</property>
+                            <property>/controls/fuel/jettison/valve[1]</property>
+                        </or>
                     </not>
                 </condition>
             </item>
@@ -157,45 +160,52 @@
                 <name>All fuel pump switches</name>
                 <value>Off</value>
                 <condition>
-                    <and>
-                        <not>
-                            <property>/controls/fuel/tank[1]/pump-aft</property>
-                            <property>/controls/fuel/tank[1]/pump-fwd</property>
-                            <property>/controls/fuel/tank[2]/pump-aft</property>
-                            <property>/controls/fuel/tank[2]/pump-fwd</property>
-                            <property>/controls/fuel/tank[3]/pump-aft</property>
-                            <property>/controls/fuel/tank[3]/pump-fwd</property>
-                            <property>/controls/fuel/tank[4]/pump-aft</property>
-                            <property>/controls/fuel/tank[4]/pump-fwd</property>
-                            <property>/controls/fuel/tank[7]/pump</property>
-                        </not>
-                    </and>
+                    <not>
+                        <or>
+                            <property>/controls/fuel/tank[0]/override-pump[0]</property>
+                            <property>/controls/fuel/tank[0]/override-pump[1]</property>
+                            <property>/controls/fuel/tank[1]/pump[0]</property>
+                            <property>/controls/fuel/tank[1]/pump[1]</property>
+                            <property>/controls/fuel/tank[2]/pump[0]</property>
+                            <property>/controls/fuel/tank[2]/pump[1]</property>
+                            <property>/controls/fuel/tank[2]/override-pump[0]</property>
+                            <property>/controls/fuel/tank[2]/override-pump[1]</property>
+                            <property>/controls/fuel/tank[3]/pump[0]</property>
+                            <property>/controls/fuel/tank[3]/pump[1]</property>
+                            <property>/controls/fuel/tank[3]/override-pump[0]</property>
+                            <property>/controls/fuel/tank[3]/override-pump[1]</property>
+                            <property>/controls/fuel/tank[4]/pump[0]</property>
+                            <property>/controls/fuel/tank[4]/pump[1]</property>
+                            <property>/controls/fuel/tank[7]/pump[0]</property>
+                            <property>/controls/fuel/tank[7]/pump[1]</property>
+                        </or>
+                    </not>
                 </condition>
             </item>
             <item>
                 <name>Windshield WIPER selectors</name>
                 <value>OFF</value>
                 <condition>
-                    <and>
-                        <not>
+                    <not>
+                        <or>
                             <property>/controls/electric/wiperl/switch</property>
                             <property>/controls/electric/wiperr/switch</property>
-                        </not>
-                    </and>
+                        </or>
+                    </not>
                 </condition>
             </item>
             <item>
                 <name>LANDING light switches</name>
                 <value>OFF</value>
                 <condition>
-                    <and>
-                        <not>
+                    <not>
+                        <or>
                             <property>/controls/lighting/landing-light-inbdl</property>
                             <property>/controls/lighting/landing-light-inbdr</property>
                             <property>/controls/lighting/landing-light-outbdl</property>
                             <property>/controls/lighting/landing-light-outbdr</property>
-                        </not>
-                    </and>
+                        </or>
+                    </not>
                 </condition>
             </item>
             <!--
@@ -371,14 +381,14 @@
                 <name>Reverse thrust levers</name>
                 <value>Down</value>
                 <condition>
-                    <and>
-                        <not>
+                    <not>
+                        <or>
                             <property>/controls/engines/engine[0]/reverser</property>
                             <property>/controls/engines/engine[1]/reverser</property>
                             <property>/controls/engines/engine[2]/reverser</property>
                             <property>/controls/engines/engine[3]/reverser</property>
-                        </not>
-                    </and>
+                        </or>
+                    </not>
                 </condition>
             </item>
             <item>
@@ -473,26 +483,35 @@
             <value>On</value>
             <condition>
                 <and>
-                    <property>/controls/fuel/tank[1]/pump-aft</property>
-                    <property>/controls/fuel/tank[1]/pump-fwd</property>
-                    <property>/controls/fuel/tank[2]/pump-aft</property>
-                    <property>/controls/fuel/tank[2]/pump-fwd</property>
-                    <property>/controls/fuel/tank[3]/pump-aft</property>
-                    <property>/controls/fuel/tank[3]/pump-fwd</property>
-                    <property>/controls/fuel/tank[4]/pump-aft</property>
-                    <property>/controls/fuel/tank[4]/pump-fwd</property>
+                    <property>/controls/fuel/tank[1]/pump[0]</property>
+                    <property>/controls/fuel/tank[1]/pump[1]</property>
+                    <property>/controls/fuel/tank[2]/pump[0]</property>
+                    <property>/controls/fuel/tank[2]/pump[1]</property>
+                    <property>/controls/fuel/tank[3]/pump[0]</property>
+                    <property>/controls/fuel/tank[3]/pump[1]</property>
+                    <property>/controls/fuel/tank[4]/pump[0]</property>
+                    <property>/controls/fuel/tank[4]/pump[1]</property>
                 </and>
             </condition>
         </item>
         <item>
             <name>CENTER FUEL PUMP switches (if not empty)</name>
             <value>On</value>
+            <condition>
+                <and>
+                    <property>/controls/fuel/tank[0]/override-pump[0]</property>
+                    <property>/controls/fuel/tank[0]/override-pump[1]</property>
+                </and>
+            </condition>
         </item>
         <item>
             <name>STAB FUEL PUMP switches (if not empty)</name>
             <value>On</value>
             <condition>
-                <property>/controls/fuel/tank[7]/pump</property>
+                <and>
+                    <property>/controls/fuel/tank[7]/pump[0]</property>
+                    <property>/controls/fuel/tank[7]/pump[1]</property>
+                </and>
             </condition>
         </item>
         <item>
@@ -636,12 +655,12 @@
             <name>Above 10,000ft INBOARD landing lights switches</name>
             <value>OFF</value>
             <condition>
-                <and>
-                    <not>
+                <not>
+                    <or>
                         <property>/controls/lighting/landing-light-inbdl</property>
                         <property>/controls/lighting/landing-light-inbdr</property>
-                    </not>
-                </and>
+                    </or>
+                </not>
             </condition>
         </item>
     </checklist>
@@ -681,12 +700,12 @@
             <name>INBOARD landing lights switches</name>
             <value>OFF</value>
             <condition>
-                <and>
-                    <not>
+                <not>
+                    <or>
                         <property>/controls/lighting/landing-light-inbdl</property>
                         <property>/controls/lighting/landing-light-inbdr</property>
-                    </not>
-                </and>
+                    </or>
+                </not>
             </condition>
         </item>
         <item>
@@ -733,13 +752,13 @@
             <name>Hydraulic demand pump 1, 2, and 3 selectors</name>
             <value>OFF</value>
             <condition>
-                <and>
-                    <not>
+                <not>
+                    <or>
                         <property>/controls/hydraulic/demand-pump[0]</property>
                         <property>/controls/hydraulic/demand-pump[1]</property>
                         <property>/controls/hydraulic/demand-pump[2]</property>
-                    </not>
-                </and>
+                    </or>
+                </not>
             </condition>
         </item>
         <item>
@@ -768,19 +787,22 @@
             <name>FUEL PUMP switches</name>
             <value>OFF</value>
             <condition>
-                <and>
-                    <not>
-                        <property>/controls/fuel/tank[1]/pump-aft</property>
-                        <property>/controls/fuel/tank[1]/pump-fwd</property>
-                        <property>/controls/fuel/tank[2]/pump-aft</property>
-                        <property>/controls/fuel/tank[2]/pump-fwd</property>
-                        <property>/controls/fuel/tank[3]/pump-aft</property>
-                        <property>/controls/fuel/tank[3]/pump-fwd</property>
-                        <property>/controls/fuel/tank[4]/pump-aft</property>
-                        <property>/controls/fuel/tank[4]/pump-fwd</property>
-                        <property>/controls/fuel/tank[7]/pump</property>
-                    </not>
-                </and>
+                <not>
+                    <or>
+                        <property>/controls/fuel/tank[0]/override-pump[0]</property>
+                        <property>/controls/fuel/tank[0]/override-pump[1]</property>
+                        <property>/controls/fuel/tank[1]/pump[0]</property>
+                        <property>/controls/fuel/tank[1]/pump[1]</property>
+                        <property>/controls/fuel/tank[2]/pump[0]</property>
+                        <property>/controls/fuel/tank[2]/pump[1]</property>
+                        <property>/controls/fuel/tank[3]/pump[0]</property>
+                        <property>/controls/fuel/tank[3]/pump[1]</property>
+                        <property>/controls/fuel/tank[4]/pump[0]</property>
+                        <property>/controls/fuel/tank[4]/pump[1]</property>
+                        <property>/controls/fuel/tank[7]/pump[0]</property>
+                        <property>/controls/fuel/tank[7]/pump[1]</property>
+                    </or>
+                </not>
             </condition>
         </item>
         <item>
@@ -824,13 +846,13 @@
             <name>Pack control selectors</name>
             <value>OFF</value>
             <condition>
-                <and>
-                    <not>
+                <not>
+                    <or>
                         <property>/controls/pneumatic/pack-control[0]</property>
                         <property>/controls/pneumatic/pack-control[1]</property>
                         <property>/controls/pneumatic/pack-control[2]</property>
-                    </not>
-                </and>
+                    </or>
+                </not>
             </condition>
         </item>
     </checklist>
