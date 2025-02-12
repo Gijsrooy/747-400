@@ -384,7 +384,7 @@ var input = {
 	msgCaution: "/instrumentation/eicas/msg/caution",
 	msgAdvisory: "/instrumentation/eicas/msg/advisory",
 	msgMemo: "/instrumentation/eicas/msg/memo",
-	tat: "/environment/temperature-degc",
+	tat: "/fdm/jsbsim/propulsion/tat-c",
 	thrustMode: "/fdm/jsbsim/eec/reference-thrust-mode",
 	wai: "/controls/anti-ice/wing-heat",
 };
