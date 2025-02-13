@@ -3,7 +3,7 @@ Boeing style chronometer, by Syd Adams
 -->
 
 <PropertyList>
- 
+
     <path>chronometer.ac</path>
 
     <animation>
@@ -28,9 +28,18 @@ Boeing style chronometer, by Syd Adams
         <object-name>ET.switch</object-name>
         <property>instrumentation/clock/et-knob</property>
         <interpolation>
-            <entry><ind>-1</ind><dep>-144</dep></entry>
-            <entry><ind>0</ind><dep>0</dep></entry>
-            <entry><ind>1</ind><dep>35</dep></entry>
+            <entry>
+                <ind>-1</ind>
+                <dep>-144</dep>
+            </entry>
+            <entry>
+                <ind>0</ind>
+                <dep>0</dep>
+            </entry>
+            <entry>
+                <ind>1</ind>
+                <dep>35</dep>
+            </entry>
         </interpolation>
         <center>
             <x-m>0</x-m>
@@ -49,10 +58,22 @@ Boeing style chronometer, by Syd Adams
         <object-name>SET.switch</object-name>
         <property>instrumentation/clock/set-knob</property>
         <interpolation>
-            <entry><ind>0</ind><dep>0</dep></entry>
-            <entry><ind>1</ind><dep>30</dep></entry>
-            <entry><ind>2</ind><dep>60</dep></entry>
-            <entry><ind>3</ind><dep>90</dep></entry>
+            <entry>
+                <ind>0</ind>
+                <dep>0</dep>
+            </entry>
+            <entry>
+                <ind>1</ind>
+                <dep>30</dep>
+            </entry>
+            <entry>
+                <ind>2</ind>
+                <dep>60</dep>
+            </entry>
+            <entry>
+                <ind>3</ind>
+                <dep>90</dep>
+            </entry>
         </interpolation>
         <center>
             <x-m>0</x-m>
@@ -71,9 +92,18 @@ Boeing style chronometer, by Syd Adams
         <object-name>UTC.switch</object-name>
         <property>instrumentation/clock/time-knob</property>
         <interpolation>
-            <entry><ind>-1</ind><dep>-135</dep></entry>
-            <entry><ind>0</ind><dep>0</dep></entry>
-            <entry><ind>1</ind><dep>35</dep></entry>
+            <entry>
+                <ind>-1</ind>
+                <dep>-135</dep>
+            </entry>
+            <entry>
+                <ind>0</ind>
+                <dep>0</dep>
+            </entry>
+            <entry>
+                <ind>1</ind>
+                <dep>35</dep>
+            </entry>
         </interpolation>
         <center>
             <x-m>0</x-m>
@@ -87,7 +117,7 @@ Boeing style chronometer, by Syd Adams
         </axis>
     </animation>
 
-<!-- Digital displays -->
+    <!-- Digital displays -->
 
     <animation>
         <type>textranslate</type>
@@ -114,7 +144,7 @@ Boeing style chronometer, by Syd Adams
             <z>0</z>
         </axis>
     </animation>
- 
+
     <animation>
         <type>textranslate</type>
         <object-name>Mn.10</object-name>
@@ -205,34 +235,34 @@ Boeing style chronometer, by Syd Adams
         </condition>
     </animation>
 
-<!--  Hotspots -->
+    <!--  Hotspots -->
 
     <hotspot-action-script>
-		if (!contains(aircraft, "boeing_chronometer"))
-		{
-			aircraft.boeing_chronometer = aircraft.timer.new("/instrumentation/clock/ET-sec", 1);
-			aircraft.boeing_chronometer.stop();
-			props.globals.initNode("/instrumentation/clock/ET-display",0,"INT");
-			props.globals.initNode("/instrumentation/clock/time-display",0,"INT");
-			props.globals.initNode("/instrumentation/clock/time-knob",0,"INT");
-			props.globals.initNode("/instrumentation/clock/et-knob",0,"INT");
-			props.globals.initNode("/instrumentation/clock/set-knob",0,"INT");
-			print("Boeing chronometer ... initialized");
-		}
+        if (!contains(aircraft, "boeing_chronometer"))
+        {
+        aircraft.boeing_chronometer = aircraft.timer.new("/instrumentation/clock/ET-sec", 1);
+        aircraft.boeing_chronometer.stop();
+        props.globals.initNode("/instrumentation/clock/ET-display",0,"INT");
+        props.globals.initNode("/instrumentation/clock/time-display",0,"INT");
+        props.globals.initNode("/instrumentation/clock/time-knob",0,"INT");
+        props.globals.initNode("/instrumentation/clock/et-knob",0,"INT");
+        props.globals.initNode("/instrumentation/clock/set-knob",0,"INT");
+        print("Boeing chronometer ... initialized");
+        }
 
-		var tmp = props.globals.getNode("/instrumentation/clock/et-knob").getValue();
-		if (tmp == -1)
-		{
-			aircraft.boeing_chronometer.reset();
-		}
-		elsif (tmp == 0)
-		{
-			aircraft.boeing_chronometer.stop();
-		}
-		elsif (tmp == 1)
-		{
-			aircraft.boeing_chronometer.start();
-		}
+        var tmp = props.globals.getNode("/instrumentation/clock/et-knob").getValue();
+        if (tmp == -1)
+        {
+        aircraft.boeing_chronometer.reset();
+        }
+        elsif (tmp == 0)
+        {
+        aircraft.boeing_chronometer.stop();
+        }
+        elsif (tmp == 1)
+        {
+        aircraft.boeing_chronometer.start();
+        }
     </hotspot-action-script>
 
     <animation>
@@ -241,14 +271,14 @@ Boeing style chronometer, by Syd Adams
         <action>
             <button>0</button>
             <repeatable>false</repeatable>
-             <binding>
+            <binding>
                 <command>property-assign</command>
                 <property>instrumentation/clock/et-knob</property>
                 <value>1</value>
             </binding>
             <binding>
-               <command>nasal</command>
-               <script alias="../../../../hotspot-action-script" />
+                <command>nasal</command>
+                <script alias="../../../../hotspot-action-script" />
             </binding>
         </action>
     </animation>
@@ -259,14 +289,14 @@ Boeing style chronometer, by Syd Adams
         <action>
             <button>0</button>
             <repeatable>false</repeatable>
-             <binding>
+            <binding>
                 <command>property-assign</command>
                 <property>instrumentation/clock/et-knob</property>
                 <value>0</value>
             </binding>
             <binding>
-               <command>nasal</command>
-               <script alias="../../../../hotspot-action-script" />
+                <command>nasal</command>
+                <script alias="../../../../hotspot-action-script" />
             </binding>
         </action>
     </animation>
@@ -283,8 +313,8 @@ Boeing style chronometer, by Syd Adams
                 <value>-1</value>
             </binding>
             <binding>
-               <command>nasal</command>
-               <script alias="../../../../hotspot-action-script" />
+                <command>nasal</command>
+                <script alias="../../../../hotspot-action-script" />
             </binding>
             <mod-up>
                 <binding>
@@ -293,8 +323,8 @@ Boeing style chronometer, by Syd Adams
                     <value>0</value>
                 </binding>
                 <binding>
-                   <command>nasal</command>
-                   <script alias="../../../../../hotspot-action-script" />
+                    <command>nasal</command>
+                    <script alias="../../../../../hotspot-action-script" />
                 </binding>
             </mod-up>
         </action>
@@ -306,13 +336,13 @@ Boeing style chronometer, by Syd Adams
         <action>
             <button>0</button>
             <repeatable>false</repeatable>
-             <binding>
+            <binding>
                 <command>property-toggle</command>
                 <property>instrumentation/clock/et-knob</property>
             </binding>
             <binding>
-               <command>nasal</command>
-               <script alias="../../../../hotspot-action-script" />
+                <command>nasal</command>
+                <script alias="../../../../hotspot-action-script" />
             </binding>
         </action>
         <action>
@@ -324,8 +354,8 @@ Boeing style chronometer, by Syd Adams
                 <value>-1</value>
             </binding>
             <binding>
-               <command>nasal</command>
-               <script alias="../../../../hotspot-action-script" />
+                <command>nasal</command>
+                <script alias="../../../../hotspot-action-script" />
             </binding>
             <mod-up>
                 <binding>
@@ -334,8 +364,8 @@ Boeing style chronometer, by Syd Adams
                     <value>0</value>
                 </binding>
                 <binding>
-                   <command>nasal</command>
-                   <script alias="../../../../../hotspot-action-script" />
+                    <command>nasal</command>
+                    <script alias="../../../../../hotspot-action-script" />
                 </binding>
             </mod-up>
         </action>
