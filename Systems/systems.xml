@@ -49,4 +49,65 @@
 
     </channel>
 
+    <channel name="wipers">
+
+        <switch name="/systems/wipers/wiper-l-rate">
+            <default value="/systems/wipers/wiper-l-rate"/>
+            <test value="1.6"> <!-- 190 strokes per minute -->
+                /controls/electric/wiperl/switch == 1
+            </test>
+            <test value="2.1"> <!-- 250 strokes per minute -->
+                /controls/electric/wiperl/switch == 2
+            </test>
+        </switch>
+        <switch name="/systems/wipers/wiper-r-rate">
+            <default value="/systems/wipers/wiper-r-rate"/>
+            <test value="1.6"> <!-- 190 strokes per minute -->
+                /controls/electric/wiperr/switch == 1
+            </test>
+            <test value="2.1"> <!-- 250 strokes per minute -->
+                /controls/electric/wiperr/switch == 2
+            </test>
+        </switch>
+
+        <switch name="/systems/wipers/wiper-l-cmd">
+            <default value="/systems/wipers/wiper-l-cmd"/>
+            <test logic="AND" value="0">
+                /systems/wipers/wiper-l-pos-norm == 1
+                /controls/electric/wiperl/switch gt 0
+            </test>
+            <test value="1">
+                /systems/wipers/wiper-l-pos-norm == 0
+            </test>
+        </switch>
+        <switch name="/systems/wipers/wiper-r-cmd">
+            <default value="/systems/wipers/wiper-r-cmd"/>
+            <test logic="AND" value="0">
+                /systems/wipers/wiper-r-pos-norm == 1
+                /controls/electric/wiperr/switch gt 0
+            </test>
+            <test value="1">
+                /systems/wipers/wiper-r-pos-norm == 0
+            </test>
+        </switch>
+
+        <actuator name="/systems/wipers/wiper-l-pos-norm">
+            <input> /systems/wipers/wiper-l-cmd </input>
+            <rate_limit> /systems/wipers/wiper-l-rate </rate_limit>
+            <clipto>
+                <min> 0 </min>
+                <max> 1 </max>
+            </clipto>
+        </actuator>
+        <actuator name="/systems/wipers/wiper-r-pos-norm">
+            <input> /systems/wipers/wiper-r-cmd </input>
+            <rate_limit> /systems/wipers/wiper-r-rate </rate_limit>
+            <clipto>
+                <min> 0 </min>
+                <max> 1 </max>
+            </clipto>
+        </actuator>
+
+    </channel>
+
 </system>

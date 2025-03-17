@@ -2870,15 +2870,15 @@
 		<type>rotate</type>
 		<object-name>RHwiper</object-name>
 		<object-name>RHwiper.blade</object-name>
-		<property>controls/electric/wiperr/position-norm</property>
+		<property>systems/wipers/wiper-r-pos-norm</property>
 		<interpolation>
 			<entry>
 				<ind>0.0</ind>
-				<dep>100</dep>
+				<dep>25</dep>
 			</entry>
 			<entry>
 				<ind>1.0</ind>
-				<dep>25</dep>
+				<dep>100</dep>
 			</entry>
 		</interpolation>
 		<center>
@@ -2896,15 +2896,15 @@
 	<animation>
 		<type>rotate</type>
 		<object-name>RHwiper.arm</object-name>
-		<property>controls/electric/wiperr/position-norm</property>
+		<property>systems/wipers/wiper-r-pos-norm</property>
 		<interpolation>
 			<entry>
 				<ind>0.0</ind>
-				<dep>100</dep>
+				<dep>25</dep>
 			</entry>
 			<entry>
 				<ind>1.0</ind>
-				<dep>25</dep>
+				<dep>100</dep>
 			</entry>
 		</interpolation>
 		<center>
@@ -2922,15 +2922,15 @@
 	<animation>
 		<type>rotate</type>
 		<object-name>RHwiper.blade</object-name>
-		<property>controls/electric/wiperr/position-norm</property>
+		<property>systems/wipers/wiper-r-pos-norm</property>
 		<interpolation>
 			<entry>
 				<ind>0.0</ind>
-				<dep>-45</dep>
+				<dep>-25</dep>
 			</entry>
 			<entry>
 				<ind>1.0</ind>
-				<dep>-25</dep>
+				<dep>-45</dep>
 			</entry>
 		</interpolation>
 		<center>
@@ -2949,15 +2949,15 @@
 		<type>rotate</type>
 		<object-name>LHwiper</object-name>
 		<object-name>LHwiper.blade</object-name>
-		<property>controls/electric/wiperl/position-norm</property>
+		<property>systems/wipers/wiper-l-pos-norm</property>
 		<interpolation>
 			<entry>
 				<ind>0.0</ind>
-				<dep>-100</dep>
+				<dep>-25</dep>
 			</entry>
 			<entry>
 				<ind>1.0</ind>
-				<dep>-25</dep>
+				<dep>-100</dep>
 			</entry>
 		</interpolation>
 		<center>
@@ -2975,15 +2975,15 @@
 	<animation>
 		<type>rotate</type>
 		<object-name>LHwiper.arm</object-name>
-		<property>controls/electric/wiperl/position-norm</property>
+		<property>systems/wipers/wiper-l-pos-norm</property>
 		<interpolation>
 			<entry>
 				<ind>0.0</ind>
-				<dep>-100</dep>
+				<dep>-25</dep>
 			</entry>
 			<entry>
 				<ind>1.0</ind>
-				<dep>-25</dep>
+				<dep>-100</dep>
 			</entry>
 		</interpolation>
 		<center>
@@ -3001,15 +3001,15 @@
 	<animation>
 		<type>rotate</type>
 		<object-name>LHwiper.blade</object-name>
-		<property>controls/electric/wiperl/position-norm</property>
+		<property>systems/wipers/wiper-l-pos-norm</property>
 		<interpolation>
 			<entry>
 				<ind>0.0</ind>
-				<dep>45</dep>
+				<dep>25</dep>
 			</entry>
 			<entry>
 				<ind>1.0</ind>
-				<dep>25</dep>
+				<dep>45</dep>
 			</entry>
 		</interpolation>
 		<center>
