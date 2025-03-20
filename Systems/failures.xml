@@ -94,23 +94,4 @@
 
 	</channel>
 
-	<channel name="wings">
-
-		<!-- wings break of at large g-forces -->
-		<switch name="fcs/failures-wings-broken">
-			<default value="/controls/failures/wings/broken"/>
-			<test  logic="AND" value="1">
-				/accelerations/pilot-gdamped GT 5
-			</test>
-			<output>/controls/failures/wings/broken</output>
-		</switch>
-		<switch name="fcs/failures-wings-lift">
-			<default value="1"/>
-			<test  logic="AND" value="0">
-				/controls/failures/wings/broken == 1
-			</test>
-		</switch>
-
-	</channel>
-
 </system>

@@ -346,7 +346,6 @@ left mouse button and counter clockwise using the middle mouse button.
 		<generic>
 			<float n="0" alias="/controls/doors/cargo1/position-norm"/>
 			<float n="1" alias="/controls/flight/flaps"/>
-			<int n="0" alias="/controls/failures/wings/broken"/>
 			<string n="1" type="string"></string> <!-- MP TDM1 -->
 		</generic>
 	</multiplay>
@@ -433,9 +432,6 @@ left mouse button and counter clockwise using the middle mouse button.
 		<gear n="4">
 			<stuck type="bool">0</stuck>
 		</gear>
-		<wings>
-			<broken type="bool">0</broken>
-		</wings>
 	</failures>
 
 	<flight>

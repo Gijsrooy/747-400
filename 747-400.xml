@@ -2583,7 +2583,6 @@
             <description>Lift_due_to_alpha</description>
             <sum>
                 <product>
-                    <property>fcs/failures-wings-lift</property>
                     <table>
                         <independentVar>fcs/flaps/pos-deg</independentVar>
                         <tableData>
@@ -2608,7 +2607,6 @@
                     </table>
                 </product>
                 <product>
-                    <property>fcs/failures-wings-lift</property>
                     <table>
                         <independentVar>fcs/flaps/pos-deg</independentVar>
                         <tableData>
@@ -3284,7 +3282,6 @@
                     <property>aero/qbar-psf</property>
                     <property>metrics/Sw-sqft</property>
                     <property>aero/coefficient/CL_total</property>
-                    <property>fcs/failures-wings-lift</property>
                 </product>
             </function>            
         </axis>

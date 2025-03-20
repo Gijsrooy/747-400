@@ -233,7 +233,6 @@ controls.gearDown = func(v) {
 
 ## Repair failures/malfunctions ##
 var repair = func() {
-	setprop("/controls/failures/wings/broken",0);
 	setprop("/controls/engines/engine[0]/on-fire",0);
 	setprop("/controls/engines/engine[1]/on-fire",0);
 	setprop("/controls/engines/engine[2]/on-fire",0);
