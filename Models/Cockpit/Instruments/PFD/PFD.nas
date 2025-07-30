@@ -12,6 +12,11 @@ var roundToNearest = func(n, m) {
 var pfd_canvas = nil;
 var pfd_display = nil;
 
+var apAfds = nil;
+var apAlt = nil;
+var apHdg = nil;
+var apSpd = nil;
+
 var B744PFD = {
 	new: func(svg, name) {
 		var obj = { parents: [B744PFD] };
@@ -79,18 +84,22 @@ var B744PFD = {
 				}
 			}),
 
-			props.UpdateManager.FromHashList(["passiveMode","roll","targetRoll"], 0.1, func(val) {
-				if (val.passiveMode == 1) {
-					if (val.targetRoll != nil) {
-						var fdRoll = (val.roll - val.targetRoll) * 10.5;
-						if (fdRoll > 200)
-							fdRoll = 200;
-						elsif (fdRoll < -200)
-							fdRoll = -200;
-						obj["fdX"].setTranslation(-fdRoll, 0);
-					}
+			props.UpdateManager.FromHashList(["fd1","fdRoll","fdPitch"], 0.1, func(val) {
+				if (val.fd1 == 1) {
+					var fdRoll = val.fdRoll * 10.5;
+					var fdPitch = val.fdPitch * 10.5;
+					if (fdRoll > 200)
+						fdRoll = 200;
+					elsif (fdRoll < -200)
+						fdRoll = -200;
+					if (fdPitch > 200)
+						fdPitch = 200;
+					elsif (fdPitch < -200)
+						fdPitch = -200;
+					obj["fdX"].setTranslation(fdRoll, 0);
+					obj["fdY"].setTranslation(0, -fdPitch);
 					obj["fdX"].show();
-					#obj["fdY"].show();
+					obj["fdY"].show();
 				} else {
 					obj["fdX"].hide();
 					obj["fdY"].hide();
@@ -100,9 +109,9 @@ var B744PFD = {
 			# 121 kts = 675 px -> 5.584
 			# 806 ft = 675 px -> 0.837
 			
-			props.UpdateManager.FromHashList(["apSpd","ias"], 0.1, func(val) {
+			props.UpdateManager.FromHashList(["apKts","ias"], 0.1, func(val) {
 				if (val.ias < 30) val.ias = 30;
-				var cmdSpd = val.apSpd - val.ias;
+				var cmdSpd = val.apKts - val.ias;
 				if (cmdSpd > 60)
 					cmdSpd = 60;
 				elsif(cmdSpd < -60)
@@ -170,7 +179,12 @@ var B744PFD = {
 					} else {
 						obj["vertSpd"].hide();
 					}
-					obj["vsPointer"].setTranslation(0, -val.targetVs);
+					if (val.apAlt == 1) {
+						obj["vsPointer"].setTranslation(0, -val.targetVs);
+						obj["vsPointer"].show();
+					} else {
+						obj["vsPointer"].hide();
+					}
 				}
 			}),
 
@@ -204,16 +218,15 @@ var B744PFD = {
 						
 					obj["locPtr"].show();
 					
-					var radioAlt = val.agl - 24;
-					if (radioAlt < 2500) {
+					if (val.agl < 2500) {
 						obj["risingRwy"].show();
 						obj["risingRwyPtr"].show();
-						if (radioAlt< 200) {
+						if (val.agl < 200) {
 							if(abs(deflection) < 0.1)
-								obj["risingRwy"].setTranslation(deflection * 500, -(200 - radioAlt) * 0.682);
+								obj["risingRwy"].setTranslation(deflection * 500, -(200 - val.agl) * 0.682);
 							else
-								obj["risingRwy"].setTranslation(deflection * 250, -(200 - radioAlt) * 0.682);
-							obj["risingRwyPtr_scale"].setScale(1, ((200 - radioAlt) * 0.682) / 11);
+								obj["risingRwy"].setTranslation(deflection * 250, -(200 - val.agl) * 0.682);
+							obj["risingRwyPtr_scale"].setScale(1, ((200 - val.agl) * 0.682) / 11);
 						} else {
 							obj["risingRwy"].setTranslation(deflection * 150, 0);
 							obj["risingRwyPtr_scale"].setScale(1, 1);
@@ -259,14 +272,13 @@ var B744PFD = {
 			}),
 
 			props.UpdateManager.FromHashValue("agl", 1, func(val) {
-				var radioAlt = val - 24;
-				if (radioAlt < 2500) {
-					if (radioAlt > 500)
-						obj["radioAltInd"].setText(sprintf("%4.0f", roundToNearest(radioAlt, 20)));
-					elsif (radioAlt > 100)
-						obj["radioAltInd"].setText(sprintf("%4.0f", roundToNearest(radioAlt, 10)));
+				if (val < 2500) {
+					if (val > 500)
+						obj["radioAltInd"].setText(sprintf("%4.0f", roundToNearest(val, 20)));
+					elsif (val > 100)
+						obj["radioAltInd"].setText(sprintf("%4.0f", roundToNearest(val, 10)));
 					else
-						obj["radioAltInd"].setText(sprintf("%4.0f", roundToNearest(radioAlt, 2)));
+						obj["radioAltInd"].setText(sprintf("%4.0f", roundToNearest(val, 2)));
 					obj["radioAltInd"].show();
 				} else {
 					obj["radioAltInd"].hide();
@@ -291,42 +303,80 @@ var B744PFD = {
 				obj["vsiNeedle"].setRotation(val * D2R);
 			}),
 
-			props.UpdateManager.FromHashList(["passiveMode","altLock","hdgLock","spdLock"], nil, func(val) {
-				if (val.passiveMode == 1)
-					obj["afdsMode"].setText("FD");
-				elsif (val.altLock != "" or val.hdgLock != "" or val.spdLock != "")
-					obj["afdsMode"].setText("CMD");
-				else
-					obj["afdsMode"].setText("");
+			props.UpdateManager.FromHashList(["ap1","ap2","ap3","agl","athr","fd1","fd2","afdsMode","latMode","vertMode","spdMode"], nil, func(val) {
+				var afdsMode = "";
+				var athrMode = "";
+				var latMode = "";
+				var vertMode = "";
 
-				if (val.spdLock == "speed-with-throttle")
-					obj["atMode"].setText("SPD");
-				elsif (val.spdLock ==  "speed-with-pitch-trim")
-					obj["atMode"].setText("THR");
-				else
-					obj["atMode"].setText("");
+				if (val.ap1 == 1 or val.ap2 == 1 or val.ap3 == 1) {
+					if (val.agl < 1500 and (val.latMode == "LOC" or val.latMode == "ROLLOUT")) {
+						if ((val.ap1 + val.ap2 + val.ap3) == 3) {
+							afdsMode = "LAND 3";
+						} elsif ((val.ap1 + val.ap2 + val.ap3) == 2) {
+							afdsMode = "LAND 2";
+						} else {
+							afdsMode = "NO AUTOLAND";
+						}
+					} else {
+						afdsMode = "CMD"
+					}
+				} elsif (val.fd1 == 1 or val.fd2 == 1) {
+					afdsMode = "FD";
+				} else {
+					afdsMode = "";
+				}
 
-				if (val.hdgLock == "wing-leveler")
-					obj["rollMode"].setText("HDG HOLD");
-				elsif (val.hdgLock ==  "dg-heading-hold")
-					obj["rollMode"].setText("HDG SEL");
-				elsif (val.hdgLock ==  "nav1-hold")
-					obj["rollMode"].setText("LNAV");
-				else
-					obj["rollMode"].setText("");
+				if (val.athr == 1) {
+					athrMode = val.spdMode;
+				}
+				if (val.ap1 == 1 or val.ap2 == 1 or val.ap3 == 1 or val.fd1 == 1 or val.fd2 == 1) {
+					latMode = val.latMode;
+					vertMode = val.vertMode;
+				}
 
-				obj["vsPointer"].hide();
-				if (val.altLock == "vertical-speed-hold") {
-					obj["pitchMode"].setText("V/S");
-					obj["vsPointer"].show();
-				} elsif (val.altLock ==  "altitude-hold")
-					obj["pitchMode"].setText("ALT");
-				elsif (val.altLock ==  "gs1-hold")
-					obj["pitchMode"].setText("G/S");
-				elsif (val.altLock ==  "speed-with-pitch-trim")
-					obj["pitchMode"].setText("FLCH SPD");
-				else
-					obj["pitchMode"].setText("");
+				if (afdsMode != apAfds) {
+					apAfds = afdsMode;
+					if (apAfds != "") {
+						itaf.Fma.showBox(0);
+					} else {
+						itaf.Fma.hideBox(0);
+					}
+				}
+				if (athrMode != apSpd) {
+					apSpd = athrMode;
+					if (apSpd != "") {
+						itaf.Fma.showBox(1);
+					} else {
+						itaf.Fma.hideBox(1);
+					}
+				}
+				if (latMode != apHdg) {
+					apHdg = latMode;
+					if (apHdg != "") {
+						itaf.Fma.showBox(2);
+					} else {
+						itaf.Fma.hideBox(2);
+					}
+				}
+				if (vertMode != apAlt) {
+					apAlt = vertMode;
+					if (apAlt != "") {
+						itaf.Fma.showBox(3);
+					} else {
+						itaf.Fma.hideBox(3);
+					}
+				}
+
+				obj["afdsMode"].setText(afdsMode);
+				obj["atMode"].setText(athrMode);
+				obj["rollMode"].setText(latMode);
+				obj["pitchMode"].setText(vertMode);
+			}),
+
+			props.UpdateManager.FromHashList(["latArm","vertArm"], nil, func(val) {
+				obj["armedPitchMode"].setText(val.vertArm);
+				obj["armedRollMode"].setText(val.latArm);
 			}),
 
 			props.UpdateManager.FromHashValue("navId", nil, func(val) {
@@ -450,8 +500,12 @@ var B744PFD = {
 			props.UpdateManager.FromHashValue("selHdg", 1, func(val) {
 				obj["selHdgText"].setText(sprintf("%3.0f", val));
 			}),
-			props.UpdateManager.FromHashValue("apSpd", 1, func(val) {
-				obj["speedText"].setText(sprintf("%3.0f", val));
+			props.UpdateManager.FromHashList(["apKts","apMach","ktsMach"], 1, func(val) {
+				if (val.ktsMach == 0) {
+					obj["speedText"].setText(sprintf("%3.0f", val.apKts));
+				} else {
+					obj["speedText"].setText(sprintf("%01.03f", val.apMach));
+				}
 			}),
 			
 			props.UpdateManager.FromHashValue("navDist", 1, func(val) {
@@ -469,6 +523,11 @@ var B744PFD = {
 		];
 
 		obj.update = func(notification) {
+			obj["afdsMode_box"].setVisible(itaf.Fma.Box.show[0]);
+			obj["atMode_box"].setVisible(itaf.Fma.Box.show[1]);
+			obj["pitchMode_box"].setVisible(itaf.Fma.Box.show[2]);
+			obj["rollMode_box"].setVisible(itaf.Fma.Box.show[3]);
+
 			foreach(var update_item; obj.update_items) {
 				update_item.update(notification);
 			}
@@ -478,12 +537,13 @@ var B744PFD = {
 	},
 
 	getKeys: func() {
-		return ["afdsMode","altTape","altText1","altText2","atMode","bankPointer","baroSet","cmdSpd","compass",
+		return ["afdsMode","altTape","altText1","altText2","armedPitchMode","armedRollMode","atMode","bankPointer","baroSet","cmdSpd","compass",
 		"curAlt1","curAlt2","curAlt3","curAltBox","curAltMtrTxt","curSpd","curSpdTen",
 		"dhText","dmeDist","egpwsPitch","fdX","fdY","flaps0","flaps1","flaps10","flaps20","flaps5",
 		"gpwsAlert","gsPtr","gsScale","horizon","ilsCourse","ilsId","locPtr","locScale","locScaleExp","machText","markerBeacon","markerBeaconText",
 		"maxSpdInd","mcpAltMtr","minimums","minSpdInd","pitchMode","radioAltInd","risingRwy","risingRwyPtr","rollMode","selAltBox","selAltPtr","selHdgPtr","selHdgText",
-		"spdTape","spdTrend","speedText","tenThousand","touchdown","trackIndicator","v1","v1Numerical","v1Text","v2","vertSpd","vr","vr_r","vr_vr","vref","vsiNeedle","vsPointer"];
+		"spdTape","spdTrend","speedText","tenThousand","touchdown","trackIndicator","v1","v1Numerical","v1Text","v2","vertSpd","vr","vr_r","vr_vr","vref","vsiNeedle","vsPointer",
+		"afdsMode_box","atMode_box","pitchMode_box","rollMode_box"];
 	},
 
 	update: func(notification) {
@@ -492,12 +552,16 @@ var B744PFD = {
 };
 
 var input = {
-	agl: "/position/altitude-agl-ft",
+	agl: "/position/gear-agl-ft",
 	alt: "/instrumentation/altimeter/indicated-altitude-ft",
 	altInhg: "/instrumentation/altimeter/setting-inhg",
-	altLock: "/autopilot/locks/altitude",
-	apAlt: "/autopilot/settings/target-altitude-ft",
-	apSpd: "/autopilot/settings/target-speed-kt",
+	ap1: "/it-autoflight/output/ap1",
+	ap2: "/it-autoflight/output/ap2",
+	ap3: "/it-autoflight/output/ap3",
+	apAlt: "/it-autoflight/input/alt",
+	apMach: "/it-autoflight/input/mach",
+	apKts: "/it-autoflight/input/kts",
+	athr: "/it-autoflight/input/athr",
 	destElev: "/autopilot/route-manager/destination/field-elevation-ft",
 	dh: "/instrumentation/mk-viii/inputs/arinc429/decision-height",
 	flaps: "/fdm/jsbsim/fcs/flaps/cmd-detent-deg",
@@ -509,12 +573,12 @@ var input = {
 	gpwsWarning: "/instrumentation/mk-viii/outputs/discretes/gpws-warning",
 	gsInRange: "/instrumentation/nav/gs-in-range",
 	gsNeedle: "/instrumentation/nav/gs-needle-deflection-norm",
-	hdg: "/orientation/heading-magnetic-deg",	
-	hdgLock: "/autopilot/locks/heading",
+	hdg: "/orientation/heading-magnetic-deg",
 	ias: "/instrumentation/airspeed-indicator/indicated-speed-kt",
 	iasMax: "/systems/fms/speeds/vmax",
 	iasMin: "/systems/fms/speeds/vmin",
 	ilsCourse: "/instrumentation/nav/radials/selected-deg",
+	ktsMach: "/it-autoflight/input/kts-mach",
 	mach: "/velocities/mach",
 	markerInner: "/instrumentation/marker-beacon/inner",
 	markerMiddle: "/instrumentation/marker-beacon/middle",
@@ -523,14 +587,21 @@ var input = {
 	navId: "/instrumentation/nav/nav-id",
 	navNeedle: "/instrumentation/nav/heading-needle-deflection-norm",
 	navSigQ: "/instrumentation/nav/signal-quality-norm",
-	passiveMode: "/autopilot/locks/passive-mode",
+	passiveMode: "/it-autoflight/output/fd1",
 	phase: "/systems/fms/internal/phase",
 	pitch: "/orientation/pitch-deg",
 	roll: "/orientation/roll-deg",
-	selHdg: "/autopilot/settings/heading-bug-deg",
-	spdLock: "/autopilot/locks/speed",
+	selHdg: "/it-autoflight/input/hdg",
+	latArm: "/it-autoflight/text/lat-arm",
+	vertArm: "/it-autoflight/text/vert-arm",
+	latMode: "/it-autoflight/text/lat",
+	vertMode: "/it-autoflight/text/vert",
+	spdMode: "/it-autoflight/text/thr",
 	spdTrend: "/instrumentation/pfd/speed-trend-up",
-	targetRoll: "/autopilot/internal/target-roll-deg",
+	fd1: "/it-autoflight/output/fd1",
+	fd2: "/it-autoflight/output/fd2",
+	fdRoll: "/it-autoflight/fd/roll-bar",
+	fdPitch: "/it-autoflight/fd/pitch-bar",
 	targetVs: "instrumentation/pfd/target-vs",
 	toFlap: "/instrumentation/fmc/to-flap",
 	track: "/orientation/track-magnetic-deg",

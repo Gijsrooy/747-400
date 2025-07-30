@@ -164,7 +164,17 @@
 	</shaker>
 
 	<!-- Warnings -->
-	
+
+	<ap-disengage>
+		<name>Autopilot disengage</name>
+		<mode>once</mode>
+		<path>Aircraft/747-400/Sounds/autopilot-disengage.wav</path>
+		<type>avionics</type>
+		<condition>
+			<property>/it-autoflight/sound/apoff</property>
+		</condition>
+	</ap-disengage>
+
 	<config-flaps>
 		<name>config-flaps</name>
 		<mode>looped</mode>

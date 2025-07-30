@@ -434,7 +434,7 @@ You just stepped through the cockpit door of the cold and dark 747-400, the most
 			<condition>  
 				<equals>
 					<property>/instrumentation/fmc/vspeeds/V2</property>
-					<property>/autopilot/settings/target-speed-kt</property>
+					<property>/it-autoflight/input/kts</property>
 				</equals>
 			</condition>
 		</exit>
@@ -451,7 +451,7 @@ You just stepped through the cockpit door of the cold and dark 747-400, the most
 		<exit>
 			<condition>  
 				<equals>
-					<property>/autopilot/settings/target-altitude-ft</property>
+					<property>/it-autoflight/input/alt</property>
 					<value>10000</value>
 				</equals>
 			</condition>

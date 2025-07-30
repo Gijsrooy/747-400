@@ -372,6 +372,15 @@
             <output>/instrumentation/fmc/vspeeds/V2</output>
         </fcs_function>
 
+        <fcs_function name="/it-autoflight/settings/toga-spd">
+            <function>
+                <sum>
+                    <property>/instrumentation/fmc/vspeeds/V2</property>
+                    <value>10</value>
+                </sum>
+            </function>
+        </fcs_function>
+
         <!-- Stabilizer Computer -->
         <fcs_function name="/systems/fms/internal/takeoff-stab-units-calc">
             <function>

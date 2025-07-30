@@ -81,13 +81,10 @@
 	 </step>
 
 	<step>
-		<message>Enable Autothrottle.</message>
+		<message>Arm Autothrottle.</message>
 		<exit>
 			<condition>
-				<equals>
-					<property>/autopilot/locks/speed</property>
-					<value>speed-with-throttle</value>
-				</equals>
+				<property>/it-autoflight/input/athr</property>
 			</condition>
 		</exit>
 	</step>
@@ -96,20 +93,20 @@
 		<message>Ensure Flight Director is ON, runway heading is set to 183 degree, IAS is set to V2 and that altitude is 10,000.</message>
 		<exit>
 			<condition>
+				<or>
+					<property>/it-autoflight/input/fd1</property>
+					<property>/it-autoflight/input/fd2</property>
+				</or>
 				<equals>
-					<property>/autopilot/locks/passive-mode</property>
-					<value>1</value>
-				</equals>
-				<equals>
-					<property>/autopilot/settings/heading-bug-deg</property>
+					<property>/it-autoflight/input/hdg</property>
 					<value>183</value>
 				</equals>
 				<equals>
-					<property>/autopilot/settings/target-speed-kt</property>
+					<property>/it-autoflight/input/kts</property>
 					<property>/instrumentation/fmc/vspeeds/V2</property>
 				</equals>
 				<equals>
-					<property>/autopilot/settings/target-altitude-ft</property>
+					<property>/it-autoflight/input/alt</property>
 					<value>10000</value>
 				</equals>
 			</condition>

@@ -26,7 +26,7 @@
 		</author>
 		<author>
 			<name>Jonathan Redpath</name>
-			<description>FDM</description>
+			<description>FDM improvements</description>
 			<nick>legoboyvdlp</nick>
 		</author>
 		<author>
@@ -34,8 +34,9 @@
 			<description>2D panels, electric and hydraulic systems</description>
 		</author>
 		<author>
-			<name>Markus Bulik</name>
-			<description>Autopilot</description>
+			<name>Josh Davidson</name>
+ 			<description>Autopilot</description>
+			<nick>Octal450</nick>
 		</author>
 		<author>
 			<name>Alexander Barrett</name>
@@ -107,9 +108,17 @@
 	</model>
 	
 	<systems>
+		<autopilot n="0">
+			<name>IT Autoflight</name>
+			<path>Aircraft/747-400/Systems/it-autoflight.xml</path>
+		</autopilot>
 		<autopilot>
-			<name>Primary Autopilot</name>
-			<path>Aircraft/747-400/Systems/autopilot.xml</path>
+			<name>IT Autothrust</name>
+			<path>Aircraft/747-400/Systems/it-autothrust.xml</path>
+		</autopilot>
+		<autopilot>
+			<name>Gear AGL FT</name>
+			<path>Aircraft/747-400/Systems/gear-agl-ft.xml</path>
 		</autopilot>
 		<autopilot>
 			<name>Autobrake System</name>
@@ -211,8 +220,20 @@
 		<title>Boeing 747-400</title>
 
 		<key>
-			<name>Ctrl+b</name>
+			<name>Ctrl + B</name>
 			<desc>Cycle speedbrakes: off, armed, half deployed, fully deployed</desc>
+		</key>
+		<key>
+			<name>Ctrl + D</name>
+			<desc>Autothrottle disconnect switch</desc>
+		</key>
+		<key>
+			<name>Ctrl + T</name>
+			<desc>TO/GA switch</desc>
+		</key>
+		<key>
+			<name>Shift + D</name>
+			<desc>Autopilot disengage switch</desc>
 		</key>
 		<key>
 			<name>Delete</name>
@@ -531,7 +552,7 @@ left mouse button and counter clockwise using the middle mouse button.
 <input>
 	<keyboard>
 		<key n="2">
-			<name>Ctrl+b</name>
+			<name>Ctrl+B</name>
 			<desc>Cycle speedbrakes: off, armed, half deployed, fully deployed</desc>
 			<binding>
 				<command>property-cycle</command>
@@ -540,6 +561,43 @@ left mouse button and counter clockwise using the middle mouse button.
 				<value type="int">1</value>
 				<value type="int">2</value>
 				<value type="int">3</value>
+			</binding>
+		</key>
+		<key n="4">
+			<name>Ctrl+D</name>
+			<desc>Autothrottle disconnect switch</desc>
+			<binding>
+				<command>property-assign</command>
+				<property>/it-autoflight/input/athr</property>
+				<value>0</value>
+			</binding>
+		</key>
+		<key n="20">
+			<name>Ctrl+T</name>
+			<desc>TO/GA switch</desc>
+			<binding>
+				<command>property-assign</command>
+				<property>/it-autoflight/input/toga</property>
+				<value>1</value>
+			</binding>
+		</key>
+		<key n="68">
+			<name>D</name>
+			<desc>Autopilot disengage</desc>
+			<binding>
+				<command>property-assign</command>
+				<property>/it-autoflight/input/ap1</property>
+				<value>0</value>
+			</binding>
+			<binding>
+				<command>property-assign</command>
+				<property>/it-autoflight/input/ap2</property>
+				<value>0</value>
+			</binding>
+			<binding>
+				<command>property-assign</command>
+				<property>/it-autoflight/input/ap3</property>
+				<value>0</value>
 			</binding>
 		</key>
 		<key n="119">
@@ -619,34 +677,73 @@ left mouse button and counter clockwise using the middle mouse button.
 		</config>
 		<step type="int">0</step> <!-- OFF on selection -->
 	</autospoilers>
-	<config>
-		<min-climb-speed-kt type="float">150.0</min-climb-speed-kt>
-		<best-climb-speed-kt type="float">200.0</best-climb-speed-kt>
-		<target-climb-rate-fpm type="float">2000.0</target-climb-rate-fpm>
-		<target-descent-rate-fpm type="float">1500.0</target-descent-rate-fpm>
-		<elevator-adj-factor type="float">1500.0</elevator-adj-factor>
-		<integral-contribution type="float">0.005</integral-contribution>
-		<zero-pitch-throttle type="float">0.0001</zero-pitch-throttle>
-		<zero-pitch-trim-full-throttle type="float">0.0001</zero-pitch-trim-full-throttle>
-		<max-roll-deg type="float">30</max-roll-deg>
-		<max-aileron type="float">0.5</max-aileron>
-		<indicated-heading-magnetic type="bool">true</indicated-heading-magnetic>
-	</config>
-	<locks>
-		<roc-lock>1</roc-lock>
-	</locks>
 	<route-manager>
 		<input>@CLEAR</input>
 	</route-manager>
-	<!-- settings when power first applied -->
-	<settings>
-		<bank-limit>25</bank-limit>
-		<heading-bug-deg>0</heading-bug-deg>
-		<target-altitude-ft>10000</target-altitude-ft>
-		<target-speed-kt>200</target-speed-kt>
-		<true-heading-deg>0</true-heading-deg>
-	</settings>
 </autopilot>
+
+<it-autoflight>
+	<config>
+		<roll>
+			<kp-low>0.11</kp-low> <!-- Roll rate gain at low speed -->
+			<kp-high>0.05</kp-high> <!-- Roll rate gain at high speed -->
+		</roll>
+		<pitch>
+			<kp-low>-0.14</kp-low> <!-- Pitch rate gain at low speed -->
+			<kp-high>-0.06</kp-high> <!-- Pitch rate gain at high speed -->
+		</pitch>
+		<yaw>
+			<gain-factor>1.0</gain-factor> <!-- Yaw rate gain scaling factor for align/rollout -->
+		</yaw>
+		<cmd>
+			<alt>-5</alt> <!-- Altitude deviation gain -->
+			<flch-accel>1.5</flch-accel> <!-- Level change accel/decel limit -->
+			<roll>1.6</roll> <!-- Roll heading deviation base gain -->
+		</cmd>
+		<rollout>
+			<aileron>-0.1</aileron> <!-- Aileron to counter wind-induced banking on ground -->
+			<pitch-nose>0.1</pitch-nose> <!-- Forward pressure to keep nose gear on ground -->
+			<pitch-rate>-1.5</pitch-rate> <!-- Rate to lower nose to ground after touchdown -->
+		</rollout>
+	</config>
+	<input> <!-- settings when power first applied -->
+		<bank-limit-sw>25</bank-limit-sw>
+		<hdg>0</hdg>
+		<alt>10000</alt>
+		<kts>200</kts>
+	</input>
+	<settings>
+		<accel-agl type="bool">1</accel-agl> <!-- Use AGL altitude for acceleration, use if no FMS acceleration alt is computed -->
+		<accel-ft type="double">1000</accel-ft> <!-- Acceleration AGL when T/O CLB changes to SPD CLB, 0 to disable -->
+		<align-ft type="int">250</align-ft> <!-- AGL when ALIGN engages during autoland -->
+		<auto-bank-limit-calc type="bool">1</auto-bank-limit-calc> <!-- Disable to add a custom auto bank limit schedule -->
+		<auto-system-reset type="bool">1</auto-system-reset> <!-- Automatically reset the system after landing -->
+		<autoland-without-ap type="bool">1</autoland-without-ap> <!-- Allows FLARE and ROLLOUT pitch modes to engage even if AP is off -->
+		<autothrottle-max type="double">0.95</autothrottle-max> <!-- Thrust max limit normalized -->
+		<autothrottle-min type="double">0.02</autothrottle-min> <!-- Thrust low limit normalized -->
+		<bank-max-deg type="double">25</bank-max-deg> <!-- Maximum bank limit -->
+		<custom-fma type="bool">1</custom-fma> <!-- Call functions when modes change for a custom FMA to be implemented --> 
+		<disable-final type="bool">0</disable-final> <!-- Disable the Final Controllers for custom FCS integration -->
+		<elevator-in-trim type="double">0.01</elevator-in-trim> <!-- Normalized elevator to stop trimming -->
+		<elevator-out-of-trim type="double">0.02</elevator-out-of-trim> <!-- Normalized elevator to start trimming -->
+		<fd-starts-on type="bool">0</fd-starts-on> <!-- Enable/Disable Flight Director being on by default -->
+		<fd-takeoff-deg type="double">8</fd-takeoff-deg> <!-- Adjust Flight Director pitch bar in T/O CLB on ground -->
+		<ground-mode-select type="bool">0</ground-mode-select> <!-- Allow modes to be selected when on ground -->
+		<hdg-hld-separate type="bool">1</hdg-hld-separate> <!-- Separates HDG HLD mode from HDG SEL mode -->
+		<land-enable type="bool">1</land-enable> <!-- Enable/Disable autoland -->
+		<land-flap type="double">0.7</land-flap> <!-- Minimum Flap used for landing -->
+		<lnav-ft type="double">50</lnav-ft> <!-- AGL when LNAV becomes active if armed -->
+		<max-kts type="int">399</max-kts> <!-- Maxmimum target airspeed in knots -->
+		<max-mach type="double">0.95</max-mach> <!-- Maxmimum target mach number -->
+		<retard-enable type="bool">1</retard-enable> <!-- Enable Thrust Retard mode -->
+		<retard-ft type="double">25</retard-ft> <!-- AGL to enter Thrust Retard mode -->
+		<stall-aoa-deg type="double">15</stall-aoa-deg> <!-- Angle of attack where AP trips off -->
+		<takeoff-hdg-cap type="double">5</takeoff-hdg-cap> <!-- Maximum bank to capture current hdg in T/O mode -->
+		<toga-spd type="double">160</toga-spd> <!-- V2 + 10kts -->
+		<use-controls-engines type="bool">1</use-controls-engines> <!-- Use /controls/engines properties -->
+		<use-controls-flight type="bool">1</use-controls-flight> <!-- Use /controls/flight properties -->
+	</settings>
+</it-autoflight>
 
 <instrumentation>
 	<annunciators>
@@ -791,8 +888,6 @@ left mouse button and counter clockwise using the middle mouse button.
 
 <nasal>
 	<Boeing747>
-		<file>Aircraft/747-400/Nasal/autopilot.nas</file>
-		<file>Aircraft/747-400/Nasal/autopilot-routemanager.nas</file>
 		<file>Aircraft/747-400/Nasal/copilot.nas</file>
 		<file>Aircraft/747-400/Nasal/doors.nas</file>
 		<file>Aircraft/747-400/Models/Cockpit/Instruments/EICAS/secondary.nas</file>
@@ -830,6 +925,10 @@ left mouse button and counter clockwise using the middle mouse button.
 	<hydraulic>
 		<file>Aircraft/747-400/Nasal/744_hyd.nas</file>
 	</hydraulic>
+	<itaf>
+		<file>Aircraft/747-400/Nasal/it-autoflight.nas</file>
+		<file>Aircraft/747-400/Nasal/custom-fma.nas</file>
+	</itaf>
 	<tyresmoke>
 		<file>Aircraft/747-400/Nasal/tyresmoke.nas</file>
 	</tyresmoke>

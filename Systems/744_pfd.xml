@@ -63,7 +63,7 @@
         <input> 
             <expression>
                 <table>
-                    <property>/autopilot/settings/vertical-speed-fpm</property> 
+                    <property>/it-autoflight/input/vs</property> 
                     <entry><ind>-6000</ind><dep>-218.5</dep></entry>
                     <entry><ind>-2000</ind><dep>-169</dep></entry>
                     <entry><ind>-1000</ind><dep>-98</dep></entry>

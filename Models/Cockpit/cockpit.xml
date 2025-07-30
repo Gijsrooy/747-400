@@ -155,9 +155,24 @@
 	</animation>
 
 	<animation>
+		<type>select</type>
+		<object-name>dis.vertspd.1</object-name>
+		<object-name>dis.vertspd.2</object-name>
+		<object-name>dis.vertspd.3</object-name>
+		<object-name>dis.vertspd.4</object-name>
+		<object-name>dis.vertspd.5</object-name>
+		<condition>
+			<equals>
+				<property>/it-autoflight/output/vert</property>
+				<value>1</value>
+			</equals>
+		</condition>
+	</animation>
+
+	<animation>
 		<type>rotate</type>
 		<object-name>dis.vertspd.1</object-name>
-		<property>autopilot/settings/vertical-speed-fpm</property>
+		<property>/it-autoflight/input/vs</property>
 		<interpolation>
 			<entry>
 				<ind>-1000</ind>
@@ -189,7 +204,7 @@
 	<animation>
 		<type>textranslate</type>
 		<object-name>dis.vertspd.2</object-name>
-		<property>autopilot/settings/vertical-speed-fpm</property>
+		<property>/it-autoflight/input/vs-abs</property>
 		<factor>0.0001</factor>
 		<step>1000</step>
 		<axis>
@@ -202,7 +217,7 @@
 	<animation>
 		<type>textranslate</type>
 		<object-name>dis.vertspd.3</object-name>
-		<property>autopilot/settings/vertical-speed-fpm</property>
+		<property>/it-autoflight/input/vs-abs</property>
 		<factor>0.001</factor>
 		<step>100</step>
 		<axis>
@@ -215,7 +230,7 @@
 	<animation>
 		<type>textranslate</type>
 		<object-name>dis.vertspd.4</object-name>
-		<property>autopilot/settings/vertical-speed-fpm</property>
+		<property>/it-autoflight/input/vs-abs</property>
 		<factor>0.01</factor>
 		<step>10</step>
 		<axis>
@@ -228,7 +243,7 @@
 	<animation>
 		<type>textranslate</type>
 		<object-name>dis.vertspd.5</object-name>
-		<property>autopilot/settings/vertical-speed-fpm</property>
+		<property>/it-autoflight/input/vs-abs</property>
 		<factor>0.1</factor>
 		<step>1</step>
 		<axis>
@@ -294,10 +309,13 @@
 		<type>select</type>
 		<object-name>lt.althold</object-name>
 		<condition>
-			<equals>
-				<property>/autopilot/locks/altitude</property>
-				<value>altitude-hold</value>
-			</equals>
+			<and>
+				<property>/it-autoflight/output/apfd-on</property>
+				<equals>
+					<property>/it-autoflight/output/vert</property>
+					<value>0</value>
+				</equals>
+			</and>
 		</condition>
 	</animation>
 
@@ -308,10 +326,9 @@
 			<button>0</button>
 			<repeatable>false</repeatable>
 			<binding>
-				<command>property-cycle</command>
-				<property>/autopilot/locks/altitude</property>
-				<value type="string">altitude-hold</value>
-				<value type="string"></value>
+				<command>property-assign</command>
+				<property>/it-autoflight/input/vert</property>
+				<value>0</value>
 			</binding>
 		</action>
 	</animation>
@@ -322,10 +339,9 @@
 		<action>
 			<binding>
 				<command>property-adjust</command>
-				<property>/autopilot/settings/bank-limit</property>
-				<factor>5</factor>
+				<property>/it-autoflight/input/bank-limit-sw</property>
 				<min>0</min>
-				<max>30</max>
+				<max>6</max>
 			</binding>
 		</action>
 	</animation>
@@ -334,10 +350,13 @@
 		<type>select</type>
 		<object-name>lt.flch</object-name>
 		<condition>
-			<equals>
-				<property>/autopilot/locks/speed</property>
-				<value>speed-with-pitch-trim</value>
-			</equals>
+			<and>
+				<property>/it-autoflight/output/apfd-on</property>
+				<equals>
+					<property>/it-autoflight/output/vert</property>
+					<value>4</value>
+				</equals>
+			</and>
 		</condition>
 	</animation>
 
@@ -348,8 +367,20 @@
 			<button>0</button>
 			<repeatable>false</repeatable>
 			<binding>
-				<command>property-toggle</command>
-				<property>sim/gui/dialogs/autopilot/speed-with-pitch-trim</property>
+				<condition>
+					<less-than>
+						<property>/it-autoflight/input/kts</property>
+						<property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
+					</less-than>
+				</condition>
+				<command>property-assign</command>
+				<property>/it-autoflight/input/kts</property>
+				<property>/instrumentation/airspeed-indicator/indicated-speed-kt</property>
+			</binding>
+			<binding>
+				<command>property-assign</command>
+				<property>/it-autoflight/input/vert</property>
+				<value>4</value>
 			</binding>
 		</action>
 	</animation>
@@ -358,10 +389,14 @@
 		<type>select</type>
 		<object-name>lt.hdghold</object-name>
 		<condition>
-			<equals>
-				<property>/autopilot/locks/heading</property>
-				<value>wing-leveler</value>
-			</equals>
+			<and>
+				<property>/it-autoflight/output/apfd-on</property>
+				<property>/it-autoflight/output/hdg-in-hld</property>
+				<equals>	
+					<property>/it-autoflight/output/lat</property>
+					<value>0</value>
+				</equals>
+			</and>
 		</condition>
 	</animation>
 
@@ -372,10 +407,9 @@
 			<button>0</button>
 			<repeatable>false</repeatable>
 			<binding>
-				<command>property-cycle</command>
-				<property>/autopilot/locks/heading/</property>
-				<value type="string">wing-leveler</value>
-				<value type="string"></value>
+				<command>property-assign</command>
+				<property>/it-autoflight/input/lat</property>
+				<value>3</value>
 			</binding>
 		</action>
 	</animation>
@@ -387,10 +421,9 @@
 			<button>0</button>
 			<repeatable>false</repeatable>
 			<binding>
-				<command>property-cycle</command>
-				<property>/autopilot/locks/heading</property>
-				<value type="string">dg-heading-hold</value>
-				<value type="string"></value>
+				<command>property-assign</command>
+				<property>/it-autoflight/input/lat</property>
+				<value>0</value>
 			</binding>
 		</action>
 	</animation>
@@ -401,7 +434,7 @@
 		<action>
 			<binding>
 				<command>property-adjust</command>
-				<property>/autopilot/settings/heading-bug-deg</property>
+				<property>/it-autoflight/input/hdg</property>
 				<factor>1</factor>
 				<min>000</min>
 				<max>360</max>
@@ -413,7 +446,7 @@
 	<animation>
 		<type>textranslate</type>
 		<object-name>dis.hdg.1</object-name>
-		<property>autopilot/settings/heading-bug-deg</property>
+		<property>/it-autoflight/input/hdg</property>
 		<factor>0.001</factor>
 		<step>100</step>
 		<axis>
@@ -426,7 +459,7 @@
 	<animation>
 		<type>textranslate</type>
 		<object-name>dis.hdg.2</object-name>
-		<property>autopilot/settings/heading-bug-deg</property>
+		<property>/it-autoflight/input/hdg</property>
 		<factor>0.01</factor>
 		<step>10</step>
 		<axis>
@@ -439,7 +472,7 @@
 	<animation>
 		<type>textranslate</type>
 		<object-name>dis.hdg.3</object-name>
-		<property>autopilot/settings/heading-bug-deg</property>
+		<property>/it-autoflight/input/hdg</property>
 		<factor>0.1</factor>
 		<step>1</step>
 		<axis>
@@ -453,10 +486,16 @@
 		<type>select</type>
 		<object-name>lt.lnav</object-name>
 		<condition>
-			<equals>
-				<property>/autopilot/locks/heading</property>
-				<value>nav1-hold</value>
-			</equals>
+			<and>
+				<property>/it-autoflight/output/apfd-on</property>
+				<or>
+					<property>/it-autoflight/output/lnav-arm</property>
+					<equals>
+						<property>/it-autoflight/output/lat</property>
+						<value>1</value>
+					</equals>
+				</or>
+			</and>
 		</condition>
 	</animation>
 
@@ -466,11 +505,111 @@
 		<action>
 			<button>0</button>
 			<repeatable>false</repeatable>
+			<!-- TODO: disarm LNAV if already armed-->
 			<binding>
-				<command>property-cycle</command>
-				<property>/autopilot/locks/heading</property>
-				<value type="string">nav1-hold</value>
-				<value type="string"></value>
+				<condition>
+					<and>
+						<not><property>/it-autoflight/output/lnav-arm</property></not>
+						<not>
+							<equals>
+								<property>/it-autoflight/output/lat</property>
+								<value>1</value>
+							</equals>
+						</not>
+					</and>
+				</condition>
+				<command>property-assign</command>
+				<property>/it-autoflight/input/lat</property>
+				<value>1</value>
+			</binding>
+		</action>
+	</animation>
+
+	<animation>
+		<type>pick</type>
+		<object-name>btn.fd.left</object-name>
+		<action>
+			<button>0</button>
+			<repeatable>false</repeatable>
+			<binding>
+				<command>property-toggle</command>
+				<property>/it-autoflight/input/fd1</property>
+			</binding>
+		</action>
+	</animation>
+
+	<animation>
+		<type>rotate</type>
+		<object-name>btn.fd.left</object-name>
+		<property>/it-autoflight/input/fd1</property>
+		<factor>-60</factor>
+		<offset-deg>30</offset-deg>
+		<center>
+			<x-m>0.908</x-m>
+			<y-m>0.000</y-m>
+			<z-m>0.955</z-m>
+		</center>
+		<axis>
+			<x>0</x>
+			<y>1</y>
+			<z>0</z>
+		</axis>
+	</animation>
+
+	<animation>
+		<type>pick</type>
+		<object-name>btn.fd.right</object-name>
+		<action>
+			<button>0</button>
+			<repeatable>false</repeatable>
+			<binding>
+				<command>property-toggle</command>
+				<property>/it-autoflight/input/fd2</property>
+			</binding>
+		</action>
+	</animation>
+
+	<animation>
+		<type>rotate</type>
+		<object-name>btn.fd.right</object-name>
+		<property>/it-autoflight/input/fd2</property>
+		<factor>-60</factor>
+		<offset-deg>30</offset-deg>
+		<center>
+			<x-m>0.908</x-m>
+			<y-m>0.000</y-m>
+			<z-m>0.955</z-m>
+		</center>
+		<axis>
+			<x>0</x>
+			<y>1</y>
+			<z>0</z>
+		</axis>
+	</animation>
+
+	<animation>
+		<type>knob</type>
+		<object-name>btn.athr.arm</object-name>
+		<property>/it-autoflight/input/athr-avail</property>
+		<factor>-60</factor>
+		<offset-deg>30</offset-deg>
+		<center>
+			<x-m>0.901</x-m>
+			<y-m>-0.213</y-m>
+			<z-m>0.971</z-m>
+		</center>
+		<axis>
+			<x>0</x>
+			<y>1</y>
+			<z>0</z>
+		</axis>
+		<drag-direction>vertical</drag-direction>
+		<action>
+			<button>0</button>
+			<repeatable>false</repeatable>
+			<binding>
+				<command>property-toggle</command>
+				<property>/it-autoflight/input/athr-avail</property>
 			</binding>
 		</action>
 	</animation>
@@ -479,10 +618,13 @@
 		<type>select</type>
 		<object-name>lt.spd</object-name>
 		<condition>
-			<equals>
-				<property>/autopilot/locks/speed</property>
-				<value>speed-with-throttle</value>
-			</equals>
+			<and>
+				<property>/it-autoflight/output/athr</property>
+				<equals>
+					<property>/it-autoflight/output/thr-mode</property>
+					<value>0</value>
+				</equals>
+			</and>
 		</condition>
 	</animation>
 
@@ -493,10 +635,15 @@
 			<button>0</button>
 			<repeatable>false</repeatable>
 			<binding>
-				<command>property-cycle</command>
-				<property>/autopilot/locks/speed</property>
-				<value type="string">speed-with-throttle</value>
-				<value type="string"></value>
+				<condition>
+					<greater-than>
+						<property>/position/gear-agl-ft</property>
+						<value>400</value>
+					</greater-than>
+				</condition>
+				<command>property-assign</command>
+				<property>/it-autoflight/input/athr</property>
+				<value>1</value>
 			</binding>
 		</action>
 	</animation>
@@ -508,10 +655,8 @@
 			<button>0</button>
 			<repeatable>false</repeatable>
 			<binding>
-				<command>property-cycle</command>
-				<property>/autopilot/settings/speed-select</property>
-				<value type="string">mach</value>
-				<value type="string"></value>
+				<command>property-toggle</command>
+				<property>/it-autoflight/input/kts-mach</property>
 			</binding>
 		</action>
 	</animation>
@@ -523,28 +668,34 @@
 			<repeatable>true</repeatable>
 			<binding>
 				<condition>
-					<not>
-						<equals>
-							<property>/autopilot/settings/speed-select</property>
-							<value>mach</value>
-						</equals>
-					</not>
+					<and>
+						<not>
+							<property>/it-autoflight/input/kts-mach</property>
+						</not>
+						<not-equals>
+							<property>/it-autoflight/output/vert</property>
+							<value>3</value>
+						</not-equals>
+					</and>
 				</condition>
 				<command>property-adjust</command>
-				<property>/autopilot/settings/target-speed-kt</property>
+				<property>/it-autoflight/input/kts</property>
 				<factor>1</factor>
 				<min>100</min>
 				<max>399</max>
 			</binding>
 			<binding>
 				<condition>
-					<equals>
-						<property>/autopilot/settings/speed-select</property>
-						<value>mach</value>
-					</equals>
+					<and>
+						<property>/it-autoflight/input/kts-mach</property>
+						<not-equals>
+							<property>/it-autoflight/output/vert</property>
+							<value>3</value>
+						</not-equals>
+					</and>
 				</condition>
 				<command>property-adjust</command>
-				<property>/autopilot/settings/target-speed-mach</property>
+				<property>/it-autoflight/input/mach</property>
 				<factor>0.01</factor>
 				<min>0.40</min>
 				<max>0.95</max>
@@ -553,17 +704,27 @@
 	</animation>
 
 	<animation>
+		<type>select</type>
+		<object-name>dis.spd.1</object-name>
+		<object-name>dis.spd.2</object-name>
+		<object-name>dis.spd.3</object-name>
+		<condition>
+			<not-equals>
+				<property>/it-autoflight/output/vert</property>
+				<value>3</value>
+			</not-equals>
+		</condition>
+	</animation>
+
+	<animation>
 		<type>textranslate</type>
 		<object-name>dis.spd.1</object-name>
-		<property>autopilot/settings/target-speed-kt</property>
+		<property>/it-autoflight/input/kts</property>
 		<factor>0.001</factor>
 		<step>100</step>
 		<condition>
 			<not>
-				<equals>
-					<property>/autopilot/settings/speed-select</property>
-					<value>mach</value>
-				</equals>
+				<property>/it-autoflight/input/kts-mach</property>
 			</not>
 		</condition>
 		<axis>
@@ -576,15 +737,12 @@
 	<animation>
 		<type>textranslate</type>
 		<object-name>dis.spd.2</object-name>
-		<property>autopilot/settings/target-speed-kt</property>
+		<property>/it-autoflight/input/kts</property>
 		<factor>0.01</factor>
 		<step>10</step>
 		<condition>
 			<not>
-				<equals>
-					<property>/autopilot/settings/speed-select</property>
-					<value>mach</value>
-				</equals>
+				<property>/it-autoflight/input/kts-mach</property>
 			</not>
 		</condition>
 		<axis>
@@ -597,15 +755,12 @@
 	<animation>
 		<type>textranslate</type>
 		<object-name>dis.spd.3</object-name>
-		<property>autopilot/settings/target-speed-kt</property>
+		<property>/it-autoflight/input/kts</property>
 		<factor>0.1</factor>
 		<step>1</step>
 		<condition>
 			<not>
-				<equals>
-					<property>/autopilot/settings/speed-select</property>
-					<value>mach</value>
-				</equals>
+				<property>/it-autoflight/input/kts-mach</property>
 			</not>
 		</condition>
 		<axis>
@@ -619,10 +774,13 @@
 		<type>select</type>
 		<object-name>lt.thr</object-name>
 		<condition>
-			<equals>
-				<property>/autopilot/locks/speed</property>
-				<value>speed-with-pitch-trim</value>
-			</equals>
+			<and>
+				<property>/it-autoflight/output/athr</property>
+				<equals>
+					<property>/it-autoflight/output/thr-mode</property>
+					<value>2</value>
+				</equals>
+			</and>
 		</condition>
 	</animation>
 
@@ -633,10 +791,15 @@
 			<button>0</button>
 			<repeatable>false</repeatable>
 			<binding>
-				<command>property-cycle</command>
-				<property>/autopilot/locks/speed</property>
-				<value type="string">speed-with-pitch-trim</value>
-				<value type="string"></value>
+				<condition>
+					<greater-than>
+						<property>/position/gear-agl-ft</property>
+						<value>400</value>
+					</greater-than>
+				</condition>
+				<command>property-assign</command>
+				<property>/it-autoflight/output/thr-mode</property>
+				<value>2</value>
 			</binding>
 		</action>
 	</animation>
@@ -645,36 +808,42 @@
 		<type>select</type>
 		<object-name>lt.vnav</object-name>
 		<condition>
-			<equals>
-				<property>/autopilot/locks/altitude</property>
-				<value>gs1-hold</value>
-			</equals>
+			<and>
+				<property>/it-autoflight/output/apfd-on</property>
+				<equals>
+					<property>/it-autoflight/output/vert</property>
+					<value>3</value>
+				</equals>
+			</and>
 		</condition>
 	</animation>
 
-	<animation>
+	<!-- NOT YET IMPLEMENTED IN IT AUTOFLIGHT -->
+	<!--<animation>
 		<type>pick</type>
 		<object-name>btn.vnav</object-name>
 		<action>
 			<button>0</button>
 			<repeatable>false</repeatable>
 			<binding>
-				<command>property-cycle</command>
-				<property>/autopilot/locks/altitude</property>
-				<value type="string">gs1-hold</value>
-				<value type="string"></value>
+				<command>property-assign</command>
+				<property>/it-autoflight/output/vert</property>
+				<value>3</value>
 			</binding>
 		</action>
-	</animation>
+	</animation>-->
 
 	<animation>
 		<type>select</type>
 		<object-name>lt.vs</object-name>
 		<condition>
-			<equals>
-				<property>/autopilot/locks/altitude</property>
-				<value>vertical-speed-hold</value>
-			</equals>
+			<and>
+				<property>/it-autoflight/output/apfd-on</property>
+				<equals>
+					<property>/it-autoflight/output/vert</property>
+					<value>1</value>
+				</equals>
+			</and>
 		</condition>
 	</animation>
 
@@ -685,10 +854,9 @@
 			<button>0</button>
 			<repeatable>false</repeatable>
 			<binding>
-				<command>property-cycle</command>
-				<property>/autopilot/locks/altitude</property>
-				<value type="string">vertical-speed-hold</value>
-				<value type="string"></value>
+				<command>property-assign</command>
+				<property>/it-autoflight/input/vert</property>
+				<value>1</value>
 			</binding>
 		</action>
 	</animation>
@@ -702,7 +870,7 @@
 			<repeatable>true</repeatable>
 			<binding>
 				<command>property-adjust</command>
-				<property>/autopilot/settings/vertical-speed-fpm</property>
+				<property>/it-autoflight/input/vs</property>
 				<factor>100</factor>
 				<min>-8000</min>
 				<max>6000</max>
@@ -717,7 +885,7 @@
 			<repeatable>true</repeatable>
 			<binding>
 				<command>property-adjust</command>
-				<property>/autopilot/settings/target-altitude-ft</property>
+				<property>/it-autoflight/input/alt</property>
 				<factor>100</factor>
 				<min>0</min>
 				<max>50000</max>
@@ -728,7 +896,7 @@
 	<animation>
 		<type>textranslate</type>
 		<object-name>dis.alt.1</object-name>
-		<property>autopilot/settings/target-altitude-ft</property>
+		<property>/it-autoflight/input/alt</property>
 		<factor>0.00001</factor>
 		<step>10000</step>
 		<axis>
@@ -741,7 +909,7 @@
 	<animation>
 		<type>textranslate</type>
 		<object-name>dis.alt.2</object-name>
-		<property>autopilot/settings/target-altitude-ft</property>
+		<property>/it-autoflight/input/alt</property>
 		<factor>0.0001</factor>
 		<step>1000</step>
 		<axis>
@@ -754,7 +922,7 @@
 	<animation>
 		<type>textranslate</type>
 		<object-name>dis.alt.3</object-name>
-		<property>autopilot/settings/target-altitude-ft</property>
+		<property>/it-autoflight/input/alt</property>
 		<factor>0.001</factor>
 		<step>100</step>
 		<axis>
@@ -771,9 +939,22 @@
 			<button>0</button>
 			<repeatable>false</repeatable>
 			<binding>
+				<condition>
+					<and>
+						<not>
+							<property>/it-autoflight/output/loc-arm</property>
+						</not>
+						<not>
+							<equals>
+								<property>/it-autoflight/output/lat</property>
+								<value>2</value>
+							</equals>
+						</not>
+					</and>
+				</condition>
 				<command>property-assign</command>
-				<property>/autopilot/locks/heading</property>
-				<value>nav1-hold</value>
+				<property>/it-autoflight/input/lat</property>
+				<value>2</value>
 			</binding>
 		</action>
 	</animation>
@@ -782,10 +963,27 @@
 		<type>select</type>
 		<object-name>lt.loc</object-name>
 		<condition>
-			<equals>
-				<property>/autopilot/locks/heading</property>
-				<value>nav1-hold</value>
-			</equals>
+			<and>
+				<property>/it-autoflight/output/apfd-on</property>
+				<or>
+					<and>
+						<equals>
+							<property>/it-autoflight/output/lat</property>
+							<value>2</value>
+						</equals>
+						<not>
+							<equals>
+								<property>/it-autoflight/output/vert</property>
+								<value>2</value>
+							</equals>
+						</not>
+					</and>
+					<and>
+						<property>/it-autoflight/output/loc-arm</property>
+						<not><property>/it-autoflight/output/gs-arm</property></not>
+					</and>
+				</or>
+			</and>
 		</condition>
 	</animation>
 
@@ -796,14 +994,55 @@
 			<button>0</button>
 			<repeatable>false</repeatable>
 			<binding>
+				<condition>
+					<and>
+						<not>
+							<property>/it-autoflight/output/loc-arm</property>
+						</not>
+						<not>
+							<equals>
+								<property>/it-autoflight/output/lat</property>
+								<value>2</value>
+							</equals>
+						</not>
+					</and>
+				</condition>
 				<command>property-assign</command>
-				<property>/autopilot/locks/heading</property>
-				<value>nav1-hold</value>
+				<property>/it-autoflight/input/lat</property>
+				<value>2</value>
 			</binding>
 			<binding>
+				<condition>
+					<and>
+						<not>
+							<property>/it-autoflight/output/gs-arm</property>
+						</not>
+						<not>
+							<equals>
+								<property>/it-autoflight/output/vert</property>
+								<value>2</value>
+							</equals>
+						</not>
+					</and>
+				</condition>
 				<command>property-assign</command>
-				<property>/autopilot/locks/altitude</property>
-				<value>gs1-hold</value>
+				<property>/it-autoflight/input/vert</property>
+				<value>2</value>
+			</binding>
+			<binding>
+				<condition>
+					<or>
+						<property>/it-autoflight/output/ap1</property>
+						<property>/it-autoflight/output/ap2</property>
+						<property>/it-autoflight/output/ap3</property>
+					</or>
+				</condition>
+				<command>nasal</command>
+				<script>
+					setprop("/it-autoflight/input/ap1", 1);
+					setprop("/it-autoflight/input/ap2", 1);
+					setprop("/it-autoflight/input/ap3", 1);
+				</script>
 			</binding>
 		</action>
 	</animation>
@@ -813,14 +1052,14 @@
 		<object-name>lt.app</object-name>
 		<condition>
 			<and>
-				<equals>
-					<property>/autopilot/locks/heading</property>
-					<value>nav1-hold</value>
-				</equals>
-				<equals>
-					<property>/autopilot/locks/altitude</property>
-					<value>gs1-hold</value>
-				</equals>
+				<property>/it-autoflight/output/apfd-on</property>
+				<or>
+					<equals>
+						<property>/it-autoflight/output/vert</property>
+						<value>2</value>
+					</equals>
+					<property>/it-autoflight/output/gs-arm</property>
+				</or>
 			</and>
 		</condition>
 	</animation>
@@ -832,17 +1071,20 @@
 			<button>0</button>
 			<repeatable>false</repeatable>
 			<binding>
-				<command>property-toggle</command>
-				<property>/autopilot/settings/disengaged</property>
-			</binding>
-			<binding>
 				<command>nasal</command>
 				<script>
-					setprop("/autopilot/locks/passive-mode", 0);
-					setprop("/autopilot/locks/heading", "");
-					setprop("/autopilot/locks/altitude", "");
-					setprop("/autopilot/locks/roc-lock", "");
-					setprop("/autopilot/locks/speed", "");
+					if (getprop("/it-autoflight/input/ap1-avail")) {
+						setprop("/it-autoflight/input/ap1-avail", 0);
+						setprop("/it-autoflight/input/ap2-avail", 0);
+						setprop("/it-autoflight/input/ap3-avail", 0);
+						setprop("/it-autoflight/input/ap1", 0);
+						setprop("/it-autoflight/input/ap2", 0);
+						setprop("/it-autoflight/input/ap3", 0);
+					} else {
+						setprop("/it-autoflight/input/ap1-avail", 1);
+						setprop("/it-autoflight/input/ap2-avail", 1);
+						setprop("/it-autoflight/input/ap3-avail", 1);
+					}
 				</script>
 			</binding>
 		</action>
@@ -851,52 +1093,75 @@
 	<animation>
 		<type>translate</type>
 		<object-name>btn.ap.disengage</object-name>
-		<property>/autopilot/settings/disengaged</property>
+		<property>/it-autoflight/input/ap1-avail</property>
 		<factor>0.012</factor>
+		<offset-m>-0.012</offset-m>
 		<axis>
-			<z>-1</z>
+			<z>1</z>
 		</axis>
 	</animation>
 
 	<animation>
 		<type>pick</type>
 		<object-name>btn.cmd.l</object-name>
+		<action>
+			<button>0</button>
+			<repeatable>false</repeatable>
+			<binding>
+				<command>property-toggle</command>
+				<property>/it-autoflight/input/ap1</property>
+			</binding>
+		</action>
+	</animation>
+
+	<animation>
+		<type>select</type>
+		<object-name>lt.cmd.l</object-name>
+		<condition>
+			<property>/it-autoflight/output/ap1</property>
+		</condition>
+	</animation>
+
+	<animation>
+		<type>pick</type>
 		<object-name>btn.cmd.c</object-name>
+		<action>
+			<button>0</button>
+			<repeatable>false</repeatable>
+			<binding>
+				<command>property-toggle</command>
+				<property>/it-autoflight/input/ap2</property>
+			</binding>
+		</action>
+	</animation>
+
+	<animation>
+		<type>select</type>
+		<object-name>lt.cmd.c</object-name>
+		<condition>
+			<property>/it-autoflight/output/ap2</property>
+		</condition>
+	</animation>
+
+	<animation>
+		<type>pick</type>
 		<object-name>btn.cmd.r</object-name>
 		<action>
 			<button>0</button>
 			<repeatable>false</repeatable>
 			<binding>
-				<condition>
-					<not>
-						<property>/autopilot/settings/disengaged</property>
-					</not>
-				</condition>
-				<command>property-assign</command>
-				<property>sim/gui/dialogs/autopilot/altitude-active</property>
-				<value>true</value>
-			</binding>
-			<binding>
-				<condition>
-					<not>
-						<property>/autopilot/settings/disengaged</property>
-					</not>
-				</condition>
-				<command>property-assign</command>
-				<property>sim/gui/dialogs/autopilot/heading-active</property>
-				<value>true</value>
-			</binding>
-			<binding>
-				<condition>
-					<not>
-						<property>/autopilot/settings/disengaged</property>
-					</not>
-				</condition>
-				<command>property-assign</command>
-				<property>sim/gui/dialogs/autopilot/speed-active</property>
-				<value>true</value>
+				<command>property-toggle</command>
+				<property>/it-autoflight/input/ap3</property>
 			</binding>
 		</action>
+	</animation>
+
+	<animation>
+		<type>select</type>
+		<object-name>lt.cmd.r</object-name>
+		<condition>
+			<property>/it-autoflight/output/ap3</property>
+		</condition>
 	</animation>
 
 	<!-- EFIS PANELS -->

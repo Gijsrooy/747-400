@@ -72,6 +72,11 @@ This file selects the instrumentation modules that should be available.
         <number>1</number>
     </dme>
 
+    <gps>
+        <name>gps</name>
+        <number>0</number>
+    </gps>
+
     <heading-indicator>
         <name>heading-indicator</name>
         <number>0</number>
