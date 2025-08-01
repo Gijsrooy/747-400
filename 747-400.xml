@@ -3523,10 +3523,10 @@
             <product>
                 <value>0.25</value>
                 <sum>
-                    <property>propulsion/engine[0]/reversed</property>
-                    <property>propulsion/engine[1]/reversed</property>
-                    <property>propulsion/engine[2]/reversed</property>
-                    <property>propulsion/engine[3]/reversed</property>
+                    <property>/systems/fadec/reverse-1/active</property>
+                    <property>/systems/fadec/reverse-2/active</property>
+                    <property>/systems/fadec/reverse-3/active</property>
+                    <property>/systems/fadec/reverse-4/active</property>
                 </sum>
                 <sum>
                     <property>propulsion/engine[0]/n1</property>

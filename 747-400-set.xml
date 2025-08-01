@@ -25,6 +25,11 @@
 			<description>Main developer</description>
 		</author>
 		<author>
+			<name>Josh Davidson</name>
+ 			<description>Autopilot and various systems</description>
+			<nick>Octal450</nick>
+		</author>
+		<author>
 			<name>Jonathan Redpath</name>
 			<description>FDM improvements</description>
 			<nick>legoboyvdlp</nick>
@@ -32,11 +37,6 @@
 		<author>
 			<name>Ivan Ngeow</name>
 			<description>2D panels, electric and hydraulic systems</description>
-		</author>
-		<author>
-			<name>Josh Davidson</name>
- 			<description>Autopilot</description>
-			<nick>Octal450</nick>
 		</author>
 		<author>
 			<name>Alexander Barrett</name>
@@ -437,6 +437,13 @@ left mouse button and counter clockwise using the middle mouse button.
 		<autostart>1</autostart>
 	</engines>
 
+	<fadec n="0">
+		<altn-1 type="bool">0</altn-1>
+		<altn-2 type="bool">0</altn-2>
+		<altn-3 type="bool">0</altn-3>
+		<altn-4 type="bool">0</altn-4>
+	</fadec>
+
 	<failures>
 		<gear>
 			<stuck type="bool">0</stuck>
@@ -622,20 +629,8 @@ left mouse button and counter clockwise using the middle mouse button.
 			<name>Delete</name>
 			<desc>Toggle Reversers</desc>
 			<binding>
-				<command>property-toggle</command>
-				<property>/controls/engines/engine[0]/reverser</property>
-			</binding>
-			<binding>
-				<command>property-toggle</command>
-				<property>/controls/engines/engine[1]/reverser</property>
-			</binding>
-			<binding>
-				<command>property-toggle</command>
-				<property>/controls/engines/engine[2]/reverser</property>
-			</binding>
-			<binding>
-				<command>property-toggle</command>
-				<property>/controls/engines/engine[3]/reverser</property>
+				<command>nasal</command>
+				<script>systems.toggleRevThrust();</script>
 			</binding>
 		</key>
 		<key n='356'>
@@ -874,9 +869,36 @@ left mouse button and counter clockwise using the middle mouse button.
 			<mk-viii>25</mk-viii>
 		</outputs>
 	</electrical>
+	<fadec n="0">
+		<limit n="0">
+			<active-mode type="string">T/O</active-mode>
+			<active-mode-int type="int">0</active-mode-int>
+			<auto type="bool">1</auto>
+		</limit>
+		<reverse-1 n="0">
+			<engage type="bool">0</engage>
+			<position-cmd-out type="bool">0</position-cmd-out>
+		</reverse-1>
+		<reverse-2 n="0">
+			<engage type="bool">0</engage>
+			<position-cmd-out type="bool">0</position-cmd-out>
+		</reverse-2>
+		<reverse-3 n="0">
+			<engage type="bool">0</engage>
+			<position-cmd-out type="bool">0</position-cmd-out>
+		</reverse-3>
+		<reverse-4 n="0">
+			<engage type="bool">0</engage>
+			<position-cmd-out type="bool">0</position-cmd-out>
+		</reverse-4>
+		<throttle-compare-max type="double">0</throttle-compare-max>
+	</fadec>
 	<fms n="0">
 		<flight-data n="0">
+			<flex-active type="bool">0</flex-active>
+			<flex-temp type="int">0</flex-temp>
 			<land-flaps type="int">25</land-flaps>
+			<to-packs type="int">0</to-packs>
 			<to-slope type="int">0</to-slope>
 			<to-wind type="int">0</to-wind>
 		</flight-data>
@@ -887,6 +909,22 @@ left mouse button and counter clockwise using the middle mouse button.
 </systems>
 
 <nasal>
+	<pts>
+		<file>Aircraft/747-400/Nasal/property-tree-setup.nas</file>
+	</pts>
+	<libraries>
+		<file>Aircraft/747-400/Nasal/libraries.nas</file>
+	</libraries>
+	<systems>
+		<file>Aircraft/747-400/Nasal/Systems/engines.nas</file>
+		<file>Aircraft/747-400/Nasal/Systems/gear.nas</file>
+		<file>Aircraft/747-400/Nasal/Systems/fadec.nas</file>
+		<file>Aircraft/747-400/Nasal/Systems/fcs.nas</file>
+	</systems>
+	<fms>
+		<file>Aircraft/747-400/Nasal/FMS/FMS.nas</file>
+		<file>Aircraft/747-400/Nasal/FMS/FlightData.nas</file>
+	</fms>
 	<Boeing747>
 		<file>Aircraft/747-400/Nasal/copilot.nas</file>
 		<file>Aircraft/747-400/Nasal/doors.nas</file>

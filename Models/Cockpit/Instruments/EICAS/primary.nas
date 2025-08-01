@@ -2,7 +2,7 @@
 # Boeing 747-400 EICAS by Gijs de Rooy
 # ==============================================================================
 
-var thrustRefModeText = ["TO","TO 1","TO 2","D-TO","D-TO 1","D-TO 2","CLB","CLB 1","CLB 2","CON","CRZ","GA"];
+var thrustRefModeText = ["TO","GA","CON","CLB","CRZ"];
 
 var B744PrimaryEICAS = {
 	new: func(svg, name) {
@@ -89,17 +89,17 @@ var B744PrimaryEICAS = {
 				obj.eicasEGT(val, 4);
 			}),
 
-			props.UpdateManager.FromHashList(["eng1n1", "eng1throttle", "eng1n1max", "eng1rev"], nil, func(val) {
-				obj.eicasN1(val.eng1n1, val.eng1throttle, val.eng1n1max, val.eng1rev, 1);
+			props.UpdateManager.FromHashList(["eng1n1", "eng1throttle", "engn1max", "engn1ref", "eng1rev"], nil, func(val) {
+				obj.eicasN1(val.eng1n1, val.eng1throttle, val.engn1max, val.engn1ref, val.eng1rev, 1);
 			}),
-			props.UpdateManager.FromHashList(["eng2n1", "eng2throttle", "eng2n1max", "eng2rev"], nil, func(val) {
-				obj.eicasN1(val.eng2n1, val.eng2throttle, val.eng2n1max, val.eng2rev, 2);
+			props.UpdateManager.FromHashList(["eng2n1", "eng2throttle", "engn1max", "engn1ref", "eng2rev"], nil, func(val) {
+				obj.eicasN1(val.eng2n1, val.eng2throttle, val.engn1max, val.engn1ref, val.eng2rev, 2);
 			}),
-			props.UpdateManager.FromHashList(["eng3n1", "eng3throttle", "eng3n1max", "eng3rev"], nil, func(val) {
-				obj.eicasN1(val.eng3n1, val.eng3throttle, val.eng3n1max, val.eng3rev, 3);
+			props.UpdateManager.FromHashList(["eng3n1", "eng3throttle", "engn1max", "engn1ref", "eng3rev"], nil, func(val) {
+				obj.eicasN1(val.eng3n1, val.eng3throttle, val.engn1max, val.engn1ref, val.eng3rev, 3);
 			}),
-			props.UpdateManager.FromHashList(["eng4n1", "eng4throttle", "eng4n1max", "eng4rev"], nil, func(val) {
-				obj.eicasN1(val.eng4n1, val.eng4throttle, val.eng4n1max, val.eng4rev, 4);
+			props.UpdateManager.FromHashList(["eng4n1", "eng4throttle", "engn1max", "engn1ref", "eng4rev"], nil, func(val) {
+				obj.eicasN1(val.eng4n1, val.eng4throttle, val.engn1max, val.engn1ref, val.eng4rev, 4);
 			}),
 
 			props.UpdateManager.FromHashValue("eng1nai", nil, func(val) {
@@ -129,7 +129,7 @@ var B744PrimaryEICAS = {
 			}),
 
 			props.UpdateManager.FromHashValue("assTemp", 1, func(val) {
-				if ((val or -999) > -90) {
+				if (val > 0) {
 					obj["assTemp"].setText(sprintf("%+02.0fc", val));
 					obj["assTemp"].show();
 				} else {
@@ -278,12 +278,15 @@ var B744PrimaryEICAS = {
 			}
 		};
 
-		obj.eicasN1 = func(n1, n1cmd, n1max, rev, n) {
+		obj.eicasN1 = func(n1, n1cmd, n1max, n1ref, rev, n) {
 			obj["eng"~n~"n1"].setText(sprintf("%3.01f", n1));
 			obj["eng"~n~"n1bar_scale"].setScale(1, n1 / 117.5);
-			if(n1 >= 117.5) {
+			if (n1 >= 117.5) {
 				obj["eng"~n~"n1"].setColor(1, 0, 0);
 				obj["eng"~n~"n1bar"].setColor(1, 0, 0);
+			} elsif (n1 > n1max) {
+				obj["eng"~n~"n1"].setColor(1, 0.5, 0);
+				obj["eng"~n~"n1bar"].setColor(1, 0.5, 0);
 			} else {
 				obj["eng"~n~"n1"].setColor(1, 1, 1);
 				obj["eng"~n~"n1bar"].setColor(1, 1, 1);
@@ -296,15 +299,15 @@ var B744PrimaryEICAS = {
 				} else {
 					obj["eng"~n~"n1ref"].setColor(0, 1.0, 0);
 				}
-				obj["eng"~n~"n1cmdLine"].hide();
+				obj["eng"~n~"n1refLine"].hide();
 			} else {
-				obj["eng"~n~"n1cmdLine"].show();
-				obj["eng"~n~"n1cmdLine"].setTranslation(0, -173.2 * n1cmd * n1max - 46.8);
-				obj["eng"~n~"n1ref"].setText(sprintf("%3.01f", 92.5 * n1cmd * n1max + 25.0));
+				obj["eng"~n~"n1ref"].setText(sprintf("%3.01f", n1ref));
 				obj["eng"~n~"n1ref"].setColor(0, 1.0, 0);
+				obj["eng"~n~"n1refLine"].setTranslation(0, -217 * n1ref / 117.5);
+				obj["eng"~n~"n1refLine"].show();
 			}
-
-			obj["eng"~n~"n1maxLine"].setTranslation(0, -173.2 * n1max - 46.8);
+			obj["eng"~n~"n1cmdLine"].setTranslation(0, -217 * n1cmd / 117.5);
+			obj["eng"~n~"n1maxLine"].setTranslation(0, -217 * n1max / 117.5);
 		};
 
 		return obj;
@@ -318,6 +321,7 @@ var B744PrimaryEICAS = {
 		"eng1n1bar","eng2n1bar","eng3n1bar","eng4n1bar",
 		"eng1n1cmdLine", "eng2n1cmdLine", "eng3n1cmdLine", "eng4n1cmdLine",
 		"eng1n1maxLine", "eng2n1maxLine", "eng3n1maxLine", "eng4n1maxLine",
+		"eng1n1refLine", "eng2n1refLine", "eng3n1refLine", "eng4n1refLine",
 		"eng1n1ref","eng2n1ref","eng3n1ref","eng4n1ref",
 		"eng1nai","eng2nai","eng3nai","eng4nai",
 		"flapsBar","flapsBox","flapsL","flapsLine","flapsText",
@@ -347,14 +351,12 @@ var input = {
 	eng2n1: "/engines/engine[1]/n1",
 	eng3n1: "/engines/engine[2]/n1",
 	eng4n1: "/engines/engine[3]/n1",
-	eng1throttle: "/controls/engines/engine[0]/throttle",
-	eng2throttle: "/controls/engines/engine[1]/throttle",
-	eng3throttle: "/controls/engines/engine[2]/throttle",
-	eng4throttle: "/controls/engines/engine[3]/throttle",
-	eng1n1max: "/fdm/jsbsim/eec/throttle-max-cmd-norm[0]",
-	eng2n1max: "/fdm/jsbsim/eec/throttle-max-cmd-norm[0]",
-	eng3n1max: "/fdm/jsbsim/eec/throttle-max-cmd-norm[0]",
-	eng4n1max: "/fdm/jsbsim/eec/throttle-max-cmd-norm[0]",
+	eng1throttle: "/systems/fadec/control-1/throttle-n1",
+	eng2throttle: "/systems/fadec/control-2/throttle-n1",
+	eng3throttle: "/systems/fadec/control-3/throttle-n1",
+	eng4throttle: "/systems/fadec/control-4/throttle-n1",
+	engn1max: "/systems/fadec/limit/max",
+	engn1ref: "/systems/fadec/limit/active",
 	eng1nai: "/controls/anti-ice/engine[0]/inlet-heat",
 	eng2nai: "/controls/anti-ice/engine[1]/inlet-heat",
 	eng3nai: "/controls/anti-ice/engine[2]/inlet-heat",
@@ -385,7 +387,7 @@ var input = {
 	msgAdvisory: "/instrumentation/eicas/msg/advisory",
 	msgMemo: "/instrumentation/eicas/msg/memo",
 	tat: "/fdm/jsbsim/propulsion/tat-c",
-	thrustMode: "/fdm/jsbsim/eec/reference-thrust-mode",
+	thrustMode: "/systems/fadec/limit/active-mode-int",
 	wai: "/controls/anti-ice/wing-heat",
 };
 

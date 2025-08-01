@@ -1983,6 +1983,24 @@
 	</animation>
 
 	<!-- THROTTLE LEVERS -->
+
+	<animation>
+		<type>pick</type>
+		<object-name>reverser_eng.1</object-name>
+		<object-name>reverser_eng.2</object-name>
+		<object-name>reverser_eng.3</object-name>
+		<object-name>reverser_eng.4</object-name>
+		<visible>true</visible>
+		<action>
+			<button>0</button>
+			<repeatable>false</repeatable>
+			<binding>
+				<command>nasal</command>
+				<script>systems.toggleRevThrust();</script>
+			</binding>
+		</action>
+	</animation>
+
 	<!-- ENGINE 1 -->
 
 	<animation>
@@ -2012,25 +2030,11 @@
 	</animation>
 
 	<animation>
-		<type>pick</type>
-		<object-name>reverser_eng.1</object-name>
-		<visible>true</visible>
-		<action>
-			<button>0</button>
-			<repeatable>false</repeatable>
-			<binding>
-				<command>property-toggle</command>
-				<property>/controls/engines/engine[0]/reverser</property>
-			</binding>
-		</action>
-	</animation>
-
-	<animation>
 		<type>rotate</type>
 		<object-name>throttle_eng.1</object-name>
 		<object-name>reverser_eng.1</object-name>
-		<property>/controls/engines/engine[0]/throttle</property>
-		<factor>55</factor>
+		<property>/systems/fadec/control-1/throttle-pos</property>
+		<factor>50</factor>
 		<center>
 			<x-m>1.133</x-m>
 			<y-m>0</y-m>
@@ -2046,8 +2050,8 @@
 	<animation>
 		<type>rotate</type>
 		<object-name>reverser_eng.1</object-name>
-		<property>/controls/engines/engine[0]/reverser</property>
-		<factor>40</factor>
+		<property>/systems/fadec/reverse-1/throttle-lever</property>
+		<factor>89.25</factor>
 		<center>
 			<x-m>1.211</x-m>
 			<y-m>0</y-m>
@@ -2089,25 +2093,11 @@
 	</animation>
 
 	<animation>
-		<type>pick</type>
-		<object-name>reverser_eng.2</object-name>
-		<visible>true</visible>
-		<action>
-			<button>0</button>
-			<repeatable>false</repeatable>
-			<binding>
-				<command>property-toggle</command>
-				<property>/controls/engines/engine[1]/reverser</property>
-			</binding>
-		</action>
-	</animation>
-
-	<animation>
 		<type>rotate</type>
 		<object-name>throttle_eng.2</object-name>
 		<object-name>reverser_eng.2</object-name>
-		<property>/controls/engines/engine[1]/throttle</property>
-		<factor>55</factor>
+		<property>/systems/fadec/control-2/throttle-pos</property>
+		<factor>50</factor>
 		<center>
 			<x-m>1.133</x-m>
 			<y-m>0</y-m>
@@ -2123,8 +2113,8 @@
 	<animation>
 		<type>rotate</type>
 		<object-name>reverser_eng.2</object-name>
-		<property>/controls/engines/engine[1]/reverser</property>
-		<factor>40</factor>
+		<property>/systems/fadec/reverse-2/throttle-lever</property>
+		<factor>89.25</factor>
 		<center>
 			<x-m>1.211</x-m>
 			<y-m>0</y-m>
@@ -2166,25 +2156,11 @@
 	</animation>
 
 	<animation>
-		<type>pick</type>
-		<object-name>reverser_eng.3</object-name>
-		<visible>true</visible>
-		<action>
-			<button>0</button>
-			<repeatable>false</repeatable>
-			<binding>
-				<command>property-toggle</command>
-				<property>/controls/engines/engine[2]/reverser</property>
-			</binding>
-		</action>
-	</animation>
-
-	<animation>
 		<type>rotate</type>
 		<object-name>throttle_eng.3</object-name>
 		<object-name>reverser_eng.3</object-name>
-		<property>/controls/engines/engine[2]/throttle</property>
-		<factor>55</factor>
+		<property>/systems/fadec/control-3/throttle-pos</property>
+		<factor>50</factor>
 		<center>
 			<x-m>1.133</x-m>
 			<y-m>0</y-m>
@@ -2200,8 +2176,8 @@
 	<animation>
 		<type>rotate</type>
 		<object-name>reverser_eng.3</object-name>
-		<property>/controls/engines/engine[2]/reverser</property>
-		<factor>40</factor>
+		<property>/systems/fadec/reverse-3/throttle-lever</property>
+		<factor>89.25</factor>
 		<center>
 			<x-m>1.211</x-m>
 			<y-m>0</y-m>
@@ -2243,25 +2219,11 @@
 	</animation>
 
 	<animation>
-		<type>pick</type>
-		<object-name>reverser_eng.4</object-name>
-		<visible>true</visible>
-		<action>
-			<button>0</button>
-			<repeatable>false</repeatable>
-			<binding>
-				<command>property-toggle</command>
-				<property>/controls/engines/engine[3]/reverser</property>
-			</binding>
-		</action>
-	</animation>
-
-	<animation>
 		<type>rotate</type>
 		<object-name>throttle_eng.4</object-name>
 		<object-name>reverser_eng.4</object-name>
-		<property>/controls/engines/engine[3]/throttle</property>
-		<factor>55</factor>
+		<property>/systems/fadec/control-4/throttle-pos</property>
+		<factor>50</factor>
 		<center>
 			<x-m>1.133</x-m>
 			<y-m>0</y-m>
@@ -2277,8 +2239,8 @@
 	<animation>
 		<type>rotate</type>
 		<object-name>reverser_eng.4</object-name>
-		<property>/controls/engines/engine[3]/reverser</property>
-		<factor>40</factor>
+		<property>/systems/fadec/reverse-4/throttle-lever</property>
+		<factor>89.25</factor>
 		<center>
 			<x-m>1.211</x-m>
 			<y-m>0</y-m>
