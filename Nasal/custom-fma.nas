@@ -4,6 +4,11 @@
 
 var Fma = {
 	elapsedSec: props.globals.getNode("/sim/time/elapsed-sec"),
+	at: props.globals.initNode("/instrumentation/pfd/fma/at-mode", "", "STRING"),
+	pitch: props.globals.initNode("/instrumentation/pfd/fma/pitch-mode", "", "STRING"),
+	pitchArm: props.globals.initNode("/instrumentation/pfd/fma/pitch-mode-armed", "", "STRING"),
+	roll: props.globals.initNode("/instrumentation/pfd/fma/roll-mode", "", "STRING"),
+	rollArm: props.globals.initNode("/instrumentation/pfd/fma/roll-mode-armed", "", "STRING"),
 	Box: {
 		show: [0, 0, 0, 0],
 		elapsed: 0,
@@ -30,66 +35,78 @@ var Fma = {
 };
 
 var UpdateFma = {
+	latText: "",
+	vertText: "",
 	thr: func() { # Called when speed/thrust modes change
 		if (Text.thr.getValue() == "MACH" or Text.thr.getValue() == "SPEED") {
-			Text.thr.setValue("SPD");
+			Fma.at.setValue("SPD");
 		} elsif (Text.thr.getValue() == "THR LIM") {
-			Text.thr.setValue("THR REF");
+			Fma.at.setValue("THR REF");
 			if (Output.vert.getValue() == 7) {
 				atHoldLoop.start();
 			}
-		} elsif (Text.thr.getValue() == "RETARD") {
-			Text.thr.setValue("IDLE");
+		} elsif (Text.thr.getValue() == "IDLE" or Text.thr.getValue() == "RETARD") {
+			Fma.at.setValue("IDLE");
 		} elsif (Text.thr.getValue() == "CLAMP") {
-			Text.thr.setValue("HOLD");
+			Fma.at.setValue("HOLD");
 		}
 	},
 	arm: func() { # Called when armed modes change
 		if (Output.lnavArm.getBoolValue()) {
-			Text.latArm.setValue("LNAV");
+			Fma.rollArm.setValue("LNAV");
 		} elsif (Output.locArm.getBoolValue()) {
-			Text.latArm.setValue("LOC");
+			Fma.rollArm.setValue("LOC");
 		} elsif (Output.rolloutArm.getBoolValue()) {
-			Text.latArm.setValue("ROLLOUT");
+			Fma.rollArm.setValue("ROLLOUT");
 		} else {
-			Text.latArm.setValue("");
+			Fma.rollArm.setValue("");
 		}
+
 		if (Output.gsArm.getBoolValue()) {
-			Text.vertArm.setValue("G/S");
+			Fma.pitchArm.setValue("G/S");
 		} elsif (Output.flareArm.getBoolValue()) {
-			Text.vertArm.setValue("FLARE");
+			Fma.pitchArm.setValue("FLARE");
 		} else {
-			Text.vertArm.setValue("");
+			Fma.pitchArm.setValue("");
 		}
 	},
 	lat: func() { # Called when lateral mode changes
-		if (Text.lat.getValue() == "T/O") {
-			Text.lat.setValue("TO/GA");
-		} elsif (Text.lat.getValue() == "ROLL") {
-			Text.lat.setValue("ATT");
-		} elsif (Text.lat.getValue() == "HDG") {
+		me.latText = Text.lat.getValue();
+
+		if (me.latText == "T/O") {
+			Fma.roll.setValue("TO/GA");
+		} elsif (me.latText == "LNAV") {
+			Fma.roll.setValue("LNAV");
+		} elsif (me.latText == "ROLL") {
+			Fma.roll.setValue("ATT");
+		} elsif (me.latText == "HDG") {
 			if (Output.hdgInHld.getBoolValue()) {
-				Text.lat.setValue("HDG HOLD");
+				Fma.roll.setValue("HDG HOLD");
 			} else {
-				Text.lat.setValue("HDG SEL");
+				Fma.roll.setValue("HDG SEL");
 			}
-		} elsif (Text.lat.getValue() == "LOC") {
+		} elsif (me.latText == "LOC") {
+			Fma.roll.setValue("LOC");
 			Input.hdg.setValue(getprop("/instrumentation/nav[" ~ Input.radioSel.getValue() ~ "]/radials/selected-deg"));
-		} elsif (Text.lat.getValue() == "ALIGN") {
-			Text.lat.setValue("LOC");
+		} elsif (me.latText == "ALIGN") {
+			Fma.roll.setValue("LOC");
+		} else {
+			Fma.roll.setValue("");
 		}
 	},
 	vert: func() { # Called when vertical mode changes
-		if (Text.vert.getValue() == "ALT CAP" or Text.vert.getValue() == "ALT HLD") {
-			Text.vert.setValue("ALT");
-		} elsif (Text.vert.getValue() == "T/O CLB" or Text.vert.getValue() == "G/A CLB") {
-			Text.vert.setValue("TO/GA");
-		} elsif (Text.vert.getValue() == "SPD CLB" or Text.vert.getValue() == "SPD DES") {
-			Text.vert.setValue("FLCH SPD");
-		} elsif (Text.vert.getValue() == "FPA") {
-			Text.vert.setValue("VNAV PTH");
-		} elsif (Text.vert.getValue() == "ROLLOUT") {
-			Text.vert.setValue("");
+		me.vertText = Text.vert.getValue();
+
+		if (me.vertText == "ALT CAP" or me.vertText == "ALT HLD") {
+			Fma.pitch.setValue("ALT");
+		} elsif (me.vertText == "T/O CLB" or me.vertText == "G/A CLB") {
+			Fma.pitch.setValue("TO/GA");
+		} elsif (me.vertText == "SPD CLB" or me.vertText == "SPD DES") {
+			Fma.pitch.setValue("FLCH SPD");
+		} elsif (me.vertText == "FPA") {
+			Fma.pitch.setValue("VNAV PTH");
+		} elsif (me.vertText == "ROLLOUT") {
+			Fma.pitch.setValue("");
 		}
 	},
 };

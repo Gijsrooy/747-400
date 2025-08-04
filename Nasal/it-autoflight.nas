@@ -487,7 +487,7 @@ var ITAF = {
 		}
 		
 		# FLCH Engagement
-		if (Text.vertTemp == "TO/GA") {
+		if (Text.vertTemp == "T/O CLB") {
 			me.checkFlch(Settings.accelFt.getValue());
 		}
 		

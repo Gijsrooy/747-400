@@ -525,8 +525,8 @@ var B744PFD = {
 		obj.update = func(notification) {
 			obj["afdsMode_box"].setVisible(itaf.Fma.Box.show[0]);
 			obj["atMode_box"].setVisible(itaf.Fma.Box.show[1]);
-			obj["pitchMode_box"].setVisible(itaf.Fma.Box.show[2]);
-			obj["rollMode_box"].setVisible(itaf.Fma.Box.show[3]);
+			obj["rollMode_box"].setVisible(itaf.Fma.Box.show[2]);
+			obj["pitchMode_box"].setVisible(itaf.Fma.Box.show[3]);
 
 			foreach(var update_item; obj.update_items) {
 				update_item.update(notification);
@@ -592,11 +592,11 @@ var input = {
 	pitch: "/orientation/pitch-deg",
 	roll: "/orientation/roll-deg",
 	selHdg: "/it-autoflight/input/hdg",
-	latArm: "/it-autoflight/text/lat-arm",
-	vertArm: "/it-autoflight/text/vert-arm",
-	latMode: "/it-autoflight/text/lat",
-	vertMode: "/it-autoflight/text/vert",
-	spdMode: "/it-autoflight/text/thr",
+	latArm: "/instrumentation/pfd/fma/roll-mode-armed",
+	vertArm: "/instrumentation/pfd/fma/pitch-mode-armed",
+	latMode: "/instrumentation/pfd/fma/roll-mode",
+	vertMode: "/instrumentation/pfd/fma/pitch-mode",
+	spdMode: "/instrumentation/pfd/fma/at-mode",
 	spdTrend: "/instrumentation/pfd/speed-trend-up",
 	fd1: "/it-autoflight/output/fd1",
 	fd2: "/it-autoflight/output/fd2",
