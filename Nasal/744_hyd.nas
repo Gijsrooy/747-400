@@ -128,8 +128,6 @@ var Hyd = {
     # update props
     if (me.pressure < 0) me.pressure = 0;
     setprop(sys, 'pressure['~me.n~']', me.pressure);
-
-#printf('DEBUG: hyd %d press %d temp %d qty %d', me.n, me.pressure, me.temp, me.qty);
   }
 };
 
@@ -144,11 +142,8 @@ var resched_update = func
   settimer(resched_update, 2);
 }
 
-
 # init
 
 var hyd_sys = [Hyd.new(0), Hyd.new(1), Hyd.new(2), Hyd.new(3)];
 
 resched_update();
-
-print('747-400 hydraulic system: so far so good');

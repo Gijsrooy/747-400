@@ -13,7 +13,6 @@ var copilot = {
 		me.V2announced = 0;
 		me.cogannounced = 0;
         me.reset(); 
-        print("Copilot aboard"); 
     }, 
 	update : func {
         var airspeed = getprop("velocities/airspeed-kt");

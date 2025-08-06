@@ -85,7 +85,6 @@ setlistener("/sim/signals/fdm-initialized",
 settimer(func()
 {
 	gearHeat.update();
-	print("Brake heating system... OK");
 }, 5);
 		 
 ## Continious Ignition ##
@@ -248,7 +247,6 @@ var repair = func() {
 ## Fill fuel tanks ##
 var fillFuel = func() {
 	var fuelWeight = getprop("/consumables/fuel-weight-to-load-kg");
-	print("Fuel tanks filled with "~fuelWeight~" kg");
 	if (fuelWeight > 54600) {
 		setprop("consumables/fuel/tank[1]/level-lbs",(0.5*27150*KG2LB));
 		setprop("consumables/fuel/tank[4]/level-lbs",(0.5*27150*KG2LB));

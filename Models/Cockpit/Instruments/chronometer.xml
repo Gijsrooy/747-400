@@ -247,7 +247,6 @@ Boeing style chronometer, by Syd Adams
         props.globals.initNode("/instrumentation/clock/time-knob",0,"INT");
         props.globals.initNode("/instrumentation/clock/et-knob",0,"INT");
         props.globals.initNode("/instrumentation/clock/set-knob",0,"INT");
-        print("Boeing chronometer ... initialized");
         }
 
         var tmp = props.globals.getNode("/instrumentation/clock/et-knob").getValue();

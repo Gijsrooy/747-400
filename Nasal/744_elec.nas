@@ -11,7 +11,6 @@
 var apu_started = 0;
 var on_ground = 1;
 var pbrake_time = getprop('sim/time/elapsed-sec') - 50;
-var debug = props.globals.initNode('debug', '', 'STRING');
 
 var sys = 'systems/electrical/';
 var controls = 'controls/electric/';
@@ -119,7 +118,6 @@ var turn_apu_sw = func(n = -1)
 	var n2 = getprop('engines/apu/n2');
 	if (n2 > 15) {
 	  setprop('controls/engines/engine[4]/cutoff', 0);
-	  print('>>> APU fuel run');
 	} else {
 	  if (getprop('engines/engine[4]/starter') == 1)
 	    settimer(igniter, 3);
@@ -130,7 +128,6 @@ var turn_apu_sw = func(n = -1)
       {
 	if (getprop(controls, 'apu') == 0) {
 	  setprop('controls/engines/engine[4]/cutoff', 1);
-	  print('>>> APU fuel cutoff');
 	  apu_started = 0;
 	}
       }
@@ -348,7 +345,6 @@ var new_refresh = func(action, n)
 
   } elsif (sync_src[side].getValue() == 'apu') {
     if (action == 2) {		# APU desel
-printf('DEBUG refresh(2): APU desel');
       apu_gen[side].setValue(1);
       sync_src[side].setValue('');
       # if GEN CONT on, switch back to IDG, otherwise bus is de-powered
@@ -455,8 +451,6 @@ printf('DEBUG refresh(2): APU desel');
   # update EICAS synoptic
   #settimer(flowbars, 0.8);	# after a delay
   flowbars();			# don't delay
-
-  printf("DEBUG refresh(%d) sync %3s/%3s ac %d%d%d%d ssb %s", action, sync_src[0].getValue(), sync_src[1].getValue(), elec_sys[0].ac, elec_sys[1].ac, elec_sys[2].ac, elec_sys[3].ac, ssb);
 }
 
 var flowbars = func
@@ -682,8 +676,6 @@ var elec_poll_state = func
     }
   }
 
-  #printf("DEBUG apu %d,%d ext %d,%d idg %d,%d,%d,%d", apu1, apu2, ext1, ext2, elec_sys[0].idg, elec_sys[1].idg, elec_sys[2].idg, elec_sys[3].idg);
-  debug.setValue('DEBUG apu'~ apu1~apu2~ 'ext'~ ext1~ext2~ 'idg'~ elec_sys[0].idg~ elec_sys[1].idg~ elec_sys[2].idg~ elec_sys[3].idg);
   settimer(elec_poll_state, 1);
 }
 
@@ -699,8 +691,6 @@ elec_poll_state();
 #setlistener("controls/electric/battery", batt_sw);
 #setlistener("systems/electrical/outputs/main-batt-bus-v", main_batt_bus);
 setlistener('controls/gear/brake-parking', mark_pbrake);
-
-print('747-400 electrical system by Ivan Ngeow.');
 
 # 
 # /systems/electrical/outputs/
