@@ -103,7 +103,7 @@
 				</equals>
 				<equals>
 					<property>/it-autoflight/input/kts</property>
-					<property>/instrumentation/fmc/vspeeds/V2</property>
+					<property>/systems/fms/flight-data/v2</property>
 				</equals>
 				<equals>
 					<property>/it-autoflight/input/alt</property>

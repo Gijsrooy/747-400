@@ -4,6 +4,26 @@
 <!-- Copyright (c) 2024-2025 Josh Davidson (Octal450) and Gijs de Rooy-->
 
 <system name="747-400: FMS">
+    <channel name="Flight Data" execrate="8">
+
+        <!-- Weight Inputs -->
+        <pure_gain name="/systems/fms/flight-data/gw-full-lbs">
+            <input>/systems/fms/flight-data/gw-lbs</input>
+            <gain>1000</gain>
+        </pure_gain>
+
+        <pure_gain name="/systems/fms/flight-data/gw-kg">
+            <input>/systems/fms/flight-data/gw-lbs</input>
+            <gain>0.45359237</gain>
+        </pure_gain>
+
+        <pure_gain name="/systems/fms/flight-data/gw-full-kg">
+            <input>/systems/fms/flight-data/gw-full-lbs</input>
+            <gain>0.45359237</gain>
+        </pure_gain>
+
+    </channel>
+
     <channel name="FMS Calculations" execrate="8">
 
         <fcs_function name="/systems/fms/speeds/mmo-kts">
@@ -215,23 +235,44 @@
         </fcs_function>
 
         <!-- Vref -->
-        <fcs_function name="/systems/fms/speeds/vref">
+        <fcs_function name="/systems/fms/speeds/vref-25">
             <function>
                 <table>
                     <independentVar lookup="row">inertia/weight-kg</independentVar>
-                    <independentVar lookup="column">/systems/fms/flight-data/land-flaps</independentVar>
                     <tableData>
-                                25  30
-                        180000 124 121
-                        200000 132 127
-                        250000 149 143
-                        300000 164 157
-                        330000 173 165
+                        180000 124
+                        200000 132
+                        250000 149
+                        300000 164
+                        330000 173
+                    </tableData>
+                </table>
+            </function>
+        </fcs_function>
+
+        <fcs_function name="/systems/fms/speeds/vref-30">
+            <function>
+                <table>
+                    <independentVar lookup="row">inertia/weight-kg</independentVar>
+                    <tableData>
+                        180000 121
+                        200000 127
+                        250000 143
+                        300000 157
+                        330000 165
                     </tableData>
                 </table>
             </function>
             <output>/instrumentation/fmc/vspeeds/Vref</output>
         </fcs_function>
+
+        <switch name="/systems/fms/speeds/vref">
+            <default value="/systems/fms/speeds/vref-30"/>
+            <test logic="AND" value="/systems/fms/speeds/vref-25">
+                /systems/fms/flight-data/land-flaps eq 25
+            </test>
+            <output>/instrumentation/fmc/vspeeds/Vref</output>
+        </switch>
 
         <!-- Vapp -->
         <fcs_function name="/systems/fms/speeds/vapp">
@@ -314,13 +355,20 @@
 
         <fcs_function name="/systems/fms/speeds/v1">
             <function>
-                <max>
-                    <sum>
-                        <property>/systems/fms/speeds/v1-slope-wind-delta</property>
-                        <property>/systems/fms/speeds/v1-table</property>
-                    </sum>
-                    <property>/systems/fms/speeds/vmcg-to</property>
-                </max>
+                <ifthen>
+                    <eq>
+                        <property>/systems/fms/flight-data/can-calc-vspeeds</property>
+                        <value>1</value>
+                    </eq>
+                    <max>
+                        <sum>
+                            <property>/systems/fms/speeds/v1-slope-wind-delta</property>
+                            <property>/systems/fms/speeds/v1-table</property>
+                        </sum>
+                        <property>/systems/fms/speeds/vmcg-to</property>
+                    </max>
+                    <value>0</value>
+                </ifthen>
             </function>
             <output>/instrumentation/fmc/vspeeds/V1</output>
         </fcs_function>
@@ -345,10 +393,17 @@
 
         <fcs_function name="/systems/fms/speeds/vr">
             <function>
-                <max>
-                    <property>/systems/fms/speeds/vr-table</property>
-                    <property>/systems/fms/speeds/vmcg-to</property>
-                </max>
+                <ifthen>
+                    <eq>
+                        <property>/systems/fms/flight-data/can-calc-vspeeds</property>
+                        <value>1</value>
+                    </eq>
+                    <max>
+                        <property>/systems/fms/speeds/vr-table</property>
+                        <property>/systems/fms/speeds/vmcg-to</property>
+                    </max>
+                    <value>0</value>
+                </ifthen>
             </function>
             <output>/instrumentation/fmc/vspeeds/VR</output>
         </fcs_function>
@@ -356,18 +411,25 @@
         <!-- V2 -->
         <fcs_function name="/systems/fms/speeds/v2">
             <function>
-                <table>
-                    <independentVar lookup="row">inertia/weight-kg</independentVar>
-                    <independentVar lookup="column">/instrumentation/fmc/to-flap</independentVar>
-                    <tableData>
-                                10  20
-                        200000 136 130
-                        250000 150 144
-                        300000 164 158
-                        350000 177 171
-                        400000 189 182
-                    </tableData>
-                </table>
+                <ifthen>
+                    <eq>
+                        <property>/systems/fms/flight-data/can-calc-vspeeds</property>
+                        <value>1</value>
+                    </eq>
+                    <table>
+                        <independentVar lookup="row">inertia/weight-kg</independentVar>
+                        <independentVar lookup="column">/instrumentation/fmc/to-flap</independentVar>
+                        <tableData>
+                                    10  20
+                            200000 136 130
+                            250000 150 144
+                            300000 164 158
+                            350000 177 171
+                            400000 189 182
+                        </tableData>
+                    </table>
+                    <value>0</value>
+                </ifthen>
             </function>
             <output>/instrumentation/fmc/vspeeds/V2</output>
         </fcs_function>
@@ -382,7 +444,7 @@
         </fcs_function>
 
         <!-- Stabilizer Computer -->
-        <fcs_function name="/systems/fms/internal/takeoff-stab-units-calc">
+        <fcs_function name="/systems/fms/internal/takeoff-stab-deg-calc">
             <function>
                 <table>
                     <independentVar lookup="row">inertia/weight-kg</independentVar>
@@ -406,12 +468,88 @@
             <output>/instrumentation/fmc/stab-trim-units</output>
         </fcs_function>
 
+        <fcs_function name="/systems/fms/internal/takeoff-stab-deg">
+			<function>
+				<quotient>
+					<floor>
+						<sum>
+							<product>
+								<property>/systems/fms/internal/takeoff-stab-deg-calc</property>
+								<value>10</value>
+							</product>
+							<value>0.5</value>
+						</sum>
+					</floor>
+					<value>10</value>
+				</quotient>
+			</function>
+		</fcs_function>
+
         <fcs_function name="/systems/fms/internal/takeoff-stab-error">
             <function>
                 <difference>
                     <property>fcs/stabilizer/trim-units</property>
-                    <property>/systems/fms/internal/takeoff-stab-units-calc</property>
+                    <property>/systems/fms/internal/takeoff-stab-deg</property>
                 </difference>
+            </function>
+        </fcs_function>
+
+        <!-- Opt/Max Flight Levels -->
+        <fcs_function name="/systems/fms/internal/opt-fl">
+            <function>
+                <ifthen>
+                    <gt>
+                        <property>/systems/fms/flight-data/gw-kg</property>
+                        <value>0</value>
+                    </gt>
+                    <table>
+                        <independentVar lookup="row">/systems/fms/flight-data/gw-kg</independentVar>
+                        <tableData>
+                            180.000 446
+                            200.000 424
+                            220.000 404
+                            240.000 386
+                            260.000 369
+                            280.000 354
+                            300.000 339
+                            320.000 325
+                            340.000 312
+                            360.000 300
+                            380.000 288
+                            400.000 276
+                        </tableData>
+                    </table>
+                    <value>0</value>
+                </ifthen>
+            </function>
+        </fcs_function>
+
+        <fcs_function name="/systems/fms/internal/max-fl">
+            <function>
+                <ifthen>
+                    <gt>
+                        <property>/systems/fms/flight-data/gw-kg</property>
+                        <value>0</value>
+                    </gt>
+                    <table>
+                        <independentVar lookup="row">/systems/fms/flight-data/gw-kg</independentVar>
+                        <tableData>
+                            180.000 450
+                            200.000 436
+                            220.000 416
+                            240.000 398
+                            260.000 381
+                            280.000 366
+                            300.000 351
+                            320.000 338
+                            340.000 325
+                            360.000 313
+                            380.000 301
+                            400.000 289
+                        </tableData>
+                    </table>
+                    <value>0</value>
+                </ifthen>
             </function>
         </fcs_function>
 

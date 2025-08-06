@@ -15,10 +15,10 @@ var copilot = {
         me.reset(); 
     }, 
 	update : func {
-        var airspeed = getprop("velocities/airspeed-kt");
-		var V1 = getprop("/instrumentation/fmc/vspeeds/V1");
-		var V2 = getprop("/instrumentation/fmc/vspeeds/V2");
-		var VR = getprop("/instrumentation/fmc/vspeeds/VR");
+        var airspeed = pts.Instrumentation.AirspeedIndicator.indicatedSpeedKt.getValue();
+		var V1 = fms.flightData.v1;
+		var V2 = fms.flightData.v2;
+		var VR = fms.flightData.vr;
 		
         if ((airspeed != nil) and (V1 != nil) and (airspeed > V1) and (me.V1announced == 0)) {
             me.announce("V1!");

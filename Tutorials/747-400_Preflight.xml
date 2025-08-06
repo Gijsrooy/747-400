@@ -433,7 +433,7 @@ You just stepped through the cockpit door of the cold and dark 747-400, the most
 		<exit>
 			<condition>  
 				<equals>
-					<property>/instrumentation/fmc/vspeeds/V2</property>
+					<property>/systems/fms/flight-data/v2</property>
 					<property>/it-autoflight/input/kts</property>
 				</equals>
 			</condition>

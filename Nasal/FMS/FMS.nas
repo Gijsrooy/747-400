@@ -2,9 +2,14 @@
 # Copyright (c) 2025 Josh Davidson (Octal450) and Gijs de Rooy
 
 var Internal = {
+	maxFl: props.globals.getNode("/systems/fms/internal/max-fl"),
+	maxZfw: props.globals.getNode("/limits/mass-and-balance/maximum-zero-fuel-mass-lbs").getValue() / 1000,
+	optFl: props.globals.getNode("/systems/fms/internal/opt-fl"),
 	phase: 0, # 0: Preflight, 1: Takeoff, 2: Climb, 3: Cruise, 4: Descent, 5: Approach, 6: Rollout
 	phaseNew: 0,
 	phaseOut: props.globals.getNode("/systems/fms/internal/phase"),
+	request: [0, 0, 0],
+	takeoffStabDeg: props.globals.getNode("/systems/fms/internal/takeoff-stab-deg"),
 };
 
 var Value = { # Local store of commonly accessed values
@@ -18,6 +23,7 @@ var Value = { # Local store of commonly accessed values
 # Logic
 var CORE = {
 	init: func(t = 0) {
+		EditFlightData.reset();
 		me.resetPhase();
 	},
 	resetPhase: func() {
@@ -32,6 +38,8 @@ var CORE = {
 		Value.gearLever = systems.GEAR.cmd.getBoolValue();
 		Value.vertText = itaf.Text.vert.getValue();
 		Value.wow = pts.Position.wow.getBoolValue();
+
+		EditFlightData.loop();
 
 		# Flight Phases
 		if (Internal.phase == 0) { # Preflight

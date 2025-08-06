@@ -113,6 +113,11 @@ This file selects the instrumentation modules that should be available.
         <number>1</number>
     </nav-radio>
 
+    <nav-radio>
+        <name>nav</name>
+        <number>2</number>
+    </nav-radio>
+
     <radar>
         <name>radar</name>
         <number>0</number>

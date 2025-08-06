@@ -18,26 +18,20 @@
             <output>/position/wow</output> <!-- Copy to local tree -->
         </switch>
 
-        <fcs_function name="inertia/zfw-kg">
-            <function>
-                <product>
-                    <sum>
-                        <property>inertia/weight-lbs</property>
-                        <property>-propulsion/total-fuel-lbs</property>
-                    </sum>
-                    <value>0.45359237</value>
-                </product>
-            </function>
-        </fcs_function>
+        <summer name="inertia/zfw-lbs">
+            <input>inertia/weight-lbs</input>
+            <input>-propulsion/total-fuel-lbs</input>
+        </summer>
 
-        <fcs_function name="inertia/weight-kg">
-            <function>
-                <product>
-                    <property>inertia/weight-lbs</property>
-                    <value>0.45359237</value>
-                </product>
-            </function>
-        </fcs_function>
+        <pure_gain name="inertia/zfw-kg">
+            <input>inertia/zfw-lbs</input>
+            <gain>0.45359237</gain>
+        </pure_gain>
+
+        <pure_gain name="inertia/weight-kg">
+            <input>inertia/weight-lbs</input>
+            <gain>0.45359237</gain>
+        </pure_gain>
 
         <fcs_function name="inertia/cg-percent-mac">
             <function>

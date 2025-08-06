@@ -403,7 +403,7 @@ var B744PFD = {
 							obj["vr_r"].hide();
 							obj["vr_vr"].show();
 						}
-						obj["vr"].show();
+						obj["vr"].setVisible(val.vr > 0);
 					} else {
 						obj["v1"].hide();
 						obj["v1Numerical"].hide();
@@ -414,7 +414,7 @@ var B744PFD = {
 					obj["v1Numerical"].hide();
 					obj["vr"].hide();
 				}
-				if (val.phase <= 2 and val.flaps >= val.toFlap) {
+				if (val.phase <= 2 and val.flaps >= val.toFlap and val.v2 > 0) {
 					obj["v2"].setTranslation(0, -val.v2 * 5.584);
 					obj["v2"].show();
 				} else {
@@ -605,9 +605,9 @@ var input = {
 	targetVs: "instrumentation/pfd/target-vs",
 	toFlap: "/instrumentation/fmc/to-flap",
 	track: "/orientation/track-magnetic-deg",
-	v1: "/instrumentation/fmc/vspeeds/V1",
-	v2: "/instrumentation/fmc/vspeeds/V2",
-	vr: "/instrumentation/fmc/vspeeds/VR",
+	v1: "/systems/fms/flight-data/v1",
+	v2: "/systems/fms/flight-data/v2",
+	vr: "/systems/fms/flight-data/vr",
 	vref: "/systems/fms/speeds/vref",
 	vsiDeg: "/instrumentation/pfd/vsi-needle-deg",
 	vSpd: "/velocities/vertical-speed-fps",

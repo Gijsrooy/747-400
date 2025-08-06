@@ -554,6 +554,10 @@ left mouse button and counter clockwise using the middle mouse button.
 		<turnoff-light-r type="bool">0</turnoff-light-r>
 	</lighting>
 
+	<switches n="0">
+		<annun-test type="bool">0</annun-test>
+	</switches>
+
 </controls>
 
 <input>
@@ -895,12 +899,26 @@ left mouse button and counter clockwise using the middle mouse button.
 	</fadec>
 	<fms n="0">
 		<flight-data n="0">
+			<airport-from-alt type="int">-2000</airport-from-alt>
+			<airport-to-alt type="int">-2000</airport-to-alt>
+			<can-calc-vspeeds type="bool">0</can-calc-vspeeds>
+			<cruisecg type="double">20</cruisecg>
+			<cruise-fl type="int">0</cruise-fl>
+			<cost-index type="int">-1</cost-index>
 			<flex-active type="bool">0</flex-active>
 			<flex-temp type="int">0</flex-temp>
+			<gw-lbs type="double">0</gw-lbs>
 			<land-flaps type="int">25</land-flaps>
+			<tocg type="double">0</tocg>
+			<to-flaps type="double">0</to-flaps>
 			<to-packs type="int">0</to-packs>
 			<to-slope type="int">0</to-slope>
 			<to-wind type="int">0</to-wind>
+			<togw-lbs type="double">0</togw-lbs>
+			<v1 type="int">0</v1>
+			<v2 type="int">0</v2>
+			<vr type="int">0</vr>
+			<zfw-lbs type="double">0</zfw-lbs>
 		</flight-data>
 		<internal n="0">
 			<phase type="int">0</phase>
@@ -916,6 +934,7 @@ left mouse button and counter clockwise using the middle mouse button.
 		<file>Aircraft/747-400/Nasal/libraries.nas</file>
 	</libraries>
 	<systems>
+		<file>Aircraft/747-400/Nasal/Systems/electrical.nas</file>
 		<file>Aircraft/747-400/Nasal/Systems/engines.nas</file>
 		<file>Aircraft/747-400/Nasal/Systems/gear.nas</file>
 		<file>Aircraft/747-400/Nasal/Systems/fadec.nas</file>
@@ -924,6 +943,7 @@ left mouse button and counter clockwise using the middle mouse button.
 	<fms>
 		<file>Aircraft/747-400/Nasal/FMS/FMS.nas</file>
 		<file>Aircraft/747-400/Nasal/FMS/FlightData.nas</file>
+		<file>Aircraft/747-400/Nasal/FMS/Speeds.nas</file>
 	</fms>
 	<Boeing747>
 		<file>Aircraft/747-400/Nasal/copilot.nas</file>
@@ -955,8 +975,20 @@ left mouse button and counter clockwise using the middle mouse button.
 		<file>Nasal/Autopush/route.nas</file>
 	</autopush_route>
 	<cdu>
-		<file>Aircraft/Instruments-3d/cdu/boeing.nas</file>
+		<file>Aircraft/747-400/Nasal/CDU/CDU.nas</file>
+		<file>Aircraft/747-400/Nasal/CDU/deparr.nas</file>
+		<file>Aircraft/747-400/Nasal/CDU/efis.nas</file>
+		<file>Aircraft/747-400/Nasal/CDU/ident.nas</file>
+		<file>Aircraft/747-400/Nasal/CDU/init.nas</file>
+		<file>Aircraft/747-400/Nasal/CDU/menus.nas</file>
+		<file>Aircraft/747-400/Nasal/CDU/navradio.nas</file>
+		<file>Aircraft/747-400/Nasal/CDU/progress.nas</file>
+		<file>Aircraft/747-400/Nasal/CDU/rte.nas</file>
+		<file>Aircraft/747-400/Nasal/CDU/toappr.nas</file>
 	</cdu>
+	<canvas_cdu>
+		<file>Aircraft/747-400/Nasal/Displays/CDU.nas</file>
+	</canvas_cdu>
 	<electrical>
 		<file>Aircraft/747-400/Nasal/744_elec.nas</file>
 	</electrical>

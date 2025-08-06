@@ -6,9 +6,13 @@ var FADEC = {
 	reverseEngage: [props.globals.getNode("/systems/fadec/reverse-1/engage"), props.globals.getNode("/systems/fadec/reverse-2/engage"), props.globals.getNode("/systems/fadec/reverse-3/engage"), props.globals.getNode("/systems/fadec/reverse-4/engage")],
 	throttleCompareMax: props.globals.getNode("/systems/fadec/throttle-compare-max"),
 	Limit: {
-	activeMode: props.globals.getNode("/systems/fadec/limit/active-mode"),
+		active: props.globals.getNode("/systems/fadec/limit/active"),
+		activeMode: props.globals.getNode("/systems/fadec/limit/active-mode"),
 		activeModeInt: props.globals.getNode("/systems/fadec/limit/active-mode-int"), # 0 T/O, 1 G/A, 2 CON (MCT), 3 CLB, 4 CRZ
 		auto: props.globals.getNode("/systems/fadec/limit/auto"),
+		cruise: props.globals.getNode("/systems/fadec/limit/cruise"),
+		takeoff: props.globals.getNode("/systems/fadec/limit/takeoff"),
+		takeoffNoFlex: props.globals.getNode("/systems/fadec/limit/takeoff-no-flex"),
 	},
 	Controls: {
 		altn1: props.globals.getNode("/controls/fadec/altn-1"),

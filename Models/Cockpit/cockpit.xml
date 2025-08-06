@@ -1667,43 +1667,34 @@
 
 	<!-- CDU -->
 	<model>
-		<path>Aircraft/Instruments-3d/cdu/boeing.xml</path>
+		<path>Aircraft/747-400/Models/Cockpit/Instruments/CDU/CDU.xml</path>
 		<offsets>
 			<x-m> 0.858</x-m>
 			<y-m>-0.186</y-m>
 			<z-m> 0.489</z-m>
 			<pitch-deg>-75</pitch-deg>
 		</offsets>
-		<overlay>
-			<texture>boeing_brown.png</texture>
-		</overlay>
 	</model>
 
 	<model>
-		<path>Aircraft/Instruments-3d/cdu/boeing.xml</path>
+		<path>Aircraft/747-400/Models/Cockpit/Instruments/CDU/CDU2.xml</path>
 		<offsets>
 			<x-m> 0.858</x-m>
 			<y-m> 0.186</y-m>
 			<z-m> 0.489</z-m>
 			<pitch-deg>-75</pitch-deg>
 		</offsets>
-		<overlay>
-			<texture>boeing_brown.png</texture>
-		</overlay>
 	</model>
 
 	<model>
 		<name>CDU3</name>
-		<path>Aircraft/Instruments-3d/cdu/boeing.xml</path>
+		<path>Aircraft/747-400/Models/Cockpit/Instruments/CDU/CDU3.xml</path>
 		<offsets>
 			<x-m>1.455</x-m>
 			<y-m>0.000</y-m>
 			<z-m>0.415</z-m>
 			<pitch-deg>-90</pitch-deg>
 		</offsets>
-		<overlay>
-			<texture>boeing_brown.png</texture>
-		</overlay>
 	</model>
 	<animation>
 		<type>scale</type>
