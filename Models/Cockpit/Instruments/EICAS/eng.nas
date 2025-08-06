@@ -78,6 +78,18 @@ var canvas_lowerEICASPageEng = {
 					obj["eng4n2bar"].setColor(1,1,1);
 				}
 			}),
+			props.UpdateManager.FromHashValue("cutoff1", 1, func(val) {
+				obj["eng1fuelOn"].setVisible(val);
+			}),
+			props.UpdateManager.FromHashValue("cutoff2", 1, func(val) {
+				obj["eng2fuelOn"].setVisible(val);
+			}),
+			props.UpdateManager.FromHashValue("cutoff3", 1, func(val) {
+				obj["eng3fuelOn"].setVisible(val);
+			}),
+			props.UpdateManager.FromHashValue("cutoff4", 1, func(val) {
+				obj["eng4fuelOn"].setVisible(val);
+			}),
 			props.UpdateManager.FromHashValue("oilp1", 1, func(val) {
 				obj["eng1oilp"].setText(sprintf("%2.0f", val));
 			}),
@@ -98,7 +110,10 @@ var canvas_lowerEICASPageEng = {
 	},
 
 	getKeys: func() {
-		return ["eng1ff","eng1n2","eng1oilp","eng1n2bar","eng2ff","eng2n2","eng2oilp","eng2n2bar","eng3ff","eng3n2","eng3oilp","eng3n2bar","eng4ff","eng4n2","eng4oilp","eng4n2bar"];
+		return ["eng1ff","eng1fuelOn","eng1n2","eng1oilp","eng1n2bar",
+			"eng2ff","eng2fuelOn","eng2n2","eng2oilp","eng2n2bar",
+			"eng3ff","eng3fuelOn","eng3n2","eng3oilp","eng3n2bar",
+			"eng4ff","eng4fuelOn","eng4n2","eng4oilp","eng4n2bar"];
 	},
 
 	update: func(notification) {
@@ -119,6 +134,10 @@ var canvas_lowerEICASPageEng = {
 };
 
 var input = {
+	cutoff1: "/engines/engine[0]/cutoff",
+	cutoff2: "/engines/engine[1]/cutoff",
+	cutoff3: "/engines/engine[2]/cutoff",
+	cutoff4: "/engines/engine[3]/cutoff",
 	ff1: "/engines/engine[0]/fuel-flow_pph",
 	ff2: "/engines/engine[1]/fuel-flow_pph",
 	ff3: "/engines/engine[2]/fuel-flow_pph",
