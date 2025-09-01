@@ -1806,6 +1806,13 @@
         <function name="aero/alpha-wing-deg">
             <todegrees><property>aero/alpha-wing-rad</property></todegrees>
         </function>
+
+        <function name="position/h-gear-agl-ft">
+            <sum>
+                <property>position/h-agl-ft</property>
+                <value>-18</value>
+            </sum>
+        </function>
         
         <!-- FACTORS and CONSTANTS for re-use in multiple functions -->
         <function name="aero/function/FD">
@@ -1820,16 +1827,41 @@
                 </tableData>
             </table>
         </function>
-        <function name="aero/function/Kge">
-            <description>Ground_effect_height_factor</description>
-            <table> <!-- graph 19.0-3 (revised from 2.0-31) -->
-                <independentVar>aero/h_b-mac-ft</independentVar>
+        <function name="aero/function/KAge">
+            <description>Drag coefficient ground effect height factor</description>
+            <table> <!-- graph 3.0-17 -->
+                <independentVar>position/h-gear-agl-ft</independentVar>
                 <tableData>
-                    0.0000 1.0000
-                    0.1277 0.8000
-                    0.2270 0.4000
-                    0.2837 0.2000
-                    0.3901 0.0000
+                     0.0 1.0
+                     7.4 0.9
+                    12.5 0.8
+                    16.6 0.7
+                    20.7 0.6
+                    25.2 0.5
+                    30.4 0.4
+                    37.1 0.3
+                    46.4 0.2
+                    59.1 0.1
+                    82.5 0.0
+                </tableData>
+            </table>
+        </function>
+        <function name="aero/function/KBge">
+            <description>Ground effect height factor</description>
+            <table> <!-- graph 19.0-3 (revised from 2.0-31) -->
+                <independentVar>position/h-gear-agl-ft</independentVar>
+                <tableData>
+                     0.0 1.0
+                    10.8 0.9
+                    17.4 0.8
+                    23.2 0.7
+                    28.8 0.6
+                    34.4 0.5
+                    40.2 0.4
+                    46.8 0.3
+                    54.4 0.2
+                    64.8 0.1
+                    84.0 0.0
                 </tableData>
             </table>
         </function>
@@ -2358,7 +2390,7 @@
             <sum>
                 <value>1</value>
                 <product>
-                    <property>aero/function/Kge</property>
+                    <property>aero/function/KBge</property>
                     <property>aero/coefficient/FyB</property>
                 </product>
             </sum>
@@ -3158,17 +3190,20 @@
 
         <function name="aero/coefficient/dCLge">
             <description>Delta_Lift_due_to_groundeffect</description>
-            <table> <!-- graph 2.0-32 -->
-                <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
-                <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
-                <tableData>
-                            0.000  1.000  5.000 10.000 20.000 25.000 30.000
-                     0.000 -0.075 -0.060 -0.045  0.040  0.080  0.240  0.225
-                     5.000  0.025  0.045  0.065  0.145  0.200  0.280  0.220
-                    10.000  0.150  0.170  0.190  0.230  0.225  0.225  0.115
-                    14.500  0.175  0.195  0.200  0.230  0.185  0.075 -0.040
-                </tableData>
-            </table>
+            <product>
+                <property>aero/function/KBge</property>
+                <table> <!-- graph 2.0-32 -->
+                    <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
+                    <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
+                    <tableData>
+                                0.000  1.000  5.000 10.000 20.000 25.000 30.000
+                         0.000 -0.075 -0.060 -0.045  0.040  0.080  0.240  0.225
+                         5.000  0.025  0.045  0.065  0.145  0.200  0.280  0.220
+                        10.000  0.150  0.170  0.190  0.230  0.225  0.225  0.115
+                        14.500  0.175  0.195  0.200  0.230  0.185  0.075 -0.040
+                    </tableData>
+                </table>
+            </product>
         </function>
 
         <function name="aero/coefficient/CLde_inboard">
@@ -3409,14 +3444,14 @@
                         <value>1</value>
                         <product>
                             <property>aero/function/FD</property>
-                            <property>aero/function/Kge</property>
+                            <property>aero/function/KBge</property>
                         </product>
                     </sum>
                 </product>
                 <product>
                     <value>0.05</value>
                     <property>aero/function/FD</property>
-                    <property>aero/function/Kge</property>
+                    <property>aero/function/KBge</property>
                     <value>0.00185</value> <!-- 1/(45n), where n = 12 -->
                     <sum>
                         <property>fcs/spoiler[0]/pos-deg</property>
@@ -3471,7 +3506,7 @@
         <function name="aero/coefficient/dCDge">
             <description>Drag_due_to_ground_effect</description>
             <product>
-                <property>aero/function/Kge</property>
+                <property>aero/function/KAge</property>
                 <table> <!-- graph 3.0-18 -->
                     <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
                     <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
@@ -3688,7 +3723,7 @@
                         <value>1</value>
                         <product>
                             <property>aero/coefficient/Fbeta</property>
-                            <property>aero/function/Kge</property>
+                            <property>aero/function/KBge</property>
                         </product>
                     </sum>
                 </product>
@@ -3998,7 +4033,7 @@
                 <value>1</value>
                 <product>
                     <property>aero/coefficient/FspoilersGE</property>
-                    <property>aero/function/Kge</property>
+                    <property>aero/function/KBge</property>
                 </product>
             </sum>
         </function>
@@ -4619,7 +4654,7 @@
         <function name="aero/coefficient/dCmge">
             <description>Pitching_moment_due_to_ground_effect</description>
             <product>
-                <property>aero/function/Kge</property>
+                <property>aero/function/KBge</property>
                 <table> <!-- graph 19.0-9 (revised from 4.0-35) -->
                     <independentVar lookup="row">aero/alpha-wing-deg</independentVar>
                     <independentVar lookup="column">fcs/flaps/pos-deg</independentVar>
@@ -4774,7 +4809,7 @@
             <sum>
                 <value>1</value>
                 <product>
-                    <property>aero/function/Kge</property>
+                    <property>aero/function/KBge</property>
                     <property>aero/coefficient/Fnbeta</property>
                 </product>
             </sum>
@@ -5253,7 +5288,7 @@
                 <value>1</value>
                 <product>
                     <property>aero/coefficient/FCnspoilersGE</property>
-                    <property>aero/function/Kge</property>
+                    <property>aero/function/KBge</property>
                 </product>
             </sum>
         </function>
