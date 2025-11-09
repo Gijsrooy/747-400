@@ -20,13 +20,13 @@ var copilot = {
 		var V2 = fms.flightData.v2;
 		var VR = fms.flightData.vr;
 		
-        if ((airspeed != nil) and (V1 != nil) and (airspeed > V1) and (me.V1announced == 0)) {
+        if ((airspeed != 0) and (V1 != 0) and (airspeed > V1) and (me.V1announced == 0)) {
             me.announce("V1!");
 			me.V1announced = 1;
-        } elsif ((airspeed != nil) and (VR != nil) and (airspeed > VR) and (me.VRannounced == 0)) {
+        } elsif ((airspeed != 0) and (VR != 0) and (airspeed > VR) and (me.VRannounced == 0)) {
             me.announce("VR!");
 			me.VRannounced = 1;
-        } elsif ((airspeed != nil) and (V2 != nil) and (airspeed > V2) and (me.V2announced == 0)) {
+        } elsif ((airspeed != 0) and (V2 != 0) and (airspeed > V2) and (me.V2announced == 0)) {
             me.announce("V2!");
 			me.V2announced = 1;
         }

@@ -603,7 +603,7 @@ var input = {
 	fdRoll: "/it-autoflight/fd/roll-bar",
 	fdPitch: "/it-autoflight/fd/pitch-bar",
 	targetVs: "instrumentation/pfd/target-vs",
-	toFlap: "/instrumentation/fmc/to-flap",
+	toFlap: "/systems/fms/flight-data/to-flaps",
 	track: "/orientation/track-magnetic-deg",
 	v1: "/systems/fms/flight-data/v1",
 	v2: "/systems/fms/flight-data/v2",

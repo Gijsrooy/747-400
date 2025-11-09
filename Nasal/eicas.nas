@@ -98,7 +98,7 @@ var takeoff_config_warnings = func {
 	if ((throttle>=0.667)and
 		(!reverser))
 	{
-		if (((flaps<0.3)or(flaps>0.7)) and (speed < (getprop("/instrumentation/fmc/vspeeds/V1") or 200)))
+		if (((flaps<0.3)or(flaps>0.7)) and (speed < (fms.flightData.v1 or 200)))
 			append(msgs_warning,">CONFIG FLAPS");
 		if (parkbrake)
 			append(msgs_warning,">CONFIG PARK BRK");

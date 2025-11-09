@@ -50,7 +50,6 @@
                     <value>3.2778</value>
                 </quotient>
             </function>
-            <output>/instrumentation/fmc/cg</output>
         </fcs_function>
 
     </channel>

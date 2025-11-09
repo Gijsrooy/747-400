@@ -263,7 +263,6 @@
                     </tableData>
                 </table>
             </function>
-            <output>/instrumentation/fmc/vspeeds/Vref</output>
         </fcs_function>
 
         <switch name="/systems/fms/speeds/vref">
@@ -271,7 +270,6 @@
             <test logic="AND" value="/systems/fms/speeds/vref-25">
                 /systems/fms/flight-data/land-flaps eq 25
             </test>
-            <output>/instrumentation/fmc/vspeeds/Vref</output>
         </switch>
 
         <!-- Vapp -->
@@ -309,7 +307,7 @@
             <function>
                 <table>
                     <independentVar lookup="row">inertia/weight-kg</independentVar>
-                    <independentVar lookup="column">/instrumentation/fmc/to-flap</independentVar>
+                    <independentVar lookup="column">/systems/fms/flight-data/to-flaps</independentVar>
                     <tableData>
                                 10  20
                         200000  95  90
@@ -370,7 +368,6 @@
                     <value>0</value>
                 </ifthen>
             </function>
-            <output>/instrumentation/fmc/vspeeds/V1</output>
         </fcs_function>
 
         <!-- Vr -->
@@ -378,7 +375,7 @@
             <function>
                 <table>
                     <independentVar lookup="row">inertia/weight-kg</independentVar>
-                    <independentVar lookup="column">/instrumentation/fmc/to-flap</independentVar>
+                    <independentVar lookup="column">/systems/fms/flight-data/to-flaps</independentVar>
                     <tableData>
                                 10  20
                         200000 110 105
@@ -405,7 +402,6 @@
                     <value>0</value>
                 </ifthen>
             </function>
-            <output>/instrumentation/fmc/vspeeds/VR</output>
         </fcs_function>
 
         <!-- V2 -->
@@ -418,7 +414,7 @@
                     </eq>
                     <table>
                         <independentVar lookup="row">inertia/weight-kg</independentVar>
-                        <independentVar lookup="column">/instrumentation/fmc/to-flap</independentVar>
+                        <independentVar lookup="column">/systems/fms/flight-data/to-flaps</independentVar>
                         <tableData>
                                     10  20
                             200000 136 130
@@ -431,13 +427,12 @@
                     <value>0</value>
                 </ifthen>
             </function>
-            <output>/instrumentation/fmc/vspeeds/V2</output>
         </fcs_function>
 
         <fcs_function name="/it-autoflight/settings/toga-spd">
             <function>
                 <sum>
-                    <property>/instrumentation/fmc/vspeeds/V2</property>
+                    <property>/systems/fms/flight-data/v2</property>
                     <value>10</value>
                 </sum>
             </function>
@@ -465,7 +460,6 @@
                     </tableData>
                 </table>
             </function>
-            <output>/instrumentation/fmc/stab-trim-units</output>
         </fcs_function>
 
         <fcs_function name="/systems/fms/internal/takeoff-stab-deg">

@@ -342,7 +342,7 @@ var B744PrimaryEICAS = {
 };
 
 var input = {
-	assTemp: "/instrumentation/fmc/inputs/assumed-temp-deg-c",
+	assTemp: "/systems/fms/flight-data/flex-temp",
 	eng1egt: "/engines/engine[0]/egt-degf",
 	eng2egt: "/engines/engine[1]/egt-degf",
 	eng3egt: "/engines/engine[2]/egt-degf",
