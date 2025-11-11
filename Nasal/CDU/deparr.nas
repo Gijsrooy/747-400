@@ -310,10 +310,14 @@ var Dep = {
 	nextPage: func() {
 		if (me.page < me.numPages)
 			me.page += 1;
+		else
+			me.page = 1;
 	},
 	prevPage: func() {
 		if (me.page > 1)
 			me.page -= 1;
+		else
+			me.page = me.numPages;
 	},
 	softKey: func(k) {
 		me.scratchpad = unit[me.id].scratchpad;
@@ -541,10 +545,14 @@ var Arr = {
 	nextPage: func() {
 		if (me.page < me.numPages)
 			me.page += 1;
+		else
+			me.page = 1;
 	},
 	prevPage: func() {
 		if (me.page > 1)
 			me.page -= 1;
+		else
+			me.page = me.numPages;
 	},
 	softKey: func(k) {
 		me.scratchpad = unit[me.id].scratchpad;
