@@ -226,6 +226,7 @@ var Dep = {
 				} else {
 					rwys = keys(flightplan().departure.runways);
 				}
+				rwys = sort(rwys, func(a, b) cmp(a, b));
 				n_runways = size(rwys);
 
 				if (n_runways > currIndex) {
