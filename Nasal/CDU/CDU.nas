@@ -13,7 +13,12 @@ var CDU = {
 		};
 		
 		m.clear = 0;
-		m.clearKeyPressed = 0;
+		
+		m.clearTimer = {
+			active: 0,
+			time: -5,
+		};
+
 		m.elapsedSec = 0;
 		m.id = n;
 		m.lastFmcPage = "none";
@@ -54,7 +59,6 @@ var CDU = {
 	reset: func() {
 		me.blinkScreen();
 		me.clear = 0;
-		me.clearKeyPressed = 0;
 		me.lastFmcPage = "none";
 		me.message.clear();
 		me.page = me.PageList.menu;
@@ -86,6 +90,16 @@ var CDU = {
 			}
 			fms.Internal.request[me.id] = 1;
 		}
+
+		if (me.clearTimer.active) { # Clear everything
+			if (me.clearTimer.time < me.elapsedSec) {
+				me.clearTimer.active = 0;
+				me.clearTimer.time = -5;
+				me.clear = 0;
+				me.clearMessage(0);
+				me.scratchpad = "";
+			}
+		}
 		
 		if (me.Blink.active) {
 			if (me.Blink.time < me.elapsedSec) {
@@ -113,23 +127,22 @@ var CDU = {
 		me.Blink.time = me.elapsedSec + 0.4;
 	},
 	clearKey: func(pressed) {
-		if (me.message.size() > 0 and me.clearKeyPressed == 0) { # Clear message
-			me.clear = 0;
-			me.clearMessage(0);
-		} else {
-			if (pressed) {
-				me.clearKeyPressed = me.elapsedSec;
-			} elsif (me.clearKeyPressed != 0) {
-				var duration = me.elapsedSec - me.clearKeyPressed;
-				if (duration >= 1) { # Clear entire scratchpad
-					me.clear = 0;
-					me.scratchpad = "";
-				} elsif (size(me.scratchpad) > 0) { # Clear last character
-					me.clear = 0;
-					me.scratchpad = left(me.scratchpad, size(me.scratchpad) - 1);
-				}
-				me.clearKeyPressed = 0;
+		if (pressed) {
+			me.clearTimer.time = me.elapsedSec + 1.9;
+			me.clearTimer.active = 1;
+			
+			if (me.message.size() > 0) { # Clear message
+				me.clear = 0;
+				me.clearMessage(0);
+			} elsif (size(me.scratchpad) > 0) { # Clear last character
+				me.clear = 0;
+				me.scratchpad = left(me.scratchpad, size(me.scratchpad) - 1);
+			} else if (me.clear) { # Clear DELETE character
+				me.clear = 0;
 			}
+		} else {
+			me.clearTimer.active = 0;
+			me.clearTimer.time = -5;
 		}
 	},
 	clearMessage: func(a) {
@@ -163,6 +176,7 @@ var CDU = {
 	deleteKey: func() {
 		if (me.scratchpad == "") {
 			me.setMessage("DELETE");
+			me.clear = 1;
 		}
 	},
 	depArrKey: func() {
