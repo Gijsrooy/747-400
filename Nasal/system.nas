@@ -91,17 +91,10 @@ settimer(func()
 
 setlistener("/controls/engines/con-ignition", func(conig){
     var conign= conig.getBoolValue();
-	if(conign){
-		setprop("controls/engines/engine[0]/ignition",1);
-		setprop("controls/engines/engine[1]/ignition",1);
-		setprop("controls/engines/engine[2]/ignition",1);
-		setprop("controls/engines/engine[3]/ignition",1);
-	}else{
-		setprop("controls/engines/engine[0]/ignition",0);
-		setprop("controls/engines/engine[1]/ignition",0);
-		setprop("controls/engines/engine[2]/ignition",0);
-		setprop("controls/engines/engine[3]/ignition",0);
-	}
+	setprop("controls/engines/engine[0]/ignition",conign);
+	setprop("controls/engines/engine[1]/ignition",conign);
+	setprop("controls/engines/engine[2]/ignition",conign);
+	setprop("controls/engines/engine[3]/ignition",conign);
 },0,0);
 
 setlistener("/controls/engines/auto-ignition", func(autoig){
@@ -138,14 +131,15 @@ setlistener("/controls/engines/auto-ignition", func(autoig){
 ## FG Autostart/Shutdown ##
 
 var autostart = func {
-	setprop("/controls/engines/engine[0]/starter",1);
-	setprop("/controls/engines/engine[1]/starter",1);
-	setprop("/controls/engines/engine[2]/starter",1);
-	setprop("/controls/engines/engine[3]/starter",1);
-	setprop("/controls/engines/engine[0]/cutoff",1);
-	setprop("/controls/engines/engine[1]/cutoff",1);
-	setprop("/controls/engines/engine[2]/cutoff",1);
-	setprop("/controls/engines/engine[3]/cutoff",1);
+	systems.ENGINES.Controls.autostart.setBoolValue(1);
+	systems.ENGINES.Controls.start[0].setBoolValue(1);
+	systems.ENGINES.Controls.start[1].setBoolValue(1);
+	systems.ENGINES.Controls.start[2].setBoolValue(1);
+	systems.ENGINES.Controls.start[3].setBoolValue(1);
+	systems.ENGINES.Controls.cutoff[0].setBoolValue(0);
+	systems.ENGINES.Controls.cutoff[1].setBoolValue(0);
+	systems.ENGINES.Controls.cutoff[2].setBoolValue(0);
+	systems.ENGINES.Controls.cutoff[3].setBoolValue(0);
 	setprop("/controls/electric/battery",1);
 	setprop("/controls/electric/standby-power",1);
 	electrical.turn_apu_sw(1);
@@ -161,8 +155,9 @@ var autostart = func {
 	setprop("/controls/lighting/taxi-lights",1);
 	setprop("/controls/lighting/turnoff-light-l",1);
 	setprop("/controls/lighting/turnoff-light-r",1);
-	setprop("/controls/fuel/tank[0]/override-pump[0]",1);
-	setprop("/controls/fuel/tank[0]/override-pump[1]",1);
+	var tank0Pumps = getprop("/consumables/fuel/tank[0]/level-lbs") > 17000;
+	setprop("/controls/fuel/tank[0]/override-pump[0]",tank0Pumps);
+	setprop("/controls/fuel/tank[0]/override-pump[1]",tank0Pumps);
 	setprop("/controls/fuel/tank[1]/x-feed",1);
 	setprop("/controls/fuel/tank[2]/x-feed",1);
 	setprop("/controls/fuel/tank[3]/x-feed",1);
@@ -179,10 +174,8 @@ var autostart = func {
 	setprop("/controls/fuel/tank[3]/pump[1]",1);
 	setprop("/controls/fuel/tank[4]/pump[0]",1);
 	setprop("/controls/fuel/tank[4]/pump[1]",1);
-	if (getprop("/consumables/fuel/tank[7]/level-lbs") > 6600) {
-		setprop("/controls/fuel/tank[7]/pump[0]",1);
-		setprop("/controls/fuel/tank[7]/pump[1]",1);
-	}
+	setprop("/controls/fuel/tank[7]/pump[0]",0);
+	setprop("/controls/fuel/tank[7]/pump[1]",0);
 	setprop("/controls/hydraulic/demand-pump",1);
 	setprop("/controls/hydraulic/demand-pump[1]",1);
 	setprop("/controls/hydraulic/demand-pump[2]",1);
@@ -195,19 +188,6 @@ var autostart = func {
 	setprop("/controls/pneumatic/pack-control[1]",1);
 	setprop("/controls/pneumatic/pack-control[2]",1);
 	setprop("/controls/pneumatic/pack-control[3]",1);
-	#setprop("/controls/engines/auto-ignition",1);
-	var autostartCutoff = func {
-		if (getprop("/engines/engine[0]/n2") > 25) {
-			setprop("/controls/engines/engine[0]/cutoff",0);
-			setprop("/controls/engines/engine[1]/cutoff",0);
-			setprop("/controls/engines/engine[2]/cutoff",0);
-			setprop("/controls/engines/engine[3]/cutoff",0);
-			setprop("/controls/engines/autostart",0);
-		} else {
-			settimer(autostartCutoff,1);
-		}
-	};
-	autostartCutoff();
 }
 
 ## Lights ##

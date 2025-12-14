@@ -2,7 +2,12 @@
 # Copyright (c) 2025 Josh Davidson (Octal450) and Gijs de Rooy
 
 var ENGINES = {
+	n1: [props.globals.getNode("/engines/engine[0]/n1-actual"), props.globals.getNode("/engines/engine[1]/n1-actual"), props.globals.getNode("/engines/engine[2]/n1-actual"), props.globals.getNode("/engines/engine[3]/n1-actual")],
+	n2: [props.globals.getNode("/engines/engine[0]/n2-actual"), props.globals.getNode("/engines/engine[1]/n2-actual"), props.globals.getNode("/engines/engine[2]/n2-actual"), props.globals.getNode("/engines/engine[3]/n2-actual")],
 	Controls: {
+		autostart: props.globals.getNode("/controls/engines/autostart"),
+		cutoff: [props.globals.getNode("/controls/engines/engine[0]/cutoff-switch"), props.globals.getNode("/controls/engines/engine[1]/cutoff-switch"), props.globals.getNode("/controls/engines/engine[2]/cutoff-switch"), props.globals.getNode("/controls/engines/engine[3]/cutoff-switch")],
+		start: [props.globals.getNode("/controls/engines/engine[0]/start-switch"), props.globals.getNode("/controls/engines/engine[1]/start-switch"), props.globals.getNode("/controls/engines/engine[2]/start-switch"), props.globals.getNode("/controls/engines/engine[3]/start-switch")],
 		throttle: [props.globals.getNode("/controls/engines/engine[0]/throttle"), props.globals.getNode("/controls/engines/engine[1]/throttle"), props.globals.getNode("/controls/engines/engine[2]/throttle"), props.globals.getNode("/controls/engines/engine[3]/throttle")],
 	},
 };

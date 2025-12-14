@@ -664,6 +664,7 @@
     <system file="fuel"/>
     <system file="gear"/>
     <system file="hydraulics"/>
+    <system file="ignition"/>
     <system file="systems"/>
     <system file="wingflex"/>
 

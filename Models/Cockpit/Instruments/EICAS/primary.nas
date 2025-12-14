@@ -76,30 +76,30 @@ var B744PrimaryEICAS = {
 		});
 
 		obj.update_items = [
-			props.UpdateManager.FromHashValue("eng1egt", 1, func(val) {
-				obj.eicasEGT(val, 1);
+			props.UpdateManager.FromHashList(["eng1egt", "eng1powered"], 1, func(val) {
+				obj.eicasEGT(val.eng1egt, val.eng1powered, 1);
 			}),
-			props.UpdateManager.FromHashValue("eng2egt", 1, func(val) {
-				obj.eicasEGT(val, 2);
+			props.UpdateManager.FromHashList(["eng2egt", "eng2powered"], 1, func(val) {
+				obj.eicasEGT(val.eng2egt, val.eng2powered, 2);
 			}),
-			props.UpdateManager.FromHashValue("eng3egt", 1, func(val) {
-				obj.eicasEGT(val, 3);
+			props.UpdateManager.FromHashList(["eng3egt", "eng3powered"], 1, func(val) {
+				obj.eicasEGT(val.eng3egt, val.eng3powered, 3);
 			}),
-			props.UpdateManager.FromHashValue("eng4egt", 1, func(val) {
-				obj.eicasEGT(val, 4);
+			props.UpdateManager.FromHashList(["eng4egt", "eng4powered"], 1, func(val) {
+				obj.eicasEGT(val.eng4egt, val.eng4powered, 4);
 			}),
 
-			props.UpdateManager.FromHashList(["eng1n1", "eng1throttle", "engn1max", "engn1ref", "eng1rev"], nil, func(val) {
-				obj.eicasN1(val.eng1n1, val.eng1throttle, val.engn1max, val.engn1ref, val.eng1rev, 1);
+			props.UpdateManager.FromHashList(["eng1n1", "eng1throttle", "engn1max", "engn1ref", "eng1rev", "eng1powered"], nil, func(val) {
+				obj.eicasN1(val.eng1n1, val.eng1throttle, val.engn1max, val.engn1ref, val.eng1rev, val.eng1powered, 1);
 			}),
-			props.UpdateManager.FromHashList(["eng2n1", "eng2throttle", "engn1max", "engn1ref", "eng2rev"], nil, func(val) {
-				obj.eicasN1(val.eng2n1, val.eng2throttle, val.engn1max, val.engn1ref, val.eng2rev, 2);
+			props.UpdateManager.FromHashList(["eng2n1", "eng2throttle", "engn1max", "engn1ref", "eng2rev", "eng2powered"], nil, func(val) {
+				obj.eicasN1(val.eng2n1, val.eng2throttle, val.engn1max, val.engn1ref, val.eng2rev, val.eng2powered, 2);
 			}),
-			props.UpdateManager.FromHashList(["eng3n1", "eng3throttle", "engn1max", "engn1ref", "eng3rev"], nil, func(val) {
-				obj.eicasN1(val.eng3n1, val.eng3throttle, val.engn1max, val.engn1ref, val.eng3rev, 3);
+			props.UpdateManager.FromHashList(["eng3n1", "eng3throttle", "engn1max", "engn1ref", "eng3rev", "eng3powered"], nil, func(val) {
+				obj.eicasN1(val.eng3n1, val.eng3throttle, val.engn1max, val.engn1ref, val.eng3rev, val.eng3powered, 3);
 			}),
-			props.UpdateManager.FromHashList(["eng4n1", "eng4throttle", "engn1max", "engn1ref", "eng4rev"], nil, func(val) {
-				obj.eicasN1(val.eng4n1, val.eng4throttle, val.engn1max, val.engn1ref, val.eng4rev, 4);
+			props.UpdateManager.FromHashList(["eng4n1", "eng4throttle", "engn1max", "engn1ref", "eng4rev", "eng4powered"], nil, func(val) {
+				obj.eicasN1(val.eng4n1, val.eng4throttle, val.engn1max, val.engn1ref, val.eng4rev, val.eng4powered, 4);
 			}),
 
 			props.UpdateManager.FromHashValue("eng1nai", nil, func(val) {
@@ -260,7 +260,7 @@ var B744PrimaryEICAS = {
 			}
 		};
 
-		obj.eicasEGT = func(val, n) {
+		obj.eicasEGT = func(val, fadecPowered, n) {
 			var egtDegC = (val - 32) / 1.8;
 
 			obj["eng"~n~"egt"].setText(sprintf("%3.0f", egtDegC));
@@ -276,9 +276,11 @@ var B744PrimaryEICAS = {
 				obj["eng"~n~"egt"].setColor(1, 1, 1);
 				obj["eng"~n~"egtBar"].setColor(1, 1, 1);
 			}
+
+			obj["eng"~n~"egt"].setVisible(fadecPowered);
 		};
 
-		obj.eicasN1 = func(n1, n1cmd, n1max, n1ref, rev, n) {
+		obj.eicasN1 = func(n1, n1cmd, n1max, n1ref, rev, fadecPowered, n) {
 			obj["eng"~n~"n1"].setText(sprintf("%3.01f", n1));
 			obj["eng"~n~"n1bar_scale"].setScale(1, n1 / 117.5);
 			if (n1 >= 117.5) {
@@ -308,6 +310,9 @@ var B744PrimaryEICAS = {
 			}
 			obj["eng"~n~"n1cmdLine"].setTranslation(0, -217 * n1cmd / 117.5);
 			obj["eng"~n~"n1maxLine"].setTranslation(0, -217 * n1max / 117.5);
+
+			obj["eng"~n~"n1"].setVisible(fadecPowered);
+			obj["eng"~n~"n1cmdLine"].setVisible(fadecPowered);
 		};
 
 		return obj;
@@ -347,10 +352,14 @@ var input = {
 	eng2egt: "/engines/engine[1]/egt-degf",
 	eng3egt: "/engines/engine[2]/egt-degf",
 	eng4egt: "/engines/engine[3]/egt-degf",
-	eng1n1: "/engines/engine[0]/n1",
-	eng2n1: "/engines/engine[1]/n1",
-	eng3n1: "/engines/engine[2]/n1",
-	eng4n1: "/engines/engine[3]/n1",
+	eng1n1: "/engines/engine[0]/n1-actual",
+	eng2n1: "/engines/engine[1]/n1-actual",
+	eng3n1: "/engines/engine[2]/n1-actual",
+	eng4n1: "/engines/engine[3]/n1-actual",
+	eng1powered: "/systems/fadec/eng-1-powered",
+	eng2powered: "/systems/fadec/eng-2-powered",
+	eng3powered: "/systems/fadec/eng-3-powered",
+	eng4powered: "/systems/fadec/eng-4-powered",
 	eng1throttle: "/systems/fadec/control-1/throttle-n1",
 	eng2throttle: "/systems/fadec/control-2/throttle-n1",
 	eng3throttle: "/systems/fadec/control-3/throttle-n1",

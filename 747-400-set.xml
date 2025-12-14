@@ -131,6 +131,9 @@
 		<autopilot>
 			<path>Aircraft/747-400/Systems/744_pfd.xml</path>
 		</autopilot>
+		<autopilot>
+			<path>Aircraft/747-400/Systems/propertylist-libraries.xml</path>
+		</autopilot>
 		<electrical>
 			<path>Aircraft/747-400/Systems/744_elec.xml</path>
 		</electrical>
@@ -433,8 +436,36 @@ left mouse button and counter clockwise using the middle mouse button.
 		</wipers>
 	</electric>
 
-	<engines>
-		<autostart>1</autostart>
+	<engines n="0">
+		<autostart type="bool">1</autostart>
+		<engine n="0">
+			<cutoff type="bool">1</cutoff>
+			<cutoff-switch type="bool">1</cutoff-switch>
+			<start-cmd type="bool">0</start-cmd>
+			<start-switch type="bool">0</start-switch>
+			<starter type="bool">0</starter>
+		</engine>
+		<engine n="1">
+			<cutoff type="bool">1</cutoff>
+			<cutoff-switch type="bool">1</cutoff-switch>
+			<start-cmd type="bool">0</start-cmd>
+			<start-switch type="bool">0</start-switch>
+			<starter type="bool">0</starter>
+		</engine>
+		<engine n="2">
+			<cutoff type="bool">1</cutoff>
+			<cutoff-switch type="bool">1</cutoff-switch>
+			<start-cmd type="bool">0</start-cmd>
+			<start-switch type="bool">0</start-switch>
+			<starter type="bool">0</starter>
+		</engine>
+		<engine n="3">
+			<cutoff type="bool">1</cutoff>
+			<cutoff-switch type="bool">1</cutoff-switch>
+			<start-cmd type="bool">0</start-cmd>
+			<start-switch type="bool">0</start-switch>
+			<starter type="bool">0</starter>
+		</engine>
 	</engines>
 
 	<fadec n="0">
@@ -538,6 +569,11 @@ left mouse button and counter clockwise using the middle mouse button.
 			<spray-density type="double">0</spray-density>
 		</gear>
 	</gear>
+
+	<ignition n="0">
+		<ign-1 type="bool">1</ign-1>
+		<ign-2 type="bool">1</ign-2>
+	</ignition>
 
 	<lighting>
 		<beacon>0</beacon>
@@ -866,7 +902,7 @@ left mouse button and counter clockwise using the middle mouse button.
 	<max-positive-g>2.5</max-positive-g> 
 </limits>
 
-<systems>
+<systems n="0">
 	<electrical>
 		<outputs>
 			<efis>20</efis>
@@ -924,6 +960,10 @@ left mouse button and counter clockwise using the middle mouse button.
 			<phase type="int">0</phase>
 		</internal>
 	</fms>
+	<ignition n="0">
+		<fuel-on-n2 type="double">15</fuel-on-n2>
+		<starter-cutoff-n2 type="double">50</starter-cutoff-n2>
+	</ignition>
 </systems>
 
 <nasal>

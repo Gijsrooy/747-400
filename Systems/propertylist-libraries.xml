@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+
+<!-- Copyright (c) 2025 Josh Davidson (Octal450) -->
+
+<PropertyList>
+
+	<!-- Because overwriting from JSBSim doesn't work -->
+	<filter>
+		<name>Engine 1 Cutoff</name>
+		<type>gain</type>
+		<gain>1.0</gain>
+		<input>/systems/ignition/cutoff-1</input>
+		<output>/controls/engines/engine[0]/cutoff</output>
+	</filter>
+	<filter>
+		<name>Engine 2 Cutoff</name>
+		<type>gain</type>
+		<gain>1.0</gain>
+		<input>/systems/ignition/cutoff-2</input>
+		<output>/controls/engines/engine[1]/cutoff</output>
+	</filter>
+	<filter>
+		<name>Engine 3 Cutoff</name>
+		<type>gain</type>
+		<gain>1.0</gain>
+		<input>/systems/ignition/cutoff-3</input>
+		<output>/controls/engines/engine[2]/cutoff</output>
+	</filter>
+	<filter>
+		<name>Engine 4 Cutoff</name>
+		<type>gain</type>
+		<gain>1.0</gain>
+		<input>/systems/ignition/cutoff-4</input>
+		<output>/controls/engines/engine[3]/cutoff</output>
+	</filter>
+
+	<filter>
+		<name>Engine 1 Starter</name>
+		<type>gain</type>
+		<gain>1.0</gain>
+		<input>/systems/ignition/starter-jsb-1</input>
+		<output>/controls/engines/engine[0]/starter</output>
+	</filter>
+	
+	<filter>
+		<name>Engine 2 Starter</name>
+		<type>gain</type>
+		<gain>1.0</gain>
+		<input>/systems/ignition/starter-jsb-2</input>
+		<output>/controls/engines/engine[1]/starter</output>
+	</filter>
+	
+	<filter>
+		<name>Engine 3 Starter</name>
+		<type>gain</type>
+		<gain>1.0</gain>
+		<input>/systems/ignition/starter-jsb-3</input>
+		<output>/controls/engines/engine[2]/starter</output>
+	</filter>
+	
+	<filter>
+		<name>Engine 4 Starter</name>
+		<type>gain</type>
+		<gain>1.0</gain>
+		<input>/systems/ignition/starter-jsb-4</input>
+		<output>/controls/engines/engine[3]/starter</output>
+	</filter>
+
+</PropertyList>

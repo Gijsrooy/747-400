@@ -2366,7 +2366,7 @@
 			<repeatable>false</repeatable>
 			<binding>
 				<command>property-toggle</command>
-				<property>/controls/engines/engine/cutoff</property>
+				<property>controls/engines/engine[0]/cutoff-switch</property>
 			</binding>
 		</action>
 	</animation>
@@ -2374,7 +2374,7 @@
 	<animation>
 		<type>rotate</type>
 		<object-name>fuel_ctrl.1</object-name>
-		<property>/controls/engines/engine/cutoff</property>
+		<property>controls/engines/engine[0]/cutoff-switch</property>
 		<factor>80</factor>
 		<center>
 			<x-m>1.239</x-m>
@@ -2396,7 +2396,7 @@
 			<repeatable>false</repeatable>
 			<binding>
 				<command>property-toggle</command>
-				<property>/controls/engines/engine[1]/cutoff</property>
+				<property>controls/engines/engine[1]/cutoff-switch</property>
 			</binding>
 		</action>
 	</animation>
@@ -2404,7 +2404,7 @@
 	<animation>
 		<type>rotate</type>
 		<object-name>fuel_ctrl.2</object-name>
-		<property>/controls/engines/engine[1]/cutoff</property>
+		<property>controls/engines/engine[1]/cutoff-switch</property>
 		<factor>80</factor>
 		<center>
 			<x-m>1.239</x-m>
@@ -2426,7 +2426,7 @@
 			<repeatable>false</repeatable>
 			<binding>
 				<command>property-toggle</command>
-				<property>/controls/engines/engine[2]/cutoff</property>
+				<property>controls/engines/engine[2]/cutoff-switch</property>
 			</binding>
 		</action>
 	</animation>
@@ -2434,7 +2434,7 @@
 	<animation>
 		<type>rotate</type>
 		<object-name>fuel_ctrl.3</object-name>
-		<property>/controls/engines/engine[2]/cutoff</property>
+		<property>controls/engines/engine[2]/cutoff-switch</property>
 		<factor>80</factor>
 		<center>
 			<x-m>1.239</x-m>
@@ -2456,7 +2456,7 @@
 			<repeatable>false</repeatable>
 			<binding>
 				<command>property-toggle</command>
-				<property>/controls/engines/engine[3]/cutoff</property>
+				<property>controls/engines/engine[3]/cutoff-switch</property>
 			</binding>
 		</action>
 	</animation>
@@ -2464,7 +2464,7 @@
 	<animation>
 		<type>rotate</type>
 		<object-name>fuel_ctrl.4</object-name>
-		<property>/controls/engines/engine[3]/cutoff</property>
+		<property>controls/engines/engine[3]/cutoff-switch</property>
 		<factor>80</factor>
 		<center>
 			<x-m>1.239</x-m>
@@ -2477,7 +2477,6 @@
 			<z>0</z>
 		</axis>
 	</animation>
-
 
 	<model>
 		<path>Aircraft/747-400/Models/Cockpit/display-text.xml</path>

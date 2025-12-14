@@ -107,11 +107,18 @@ We're now fully configured to begin our pushback and engine start. The passenger
     <step>
 		<message>Turn OFF all but one PACK selector.</message>
     </step>
+	-->
 
     <step>
 		<message>Turn OFF autostart.</message>
+		<exit>
+			<condition>
+				<not>
+					<property>/controls/engines/autostart</property>
+				</not>
+			</condition>
+		</exit>
     </step>
-	-->
 
     <step>
 		<message>Turn ON continuous ignition.</message>
@@ -187,7 +194,7 @@ We're now fully configured to begin our pushback and engine start. The passenger
 		<exit>
 			<condition>
 				<equals>
-					<property>/controls/engines/engine[3]/starter</property>
+					<property>/controls/engines/engine[3]/start-switch</property>
 					<value>1</value>
 				</equals>
 			</condition>
