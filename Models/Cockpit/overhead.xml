@@ -1165,7 +1165,7 @@
 			<repeatable>false</repeatable>
 			<binding>
 				<command>property-toggle</command>
-				<property>/controls/engines/engine[0]/starter</property>
+				<property>controls/engines/engine[0]/start-switch</property>
 			</binding>
 		</action>
 	</animation>
@@ -1174,7 +1174,7 @@
 		<type>select</type>
 		<object-name>starter.sel.1</object-name>
 		<condition>
-			<property>/controls/engines/engine[0]/starter</property>
+			<property>systems/ignition/starter-1</property>
 		</condition>
 	</animation>
 
@@ -1182,7 +1182,7 @@
 		<type>translate</type>
 		<object-name>starter.1</object-name>
 		<object-name>starter.sel.1</object-name>
-		<property>/controls/engines/engine[0]/starter</property>
+		<property>systems/ignition/start-switch-1</property>
 		<factor>0.011</factor>
 		<axis>
 			<z>1</z>
@@ -1197,7 +1197,7 @@
 			<repeatable>false</repeatable>
 			<binding>
 				<command>property-toggle</command>
-				<property>/controls/engines/engine[1]/starter</property>
+				<property>controls/engines/engine[1]/start-switch</property>
 			</binding>
 		</action>
 	</animation>
@@ -1206,7 +1206,7 @@
 		<type>select</type>
 		<object-name>starter.sel.2</object-name>
 		<condition>
-			<property>/controls/engines/engine[1]/starter</property>
+			<property>systems/ignition/starter-2</property>
 		</condition>
 	</animation>
 
@@ -1214,7 +1214,7 @@
 		<type>translate</type>
 		<object-name>starter.2</object-name>
 		<object-name>starter.sel.2</object-name>
-		<property>/controls/engines/engine[1]/starter</property>
+		<property>systems/ignition/start-switch-2</property>
 		<factor>0.011</factor>
 		<axis>
 			<z>1</z>
@@ -1229,7 +1229,7 @@
 			<repeatable>false</repeatable>
 			<binding>
 				<command>property-toggle</command>
-				<property>/controls/engines/engine[2]/starter</property>
+				<property>controls/engines/engine[2]/start-switch</property>
 			</binding>
 		</action>
 	</animation>
@@ -1238,7 +1238,7 @@
 		<type>select</type>
 		<object-name>starter.sel.3</object-name>
 		<condition>
-			<property>/controls/engines/engine[2]/starter</property>
+			<property>systems/ignition/starter-3</property>
 		</condition>
 	</animation>
 
@@ -1246,7 +1246,7 @@
 		<type>translate</type>
 		<object-name>starter.3</object-name>
 		<object-name>starter.sel.3</object-name>
-		<property>/controls/engines/engine[2]/starter</property>
+		<property>systems/ignition/start-switch-3</property>
 		<factor>0.011</factor>
 		<axis>
 			<z>1</z>
@@ -1261,7 +1261,7 @@
 			<repeatable>false</repeatable>
 			<binding>
 				<command>property-toggle</command>
-				<property>/controls/engines/engine[3]/starter</property>
+				<property>controls/engines/engine[3]/start-switch</property>
 			</binding>
 		</action>
 	</animation>
@@ -1270,7 +1270,7 @@
 		<type>select</type>
 		<object-name>starter.sel.4</object-name>
 		<condition>
-			<property>/controls/engines/engine[3]/starter</property>
+			<property>systems/ignition/starter-4</property>
 		</condition>
 	</animation>
 
@@ -1278,10 +1278,43 @@
 		<type>translate</type>
 		<object-name>starter.4</object-name>
 		<object-name>starter.sel.4</object-name>
-		<property>/controls/engines/engine[3]/starter</property>
+		<property>systems/ignition/start-switch-4</property>
 		<factor>0.011</factor>
 		<axis>
 			<z>1</z>
+		</axis>
+	</animation>
+
+	<animation>
+		<type>pick</type>
+		<object-name>autostart.l</object-name>
+		<object-name>autostart.u</object-name>
+		<action>
+			<button>0</button>
+			<repeatable>false</repeatable>
+			<binding>
+				<command>property-toggle</command>
+				<property>controls/engines/autostart</property>
+			</binding>
+		</action>
+	</animation>
+	<animation>
+		<type>translate</type>
+		<object-name>autostart.l</object-name>
+		<object-name>autostart.u</object-name>
+		<property>controls/engines/autostart</property>
+		<factor>0.005</factor>
+		<axis>
+			<z>-1</z>
+		</axis>
+	</animation>
+	<animation>
+		<type>textranslate</type>
+		<object-name>autostart.u</object-name>
+		<property>controls/engines/autostart</property>
+		<factor>0.0537</factor>
+		<axis>
+			<x>1</x>
 		</axis>
 	</animation>
 
