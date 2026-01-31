@@ -3,15 +3,6 @@
 <PropertyList>
 
 <fx>
-
-	<!-- Avionics Hum -->
-	
-	<avhum>
-		<path>Aircraft/747-400/Sounds/FGOS_Avionics.wav</path>
-		<mode>looped</mode>
-		<type>avionics</type>
-	</avhum>
-
 	<!-- Engine #1	-->
 	
 	<engine>
